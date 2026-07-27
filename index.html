@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IDP — RX Coordinator → RX Associate</title>
+<style>
+:root {
+  --black: #1C1C1C;
+  --white: #FFFFFF;
+  --cream: #F5F0E8;
+  --border: #D3D1C7;
+  --gray: #888780;
+  --gray-light: #F1EFE8;
+  --orange: #C8853A;
+  --green: #1D9E75;
+  --green-light: #E1F5EE;
+  --green-dark: #085041;
+  --purple: #7F77DD;
+  --purple-light: #EEEDFE;
+  --purple-dark: #26215C;
+  --amber: #EF9F27;
+  --amber-light: #FAEEDA;
+  --amber-dark: #412402;
+  --red-light: #FAECE7;
+  --red-dark: #4A1B0C;
+  --blue-light: #E6F1FB;
+  --blue-dark: #0C447C;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--cream); color: var(--black); min-height: 100vh; }
+
+/* ── Layout ── */
+.app { display: grid; grid-template-columns: 260px 1fr; min-height: 100vh; }
+.sidebar { background: var(--black); padding: 0; display: flex; flex-direction: column; position: sticky; top: 0; height: 100vh; overflow-y: auto; }
+.main { overflow-y: auto; }
+
+/* ── Sidebar ── */
+.sb-brand { padding: 20px 20px 16px; border-bottom: 0.5px solid rgba(255,255,255,.08); }
+.sb-brand .tag { font-size: 9px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--orange); margin-bottom: 6px; }
+.sb-brand h2 { font-size: 13px; font-weight: 500; color: #F5F0E8; line-height: 1.4; }
+.sb-brand p { font-size: 11px; color: #666360; margin-top: 3px; }
+
+.sb-employee { padding: 14px 20px; border-bottom: 0.5px solid rgba(255,255,255,.08); }
+.sb-emp-label { font-size: 9px; font-weight: 500; text-transform: uppercase; letter-spacing: .07em; color: #555350; margin-bottom: 8px; }
+.sb-emp-name { font-size: 13px; font-weight: 500; color: #F5F0E8; margin-bottom: 2px; }
+.sb-emp-role { font-size: 11px; color: #666360; }
+.sb-emp-field { border: none; background: rgba(255,255,255,.06); border-radius: 6px; padding: 6px 10px; font-size: 12px; color: #F5F0E8; width: 100%; margin-top: 8px; outline: none; }
+.sb-emp-field::placeholder { color: #555350; }
+
+.sb-nav { padding: 12px 0; flex: 1; }
+.sb-nav-label { font-size: 9px; font-weight: 500; text-transform: uppercase; letter-spacing: .07em; color: #444240; padding: 0 20px; margin-bottom: 6px; }
+.nav-item { display: flex; align-items: center; gap: 10px; padding: 9px 20px; cursor: pointer; transition: background .15s; border-left: 2px solid transparent; }
+.nav-item:hover { background: rgba(255,255,255,.04); }
+.nav-item.active { background: rgba(255,255,255,.07); border-left-color: var(--orange); }
+.nav-item .ni-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.nav-item .ni-label { font-size: 12px; color: #888580; flex: 1; }
+.nav-item.active .ni-label { color: #F5F0E8; }
+.nav-item .ni-status { font-size: 10px; font-weight: 500; padding: 1px 6px; border-radius: 8px; }
+
+.sb-footer { padding: 14px 20px; border-top: 0.5px solid rgba(255,255,255,.08); }
+.score-summary { background: rgba(255,255,255,.05); border-radius: 8px; padding: 10px 12px; }
+.ss-label { font-size: 9px; text-transform: uppercase; letter-spacing: .07em; color: #555350; margin-bottom: 6px; }
+.ss-score { font-size: 22px; font-weight: 500; color: #F5F0E8; margin-bottom: 3px; }
+.ss-bar { height: 4px; background: rgba(255,255,255,.1); border-radius: 2px; overflow: hidden; }
+.ss-fill { height: 4px; border-radius: 2px; background: var(--green); transition: width .4s; }
+
+/* ── Main content ── */
+.page { display: none; padding: 28px 32px 48px; }
+.page.active { display: block; }
+
+.page-header { margin-bottom: 24px; }
+.page-header h1 { font-size: 20px; font-weight: 500; margin-bottom: 4px; }
+.page-header p { font-size: 13px; color: var(--gray); }
+
+/* ── Manager Action Card ── */
+.manager-card { border-radius: 10px; overflow: hidden; margin-bottom: 20px; border: 0.5px solid var(--border); }
+.mc-header { padding: 12px 16px; display: flex; align-items: center; gap: 10px; }
+.mc-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
+.mc-title { flex: 1; }
+.mc-title .mct-label { font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: .07em; margin-bottom: 2px; }
+.mc-title .mct-name { font-size: 13px; font-weight: 500; }
+.mc-body { padding: 14px 16px; background: var(--white); border-top: 0.5px solid var(--border); }
+.mc-body .mc-intro { font-size: 12px; color: var(--gray); line-height: 1.6; margin-bottom: 12px; font-style: italic; }
+
+.action-list { display: flex; flex-direction: column; gap: 6px; }
+.action-item { display: flex; align-items: flex-start; gap: 10px; padding: 8px 10px; border-radius: 8px; border: 0.5px solid var(--border); background: var(--cream); font-size: 11px; color: var(--black); line-height: 1.55; }
+.action-item .ai-num { font-size: 10px; font-weight: 600; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; color: var(--white); }
+.ai-check { display: flex; align-items: center; gap: 8px; }
+.ai-check input[type=checkbox] { width: 16px; height: 16px; accent-color: var(--green); cursor: pointer; flex-shrink: 0; }
+
+/* AGM card */
+.mc-agm .mc-header { background: var(--amber-light); }
+.mc-agm .mct-label { color: var(--amber-dark); }
+.mc-agm .mct-name { color: var(--black); }
+.mc-agm .mc-icon { background: var(--amber); color: var(--white); }
+.mc-agm .ai-num { background: var(--amber); }
+/* GM card */
+.mc-gm .mc-header { background: var(--purple-light); }
+.mc-gm .mct-label { color: var(--purple-dark); }
+.mc-gm .mct-name { color: var(--black); }
+.mc-gm .mc-icon { background: var(--purple); color: var(--white); }
+.mc-gm .ai-num { background: var(--purple); }
+/* Warning card */
+.mc-warn .mc-header { background: var(--red-light); }
+.mc-warn .mct-label { color: var(--red-dark); }
+.mc-warn .mc-icon { background: #E07050; color: var(--white); }
+.mc-warn .ai-num { background: #E07050; }
+
+/* ── Competency Rating ── */
+.comp-section { margin-bottom: 20px; }
+.comp-section-title { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .07em; color: var(--gray); margin-bottom: 10px; padding-bottom: 6px; border-bottom: 0.5px solid var(--border); }
+.comp-row { background: var(--white); border: 0.5px solid var(--border); border-radius: 10px; padding: 14px 16px; margin-bottom: 8px; }
+.comp-row-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+.comp-name { font-size: 12px; font-weight: 500; color: var(--black); margin-bottom: 3px; }
+.comp-desc { font-size: 11px; color: var(--gray); line-height: 1.5; max-width: 400px; }
+.rating-group { display: flex; flex-direction: column; gap: 6px; align-items: flex-end; }
+.rg-label { font-size: 9px; text-transform: uppercase; letter-spacing: .05em; color: var(--gray); }
+.rating-btns { display: flex; gap: 4px; }
+.r-btn { width: 32px; height: 32px; border-radius: 50%; border: 0.5px solid var(--border); background: var(--cream); font-size: 12px; font-weight: 500; color: var(--gray); cursor: pointer; transition: all .15s; display: flex; align-items: center; justify-content: center; }
+.r-btn:hover { border-color: var(--orange); color: var(--orange); }
+.r-btn.sel-1 { background: var(--gray-light); border-color: var(--gray); color: var(--black); }
+.r-btn.sel-2 { background: var(--green-light); border-color: var(--green); color: var(--green-dark); }
+.r-btn.sel-3 { background: var(--purple-light); border-color: var(--purple); color: var(--purple-dark); }
+.r-btn.sel-4 { background: var(--amber-light); border-color: var(--amber); color: var(--amber-dark); }
+.comp-indicators { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
+.ind-tag { font-size: 10px; color: var(--gray); padding: 2px 8px; background: var(--cream); border-radius: 20px; border: 0.5px solid var(--border); }
+.agm-note { width: 100%; margin-top: 8px; padding: 7px 10px; border: 0.5px solid var(--border); border-radius: 6px; font-size: 11px; font-family: inherit; background: var(--cream); color: var(--black); resize: none; outline: none; min-height: 44px; }
+.agm-note:focus { border-color: var(--orange); background: var(--white); }
+.agm-note::placeholder { color: #B4B2A9; font-style: italic; }
+
+/* ── Evidence Log ── */
+.evidence-log { margin-bottom: 20px; }
+.ev-add-btn { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 500; color: var(--orange); cursor: pointer; padding: 8px 12px; border: 0.5px dashed var(--orange); border-radius: 8px; background: transparent; margin-top: 10px; width: 100%; justify-content: center; }
+.ev-add-btn:hover { background: var(--amber-light); }
+.ev-entry { background: var(--white); border: 0.5px solid var(--border); border-radius: 10px; padding: 14px 16px; margin-bottom: 8px; position: relative; }
+.ev-entry-head { display: flex; gap: 10px; margin-bottom: 10px; }
+.ev-field { flex: 1; }
+.ev-field label { font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--gray); display: block; margin-bottom: 4px; }
+.ev-input { width: 100%; padding: 6px 9px; border: 0.5px solid var(--border); border-radius: 6px; font-size: 11px; font-family: inherit; background: var(--cream); color: var(--black); outline: none; }
+.ev-input:focus { border-color: var(--orange); background: var(--white); }
+.ev-textarea { width: 100%; padding: 7px 9px; border: 0.5px solid var(--border); border-radius: 6px; font-size: 11px; font-family: inherit; background: var(--cream); color: var(--black); resize: none; outline: none; min-height: 52px; }
+.ev-textarea:focus { border-color: var(--orange); background: var(--white); }
+.ev-outcome { display: flex; gap: 6px; margin-top: 8px; }
+.out-btn { font-size: 10px; font-weight: 500; padding: 4px 12px; border-radius: 20px; border: 0.5px solid var(--border); background: var(--cream); color: var(--gray); cursor: pointer; }
+.out-btn.strong { background: var(--green-light); border-color: var(--green); color: var(--green-dark); }
+.out-btn.partial { background: var(--amber-light); border-color: var(--amber); color: var(--amber-dark); }
+.out-btn.needs { background: var(--red-light); border-color: #E07050; color: var(--red-dark); }
+.ev-delete { position: absolute; top: 10px; right: 12px; font-size: 16px; color: var(--border); cursor: pointer; line-height: 1; }
+.ev-delete:hover { color: #E07050; }
+
+/* ── Quarter Decision ── */
+.quarter-decision { background: var(--white); border: 0.5px solid var(--border); border-radius: 10px; padding: 16px; margin-bottom: 20px; }
+.qd-title { font-size: 12px; font-weight: 500; color: var(--black); margin-bottom: 12px; }
+.qd-options { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+.qd-opt { border-radius: 8px; padding: 12px; text-align: center; border: 0.5px solid var(--border); cursor: pointer; transition: all .15s; }
+.qd-opt:hover { opacity: .85; }
+.qd-opt .qdo-title { font-size: 12px; font-weight: 500; margin-bottom: 3px; }
+.qd-opt .qdo-desc { font-size: 10px; line-height: 1.5; opacity: .8; }
+.qd-opt.d-advance { background: var(--green-light); border-color: var(--green); }
+.qd-opt.d-advance .qdo-title { color: var(--green-dark); }
+.qd-opt.d-extend { background: var(--amber-light); border-color: var(--amber); }
+.qd-opt.d-extend .qdo-title { color: var(--amber-dark); }
+.qd-opt.d-review { background: var(--red-light); border-color: #E07050; }
+.qd-opt.d-review .qdo-title { color: var(--red-dark); }
+.qd-opt.selected { outline: 2px solid currentColor; }
+.qd-opt.d-advance.selected { outline-color: var(--green); }
+.qd-opt.d-extend.selected { outline-color: var(--amber); }
+.qd-opt.d-review.selected { outline-color: #E07050; }
+.sig-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; padding-top: 12px; border-top: 0.5px solid var(--border); }
+.sig-field label { font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--gray); display: block; margin-bottom: 4px; }
+.sig-input { width: 100%; padding: 6px 9px; border: none; border-bottom: 0.5px solid var(--black); font-size: 12px; font-family: inherit; background: transparent; color: var(--black); outline: none; }
+
+/* ── Promotion Score ── */
+.promo-score { background: var(--white); border: 0.5px solid var(--border); border-radius: 12px; overflow: hidden; margin-bottom: 20px; }
+.ps-head { background: var(--black); padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; }
+.ps-head h3 { font-size: 14px; font-weight: 500; color: var(--white); }
+.ps-head .ps-total { font-size: 24px; font-weight: 500; color: var(--orange); }
+.ps-body { padding: 16px 18px; }
+.ps-components { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin-bottom: 14px; }
+.ps-comp { background: var(--cream); border-radius: 8px; padding: 12px; border: 0.5px solid var(--border); text-align: center; }
+.ps-comp .psc-label { font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; color: var(--gray); margin-bottom: 6px; }
+.ps-comp .psc-val { font-size: 22px; font-weight: 500; color: var(--black); }
+.ps-comp .psc-max { font-size: 10px; color: var(--gray); }
+.ps-bar-wrap { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.ps-bar-track { flex: 1; height: 10px; background: var(--cream); border-radius: 10px; overflow: hidden; border: 0.5px solid var(--border); }
+.ps-bar-fill { height: 10px; border-radius: 10px; background: var(--green); transition: width .5s; }
+.ps-bar-label { font-size: 12px; font-weight: 500; color: var(--black); width: 60px; text-align: right; }
+.ps-thresholds { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+.pst { border-radius: 8px; padding: 10px 12px; text-align: center; }
+.pst-p { background: var(--green-light); border: 0.5px solid var(--green); }
+.pst-e { background: var(--amber-light); border: 0.5px solid var(--amber); }
+.pst-r { background: var(--red-light); border: 0.5px solid #E07050; }
+.pst .range { font-size: 14px; font-weight: 500; }
+.pst .plabel { font-size: 10px; font-weight: 600; margin-bottom: 2px; }
+.pst .pdesc { font-size: 10px; opacity: .75; }
+.pst-p .range, .pst-p .plabel { color: var(--green-dark); }
+.pst-e .range, .pst-e .plabel { color: var(--amber-dark); }
+.pst-r .range, .pst-r .plabel { color: var(--red-dark); }
+
+/* ── Profile form ── */
+.profile-form { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+.pf-card { background: var(--white); border: 0.5px solid var(--border); border-radius: 10px; padding: 14px 16px; }
+.pf-card-title { font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: .07em; color: var(--gray); margin-bottom: 12px; }
+.pf-field { margin-bottom: 10px; }
+.pf-field:last-child { margin-bottom: 0; }
+.pf-field label { font-size: 10px; font-weight: 500; color: var(--gray); display: block; margin-bottom: 4px; }
+.pf-field input, .pf-field select { width: 100%; padding: 7px 10px; border: 0.5px solid var(--border); border-radius: 6px; font-size: 12px; font-family: inherit; background: var(--cream); color: var(--black); outline: none; }
+.pf-field input:focus, .pf-field select:focus { border-color: var(--orange); background: var(--white); }
+
+/* ── Timeline ── */
+.timeline-strip { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; margin-bottom: 20px; }
+.tl-box { border-radius: 10px; padding: 12px 14px; border: 0.5px solid var(--border); cursor: pointer; transition: all .15s; }
+.tl-box:hover { border-color: var(--orange); }
+.tl-box.current { border-color: var(--orange); background: var(--amber-light); }
+.tl-box.done { background: var(--green-light); border-color: var(--green); }
+.tl-box.locked { opacity: .5; cursor: not-allowed; }
+.tl-box .tb-q { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 4px; }
+.tl-box .tb-label { font-size: 12px; font-weight: 500; margin-bottom: 2px; }
+.tl-box .tb-date { font-size: 10px; }
+.tl-box.done .tb-q { color: var(--green-dark); }
+.tl-box.current .tb-q { color: var(--amber-dark); }
+.tl-box .tb-status { font-size: 10px; font-weight: 500; margin-top: 6px; padding: 2px 8px; border-radius: 10px; display: inline-block; }
+.tl-box.done .tb-status { background: var(--green); color: var(--white); }
+.tl-box.current .tb-status { background: var(--orange); color: var(--white); }
+.tl-box.locked .tb-status { background: var(--border); color: var(--gray); }
+
+/* ── Scale legend ── */
+.scale-legend { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; align-items: center; }
+.sl-label { font-size: 10px; color: var(--gray); font-weight: 500; }
+.sl-chip { font-size: 10px; font-weight: 500; padding: 3px 10px; border-radius: 10px; }
+.sl1 { background: var(--gray-light); color: var(--black); }
+.sl2 { background: var(--green-light); color: var(--green-dark); }
+.sl3 { background: var(--purple-light); color: var(--purple-dark); }
+.sl4 { background: var(--amber-light); color: var(--amber-dark); }
+
+/* ── Section divider ── */
+.section-title { font-size: 10px; font-weight: 600; letter-spacing: .07em; text-transform: uppercase; color: var(--gray); margin: 24px 0 10px; padding-bottom: 6px; border-bottom: 0.5px solid var(--border); }
+
+/* ── Checklist ── */
+.checklist { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
+.cl-item { display: flex; align-items: flex-start; gap: 10px; padding: 9px 12px; background: var(--white); border: 0.5px solid var(--border); border-radius: 8px; font-size: 11px; color: var(--black); line-height: 1.5; cursor: pointer; transition: background .12s; }
+.cl-item:hover { background: var(--gray-light); }
+.cl-item input[type=checkbox] { width: 15px; height: 15px; accent-color: var(--green); cursor: pointer; flex-shrink: 0; margin-top: 1px; }
+.cl-item.checked { background: var(--green-light); border-color: var(--green); }
+.cl-item.checked span { color: var(--green-dark); }
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .app { grid-template-columns: 1fr; }
+  .sidebar { position: relative; height: auto; }
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- ══ SIDEBAR ══ -->
+<aside class="sidebar">
+  <div class="sb-brand">
+    <div class="tag">IDP · Gap 1</div>
+    <h2>RX Coordinator → RX Associate</h2>
+    <p>Flow MENA · Building Operations</p>
+  </div>
+
+  <div class="sb-employee">
+    <div class="sb-emp-label">Team member</div>
+    <input class="sb-emp-field" id="emp-name-sb" placeholder="Enter name..." oninput="syncName(this.value)">
+    <div class="sb-emp-role" style="margin-top:6px;font-size:11px;color:#444240">RX Coordinator → RX Associate</div>
+  </div>
+
+  <nav class="sb-nav">
+    <div class="sb-nav-label" style="margin-bottom:10px">Sections</div>
+    <div class="nav-item active" onclick="showPage('profile', this)">
+      <div class="ni-dot" style="background:#C8853A"></div>
+      <span class="ni-label">Profile & Timeline</span>
+    </div>
+
+    <div class="sb-nav-label" style="margin-top:14px;margin-bottom:8px">Quarterly Reviews</div>
+    <div class="nav-item" onclick="showPage('q1', this)">
+      <div class="ni-dot" style="background:#1D9E75"></div>
+      <span class="ni-label">Q1 — Foundation</span>
+      <span class="ni-status" id="nav-q1-status" style="background:#F1EFE8;color:#888780">—</span>
+    </div>
+    <div class="nav-item" onclick="showPage('q2', this)">
+      <div class="ni-dot" style="background:#7F77DD"></div>
+      <span class="ni-label">Q2 — Confidence</span>
+      <span class="ni-status" id="nav-q2-status" style="background:#F1EFE8;color:#888780">—</span>
+    </div>
+    <div class="nav-item" onclick="showPage('q3', this)">
+      <div class="ni-dot" style="background:#EF9F27"></div>
+      <span class="ni-label">Q3 — Ownership</span>
+      <span class="ni-status" id="nav-q3-status" style="background:#F1EFE8;color:#888780">—</span>
+    </div>
+    <div class="nav-item" onclick="showPage('q4', this)">
+      <div class="ni-dot" style="background:#E07050"></div>
+      <span class="ni-label">Q4 — Promotion Gate</span>
+      <span class="ni-status" id="nav-q4-status" style="background:#F1EFE8;color:#888780">—</span>
+    </div>
+  </nav>
+
+  <div class="sb-footer">
+    <div class="score-summary">
+      <div class="ss-label">Overall readiness</div>
+      <div class="ss-score" id="sb-score">—</div>
+      <div class="ss-bar"><div class="ss-fill" id="sb-bar" style="width:0%"></div></div>
+    </div>
+  </div>
+</aside>
+
+<!-- ══ MAIN ══ -->
+<main class="main">
+
+<!-- ── PROFILE PAGE ── -->
+<div class="page active" id="page-profile">
+  <div class="page-header">
+    <h1>Team member profile & timeline</h1>
+    <p>Fill in the basics before starting the quarterly reviews.</p>
+  </div>
+
+  <div class="profile-form">
+    <div class="pf-card">
+      <div class="pf-card-title">Team member information</div>
+      <div class="pf-field"><label>Full name</label><input id="emp-name" placeholder="e.g. Ahmed Al-Rashidi" oninput="syncName(this.value)"></div>
+      <div class="pf-field"><label>Building / Location</label><input placeholder="e.g. Flow Granada"></div>
+      <div class="pf-field"><label>IDP start date</label><input type="date"></div>
+      <div class="pf-field"><label>Current role</label><input value="RX Coordinator" readonly style="opacity:.6"></div>
+      <div class="pf-field"><label>Target role</label><input value="RX Associate" readonly style="opacity:.6"></div>
+    </div>
+    <div class="pf-card">
+      <div class="pf-card-title">Development ownership</div>
+      <div class="pf-field"><label>AGM name</label><input placeholder="AGM responsible for development"></div>
+      <div class="pf-field"><label>Buddy (RX Associate)</label><input placeholder="Experienced buddy assigned"></div>
+      <div class="pf-field"><label>Senior RX Associate</label><input placeholder="Weekly debrief contact"></div>
+      <div class="pf-field"><label>GM name</label><input placeholder="GM overseeing this building"></div>
+      <div class="pf-field"><label>Q1 start date</label><input type="date"></div>
+    </div>
+  </div>
+
+  <div class="section-title">Development timeline — 4 quarters</div>
+  <div class="timeline-strip">
+    <div class="tl-box current" onclick="showPage('q1', document.querySelector('[onclick*=q1]'))">
+      <div class="tb-q" style="color:var(--amber-dark)">Q1 · Months 1–3</div>
+      <div class="tb-label">Foundation</div>
+      <div class="tb-date">Learn, observe, execute</div>
+      <div class="tb-status">In progress</div>
+    </div>
+    <div class="tl-box locked">
+      <div class="tb-q">Q2 · Months 4–6</div>
+      <div class="tb-label">Building Confidence</div>
+      <div class="tb-date">Solo ownership begins</div>
+      <div class="tb-status">Locked</div>
+    </div>
+    <div class="tl-box locked">
+      <div class="tb-q">Q3 · Months 7–9</div>
+      <div class="tb-label">Proving Ownership</div>
+      <div class="tb-date">Handles complexity</div>
+      <div class="tb-status">Locked</div>
+    </div>
+    <div class="tl-box locked">
+      <div class="tb-q">Q4 · Months 10–12</div>
+      <div class="tb-label">Promotion Gate</div>
+      <div class="tb-date">Final assessment</div>
+      <div class="tb-status">Locked</div>
+    </div>
+  </div>
+
+  <div class="section-title">How the quarterly review works</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:20px">
+    <div style="background:var(--white);border:0.5px solid var(--border);border-radius:10px;padding:14px 16px">
+      <div style="font-size:18px;margin-bottom:6px">👤</div>
+      <div style="font-size:12px;font-weight:500;margin-bottom:4px">Team member</div>
+      <div style="font-size:11px;color:var(--gray);line-height:1.6">Completes checklist items through real experience. Brings evidence to each quarterly session.</div>
+    </div>
+    <div style="background:var(--amber-light);border:0.5px solid var(--amber);border-radius:10px;padding:14px 16px">
+      <div style="font-size:18px;margin-bottom:6px">🏢</div>
+      <div style="font-size:12px;font-weight:500;color:var(--amber-dark);margin-bottom:4px">AGM</div>
+      <div style="font-size:11px;color:var(--black);line-height:1.6">Creates development opportunities, holds monthly IDP sessions, rates competencies, and builds the evidence file.</div>
+    </div>
+    <div style="background:var(--purple-light);border:0.5px solid var(--purple);border-radius:10px;padding:14px 16px">
+      <div style="font-size:18px;margin-bottom:6px">⭐</div>
+      <div style="font-size:12px;font-weight:500;color:var(--purple-dark);margin-bottom:4px">GM</div>
+      <div style="font-size:11px;color:var(--black);line-height:1.6">Reviews progress in monthly AGM meetings. Approves promotion at Q4 gate after reviewing the AGM's evidence file.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Q1 PAGE ── -->
+<div class="page" id="page-q1">
+  <div class="page-header">
+    <h1>Q1 — Foundation <span style="font-size:14px;font-weight:400;color:var(--gray)">Months 1–3</span></h1>
+    <p>The Coordinator learns systems, builds habits, and starts executing under guidance.</p>
+  </div>
+
+  <!-- AGM Action Card -->
+  <div class="manager-card mc-agm">
+    <div class="mc-header">
+      <div class="mc-icon">🏢</div>
+      <div class="mc-title">
+        <div class="mct-label">AGM — your actions this quarter</div>
+        <div class="mct-name">What you must do to make Q1 work</div>
+      </div>
+    </div>
+    <div class="mc-body">
+      <p class="mc-intro">Q1 is your heaviest investment. The daily check-in takes 10 minutes but prevents failure at month 12. Every action below is your responsibility — not HR's, not the Buddy's.</p>
+      <div class="action-list">
+        <div class="action-item"><div class="ai-num" style="background:var(--amber)">1</div><div><strong>Week 1:</strong> Assign and brief the Buddy. Tell them exactly what you expect — daily 10-minute check-in, one written observation per day.</div></div>
+        <div class="action-item"><div class="ai-num" style="background:var(--amber)">2</div><div><strong>Week 1:</strong> Book the first Monthly IDP session (end of month 1). Book all 3 quarterly IDP sessions now.</div></div>
+        <div class="action-item"><div class="ai-num" style="background:var(--amber)">3</div><div><strong>Week 2:</strong> Confirm the Coordinator has started all 4 formal training modules. Follow up on completion.</div></div>
+        <div class="action-item"><div class="ai-num" style="background:var(--amber)">4</div><div><strong>Month 1:</strong> Identify the first "mini ownership" moment — one specific task the Coordinator will own independently for the first time. Plan it deliberately.</div></div>
+        <div class="action-item"><div class="ai-num" style="background:var(--amber)">5</div><div><strong>Monthly:</strong> Review Buddy's observation log. Give written feedback on at least one entry per week.</div></div>
+        <div class="action-item"><div class="ai-num" style="background:var(--amber)">6</div><div><strong>End of Q1:</strong> Rate all competencies below. Add at least 3 evidence entries. Complete the Q1 decision and sign.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GM Action Card -->
+  <div class="manager-card mc-gm">
+    <div class="mc-header">
+      <div class="mc-icon">⭐</div>
+      <div class="mc-title">
+        <div class="mct-label">GM — your role in Q1</div>
+        <div class="mct-name">What you need to verify and enable</div>
+      </div>
+    </div>
+    <div class="mc-body">
+      <p class="mc-intro">Your job in Q1 is to make sure the AGM is doing theirs. Development doesn't happen without deliberate manager investment.</p>
+      <div class="action-list">
+        <div class="action-item"><div class="ai-num" style="background:var(--purple)">1</div><div><strong>Month 1:</strong> In your monthly AGM meeting, confirm: Buddy assigned? IDP sessions booked? Training started?</div></div>
+        <div class="action-item"><div class="ai-num" style="background:var(--purple)">2</div><div><strong>Month 2:</strong> Ask the AGM: what is the Coordinator's first "own it" moment? If they can't answer — intervene.</div></div>
+        <div class="action-item"><div class="ai-num" style="background:var(--purple)">3</div><div><strong>End of Q1:</strong> Review the AGM's Q1 ratings and evidence log. If fewer than 3 evidence entries exist — the AGM has not done their job.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Warning Card -->
+  <div class="manager-card mc-warn">
+    <div class="mc-header">
+      <div class="mc-icon">⚠️</div>
+      <div class="mc-title">
+        <div class="mct-label">Warning signals — act immediately if you see these</div>
+        <div class="mct-name">Don't wait for the quarter to end</div>
+      </div>
+    </div>
+    <div class="mc-body">
+      <div class="action-list">
+        <div class="action-item"><div class="ai-num" style="background:#E07050">!</div><div>Buddy is not doing daily check-ins by week 2 → Replace the Buddy or take over yourself.</div></div>
+        <div class="action-item"><div class="ai-num" style="background:#E07050">!</div><div>Training not completed by end of month 1 → Block time and complete it with them.</div></div>
+        <div class="action-item"><div class="ai-num" style="background:#E07050">!</div><div>Coordinator is still escalating everything by month 2 → The first ownership moment hasn't been assigned. Do it now.</div></div>
+        <div class="action-item"><div class="ai-num" style="background:#E07050">!</div><div>No evidence logged after 6 weeks → The AGM is not creating development opportunities. GM must intervene.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-title">Q1 checklist — team member</div>
+  <div class="checklist" id="cl-q1">
+    <label class="cl-item"><input type="checkbox" onchange="updateItem(this)"><span>All 4 formal training modules completed and signed off</span></label>
+    <label class="cl-item"><input type="checkbox" onchange="updateItem(this)"><span>Shadowed RX Associate on all major interaction types (arrival, complaint, walkthrough)</span></label>
+    <label class="cl-item"><input type="checkbox" onchange="updateItem(this)"><span>Handled first-line Neighbour requests independently for 2 consecutive weeks</span></label>
+    <label class="cl-item"><input type="checkbox" onchange="updateItem(this)"><span>Completed building walkthrough with zero missed items — twice</span></label>
+    <label class="cl-item"><input type="checkbox" onchange="updateItem(this)"><span>Buddy rating ≥ 3.5 / 4.0 at end of Q1</span></label>
+    <label class="cl-item"><input type="checkbox" onchange="updateItem(this)"><span>Zero service failures in handled interactions</span></label>
+  </div>
+
+  <div class="section-title">Competency ratings — AGM completes at end of Q1</div>
+  <div class="scale-legend">
+    <span class="sl-label">Scale:</span>
+    <span class="sl-chip sl1">1 — Awareness</span>
+    <span class="sl-chip sl2">2 — Application</span>
+    <span class="sl-chip sl3">3 — Proficiency</span>
+    <span class="sl-chip sl4">4 — Mastery</span>
+  </div>
+
+  <div class="comp-section">
+    <div class="comp-section-title">Neighbour Experience</div>
+    <div class="comp-row">
+      <div class="comp-row-top">
+        <div><div class="comp-name">End-to-end issue resolution</div><div class="comp-desc">Follows up proactively, confirms Neighbour satisfaction before closing, logs every interaction</div></div>
+        <div class="rating-group">
+          <div class="rg-label">AGM rating</div>
+          <div class="rating-btns" id="r-q1-1">
+            <button class="r-btn" onclick="rate('q1-1',1,this)">1</button>
+            <button class="r-btn" onclick="rate('q1-1',2,this)">2</button>
+            <button class="r-btn" onclick="rate('q1-1',3,this)">3</button>
+            <button class="r-btn" onclick="rate('q1-1',4,this)">4</button>
+          </div>
+        </div>
+      </div>
+      <div class="comp-indicators">
+        <span class="ind-tag">→ Follows up without being asked</span>
+        <span class="ind-tag">→ Confirms satisfaction before closing</span>
+        <span class="ind-tag">→ Logs immediately and accurately</span>
+      </div>
+      <textarea class="agm-note" placeholder="AGM notes — specific observations only, no generalisations..."></textarea>
+    </div>
+    <div class="comp-row">
+      <div class="comp-row-top">
+        <div><div class="comp-name">Service recovery</div><div class="comp-desc">Stays calm under pressure, acknowledges concern before solving, resolves within scope</div></div>
+        <div class="rating-group">
+          <div class="rg-label">AGM rating</div>
+          <div class="rating-btns" id="r-q1-2">
+            <button class="r-btn" onclick="rate('q1-2',1,this)">1</button>
+            <button class="r-btn" onclick="rate('q1-2',2,this)">2</button>
+            <button class="r-btn" onclick="rate('q1-2',3,this)">3</button>
+            <button class="r-btn" onclick="rate('q1-2',4,this)">4</button>
+          </div>
+        </div>
+      </div>
+      <textarea class="agm-note" placeholder="AGM notes..."></textarea>
+    </div>
+  </div>
+
+  <div class="comp-section">
+    <div class="comp-section-title">Building Operations</div>
+    <div class="comp-row">
+      <div class="comp-row-top">
+        <div><div class="comp-name">Operational readiness ownership</div><div class="comp-desc">Completes walkthroughs and acts on every finding without being prompted</div></div>
+        <div class="rating-group">
+          <div class="rg-label">AGM rating</div>
+          <div class="rating-btns" id="r-q1-3">
+            <button class="r-btn" onclick="rate('q1-3',1,this)">1</button>
+            <button class="r-btn" onclick="rate('q1-3',2,this)">2</button>
+            <button class="r-btn" onclick="rate('q1-3',3,this)">3</button>
+            <button class="r-btn" onclick="rate('q1-3',4,this)">4</button>
+          </div>
+        </div>
+      </div>
+      <textarea class="agm-note" placeholder="AGM notes..."></textarea>
+    </div>
+  </div>
+
+  <div class="comp-section">
+    <div class="comp-section-title">Brand & Community</div>
+    <div class="comp-row">
+      <div class="comp-row-top">
+        <div><div class="comp-name">Brand Voice — natural</div><div class="comp-desc">Flow's warmth expressed naturally in every interaction — no reminders needed</div></div>
+        <div class="rating-group">
+          <div class="rg-label">AGM rating</div>
+          <div class="rating-btns" id="r-q1-4">
+            <button class="r-btn" onclick="rate('q1-4',1,this)">1</button>
+            <button class="r-btn" onclick="rate('q1-4',2,this)">2</button>
+            <button class="r-btn" onclick="rate('q1-4',3,this)">3</button>
+            <button class="r-btn" onclick="rate('q1-4',4,this)">4</button>
+          </div>
+        </div>
+      </div>
+      <textarea class="agm-note" placeholder="AGM notes..."></textarea>
+    </div>
+  </div>
+
+  <div class="section-title">Evidence log — Q1</div>
+  <div id="ev-q1"></div>
+  <button class="ev-add-btn" onclick="addEvidence('q1')">+ Add evidence entry</button>
+
+  <div class="section-title">Q1 decision</div>
+  <div class="quarter-decision">
+    <div class="qd-title">AGM decision — end of Q1</div>
+    <div class="qd-options">
+      <div class="qd-opt d-advance" onclick="selectDecision('q1','advance',this)">
+        <div class="qdo-title">Advancing to Q2</div>
+        <div class="qdo-desc">All checklist items complete. All ratings ≥ 2. Evidence on file.</div>
+      </div>
+      <div class="qd-opt d-extend" onclick="selectDecision('q1','extend',this)">
+        <div class="qdo-title">Extended review</div>
+        <div class="qdo-desc">One or more gaps. Written improvement plan. Reassess in __ weeks.</div>
+      </div>
+      <div class="qd-opt d-review" onclick="selectDecision('q1','review',this)">
+        <div class="qdo-title">Fundamental review</div>
+        <div class="qdo-desc">Multiple unmet criteria. AGM + GM meeting required.</div>
+      </div>
+    </div>
+    <div class="sig-row">
+      <div class="sig-field"><label>AGM signature & date</label><input class="sig-input" placeholder="Name / date"></div>
+      <div class="sig-field"><label>GM acknowledgement & date</label><input class="sig-input" placeholder="Name / date"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Q2 PAGE ── -->
+<div class="page" id="page-q2">
+  <div class="page-header">
+    <h1>Q2 — Building Confidence <span style="font-size:14px;font-weight:400;color:var(--gray)">Months 4–6</span></h1>
+    <p>The Coordinator works with greater autonomy — owns interactions, leads walkthroughs independently.</p>
+  </div>
+  <div class="manager-card mc-agm">
+    <div class="mc-header">
+      <div class="mc-icon">🏢</div>
+      <div class="mc-title">
+        <div class="mct-label">AGM — your actions this quarter</div>
+        <div class="mct-name">Q2: step back deliberately — but stay close</div>
+      </div>
+    </div>
+    <div class="mc-body">
+      <p class="mc-intro">Q2 is about giving the Coordinator real ownership — and watching honestly what happens. Resist the urge to jump in before they've had a chance to handle it.</p>
+      <div class="action-list">
+        <div class="action-item"><div class="ai-num" style="background:var(--amber)">1</div><div><strong>Month 4:</strong> Brief the Buddy: step back to weekly debrief only. The Coordinator owns their interactions now.</div></div>
+        <div class="action-item"><div class="ai-num" style="background:var(--amber)">2</div><div><strong>Month 4:</strong> Assign first solo Arrival — brief them before, debrief them after. Write a specific observation.</div></div>
+        <div class="action-item"><div class="ai-num" style="background:var(--amber)">3</div><div><strong>Month 5:</strong> Let them handle the first real complaint independently. Do not intervene unless they are about to make a serious mistake.</div></div>
+        <div class="action-item"><div class="ai-num" style="background:var(--amber)">4</div><div><strong>Monthly:</strong> Hold IDP sessions — review what they owned, what they escalated, and whether the escalations were appropriate.</div></div>
+        <div class="action-item"><div class="ai-num" style="background:var(--amber)">5</div><div><strong>End of Q2:</strong> Rate all competencies. Minimum 3 new evidence entries this quarter. Complete decision and sign.</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="manager-card mc-gm">
+    <div class="mc-header">
+      <div class="mc-icon">⭐</div>
+      <div class="mc-title">
+        <div class="mct-label">GM — your role in Q2</div>
+        <div class="mct-name">Mid-point check — is the AGM giving real ownership?</div>
+      </div>
+    </div>
+    <div class="mc-body">
+      <div class="action-list">
+        <div class="action-item"><div class="ai-num" style="background:var(--purple)">1</div><div><strong>Month 4:</strong> Ask the AGM: what specific ownership has been given this quarter? If the answer is vague — push for specifics.</div></div>
+        <div class="action-item"><div class="ai-num" style="background:var(--purple)">2</div><div><strong>Month 5:</strong> Conduct a brief Coffee Chat with the Coordinator — informally assess how they're feeling and what they're learning.</div></div>
+        <div class="action-item"><div class="ai-num" style="background:var(--purple)">3</div><div><strong>End of Q2:</strong> Review AGM's evidence log and ratings. If the Coordinator is not advancing — decide: extension or fundamental review.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-title">Q2 checklist — team member</div>
+  <div class="checklist">
+    <label class="cl-item"><input type="checkbox" onchange="updateItem(this)"><span>Led one complete Arrival independently — Neighbour experience seamless</span></label>
+    <label class="cl-item"><input type="checkbox" onchange="updateItem(this)"><span>Resolved 5 Neighbour cases independently without escalation</span></label>
+    <label class="cl-item"><input type="checkbox" onchange="updateItem(this)"><span>Completed handover without review for one full month</span></label>
+    <label class="cl-item"><input type="checkbox" onchange="updateItem(this)"><span>Building maintained at standard across all assigned shifts</span></label>
+    <label class="cl-item"><input type="checkbox" onchange="updateItem(this)"><span>Handled one difficult Neighbour situation with positive outcome</span></label>
+    <label class="cl-item"><input type="checkbox" onchange="updateItem(this)"><span>Senior RX Associate rating ≥ 3.5 / 4.0</span></label>
+  </div>
+
+  <div class="section-title">Competency ratings — AGM completes at end of Q2</div>
+  <div class="scale-legend">
+    <span class="sl-label">Scale:</span>
+    <span class="sl-chip sl1">1 — Awareness</span>
+    <span class="sl-chip sl2">2 — Application</span>
+    <span class="sl-chip sl3">3 — Proficiency</span>
+    <span class="sl-chip sl4">4 — Mastery</span>
+  </div>
+  <div class="comp-section">
+    <div class="comp-section-title">All competencies — updated rating</div>
+    <div class="comp-row">
+      <div class="comp-row-top">
+        <div><div class="comp-name">End-to-end issue resolution</div><div class="comp-desc">Owns Neighbour interactions from contact to closure without prompting</div></div>
+        <div class="rating-group"><div class="rg-label">AGM rating</div><div class="rating-btns" id="r-q2-1"><button class="r-btn" onclick="rate('q2-1',1,this)">1</button><button class="r-btn" onclick="rate('q2-1',2,this)">2</button><button class="r-btn" onclick="rate('q2-1',3,this)">3</button><button class="r-btn" onclick="rate('q2-1',4,this)">4</button></div></div>
+      </div>
+      <textarea class="agm-note" placeholder="Specific observations this quarter..."></textarea>
+    </div>
+    <div class="comp-row">
+      <div class="comp-row-top">
+        <div><div class="comp-name">Service recovery</div><div class="comp-desc">Handles difficult situations with composure — resolves before escalating</div></div>
+        <div class="rating-group"><div class="rg-label">AGM rating</div><div class="rating-btns" id="r-q2-2"><button class="r-btn" onclick="rate('q2-2',1,this)">1</button><button class="r-btn" onclick="rate('q2-2',2,this)">2</button><button class="r-btn" onclick="rate('q2-2',3,this)">3</button><button class="r-btn" onclick="rate('q2-2',4,this)">4</button></div></div>
+      </div>
+      <textarea class="agm-note" placeholder="Specific observations..."></textarea>
+    </div>
+    <div class="comp-row">
+      <div class="comp-row-top">
+        <div><div class="comp-name">Operational readiness ownership</div><div class="comp-desc">Building maintained at standard independently — no prompting required</div></div>
+        <div class="rating-group"><div class="rg-label">AGM rating</div><div class="rating-btns" id="r-q2-3"><button class="r-btn" onclick="rate('q2-3',1,this)">1</button><button class="r-btn" onclick="rate('q2-3',2,this)">2</button><button class="r-btn" onclick="rate('q2-3',3,this)">3</button><button class="r-btn" onclick="rate('q2-3',4,this)">4</button></div></div>
+      </div>
+      <textarea class="agm-note" placeholder="Specific observations..."></textarea>
+    </div>
+    <div class="comp-row">
+      <div class="comp-row-top">
+        <div><div class="comp-name">Field judgement</div><div class="comp-desc">Decides within scope, escalates appropriately, brings context when escalating</div></div>
+        <div class="rating-group"><div class="rg-label">AGM rating</div><div class="rating-btns" id="r-q2-4"><button class="r-btn" onclick="rate('q2-4',1,this)">1</button><button class="r-btn" onclick="rate('q2-4',2,this)">2</button><button class="r-btn" onclick="rate('q2-4',3,this)">3</button><button class="r-btn" onclick="rate('q2-4',4,this)">4</button></div></div>
+      </div>
+      <textarea class="agm-note" placeholder="Specific observations..."></textarea>
+    </div>
+  </div>
+
+  <div class="section-title">Evidence log — Q2</div>
+  <div id="ev-q2"></div>
+  <button class="ev-add-btn" onclick="addEvidence('q2')">+ Add evidence entry</button>
+
+  <div class="section-title">Q2 decision</div>
+  <div class="quarter-decision">
+    <div class="qd-title">AGM decision — end of Q2</div>
+    <div class="qd-options">
+      <div class="qd-opt d-advance" onclick="selectDecision('q2','advance',this)"><div class="qdo-title">Advancing to Q3</div><div class="qdo-desc">All checklist items complete. Ratings trending to 3+. Evidence on file.</div></div>
+      <div class="qd-opt d-extend" onclick="selectDecision('q2','extend',this)"><div class="qdo-title">Extended review</div><div class="qdo-desc">Gaps identified. Written improvement plan. Reassess in __ weeks.</div></div>
+      <div class="qd-opt d-review" onclick="selectDecision('q2','review',this)"><div class="qdo-title">Fundamental review</div><div class="qdo-desc">Multiple criteria unmet. AGM + GM meeting required.</div></div>
+    </div>
+    <div class="sig-row">
+      <div class="sig-field"><label>AGM signature & date</label><input class="sig-input" placeholder="Name / date"></div>
+      <div class="sig-field"><label>GM acknowledgement & date</label><input class="sig-input" placeholder="Name / date"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Q3 PAGE ── -->
+<div class="page" id="page-q3">
+  <div class="page-header">
+    <h1>Q3 — Proving Ownership <span style="font-size:14px;font-weight:400;color:var(--gray)">Months 7–9</span></h1>
+    <p>The Coordinator handles complexity, guides newer team members, and leads community moments.</p>
+  </div>
+  <div class="manager-card mc-agm">
+    <div class="mc-header">
+      <div class="mc-icon">🏢</div>
+      <div class="mc-title">
+        <div class="mct-label">AGM — your actions this quarter</div>
+        <div class="mct-name">Q3: assign real challenges — not safe ones</div>
+      </div>
+    </div>
+    <div class="mc-body">
+      <p class="mc-intro">Q3 is where you find out if they are truly ready. Give them situations that are at the edge of their current capability — and observe honestly.</p>
+      <div class="action-list">
+        <div class="action-item"><div class="ai-num" style="background:var(--amber)">1</div><div><strong>Month 7:</strong> Assign the Coordinator to own a zone or floor independently for a full shift. Debrief in detail.</div></div>
+        <div class="action-item"><div class="ai-num" style="background:var(--amber)">2</div><div><strong>Month 8:</strong> Let them guide a newer team member on at least one task — observe how they explain and support.</div></div>
+        <div class="action-item"><div class="ai-num" style="background:var(--amber)">3</div><div><strong>Month 8–9:</strong> Plan and debrief one community activation they lead end-to-end.</div></div>
+        <div class="action-item"><div class="ai-num" style="background:var(--amber)">4</div><div><strong>Month 9:</strong> Cover a full Associate shift independently — you are not available. Debrief the next day.</div></div>
+        <div class="action-item"><div class="ai-num" style="background:var(--amber)">5</div><div><strong>End of Q3:</strong> Honest mid-point review. If they are not at ≥ 3 on most competencies — do not let this reach Q4 unprepared.</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="manager-card mc-gm">
+    <div class="mc-header">
+      <div class="mc-icon">⭐</div>
+      <div class="mc-title">
+        <div class="mct-label">GM — your role in Q3</div>
+        <div class="mct-name">Is this person truly performing at Associate level?</div>
+      </div>
+    </div>
+    <div class="mc-body">
+      <div class="action-list">
+        <div class="action-item"><div class="ai-num" style="background:var(--purple)">1</div><div><strong>Month 8:</strong> Ask the AGM directly: "Is this person ready for promotion in one more quarter?" If the answer is uncertain — discuss now.</div></div>
+        <div class="action-item"><div class="ai-num" style="background:var(--purple)">2</div><div><strong>End of Q3:</strong> Review evidence log — are entries specific and substantive? If they are vague, the AGM is not observing properly.</div></div>
+        <div class="action-item"><div class="ai-num" style="background:var(--purple)">3</div><div><strong>End of Q3:</strong> If ratings are below 3 on more than 2 competencies — an extension or path review is needed before Q4.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-title">Q3 checklist — team member</div>
+  <div class="checklist">
+    <label class="cl-item"><input type="checkbox" onchange="updateItem(this)"><span>Owned a zone or floor independently for a full shift — consistent</span></label>
+    <label class="cl-item"><input type="checkbox" onchange="updateItem(this)"><span>Handled 3+ difficult Neighbour situations without escalation</span></label>
+    <label class="cl-item"><input type="checkbox" onchange="updateItem(this)"><span>Led one community moment or activation end-to-end</span></label>
+    <label class="cl-item"><input type="checkbox" onchange="updateItem(this)"><span>Guided a newer team member on at least one task</span></label>
+    <label class="cl-item"><input type="checkbox" onchange="updateItem(this)"><span>Covered a full Associate shift independently</span></label>
+    <label class="cl-item"><input type="checkbox" onchange="updateItem(this)"><span>Senior RX Associate rating ≥ 4.0 / 4.0</span></label>
+  </div>
+
+  <div class="section-title">Competency ratings — AGM completes at end of Q3</div>
+  <div class="scale-legend"><span class="sl-label">Scale:</span><span class="sl-chip sl1">1</span><span class="sl-chip sl2">2</span><span class="sl-chip sl3">3</span><span class="sl-chip sl4">4</span></div>
+  <div class="comp-section">
+    <div class="comp-section-title">Full competency update — all 5</div>
+    <div class="comp-row"><div class="comp-row-top"><div><div class="comp-name">End-to-end issue resolution</div></div><div class="rating-group"><div class="rg-label">AGM rating</div><div class="rating-btns" id="r-q3-1"><button class="r-btn" onclick="rate('q3-1',1,this)">1</button><button class="r-btn" onclick="rate('q3-1',2,this)">2</button><button class="r-btn" onclick="rate('q3-1',3,this)">3</button><button class="r-btn" onclick="rate('q3-1',4,this)">4</button></div></div></div><textarea class="agm-note" placeholder="Specific observations Q3..."></textarea></div>
+    <div class="comp-row"><div class="comp-row-top"><div><div class="comp-name">Service recovery</div></div><div class="rating-group"><div class="rg-label">AGM rating</div><div class="rating-btns" id="r-q3-2"><button class="r-btn" onclick="rate('q3-2',1,this)">1</button><button class="r-btn" onclick="rate('q3-2',2,this)">2</button><button class="r-btn" onclick="rate('q3-2',3,this)">3</button><button class="r-btn" onclick="rate('q3-2',4,this)">4</button></div></div></div><textarea class="agm-note" placeholder="Specific observations Q3..."></textarea></div>
+    <div class="comp-row"><div class="comp-row-top"><div><div class="comp-name">Operational readiness ownership</div></div><div class="rating-group"><div class="rg-label">AGM rating</div><div class="rating-btns" id="r-q3-3"><button class="r-btn" onclick="rate('q3-3',1,this)">1</button><button class="r-btn" onclick="rate('q3-3',2,this)">2</button><button class="r-btn" onclick="rate('q3-3',3,this)">3</button><button class="r-btn" onclick="rate('q3-3',4,this)">4</button></div></div></div><textarea class="agm-note" placeholder="Specific observations Q3..."></textarea></div>
+    <div class="comp-row"><div class="comp-row-top"><div><div class="comp-name">Field judgement</div></div><div class="rating-group"><div class="rg-label">AGM rating</div><div class="rating-btns" id="r-q3-4"><button class="r-btn" onclick="rate('q3-4',1,this)">1</button><button class="r-btn" onclick="rate('q3-4',2,this)">2</button><button class="r-btn" onclick="rate('q3-4',3,this)">3</button><button class="r-btn" onclick="rate('q3-4',4,this)">4</button></div></div></div><textarea class="agm-note" placeholder="Specific observations Q3..."></textarea></div>
+    <div class="comp-row"><div class="comp-row-top"><div><div class="comp-name">Community activation</div><div class="comp-desc">Leads community moments independently — brings energy and engagement</div></div><div class="rating-group"><div class="rg-label">AGM rating</div><div class="rating-btns" id="r-q3-5"><button class="r-btn" onclick="rate('q3-5',1,this)">1</button><button class="r-btn" onclick="rate('q3-5',2,this)">2</button><button class="r-btn" onclick="rate('q3-5',3,this)">3</button><button class="r-btn" onclick="rate('q3-5',4,this)">4</button></div></div></div><textarea class="agm-note" placeholder="Specific observations Q3..."></textarea></div>
+  </div>
+
+  <div class="section-title">Evidence log — Q3</div>
+  <div id="ev-q3"></div>
+  <button class="ev-add-btn" onclick="addEvidence('q3')">+ Add evidence entry</button>
+
+  <div class="section-title">Q3 decision</div>
+  <div class="quarter-decision">
+    <div class="qd-title">AGM decision — end of Q3</div>
+    <div class="qd-options">
+      <div class="qd-opt d-advance" onclick="selectDecision('q3','advance',this)"><div class="qdo-title">Advancing to Q4 gate</div><div class="qdo-desc">All checklist items complete. Majority of ratings at 3+. On track for promotion.</div></div>
+      <div class="qd-opt d-extend" onclick="selectDecision('q3','extend',this)"><div class="qdo-title">Extended review</div><div class="qdo-desc">Gaps remain. Extension with written plan. Q4 gate delayed.</div></div>
+      <div class="qd-opt d-review" onclick="selectDecision('q3','review',this)"><div class="qdo-title">Fundamental review</div><div class="qdo-desc">Significant gaps. Path review with AGM + GM needed.</div></div>
+    </div>
+    <div class="sig-row">
+      <div class="sig-field"><label>AGM signature & date</label><input class="sig-input" placeholder="Name / date"></div>
+      <div class="sig-field"><label>GM acknowledgement & date</label><input class="sig-input" placeholder="Name / date"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Q4 PROMOTION GATE ── -->
+<div class="page" id="page-q4">
+  <div class="page-header">
+    <h1>Q4 — Promotion Gate <span style="font-size:14px;font-weight:400;color:var(--gray)">Months 10–12</span></h1>
+    <p>Final assessment. All criteria must be met and documented before the promotion is approved.</p>
+  </div>
+
+  <div class="manager-card mc-agm">
+    <div class="mc-header">
+      <div class="mc-icon">🏢</div>
+      <div class="mc-title">
+        <div class="mct-label">AGM — your actions in Q4</div>
+        <div class="mct-name">Build the evidence file and make the case</div>
+      </div>
+    </div>
+    <div class="mc-body">
+      <p class="mc-intro">If you have done Q1–Q3 well, Q4 should be confirmation — not discovery. The promotion file is built from everything you've documented, not from what you remember.</p>
+      <div class="action-list">
+        <div class="action-item"><div class="ai-num" style="background:var(--amber)">1</div><div><strong>Month 10–11:</strong> Observe consistently performing at Associate level — not just occasionally. Document every instance.</div></div>
+        <div class="action-item"><div class="ai-num" style="background:var(--amber)">2</div><div><strong>Month 11:</strong> Request the Buddy's final written rating and observation.</div></div>
+        <div class="action-item"><div class="ai-num" style="background:var(--amber)">3</div><div><strong>Month 12:</strong> Complete all final competency ratings. Calculate the readiness score. Prepare the written promotion recommendation.</div></div>
+        <div class="action-item"><div class="ai-num" style="background:var(--amber)">4</div><div><strong>Month 12:</strong> Submit the full evidence file to the GM — not a summary, the full file with all quarterly ratings and evidence entries.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="manager-card mc-gm">
+    <div class="mc-header">
+      <div class="mc-icon">⭐</div>
+      <div class="mc-title">
+        <div class="mct-label">GM — promotion approval</div>
+        <div class="mct-name">Review the evidence — then decide</div>
+      </div>
+    </div>
+    <div class="mc-body">
+      <div class="action-list">
+        <div class="action-item"><div class="ai-num" style="background:var(--purple)">1</div><div><strong>Month 11:</strong> Conduct a Coffee Chat with the Coordinator — 15 minutes. You are assessing leadership maturity, not testing knowledge.</div></div>
+        <div class="action-item"><div class="ai-num" style="background:var(--purple)">2</div><div><strong>Month 12:</strong> Review the full evidence file — not just the final ratings. Are there enough evidence entries? Are they substantive?</div></div>
+        <div class="action-item"><div class="ai-num" style="background:var(--purple)">3</div><div><strong>Month 12:</strong> If the score is ≥ 3.5 and the evidence file is complete — approve promotion and notify HR formally.</div></div>
+        <div class="action-item"><div class="ai-num" style="background:var(--purple)">4</div><div>If you are not satisfied with the evidence — do not approve. Ask the AGM to extend and add more documented evidence before resubmitting.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-title">Q4 checklist — final gate</div>
+  <div class="checklist">
+    <label class="cl-item"><input type="checkbox" onchange="updateItem(this)"><span>Consistently performing at Associate level across full shifts — not occasionally</span></label>
+    <label class="cl-item"><input type="checkbox" onchange="updateItem(this)"><span>Zero unnecessary escalations — all within-scope situations resolved independently</span></label>
+    <label class="cl-item"><input type="checkbox" onchange="updateItem(this)"><span>Building maintained at standard throughout Q4</span></label>
+    <label class="cl-item"><input type="checkbox" onchange="updateItem(this)"><span>Buddy final rating ≥ 4.0 / 4.0</span></label>
+    <label class="cl-item"><input type="checkbox" onchange="updateItem(this)"><span>AGM final rating ≥ 4.0 / 4.0</span></label>
+    <label class="cl-item"><input type="checkbox" onchange="updateItem(this)"><span>Evidence file complete — minimum 12 entries across all 4 quarters</span></label>
+    <label class="cl-item"><input type="checkbox" onchange="updateItem(this)"><span>AGM written promotion recommendation submitted to GM</span></label>
+    <label class="cl-item"><input type="checkbox" onchange="updateItem(this)"><span>GM Coffee Chat completed — GM satisfied with readiness</span></label>
+  </div>
+
+  <div class="section-title">Final competency ratings — Q4</div>
+  <div class="scale-legend"><span class="sl-label">Scale:</span><span class="sl-chip sl1">1</span><span class="sl-chip sl2">2</span><span class="sl-chip sl3">3</span><span class="sl-chip sl4">4</span><span style="font-size:11px;color:var(--gray);margin-left:6px">Minimum for promotion: all ≥ 3.0</span></div>
+  <div class="comp-section">
+    <div class="comp-row"><div class="comp-row-top"><div><div class="comp-name">End-to-end issue resolution</div></div><div class="rating-group"><div class="rg-label">Final AGM rating</div><div class="rating-btns" id="r-q4-1"><button class="r-btn" onclick="rate('q4-1',1,this);calcScore()">1</button><button class="r-btn" onclick="rate('q4-1',2,this);calcScore()">2</button><button class="r-btn" onclick="rate('q4-1',3,this);calcScore()">3</button><button class="r-btn" onclick="rate('q4-1',4,this);calcScore()">4</button></div></div></div><textarea class="agm-note" placeholder="Final assessment..."></textarea></div>
+    <div class="comp-row"><div class="comp-row-top"><div><div class="comp-name">Service recovery</div></div><div class="rating-group"><div class="rg-label">Final AGM rating</div><div class="rating-btns" id="r-q4-2"><button class="r-btn" onclick="rate('q4-2',1,this);calcScore()">1</button><button class="r-btn" onclick="rate('q4-2',2,this);calcScore()">2</button><button class="r-btn" onclick="rate('q4-2',3,this);calcScore()">3</button><button class="r-btn" onclick="rate('q4-2',4,this);calcScore()">4</button></div></div></div><textarea class="agm-note" placeholder="Final assessment..."></textarea></div>
+    <div class="comp-row"><div class="comp-row-top"><div><div class="comp-name">Operational readiness ownership</div></div><div class="rating-group"><div class="rg-label">Final AGM rating</div><div class="rating-btns" id="r-q4-3"><button class="r-btn" onclick="rate('q4-3',1,this);calcScore()">1</button><button class="r-btn" onclick="rate('q4-3',2,this);calcScore()">2</button><button class="r-btn" onclick="rate('q4-3',3,this);calcScore()">3</button><button class="r-btn" onclick="rate('q4-3',4,this);calcScore()">4</button></div></div></div><textarea class="agm-note" placeholder="Final assessment..."></textarea></div>
+    <div class="comp-row"><div class="comp-row-top"><div><div class="comp-name">Field judgement</div></div><div class="rating-group"><div class="rg-label">Final AGM rating</div><div class="rating-btns" id="r-q4-4"><button class="r-btn" onclick="rate('q4-4',1,this);calcScore()">1</button><button class="r-btn" onclick="rate('q4-4',2,this);calcScore()">2</button><button class="r-btn" onclick="rate('q4-4',3,this);calcScore()">3</button><button class="r-btn" onclick="rate('q4-4',4,this);calcScore()">4</button></div></div></div><textarea class="agm-note" placeholder="Final assessment..."></textarea></div>
+    <div class="comp-row"><div class="comp-row-top"><div><div class="comp-name">Community activation</div></div><div class="rating-group"><div class="rg-label">Final AGM rating</div><div class="rating-btns" id="r-q4-5"><button class="r-btn" onclick="rate('q4-5',1,this);calcScore()">1</button><button class="r-btn" onclick="rate('q4-5',2,this);calcScore()">2</button><button class="r-btn" onclick="rate('q4-5',3,this);calcScore()">3</button><button class="r-btn" onclick="rate('q4-5',4,this);calcScore()">4</button></div></div></div><textarea class="agm-note" placeholder="Final assessment..."></textarea></div>
+    <div class="comp-row"><div class="comp-row-top"><div><div class="comp-name">Brand Voice — natural</div></div><div class="rating-group"><div class="rg-label">Final AGM rating</div><div class="rating-btns" id="r-q4-6"><button class="r-btn" onclick="rate('q4-6',1,this);calcScore()">1</button><button class="r-btn" onclick="rate('q4-6',2,this);calcScore()">2</button><button class="r-btn" onclick="rate('q4-6',3,this);calcScore()">3</button><button class="r-btn" onclick="rate('q4-6',4,this);calcScore()">4</button></div></div></div><textarea class="agm-note" placeholder="Final assessment..."></textarea></div>
+  </div>
+
+  <div class="section-title">External ratings</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px">
+    <div style="background:var(--white);border:0.5px solid var(--border);border-radius:10px;padding:14px 16px">
+      <div style="font-size:11px;font-weight:500;margin-bottom:8px">Buddy final rating</div>
+      <div class="rating-btns" id="r-buddy" style="justify-content:flex-start">
+        <button class="r-btn" onclick="rate('buddy',1,this);calcScore()">1</button>
+        <button class="r-btn" onclick="rate('buddy',2,this);calcScore()">2</button>
+        <button class="r-btn" onclick="rate('buddy',3,this);calcScore()">3</button>
+        <button class="r-btn" onclick="rate('buddy',4,this);calcScore()">4</button>
+      </div>
+      <div style="font-size:10px;color:var(--gray);margin-top:6px">Minimum: 4.0 for promotion</div>
+    </div>
+    <div style="background:var(--white);border:0.5px solid var(--border);border-radius:10px;padding:14px 16px">
+      <div style="font-size:11px;font-weight:500;margin-bottom:8px">GM final rating (after Coffee Chat)</div>
+      <div class="rating-btns" id="r-gm" style="justify-content:flex-start">
+        <button class="r-btn" onclick="rate('gm',1,this);calcScore()">1</button>
+        <button class="r-btn" onclick="rate('gm',2,this);calcScore()">2</button>
+        <button class="r-btn" onclick="rate('gm',3,this);calcScore()">3</button>
+        <button class="r-btn" onclick="rate('gm',4,this);calcScore()">4</button>
+      </div>
+      <div style="font-size:10px;color:var(--gray);margin-top:6px">Minimum: 4.0 for promotion</div>
+    </div>
+  </div>
+
+  <div class="section-title">Promotion readiness score</div>
+  <div class="promo-score">
+    <div class="ps-head">
+      <h3>Overall Readiness Score</h3>
+      <div class="ps-total" id="ps-total">—</div>
+    </div>
+    <div class="ps-body">
+      <div class="ps-components">
+        <div class="ps-comp"><div class="psc-label">Competency avg</div><div class="psc-val" id="ps-comp-avg">—</div><div class="psc-max">/ 4.0 · min: 3.0</div></div>
+        <div class="ps-comp"><div class="psc-label">Buddy rating</div><div class="psc-val" id="ps-buddy">—</div><div class="psc-max">/ 4.0 · min: 4.0</div></div>
+        <div class="ps-comp"><div class="psc-label">GM rating</div><div class="psc-val" id="ps-gm">—</div><div class="psc-max">/ 4.0 · min: 4.0</div></div>
+        <div class="ps-comp"><div class="psc-label">Checklist</div><div class="psc-val" id="ps-checklist">—</div><div class="psc-max">/ 8 items</div></div>
+      </div>
+      <div class="ps-bar-wrap">
+        <div class="ps-bar-track"><div class="ps-bar-fill" id="ps-bar" style="width:0%"></div></div>
+        <div class="ps-bar-label" id="ps-bar-label">0 / 4.0</div>
+      </div>
+      <div class="ps-thresholds">
+        <div class="pst pst-p"><div class="plabel">Promote</div><div class="range">≥ 3.5</div><div class="pdesc">AGM submits to GM. GM approves and notifies HR.</div></div>
+        <div class="pst pst-e"><div class="plabel">Extended review</div><div class="range">3.0 – 3.4</div><div class="pdesc">Written improvement plan. Reassess after agreed period.</div></div>
+        <div class="pst pst-r"><div class="plabel">Fundamental review</div><div class="range">Below 3.0</div><div class="pdesc">AGM + GM meeting. Career path conversation needed.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-title">Promotion decision</div>
+  <div class="quarter-decision">
+    <div class="qd-title">GM promotion decision — final gate</div>
+    <div class="qd-options">
+      <div class="qd-opt d-advance" onclick="selectDecision('q4','promote',this)"><div class="qdo-title">✓ Promote to RX Associate</div><div class="qdo-desc">Evidence file complete. Score ≥ 3.5. All criteria met. AGM notifies HR formally.</div></div>
+      <div class="qd-opt d-extend" onclick="selectDecision('q4','extend',this)"><div class="qdo-title">Extended review period</div><div class="qdo-desc">Score between 3.0–3.4 or evidence insufficient. Written plan. Reassess in __ weeks.</div></div>
+      <div class="qd-opt d-review" onclick="selectDecision('q4','review',this)"><div class="qdo-title">Fundamental review</div><div class="qdo-desc">Score below 3.0 or core criteria unmet. AGM + GM meeting. Path decision required.</div></div>
+    </div>
+    <div class="sig-row">
+      <div class="sig-field"><label>AGM signature & date</label><input class="sig-input" placeholder="Name / date"></div>
+      <div class="sig-field"><label>GM formal approval & date</label><input class="sig-input" placeholder="Name / date"></div>
+    </div>
+  </div>
+</div>
+
+</main>
+</div>
+
+<script>
+const ratings = {};
+
+function showPage(id, el) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  if (el) el.classList.add('active');
+}
+
+function syncName(val) {
+  document.getElementById('emp-name-sb') && (document.getElementById('emp-name-sb').value = val);
+  document.getElementById('emp-name') && (document.getElementById('emp-name').value = val);
+}
+
+function rate(key, val, btn) {
+  ratings[key] = val;
+  const group = btn.parentElement;
+  group.querySelectorAll('.r-btn').forEach(b => {
+    b.className = 'r-btn';
+  });
+  btn.classList.add('sel-' + val);
+}
+
+function updateItem(cb) {
+  const item = cb.closest('.cl-item');
+  item.classList.toggle('checked', cb.checked);
+  calcScore();
+}
+
+function addEvidence(quarter) {
+  const container = document.getElementById('ev-' + quarter);
+  const entry = document.createElement('div');
+  entry.className = 'ev-entry';
+  entry.innerHTML = `
+    <span class="ev-delete" onclick="this.parentElement.remove();calcScore()">×</span>
+    <div class="ev-entry-head">
+      <div class="ev-field" style="max-width:100px"><label>Date</label><input type="date" class="ev-input"></div>
+      <div class="ev-field"><label>Situation</label><input class="ev-input" placeholder="Brief description of what happened"></div>
+      <div class="ev-field" style="max-width:140px"><label>Competency area</label><input class="ev-input" placeholder="e.g. Service recovery"></div>
+    </div>
+    <div class="ev-field"><label>What the Coordinator did — specifically</label><textarea class="ev-textarea" placeholder="Describe exactly what they did and how — not general impressions"></textarea></div>
+    <div class="ev-outcome">
+      <span style="font-size:11px;color:var(--gray);margin-right:4px;line-height:28px">Outcome:</span>
+      <button class="out-btn" onclick="setOutcome(this,'strong')">Strong</button>
+      <button class="out-btn" onclick="setOutcome(this,'partial')">Partial</button>
+      <button class="out-btn" onclick="setOutcome(this,'needs')">Needs work</button>
+    </div>`;
+  container.appendChild(entry);
+}
+
+function setOutcome(btn, type) {
+  const row = btn.closest('.ev-outcome');
+  row.querySelectorAll('.out-btn').forEach(b => b.className = 'out-btn');
+  btn.classList.add(type);
+}
+
+function selectDecision(quarter, decision, el) {
+  const opts = el.closest('.qd-options').querySelectorAll('.qd-opt');
+  opts.forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+
+  const statusMap = {
+    advance: { text: '✓', bg: '#E1F5EE', color: '#085041' },
+    promote: { text: '✓', bg: '#E1F5EE', color: '#085041' },
+    extend:  { text: '~', bg: '#FAEEDA', color: '#412402' },
+    review:  { text: '!', bg: '#FAECE7', color: '#4A1B0C' },
+  };
+  const s = statusMap[decision];
+  const nav = document.getElementById('nav-' + quarter + '-status');
+  if (nav && s) {
+    nav.textContent = s.text;
+    nav.style.background = s.bg;
+    nav.style.color = s.color;
+  }
+}
+
+function calcScore() {
+  const q4Keys = ['q4-1','q4-2','q4-3','q4-4','q4-5','q4-6'];
+  const compRatings = q4Keys.map(k => ratings[k] || 0).filter(v => v > 0);
+  const compAvg = compRatings.length > 0 ? (compRatings.reduce((a,b) => a+b, 0) / compRatings.length) : 0;
+  const buddyR = ratings['buddy'] || 0;
+  const gmR = ratings['gm'] || 0;
+
+  document.getElementById('ps-comp-avg').textContent = compAvg > 0 ? compAvg.toFixed(1) : '—';
+  document.getElementById('ps-buddy').textContent = buddyR > 0 ? buddyR.toFixed(1) : '—';
+  document.getElementById('ps-gm').textContent = gmR > 0 ? gmR.toFixed(1) : '—';
+
+  const checked = document.querySelectorAll('#page-q4 .cl-item input:checked').length;
+  document.getElementById('ps-checklist').textContent = checked + '/8';
+
+  if (compAvg > 0 && buddyR > 0 && gmR > 0) {
+    const total = (compAvg * 0.5) + (buddyR * 0.25) + (gmR * 0.25);
+    document.getElementById('ps-total').textContent = total.toFixed(1);
+    document.getElementById('ps-bar').style.width = (total / 4 * 100) + '%';
+    document.getElementById('ps-bar-label').textContent = total.toFixed(1) + ' / 4.0';
+
+    const color = total >= 3.5 ? '#1D9E75' : total >= 3.0 ? '#EF9F27' : '#E07050';
+    document.getElementById('ps-bar').style.background = color;
+    document.getElementById('ps-total').style.color = color;
+
+    document.getElementById('sb-score').textContent = total.toFixed(1) + ' / 4.0';
+    document.getElementById('sb-bar').style.width = (total / 4 * 100) + '%';
+    document.getElementById('sb-bar').style.background = color;
+  }
+}
+</script>
+</body>
+</html>
