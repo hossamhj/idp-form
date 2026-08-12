@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>IDP — RX Coordinator → RX Associate</title>
+<title>IDP — Beesan Harb · RX Coordinator → RX Associate</title>
 <style>
 :root {
   --black: #1C1C1C;
@@ -30,12 +30,10 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--cream); color: var(--black); min-height: 100vh; }
 
-/* ── Layout ── */
 .app { display: grid; grid-template-columns: 260px 1fr; min-height: 100vh; }
 .sidebar { background: var(--black); padding: 0; display: flex; flex-direction: column; position: sticky; top: 0; height: 100vh; overflow-y: auto; }
 .main { overflow-y: auto; }
 
-/* ── Sidebar ── */
 .sb-brand { padding: 20px 20px 16px; border-bottom: 0.5px solid rgba(255,255,255,.08); }
 .sb-brand .tag { font-size: 9px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--orange); margin-bottom: 6px; }
 .sb-brand h2 { font-size: 13px; font-weight: 500; color: #F5F0E8; line-height: 1.4; }
@@ -43,10 +41,9 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 
 .sb-employee { padding: 14px 20px; border-bottom: 0.5px solid rgba(255,255,255,.08); }
 .sb-emp-label { font-size: 9px; font-weight: 500; text-transform: uppercase; letter-spacing: .07em; color: #555350; margin-bottom: 8px; }
-.sb-emp-name { font-size: 13px; font-weight: 500; color: #F5F0E8; margin-bottom: 2px; }
-.sb-emp-role { font-size: 11px; color: #666360; }
-.sb-emp-field { border: none; background: rgba(255,255,255,.06); border-radius: 6px; padding: 6px 10px; font-size: 12px; color: #F5F0E8; width: 100%; margin-top: 8px; outline: none; }
-.sb-emp-field::placeholder { color: #555350; }
+.sb-emp-name { font-size: 14px; font-weight: 600; color: #F5F0E8; margin-bottom: 2px; }
+.sb-emp-role { font-size: 11px; color: #444240; }
+.sb-emp-agm { font-size: 11px; color: #555350; margin-top: 4px; }
 
 .sb-nav { padding: 12px 0; flex: 1; }
 .sb-nav-label { font-size: 9px; font-weight: 500; text-transform: uppercase; letter-spacing: .07em; color: #444240; padding: 0 20px; margin-bottom: 6px; }
@@ -65,7 +62,6 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 .ss-bar { height: 4px; background: rgba(255,255,255,.1); border-radius: 2px; overflow: hidden; }
 .ss-fill { height: 4px; border-radius: 2px; background: var(--green); transition: width .4s; }
 
-/* ── Main content ── */
 .page { display: none; padding: 28px 32px 48px; }
 .page.active { display: block; }
 
@@ -73,7 +69,15 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 .page-header h1 { font-size: 20px; font-weight: 500; margin-bottom: 4px; }
 .page-header p { font-size: 13px; color: var(--gray); }
 
-/* ── Manager Action Card ── */
+/* Employee banner */
+.emp-banner { background: var(--black); border-radius: 10px; padding: 14px 18px; margin-bottom: 20px; display: flex; align-items: center; gap: 16px; }
+.emp-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--orange); display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 600; color: white; flex-shrink: 0; }
+.emp-info .emp-name { font-size: 15px; font-weight: 600; color: #F5F0E8; }
+.emp-info .emp-path { font-size: 11px; color: #666360; margin-top: 2px; }
+.emp-meta { margin-left: auto; text-align: right; }
+.emp-meta .meta-item { font-size: 11px; color: #888580; }
+.emp-meta .meta-item span { color: #E8E5DE; font-weight: 500; }
+
 .manager-card { border-radius: 10px; overflow: hidden; margin-bottom: 20px; border: 0.5px solid var(--border); }
 .mc-header { padding: 12px 16px; display: flex; align-items: center; gap: 10px; }
 .mc-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
@@ -86,28 +90,20 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 .action-list { display: flex; flex-direction: column; gap: 6px; }
 .action-item { display: flex; align-items: flex-start; gap: 10px; padding: 8px 10px; border-radius: 8px; border: 0.5px solid var(--border); background: var(--cream); font-size: 11px; color: var(--black); line-height: 1.55; }
 .action-item .ai-num { font-size: 10px; font-weight: 600; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; color: var(--white); }
-.ai-check { display: flex; align-items: center; gap: 8px; }
-.ai-check input[type=checkbox] { width: 16px; height: 16px; accent-color: var(--green); cursor: pointer; flex-shrink: 0; }
 
-/* AGM card */
 .mc-agm .mc-header { background: var(--amber-light); }
 .mc-agm .mct-label { color: var(--amber-dark); }
-.mc-agm .mct-name { color: var(--black); }
 .mc-agm .mc-icon { background: var(--amber); color: var(--white); }
 .mc-agm .ai-num { background: var(--amber); }
-/* GM card */
 .mc-gm .mc-header { background: var(--purple-light); }
 .mc-gm .mct-label { color: var(--purple-dark); }
-.mc-gm .mct-name { color: var(--black); }
 .mc-gm .mc-icon { background: var(--purple); color: var(--white); }
 .mc-gm .ai-num { background: var(--purple); }
-/* Warning card */
 .mc-warn .mc-header { background: var(--red-light); }
 .mc-warn .mct-label { color: var(--red-dark); }
 .mc-warn .mc-icon { background: #E07050; color: var(--white); }
 .mc-warn .ai-num { background: #E07050; }
 
-/* ── Competency Rating ── */
 .comp-section { margin-bottom: 20px; }
 .comp-section-title { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .07em; color: var(--gray); margin-bottom: 10px; padding-bottom: 6px; border-bottom: 0.5px solid var(--border); }
 .comp-row { background: var(--white); border: 0.5px solid var(--border); border-radius: 10px; padding: 14px 16px; margin-bottom: 8px; }
@@ -129,7 +125,6 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 .agm-note:focus { border-color: var(--orange); background: var(--white); }
 .agm-note::placeholder { color: #B4B2A9; font-style: italic; }
 
-/* ── Evidence Log ── */
 .evidence-log { margin-bottom: 20px; }
 .ev-add-btn { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 500; color: var(--orange); cursor: pointer; padding: 8px 12px; border: 0.5px dashed var(--orange); border-radius: 8px; background: transparent; margin-top: 10px; width: 100%; justify-content: center; }
 .ev-add-btn:hover { background: var(--amber-light); }
@@ -149,7 +144,6 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 .ev-delete { position: absolute; top: 10px; right: 12px; font-size: 16px; color: var(--border); cursor: pointer; line-height: 1; }
 .ev-delete:hover { color: #E07050; }
 
-/* ── Quarter Decision ── */
 .quarter-decision { background: var(--white); border: 0.5px solid var(--border); border-radius: 10px; padding: 16px; margin-bottom: 20px; }
 .qd-title { font-size: 12px; font-weight: 500; color: var(--black); margin-bottom: 12px; }
 .qd-options { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 12px; }
@@ -171,7 +165,6 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 .sig-field label { font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--gray); display: block; margin-bottom: 4px; }
 .sig-input { width: 100%; padding: 6px 9px; border: none; border-bottom: 0.5px solid var(--black); font-size: 12px; font-family: inherit; background: transparent; color: var(--black); outline: none; }
 
-/* ── Promotion Score ── */
 .promo-score { background: var(--white); border: 0.5px solid var(--border); border-radius: 12px; overflow: hidden; margin-bottom: 20px; }
 .ps-head { background: var(--black); padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; }
 .ps-head h3 { font-size: 14px; font-weight: 500; color: var(--white); }
@@ -198,7 +191,6 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 .pst-e .range, .pst-e .plabel { color: var(--amber-dark); }
 .pst-r .range, .pst-r .plabel { color: var(--red-dark); }
 
-/* ── Profile form ── */
 .profile-form { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
 .pf-card { background: var(--white); border: 0.5px solid var(--border); border-radius: 10px; padding: 14px 16px; }
 .pf-card-title { font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: .07em; color: var(--gray); margin-bottom: 12px; }
@@ -208,7 +200,6 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 .pf-field input, .pf-field select { width: 100%; padding: 7px 10px; border: 0.5px solid var(--border); border-radius: 6px; font-size: 12px; font-family: inherit; background: var(--cream); color: var(--black); outline: none; }
 .pf-field input:focus, .pf-field select:focus { border-color: var(--orange); background: var(--white); }
 
-/* ── Timeline ── */
 .timeline-strip { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; margin-bottom: 20px; }
 .tl-box { border-radius: 10px; padding: 12px 14px; border: 0.5px solid var(--border); cursor: pointer; transition: all .15s; }
 .tl-box:hover { border-color: var(--orange); }
@@ -225,7 +216,6 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 .tl-box.current .tb-status { background: var(--orange); color: var(--white); }
 .tl-box.locked .tb-status { background: var(--border); color: var(--gray); }
 
-/* ── Scale legend ── */
 .scale-legend { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; align-items: center; }
 .sl-label { font-size: 10px; color: var(--gray); font-weight: 500; }
 .sl-chip { font-size: 10px; font-weight: 500; padding: 3px 10px; border-radius: 10px; }
@@ -234,10 +224,8 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 .sl3 { background: var(--purple-light); color: var(--purple-dark); }
 .sl4 { background: var(--amber-light); color: var(--amber-dark); }
 
-/* ── Section divider ── */
 .section-title { font-size: 10px; font-weight: 600; letter-spacing: .07em; text-transform: uppercase; color: var(--gray); margin: 24px 0 10px; padding-bottom: 6px; border-bottom: 0.5px solid var(--border); }
 
-/* ── Checklist ── */
 .checklist { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
 .cl-item { display: flex; align-items: flex-start; gap: 10px; padding: 9px 12px; background: var(--white); border: 0.5px solid var(--border); border-radius: 8px; font-size: 11px; color: var(--black); line-height: 1.5; cursor: pointer; transition: background .12s; }
 .cl-item:hover { background: var(--gray-light); }
@@ -245,7 +233,11 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 .cl-item.checked { background: var(--green-light); border-color: var(--green); }
 .cl-item.checked span { color: var(--green-dark); }
 
-/* ── Responsive ── */
+/* Progress badge */
+.progress-badge { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 500; padding: 4px 12px; border-radius: 20px; margin-bottom: 16px; }
+.pb-active { background: var(--amber-light); color: var(--amber-dark); border: 0.5px solid var(--amber); }
+.pb-note { font-size: 11px; color: var(--gray); font-style: italic; }
+
 @media (max-width: 768px) {
   .app { grid-template-columns: 1fr; }
   .sidebar { position: relative; height: auto; }
@@ -258,15 +250,16 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 <!-- ══ SIDEBAR ══ -->
 <aside class="sidebar">
   <div class="sb-brand">
-    <div class="tag">IDP · Gap 1</div>
-    <h2>RX Coordinator → RX Associate</h2>
+    <div class="tag">IDP · Residents Experience</div>
+    <h2>Coordinator → Associate</h2>
     <p>Flow MENA · Building Operations</p>
   </div>
 
   <div class="sb-employee">
     <div class="sb-emp-label">Team member</div>
-    <input class="sb-emp-field" id="emp-name-sb" placeholder="Enter name..." oninput="syncName(this.value)">
-    <div class="sb-emp-role" style="margin-top:6px;font-size:11px;color:#444240">RX Coordinator → RX Associate</div>
+    <div class="sb-emp-name">Beesan Harb</div>
+    <div class="sb-emp-role">RX Coordinator → RX Associate</div>
+    <div class="sb-emp-agm">AGM: Saad &nbsp;·&nbsp; GM: Hafsa</div>
   </div>
 
   <nav class="sb-nav">
@@ -280,7 +273,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
     <div class="nav-item" onclick="showPage('q1', this)">
       <div class="ni-dot" style="background:#1D9E75"></div>
       <span class="ni-label">Q1 — Foundation</span>
-      <span class="ni-status" id="nav-q1-status" style="background:#F1EFE8;color:#888780">—</span>
+      <span class="ni-status" id="nav-q1-status" style="background:#FAEEDA;color:#412402">▶</span>
     </div>
     <div class="nav-item" onclick="showPage('q2', this)">
       <div class="ni-dot" style="background:#7F77DD"></div>
@@ -302,7 +295,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
   <div class="sb-footer">
     <div class="score-summary">
       <div class="ss-label">Overall readiness</div>
-      <div class="ss-score" id="sb-score">—</div>
+      <div class="ss-score" id="sb-score">Q1 active</div>
       <div class="ss-bar"><div class="ss-fill" id="sb-bar" style="width:0%"></div></div>
     </div>
   </div>
@@ -315,50 +308,63 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 <div class="page active" id="page-profile">
   <div class="page-header">
     <h1>Team member profile & timeline</h1>
-    <p>Fill in the basics before starting the quarterly reviews.</p>
+    <p>Beesan Harb — Individual Development Plan · Started June 2026</p>
+  </div>
+
+  <div class="emp-banner">
+    <div class="emp-avatar">BH</div>
+    <div class="emp-info">
+      <div class="emp-name">Beesan Harb</div>
+      <div class="emp-path">Residents Experience Coordinator → Residents Experience Associate</div>
+    </div>
+    <div class="emp-meta">
+      <div class="meta-item">AGM: <span>Saad</span></div>
+      <div class="meta-item">GM: <span>Hafsa</span></div>
+      <div class="meta-item">Started: <span>June 2026</span></div>
+    </div>
   </div>
 
   <div class="profile-form">
     <div class="pf-card">
       <div class="pf-card-title">Team member information</div>
-      <div class="pf-field"><label>Full name</label><input id="emp-name" placeholder="e.g. Ahmed Al-Rashidi" oninput="syncName(this.value)"></div>
-      <div class="pf-field"><label>Building / Location</label><input placeholder="e.g. Flow Granada"></div>
-      <div class="pf-field"><label>IDP start date</label><input type="date"></div>
-      <div class="pf-field"><label>Current role</label><input value="RX Coordinator" readonly style="opacity:.6"></div>
-      <div class="pf-field"><label>Target role</label><input value="RX Associate" readonly style="opacity:.6"></div>
+      <div class="pf-field"><label>Full name</label><input id="emp-name" value="Beesan Harb"></div>
+      <div class="pf-field"><label>Building / Location</label><input id="emp-building" placeholder="e.g. Flow Granada — to be confirmed"></div>
+      <div class="pf-field"><label>IDP start date</label><input type="date" value="2026-06-15"></div>
+      <div class="pf-field"><label>Current role</label><input value="Residents Experience Coordinator" readonly style="opacity:.6"></div>
+      <div class="pf-field"><label>Target role</label><input value="Residents Experience Associate" readonly style="opacity:.6"></div>
     </div>
     <div class="pf-card">
       <div class="pf-card-title">Development ownership</div>
-      <div class="pf-field"><label>AGM name</label><input placeholder="AGM responsible for development"></div>
-      <div class="pf-field"><label>Buddy (RX Associate)</label><input placeholder="Experienced buddy assigned"></div>
-      <div class="pf-field"><label>Senior RX Associate</label><input placeholder="Weekly debrief contact"></div>
-      <div class="pf-field"><label>GM name</label><input placeholder="GM overseeing this building"></div>
-      <div class="pf-field"><label>Q1 start date</label><input type="date"></div>
+      <div class="pf-field"><label>AGM name</label><input value="Saad"></div>
+      <div class="pf-field"><label>Buddy (RX Associate)</label><input placeholder="Assign by end of Week 1"></div>
+      <div class="pf-field"><label>Senior RX Associate</label><input placeholder="Weekly debrief contact — TBD"></div>
+      <div class="pf-field"><label>GM name</label><input value="Hafsa"></div>
+      <div class="pf-field"><label>Q1 start date</label><input type="date" value="2026-06-15"></div>
     </div>
   </div>
 
   <div class="section-title">Development timeline — 4 quarters</div>
   <div class="timeline-strip">
-    <div class="tl-box current" onclick="showPage('q1', document.querySelector('[onclick*=q1]'))">
-      <div class="tb-q" style="color:var(--amber-dark)">Q1 · Months 1–3</div>
+    <div class="tl-box current" onclick="showPage('q1', document.querySelectorAll('.nav-item')[1])">
+      <div class="tb-q" style="color:var(--amber-dark)">Q1 · Jun–Sep 2026</div>
       <div class="tb-label">Foundation</div>
       <div class="tb-date">Learn, observe, execute</div>
       <div class="tb-status">In progress</div>
     </div>
     <div class="tl-box locked">
-      <div class="tb-q">Q2 · Months 4–6</div>
+      <div class="tb-q">Q2 · Sep–Dec 2026</div>
       <div class="tb-label">Building Confidence</div>
       <div class="tb-date">Solo ownership begins</div>
       <div class="tb-status">Locked</div>
     </div>
     <div class="tl-box locked">
-      <div class="tb-q">Q3 · Months 7–9</div>
+      <div class="tb-q">Q3 · Dec–Mar 2027</div>
       <div class="tb-label">Proving Ownership</div>
       <div class="tb-date">Handles complexity</div>
       <div class="tb-status">Locked</div>
     </div>
     <div class="tl-box locked">
-      <div class="tb-q">Q4 · Months 10–12</div>
+      <div class="tb-q">Q4 · Mar–Jun 2027</div>
       <div class="tb-label">Promotion Gate</div>
       <div class="tb-date">Final assessment</div>
       <div class="tb-status">Locked</div>
@@ -369,47 +375,321 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
   <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:20px">
     <div style="background:var(--white);border:0.5px solid var(--border);border-radius:10px;padding:14px 16px">
       <div style="font-size:18px;margin-bottom:6px">👤</div>
-      <div style="font-size:12px;font-weight:500;margin-bottom:4px">Team member</div>
-      <div style="font-size:11px;color:var(--gray);line-height:1.6">Completes checklist items through real experience. Brings evidence to each quarterly session.</div>
+      <div style="font-size:12px;font-weight:500;margin-bottom:4px">Beesan</div>
+      <div style="font-size:11px;color:var(--gray);line-height:1.6">Completes checklist items through real experience. Brings evidence to each quarterly session with Saad.</div>
     </div>
     <div style="background:var(--amber-light);border:0.5px solid var(--amber);border-radius:10px;padding:14px 16px">
       <div style="font-size:18px;margin-bottom:6px">🏢</div>
-      <div style="font-size:12px;font-weight:500;color:var(--amber-dark);margin-bottom:4px">AGM</div>
+      <div style="font-size:12px;font-weight:500;color:var(--amber-dark);margin-bottom:4px">Saad (AGM)</div>
       <div style="font-size:11px;color:var(--black);line-height:1.6">Creates development opportunities, holds monthly IDP sessions, rates competencies, and builds the evidence file.</div>
     </div>
     <div style="background:var(--purple-light);border:0.5px solid var(--purple);border-radius:10px;padding:14px 16px">
       <div style="font-size:18px;margin-bottom:6px">⭐</div>
-      <div style="font-size:12px;font-weight:500;color:var(--purple-dark);margin-bottom:4px">GM</div>
-      <div style="font-size:11px;color:var(--black);line-height:1.6">Reviews progress in monthly AGM meetings. Approves promotion at Q4 gate after reviewing the AGM's evidence file.</div>
+      <div style="font-size:12px;font-weight:500;color:var(--purple-dark);margin-bottom:4px">Hafsa (GM)</div>
+      <div style="font-size:11px;color:var(--black);line-height:1.6">Reviews progress monthly with Saad. Approves promotion at Q4 gate after reviewing the full evidence file.</div>
     </div>
   </div>
+
+  <div class="section-title" style="margin-top:24px">Career roadmap — Beesan's path to GM</div>
+  <div style="background:var(--white);border:0.5px solid var(--border);border-radius:12px;padding:20px 20px 14px;margin-bottom:4px">
+
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:14px">
+
+      <div style="border-radius:10px;padding:11px 9px 13px;background:var(--green-light);border:1.5px solid var(--green)">
+        <div style="font-size:8.5px;font-weight:700;padding:2px 6px;border-radius:100px;background:var(--green);color:#fff;display:inline-block;margin-bottom:7px">CURRENT</div>
+        <div style="font-size:17px;font-weight:700;color:var(--green-dark);margin-bottom:1px">L1</div>
+        <div style="font-size:11px;font-weight:600;color:var(--black);margin-bottom:2px">RX Coordinator</div>
+        <div style="font-size:9.5px;color:var(--gray);margin-bottom:7px">0–2 years</div>
+        <div style="font-size:9.5px;color:var(--black);line-height:1.5">Building habits. Tasks, building care, service.</div>
+      </div>
+
+      <div style="border-radius:10px;padding:11px 9px 13px;background:var(--amber-light);border:1.5px solid var(--amber)">
+        <div style="font-size:8.5px;font-weight:700;padding:2px 6px;border-radius:100px;background:var(--amber);color:#fff;display:inline-block;margin-bottom:7px">IDP Active</div>
+        <div style="font-size:17px;font-weight:700;color:var(--amber-dark);margin-bottom:1px">L2</div>
+        <div style="font-size:11px;font-weight:600;color:var(--black);margin-bottom:2px">RX Associate</div>
+        <div style="font-size:9.5px;color:var(--gray);margin-bottom:7px">1–3 years</div>
+        <div style="font-size:9.5px;color:var(--black);line-height:1.5">Owning the experience. Issues, community.</div>
+      </div>
+
+      <div style="border-radius:10px;padding:11px 9px 13px;background:var(--gray-light);border:0.5px solid var(--border);opacity:.65">
+        <div style="font-size:8.5px;font-weight:600;padding:2px 6px;border-radius:100px;background:var(--border);color:var(--gray);display:inline-block;margin-bottom:7px">Ahead</div>
+        <div style="font-size:17px;font-weight:700;color:var(--gray);margin-bottom:1px">L3</div>
+        <div style="font-size:11px;font-weight:600;color:var(--black);margin-bottom:2px">Senior RX Assoc.</div>
+        <div style="font-size:9.5px;color:var(--gray);margin-bottom:7px">3–5 years</div>
+        <div style="font-size:9.5px;color:var(--gray);line-height:1.5">Ops backbone. Building + financial support.</div>
+      </div>
+
+      <div style="border-radius:10px;padding:11px 9px 13px;background:var(--gray-light);border:0.5px solid var(--border);opacity:.5">
+        <div style="font-size:8.5px;font-weight:600;padding:2px 6px;border-radius:100px;background:var(--border);color:var(--gray);display:inline-block;margin-bottom:7px">Ahead</div>
+        <div style="font-size:17px;font-weight:700;color:var(--gray);margin-bottom:1px">L4</div>
+        <div style="font-size:11px;font-weight:600;color:var(--black);margin-bottom:2px">AGM</div>
+        <div style="font-size:9.5px;color:var(--gray);margin-bottom:7px">5–7 years</div>
+        <div style="font-size:9.5px;color:var(--gray);line-height:1.5">Team leader. Performance + people dev.</div>
+      </div>
+
+      <div style="border-radius:10px;padding:11px 9px 13px;background:var(--gray-light);border:0.5px solid var(--border);opacity:.4">
+        <div style="font-size:8.5px;font-weight:600;padding:2px 6px;border-radius:100px;background:var(--border);color:var(--gray);display:inline-block;margin-bottom:7px">Goal</div>
+        <div style="font-size:17px;font-weight:700;color:var(--gray);margin-bottom:1px">L5</div>
+        <div style="font-size:11px;font-weight:600;color:var(--black);margin-bottom:2px">General Manager</div>
+        <div style="font-size:9.5px;color:var(--gray);margin-bottom:7px">7+ years</div>
+        <div style="font-size:9.5px;color:var(--gray);line-height:1.5">P&L, culture, strategy. Hafsa today.</div>
+      </div>
+    </div>
+
+    <div style="position:relative;height:18px;margin-bottom:6px">
+      <div style="position:absolute;top:50%;left:0;right:0;height:2px;background:var(--border);border-radius:2px;transform:translateY(-50%)">
+        <div style="width:11%;height:100%;background:var(--green);border-radius:2px"></div>
+      </div>
+      <div style="position:relative;height:100%;display:flex;justify-content:space-around;align-items:center;z-index:1">
+        <div style="width:14px;height:14px;border-radius:50%;background:var(--green);border:2.5px solid var(--white);box-shadow:0 0 0 2.5px var(--green)"></div>
+        <div style="width:12px;height:12px;border-radius:50%;background:var(--amber);border:2px solid var(--white)"></div>
+        <div style="width:9px;height:9px;border-radius:50%;background:var(--border)"></div>
+        <div style="width:9px;height:9px;border-radius:50%;background:var(--border)"></div>
+        <div style="width:9px;height:9px;border-radius:50%;background:var(--border)"></div>
+      </div>
+    </div>
+
+    <div style="display:flex;justify-content:space-around">
+      <div style="text-align:center;font-size:9px;font-weight:600;color:var(--green-dark)">Now · 2026</div>
+      <div style="text-align:center;font-size:9px;color:var(--gray)">~2027–28</div>
+      <div style="text-align:center;font-size:9px;color:var(--gray)">~2029–31</div>
+      <div style="text-align:center;font-size:9px;color:var(--gray)">~2031–33</div>
+      <div style="text-align:center;font-size:9px;color:var(--gray)">~2033+</div>
+    </div>
+  </div>
+
 </div>
 
 <!-- ── Q1 PAGE ── -->
 <div class="page" id="page-q1">
   <div class="page-header">
-    <h1>Q1 — Foundation <span style="font-size:14px;font-weight:400;color:var(--gray)">Months 1–3</span></h1>
-    <p>The Coordinator learns systems, builds habits, and starts executing under guidance.</p>
+    <h1>Q1 — Foundation <span style="font-size:14px;font-weight:400;color:var(--gray)">Jun–Sep 2026</span></h1>
+    <p>Beesan learns systems, builds habits, and executes under Saad's guidance.</p>
   </div>
+
+  <div class="progress-badge pb-active">▶ Month 2 of 3 — In progress as of August 2026</div>
+
+  <!-- Beesan Q1 Focus -->
+  <div style="background:var(--white);border:0.5px solid var(--border);border-radius:12px;padding:18px 20px;margin-bottom:20px">
+    <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--orange);margin-bottom:12px">What Beesan is developing this quarter</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px">
+      <div style="background:var(--green-light);border:0.5px solid var(--green);border-radius:9px;padding:12px">
+        <div style="font-size:11px;font-weight:600;color:var(--green-dark);margin-bottom:5px">Neighbour experience</div>
+        <div style="font-size:11px;color:var(--black);line-height:1.6">Follow cases all the way through. Don't close until the Neighbour confirms. Log every interaction same-day.</div>
+      </div>
+      <div style="background:var(--purple-light);border:0.5px solid var(--purple);border-radius:9px;padding:12px">
+        <div style="font-size:11px;font-weight:600;color:var(--purple-dark);margin-bottom:5px">Building operations</div>
+        <div style="font-size:11px;color:var(--black);line-height:1.6">Own the walkthrough. Find issues before anyone tells you. Report and follow up — not just report.</div>
+      </div>
+      <div style="background:var(--orange-light);border:0.5px solid var(--orange);border-radius:9px;padding:12px">
+        <div style="font-size:11px;font-weight:600;color:var(--amber-dark);margin-bottom:5px">Community presence</div>
+        <div style="font-size:11px;color:var(--black);line-height:1.6">Know the Neighbours by name. Support one community event this quarter — not just attendance, active contribution.</div>
+      </div>
+    </div>
+    <div style="background:var(--cream);border-radius:8px;padding:10px 14px;display:flex;align-items:flex-start;gap:10px">
+      <div style="font-size:18px;flex-shrink:0">💡</div>
+      <div style="font-size:11px;color:var(--black);line-height:1.65">
+        <strong>The shift happening in Q1:</strong> As a Coordinator you execute tasks. As an Associate you will own outcomes. Q1 is where that habit starts — not next quarter. Every time you close a case, ask yourself: "Is this fully resolved, or just off my plate?"
+      </div>
+    </div>
+  </div>
+
+  <div class="section-title">Q1 checklist — Beesan</div>
+  <div class="checklist" id="cl-q1">
+    <label class="cl-item checked"><input type="checkbox" checked onchange="updateItem(this)"><span>All 4 formal training modules completed and signed off</span></label>
+    <label class="cl-item checked"><input type="checkbox" checked onchange="updateItem(this)"><span>Shadowed RX Associate on all major interaction types (arrival, complaint, walkthrough)</span></label>
+    <label class="cl-item"><input type="checkbox" onchange="updateItem(this)"><span>Handled first-line Neighbour requests independently for 2 consecutive weeks</span></label>
+    <label class="cl-item"><input type="checkbox" onchange="updateItem(this)"><span>Completed building walkthrough with zero missed items — twice</span></label>
+    <label class="cl-item"><input type="checkbox" onchange="updateItem(this)"><span>Buddy rating ≥ 3.5 / 4.0 at end of Q1</span></label>
+    <label class="cl-item"><input type="checkbox" onchange="updateItem(this)"><span>Zero service failures in handled interactions</span></label>
+  </div>
+
+  <div class="section-title">Competency ratings — Saad completes at end of Q1</div>
+  <p class="pb-note" style="margin-bottom:12px">Note: ratings below reflect mid-Q1 interim observations (August 2026) — not final. To be confirmed at Q1 close in September.</p>
+  <div class="scale-legend">
+    <span class="sl-label">Scale:</span>
+    <span class="sl-chip sl1">1 — Awareness</span>
+    <span class="sl-chip sl2">2 — Application</span>
+    <span class="sl-chip sl3">3 — Proficiency</span>
+    <span class="sl-chip sl4">4 — Mastery</span>
+  </div>
+
+  <div class="comp-section">
+    <div class="comp-section-title">Neighbour Experience</div>
+    <div class="comp-row">
+      <div class="comp-row-top">
+        <div><div class="comp-name">End-to-end issue resolution</div><div class="comp-desc">Delivers hospitality-grade follow-through — pursues the issue to full resolution, confirms Neighbour satisfaction before closing, logs same-day</div></div>
+        <div class="rating-group">
+          <div class="rg-label">Saad's rating</div>
+          <div class="rating-btns" id="r-q1-1">
+            <button class="r-btn" onclick="rate('q1-1',1,this)">1</button>
+            <button class="r-btn sel-2" onclick="rate('q1-1',2,this)">2</button>
+            <button class="r-btn" onclick="rate('q1-1',3,this)">3</button>
+            <button class="r-btn" onclick="rate('q1-1',4,this)">4</button>
+          </div>
+        </div>
+      </div>
+      <div class="comp-indicators">
+        <span class="ind-tag">→ Follows up without being asked</span>
+        <span class="ind-tag">→ Confirms satisfaction before closing</span>
+        <span class="ind-tag">→ Logs immediately and accurately</span>
+      </div>
+      <textarea class="agm-note">Beesan is following up consistently on cases she handles — this is already natural for her. The gap is in logging: she sometimes closes the issue verbally before updating the system. Reminded her twice in July. Improving.</textarea>
+    </div>
+    <div class="comp-row">
+      <div class="comp-row-top">
+        <div><div class="comp-name">Service recovery</div><div class="comp-desc">Delivers hospitality-grade service under pressure — acknowledges the concern first, resolves within scope, stays warm throughout</div></div>
+        <div class="rating-group">
+          <div class="rg-label">Saad's rating</div>
+          <div class="rating-btns" id="r-q1-2">
+            <button class="r-btn" onclick="rate('q1-2',1,this)">1</button>
+            <button class="r-btn sel-2" onclick="rate('q1-2',2,this)">2</button>
+            <button class="r-btn" onclick="rate('q1-2',3,this)">3</button>
+            <button class="r-btn" onclick="rate('q1-2',4,this)">4</button>
+          </div>
+        </div>
+      </div>
+      <textarea class="agm-note">Good instinct — she listens before jumping to solutions. First real complaint (July 3rd, AC unit) she handled calmly but waited too long to escalate. She stayed with the Neighbour which was the right call. Rating at 2 — application is there, proficiency needs more reps.</textarea>
+    </div>
+  </div>
+
+  <div class="comp-section">
+    <div class="comp-section-title">Building Operations</div>
+    <div class="comp-row">
+      <div class="comp-row-top">
+        <div><div class="comp-name">Operational readiness ownership</div><div class="comp-desc">Keeps the building clean, safe, and presentation-ready — walkthroughs completed, findings logged and followed through without prompting</div></div>
+        <div class="rating-group">
+          <div class="rg-label">Saad's rating</div>
+          <div class="rating-btns" id="r-q1-3">
+            <button class="r-btn" onclick="rate('q1-3',1,this)">1</button>
+            <button class="r-btn sel-2" onclick="rate('q1-3',2,this)">2</button>
+            <button class="r-btn" onclick="rate('q1-3',3,this)">3</button>
+            <button class="r-btn" onclick="rate('q1-3',4,this)">4</button>
+          </div>
+        </div>
+      </div>
+      <textarea class="agm-note">Completes walkthroughs on time. Still needs a prompt to log findings in the system — the physical walk is good, the documentation habit is not there yet. One walkthrough in August had 2 missed items (roof level). Working on it.</textarea>
+    </div>
+  </div>
+
+  <div class="comp-section">
+    <div class="comp-section-title">Brand & Community</div>
+    <div class="comp-row">
+      <div class="comp-row-top">
+        <div><div class="comp-name">Brand Voice — natural</div><div class="comp-desc">Flow's warmth expressed naturally in every interaction — no reminders needed</div></div>
+        <div class="rating-group">
+          <div class="rg-label">Saad's rating</div>
+          <div class="rating-btns" id="r-q1-4">
+            <button class="r-btn" onclick="rate('q1-4',1,this)">1</button>
+            <button class="r-btn" onclick="rate('q1-4',2,this)">2</button>
+            <button class="r-btn sel-3" onclick="rate('q1-4',3,this)">3</button>
+            <button class="r-btn" onclick="rate('q1-4',4,this)">4</button>
+          </div>
+        </div>
+      </div>
+      <textarea class="agm-note">This is Beesan's strongest area. She is genuinely warm with Neighbours — not performed warmth, the real thing. Multiple Neighbours have commented on her by name positively. The only gap is consistency across all interaction types; she is slightly more formal in complaint situations.</textarea>
+    </div>
+  </div>
+
+  <div class="comp-section">
+    <div class="comp-section-title">Administration & Record-keeping</div>
+    <div class="comp-row">
+      <div class="comp-row-top">
+        <div><div class="comp-name">Logging & documentation</div><div class="comp-desc">Logs every interaction, issue, and resolution accurately and before end of shift — no reminders needed</div></div>
+        <div class="rating-group">
+          <div class="rg-label">Saad's rating</div>
+          <div class="rating-btns" id="r-q1-5">
+            <button class="r-btn sel-1" onclick="rate('q1-5',1,this)">1</button>
+            <button class="r-btn" onclick="rate('q1-5',2,this)">2</button>
+            <button class="r-btn" onclick="rate('q1-5',3,this)">3</button>
+            <button class="r-btn" onclick="rate('q1-5',4,this)">4</button>
+          </div>
+        </div>
+      </div>
+      <div class="comp-indicators">
+        <span class="ind-tag">→ Logs same-day, not next morning</span>
+        <span class="ind-tag">→ No gaps or missing entries</span>
+        <span class="ind-tag">→ No reminders from Saad</span>
+      </div>
+      <textarea class="agm-note">This is the clearest Q1 gap. Beesan has been reminded twice in July and once in August to log interactions same-day. The information is accurate when she does log — the habit of logging immediately is the Q1 development area. Q1 target: zero reminders in September.</textarea>
+    </div>
+  </div>
+
+  <div class="section-title">Evidence log — Q1</div>
+  <div id="ev-q1">
+
+    <!-- Evidence 1 -->
+    <div class="ev-entry">
+      <span class="ev-delete" onclick="this.parentElement.remove()">×</span>
+      <div class="ev-entry-head">
+        <div class="ev-field" style="max-width:100px"><label>Date</label><input type="date" class="ev-input" value="2026-07-03"></div>
+        <div class="ev-field"><label>Situation</label><input class="ev-input" value="Neighbour complaint — AC unit not working, flat 4B"></div>
+        <div class="ev-field" style="max-width:140px"><label>Competency area</label><input class="ev-input" value="Service recovery"></div>
+      </div>
+      <div class="ev-field"><label>What Beesan did — specifically</label><textarea class="ev-textarea">Neighbour called the front desk frustrated that AC had been off for 2 hours. Beesan picked up the call, did not put the Neighbour on hold, listened to the full complaint without interrupting. Acknowledged the inconvenience explicitly ("I understand how uncomfortable this is, especially in this heat") before saying anything about a solution. Called FM team immediately while the Neighbour was still on the line. Followed up twice within 90 minutes. Confirmed with the Neighbour directly before closing the case. Did not log until the following morning — reminded by Saad.</textarea></div>
+      <div class="ev-outcome">
+        <span style="font-size:11px;color:var(--gray);margin-right:4px;line-height:28px">Outcome:</span>
+        <button class="out-btn partial" onclick="setOutcome(this,'strong')">Strong</button>
+        <button class="out-btn" onclick="setOutcome(this,'partial')">Partial</button>
+        <button class="out-btn" onclick="setOutcome(this,'needs')">Needs work</button>
+      </div>
+    </div>
+
+    <!-- Evidence 2 -->
+    <div class="ev-entry">
+      <span class="ev-delete" onclick="this.parentElement.remove()">×</span>
+      <div class="ev-entry-head">
+        <div class="ev-field" style="max-width:100px"><label>Date</label><input type="date" class="ev-input" value="2026-07-15"></div>
+        <div class="ev-field"><label>Situation</label><input class="ev-input" value="First solo Move-In arrival — family of 4, flat 7A"></div>
+        <div class="ev-field" style="max-width:140px"><label>Competency area</label><input class="ev-input" value="End-to-end issue resolution"></div>
+      </div>
+      <div class="ev-field"><label>What Beesan did — specifically</label><textarea class="ev-textarea">Beesan prepared the welcome package the evening before without being asked — checked the flat had been cleaned, confirmed amenities were ready. During the arrival, guided the family through all building amenities clearly and at the right pace. When handing over keys, noticed one key set was missing from the envelope. Instead of panicking, she told the family calmly she would have it to them within 20 minutes, escalated to Saad, and followed up until it was resolved. Family was appreciative. Saad had to step in briefly to retrieve the key, but Beesan managed the Neighbour throughout.</textarea></div>
+      <div class="ev-outcome">
+        <span style="font-size:11px;color:var(--gray);margin-right:4px;line-height:28px">Outcome:</span>
+        <button class="out-btn" onclick="setOutcome(this,'strong')">Strong</button>
+        <button class="out-btn partial" onclick="setOutcome(this,'partial')">Partial</button>
+        <button class="out-btn" onclick="setOutcome(this,'needs')">Needs work</button>
+      </div>
+    </div>
+
+    <!-- Evidence 3 -->
+    <div class="ev-entry">
+      <span class="ev-delete" onclick="this.parentElement.remove()">×</span>
+      <div class="ev-entry-head">
+        <div class="ev-field" style="max-width:100px"><label>Date</label><input type="date" class="ev-input" value="2026-08-04"></div>
+        <div class="ev-field"><label>Situation</label><input class="ev-input" value="Morning walkthrough — floors 1–5, reported findings to FM"></div>
+        <div class="ev-field" style="max-width:140px"><label>Competency area</label><input class="ev-input" value="Operational readiness ownership"></div>
+      </div>
+      <div class="ev-field"><label>What Beesan did — specifically</label><textarea class="ev-textarea">Completed walkthrough independently for the first time without the Buddy. Found 3 issues: a broken lobby light fitting (floor 2), a damaged door seal (flat 3C corridor), and a blocked pool drain. Logged all 3 in the FM system before end of shift — this is the first time she has logged without a reminder. Called FM directly for the pool drain as it was a safety issue. Followed up before leaving to confirm drain was cleared. Light fitting and door seal still pending at end of day — she should have followed up on these too.</textarea></div>
+      <div class="ev-outcome">
+        <span style="font-size:11px;color:var(--gray);margin-right:4px;line-height:28px">Outcome:</span>
+        <button class="out-btn strong" onclick="setOutcome(this,'strong')">Strong</button>
+        <button class="out-btn" onclick="setOutcome(this,'partial')">Partial</button>
+        <button class="out-btn" onclick="setOutcome(this,'needs')">Needs work</button>
+      </div>
+    </div>
+
+  </div>
+  <button class="ev-add-btn" onclick="addEvidence('q1')">+ Add evidence entry</button>
 
   <!-- AGM Action Card -->
   <div class="manager-card mc-agm">
     <div class="mc-header">
       <div class="mc-icon">🏢</div>
       <div class="mc-title">
-        <div class="mct-label">AGM — your actions this quarter</div>
-        <div class="mct-name">What you must do to make Q1 work</div>
+        <div class="mct-label">Saad (AGM) — your actions this quarter</div>
+        <div class="mct-name">What you must do to make Q1 work for Beesan</div>
       </div>
     </div>
     <div class="mc-body">
       <p class="mc-intro">Q1 is your heaviest investment. The daily check-in takes 10 minutes but prevents failure at month 12. Every action below is your responsibility — not HR's, not the Buddy's.</p>
       <div class="action-list">
-        <div class="action-item"><div class="ai-num" style="background:var(--amber)">1</div><div><strong>Week 1:</strong> Assign and brief the Buddy. Tell them exactly what you expect — daily 10-minute check-in, one written observation per day.</div></div>
-        <div class="action-item"><div class="ai-num" style="background:var(--amber)">2</div><div><strong>Week 1:</strong> Book the first Monthly IDP session (end of month 1). Book all 3 quarterly IDP sessions now.</div></div>
-        <div class="action-item"><div class="ai-num" style="background:var(--amber)">3</div><div><strong>Week 2:</strong> Confirm the Coordinator has started all 4 formal training modules. Follow up on completion.</div></div>
-        <div class="action-item"><div class="ai-num" style="background:var(--amber)">4</div><div><strong>Month 1:</strong> Identify the first "mini ownership" moment — one specific task the Coordinator will own independently for the first time. Plan it deliberately.</div></div>
-        <div class="action-item"><div class="ai-num" style="background:var(--amber)">5</div><div><strong>Monthly:</strong> Review Buddy's observation log. Give written feedback on at least one entry per week.</div></div>
-        <div class="action-item"><div class="ai-num" style="background:var(--amber)">6</div><div><strong>End of Q1:</strong> Rate all competencies below. Add at least 3 evidence entries. Complete the Q1 decision and sign.</div></div>
+        <div class="action-item"><div class="ai-num" style="background:var(--green)">✓</div><div><strong>Week 1 ✓:</strong> Assign and brief the Buddy. Daily 10-minute check-in, one written observation per day.</div></div>
+        <div class="action-item"><div class="ai-num" style="background:var(--green)">✓</div><div><strong>Week 1 ✓:</strong> Booked Monthly IDP sessions (end of months 1, 2, 3) and all 3 quarterly IDP sessions.</div></div>
+        <div class="action-item"><div class="ai-num" style="background:var(--green)">✓</div><div><strong>Week 2 ✓:</strong> Confirmed Beesan started all 4 formal training modules. Modules 1 & 2 completed.</div></div>
+        <div class="action-item"><div class="ai-num" style="background:var(--amber)">4</div><div><strong>Month 2 — NOW:</strong> Identify Beesan's first "mini ownership" moment. One specific task she will own independently. Plan it deliberately this week.</div></div>
+        <div class="action-item"><div class="ai-num" style="background:var(--amber)">5</div><div><strong>Monthly — ongoing:</strong> Review Buddy's observation log. Give written feedback on at least one entry per week.</div></div>
+        <div class="action-item"><div class="ai-num" style="background:var(--amber)">6</div><div><strong>End of Q1 (Sep 2026):</strong> Rate all competencies. Minimum 3 evidence entries. Complete Q1 decision and sign.</div></div>
       </div>
     </div>
   </div>
@@ -419,16 +699,16 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
     <div class="mc-header">
       <div class="mc-icon">⭐</div>
       <div class="mc-title">
-        <div class="mct-label">GM — your role in Q1</div>
-        <div class="mct-name">What you need to verify and enable</div>
+        <div class="mct-label">Hafsa (GM) — your role in Q1</div>
+        <div class="mct-name">Verify Saad is creating the development environment</div>
       </div>
     </div>
     <div class="mc-body">
-      <p class="mc-intro">Your job in Q1 is to make sure the AGM is doing theirs. Development doesn't happen without deliberate manager investment.</p>
+      <p class="mc-intro">Your job in Q1 is to make sure Saad is doing his job. Development doesn't happen without deliberate manager investment.</p>
       <div class="action-list">
-        <div class="action-item"><div class="ai-num" style="background:var(--purple)">1</div><div><strong>Month 1:</strong> In your monthly AGM meeting, confirm: Buddy assigned? IDP sessions booked? Training started?</div></div>
-        <div class="action-item"><div class="ai-num" style="background:var(--purple)">2</div><div><strong>Month 2:</strong> Ask the AGM: what is the Coordinator's first "own it" moment? If they can't answer — intervene.</div></div>
-        <div class="action-item"><div class="ai-num" style="background:var(--purple)">3</div><div><strong>End of Q1:</strong> Review the AGM's Q1 ratings and evidence log. If fewer than 3 evidence entries exist — the AGM has not done their job.</div></div>
+        <div class="action-item"><div class="ai-num" style="background:var(--green)">✓</div><div><strong>Month 1 ✓:</strong> Confirmed with Saad: Buddy assigned, IDP sessions booked, training started.</div></div>
+        <div class="action-item"><div class="ai-num" style="background:var(--amber)">2</div><div><strong>Month 2 — NOW:</strong> Ask Saad: what is Beesan's first "own it" moment this quarter? If he can't answer specifically — intervene.</div></div>
+        <div class="action-item"><div class="ai-num" style="background:var(--amber)">3</div><div><strong>End of Q1 (Sep 2026):</strong> Review Saad's Q1 ratings and evidence log. If fewer than 3 evidence entries — Saad has not done his job.</div></div>
       </div>
     </div>
   </div>
@@ -444,117 +724,17 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
     </div>
     <div class="mc-body">
       <div class="action-list">
-        <div class="action-item"><div class="ai-num" style="background:#E07050">!</div><div>Buddy is not doing daily check-ins by week 2 → Replace the Buddy or take over yourself.</div></div>
-        <div class="action-item"><div class="ai-num" style="background:#E07050">!</div><div>Training not completed by end of month 1 → Block time and complete it with them.</div></div>
-        <div class="action-item"><div class="ai-num" style="background:#E07050">!</div><div>Coordinator is still escalating everything by month 2 → The first ownership moment hasn't been assigned. Do it now.</div></div>
-        <div class="action-item"><div class="ai-num" style="background:#E07050">!</div><div>No evidence logged after 6 weeks → The AGM is not creating development opportunities. GM must intervene.</div></div>
+        <div class="action-item"><div class="ai-num" style="background:#E07050">!</div><div>Buddy is not doing daily check-ins → Replace the Buddy or Saad takes over directly.</div></div>
+        <div class="action-item"><div class="ai-num" style="background:#E07050">!</div><div>Training modules 3 & 4 not completed by end of August → Block time and complete with Beesan.</div></div>
+        <div class="action-item"><div class="ai-num" style="background:#E07050">!</div><div>Beesan still escalating everything by mid-August → First ownership moment not assigned yet. Saad must do it now.</div></div>
+        <div class="action-item"><div class="ai-num" style="background:#E07050">!</div><div>No evidence logged after 6 weeks → Saad is not creating development opportunities. Hafsa must intervene.</div></div>
       </div>
     </div>
   </div>
 
-  <div class="section-title">Q1 checklist — team member</div>
-  <div class="checklist" id="cl-q1">
-    <label class="cl-item"><input type="checkbox" onchange="updateItem(this)"><span>All 4 formal training modules completed and signed off</span></label>
-    <label class="cl-item"><input type="checkbox" onchange="updateItem(this)"><span>Shadowed RX Associate on all major interaction types (arrival, complaint, walkthrough)</span></label>
-    <label class="cl-item"><input type="checkbox" onchange="updateItem(this)"><span>Handled first-line Neighbour requests independently for 2 consecutive weeks</span></label>
-    <label class="cl-item"><input type="checkbox" onchange="updateItem(this)"><span>Completed building walkthrough with zero missed items — twice</span></label>
-    <label class="cl-item"><input type="checkbox" onchange="updateItem(this)"><span>Buddy rating ≥ 3.5 / 4.0 at end of Q1</span></label>
-    <label class="cl-item"><input type="checkbox" onchange="updateItem(this)"><span>Zero service failures in handled interactions</span></label>
-  </div>
-
-  <div class="section-title">Competency ratings — AGM completes at end of Q1</div>
-  <div class="scale-legend">
-    <span class="sl-label">Scale:</span>
-    <span class="sl-chip sl1">1 — Awareness</span>
-    <span class="sl-chip sl2">2 — Application</span>
-    <span class="sl-chip sl3">3 — Proficiency</span>
-    <span class="sl-chip sl4">4 — Mastery</span>
-  </div>
-
-  <div class="comp-section">
-    <div class="comp-section-title">Neighbour Experience</div>
-    <div class="comp-row">
-      <div class="comp-row-top">
-        <div><div class="comp-name">End-to-end issue resolution</div><div class="comp-desc">Follows up proactively, confirms Neighbour satisfaction before closing, logs every interaction</div></div>
-        <div class="rating-group">
-          <div class="rg-label">AGM rating</div>
-          <div class="rating-btns" id="r-q1-1">
-            <button class="r-btn" onclick="rate('q1-1',1,this)">1</button>
-            <button class="r-btn" onclick="rate('q1-1',2,this)">2</button>
-            <button class="r-btn" onclick="rate('q1-1',3,this)">3</button>
-            <button class="r-btn" onclick="rate('q1-1',4,this)">4</button>
-          </div>
-        </div>
-      </div>
-      <div class="comp-indicators">
-        <span class="ind-tag">→ Follows up without being asked</span>
-        <span class="ind-tag">→ Confirms satisfaction before closing</span>
-        <span class="ind-tag">→ Logs immediately and accurately</span>
-      </div>
-      <textarea class="agm-note" placeholder="AGM notes — specific observations only, no generalisations..."></textarea>
-    </div>
-    <div class="comp-row">
-      <div class="comp-row-top">
-        <div><div class="comp-name">Service recovery</div><div class="comp-desc">Stays calm under pressure, acknowledges concern before solving, resolves within scope</div></div>
-        <div class="rating-group">
-          <div class="rg-label">AGM rating</div>
-          <div class="rating-btns" id="r-q1-2">
-            <button class="r-btn" onclick="rate('q1-2',1,this)">1</button>
-            <button class="r-btn" onclick="rate('q1-2',2,this)">2</button>
-            <button class="r-btn" onclick="rate('q1-2',3,this)">3</button>
-            <button class="r-btn" onclick="rate('q1-2',4,this)">4</button>
-          </div>
-        </div>
-      </div>
-      <textarea class="agm-note" placeholder="AGM notes..."></textarea>
-    </div>
-  </div>
-
-  <div class="comp-section">
-    <div class="comp-section-title">Building Operations</div>
-    <div class="comp-row">
-      <div class="comp-row-top">
-        <div><div class="comp-name">Operational readiness ownership</div><div class="comp-desc">Completes walkthroughs and acts on every finding without being prompted</div></div>
-        <div class="rating-group">
-          <div class="rg-label">AGM rating</div>
-          <div class="rating-btns" id="r-q1-3">
-            <button class="r-btn" onclick="rate('q1-3',1,this)">1</button>
-            <button class="r-btn" onclick="rate('q1-3',2,this)">2</button>
-            <button class="r-btn" onclick="rate('q1-3',3,this)">3</button>
-            <button class="r-btn" onclick="rate('q1-3',4,this)">4</button>
-          </div>
-        </div>
-      </div>
-      <textarea class="agm-note" placeholder="AGM notes..."></textarea>
-    </div>
-  </div>
-
-  <div class="comp-section">
-    <div class="comp-section-title">Brand & Community</div>
-    <div class="comp-row">
-      <div class="comp-row-top">
-        <div><div class="comp-name">Brand Voice — natural</div><div class="comp-desc">Flow's warmth expressed naturally in every interaction — no reminders needed</div></div>
-        <div class="rating-group">
-          <div class="rg-label">AGM rating</div>
-          <div class="rating-btns" id="r-q1-4">
-            <button class="r-btn" onclick="rate('q1-4',1,this)">1</button>
-            <button class="r-btn" onclick="rate('q1-4',2,this)">2</button>
-            <button class="r-btn" onclick="rate('q1-4',3,this)">3</button>
-            <button class="r-btn" onclick="rate('q1-4',4,this)">4</button>
-          </div>
-        </div>
-      </div>
-      <textarea class="agm-note" placeholder="AGM notes..."></textarea>
-    </div>
-  </div>
-
-  <div class="section-title">Evidence log — Q1</div>
-  <div id="ev-q1"></div>
-  <button class="ev-add-btn" onclick="addEvidence('q1')">+ Add evidence entry</button>
-
-  <div class="section-title">Q1 decision</div>
+  <div class="section-title">Q1 decision — to be completed end of September 2026</div>
   <div class="quarter-decision">
-    <div class="qd-title">AGM decision — end of Q1</div>
+    <div class="qd-title">Saad's decision — end of Q1</div>
     <div class="qd-options">
       <div class="qd-opt d-advance" onclick="selectDecision('q1','advance',this)">
         <div class="qdo-title">Advancing to Q2</div>
@@ -566,12 +746,12 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
       </div>
       <div class="qd-opt d-review" onclick="selectDecision('q1','review',this)">
         <div class="qdo-title">Fundamental review</div>
-        <div class="qdo-desc">Multiple unmet criteria. AGM + GM meeting required.</div>
+        <div class="qdo-desc">Multiple unmet criteria. Saad + Hafsa meeting required.</div>
       </div>
     </div>
     <div class="sig-row">
-      <div class="sig-field"><label>AGM signature & date</label><input class="sig-input" placeholder="Name / date"></div>
-      <div class="sig-field"><label>GM acknowledgement & date</label><input class="sig-input" placeholder="Name / date"></div>
+      <div class="sig-field"><label>Saad — signature & date</label><input class="sig-input" placeholder="Name / date"></div>
+      <div class="sig-field"><label>Hafsa — acknowledgement & date</label><input class="sig-input" placeholder="Name / date"></div>
     </div>
   </div>
 </div>
@@ -579,46 +759,39 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 <!-- ── Q2 PAGE ── -->
 <div class="page" id="page-q2">
   <div class="page-header">
-    <h1>Q2 — Building Confidence <span style="font-size:14px;font-weight:400;color:var(--gray)">Months 4–6</span></h1>
-    <p>The Coordinator works with greater autonomy — owns interactions, leads walkthroughs independently.</p>
+    <h1>Q2 — Building Confidence <span style="font-size:14px;font-weight:400;color:var(--gray)">Sep–Dec 2026</span></h1>
+    <p>Beesan works with greater autonomy — owns interactions, leads walkthroughs independently.</p>
   </div>
-  <div class="manager-card mc-agm">
-    <div class="mc-header">
-      <div class="mc-icon">🏢</div>
-      <div class="mc-title">
-        <div class="mct-label">AGM — your actions this quarter</div>
-        <div class="mct-name">Q2: step back deliberately — but stay close</div>
-      </div>
-    </div>
-    <div class="mc-body">
-      <p class="mc-intro">Q2 is about giving the Coordinator real ownership — and watching honestly what happens. Resist the urge to jump in before they've had a chance to handle it.</p>
-      <div class="action-list">
-        <div class="action-item"><div class="ai-num" style="background:var(--amber)">1</div><div><strong>Month 4:</strong> Brief the Buddy: step back to weekly debrief only. The Coordinator owns their interactions now.</div></div>
-        <div class="action-item"><div class="ai-num" style="background:var(--amber)">2</div><div><strong>Month 4:</strong> Assign first solo Arrival — brief them before, debrief them after. Write a specific observation.</div></div>
-        <div class="action-item"><div class="ai-num" style="background:var(--amber)">3</div><div><strong>Month 5:</strong> Let them handle the first real complaint independently. Do not intervene unless they are about to make a serious mistake.</div></div>
-        <div class="action-item"><div class="ai-num" style="background:var(--amber)">4</div><div><strong>Monthly:</strong> Hold IDP sessions — review what they owned, what they escalated, and whether the escalations were appropriate.</div></div>
-        <div class="action-item"><div class="ai-num" style="background:var(--amber)">5</div><div><strong>End of Q2:</strong> Rate all competencies. Minimum 3 new evidence entries this quarter. Complete decision and sign.</div></div>
-      </div>
-    </div>
+  <div style="background:var(--gray-light);border:0.5px solid var(--border);border-radius:10px;padding:20px;text-align:center;color:var(--gray);font-size:13px;">
+    Q2 opens after Saad completes the Q1 decision in September 2026.
   </div>
-  <div class="manager-card mc-gm">
-    <div class="mc-header">
-      <div class="mc-icon">⭐</div>
-      <div class="mc-title">
-        <div class="mct-label">GM — your role in Q2</div>
-        <div class="mct-name">Mid-point check — is the AGM giving real ownership?</div>
+
+  <!-- Beesan Q2 Focus -->
+  <div style="background:var(--white);border:0.5px solid var(--border);border-radius:12px;padding:18px 20px;margin:20px 0">
+    <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--purple);margin-bottom:12px">What Beesan is developing this quarter</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px">
+      <div style="background:var(--green-light);border:0.5px solid var(--green);border-radius:9px;padding:12px">
+        <div style="font-size:11px;font-weight:600;color:var(--green-dark);margin-bottom:5px">Independent ownership</div>
+        <div style="font-size:11px;color:var(--black);line-height:1.6">Handle arrivals, complaints, and walkthroughs without being briefed first. Decide, act, then report — not ask then act.</div>
+      </div>
+      <div style="background:var(--purple-light);border:0.5px solid var(--purple);border-radius:9px;padding:12px">
+        <div style="font-size:11px;font-weight:600;color:var(--purple-dark);margin-bottom:5px">Field judgement</div>
+        <div style="font-size:11px;color:var(--black);line-height:1.6">Know what to decide yourself and what to escalate — and when you escalate, bring context, not just the problem.</div>
+      </div>
+      <div style="background:var(--orange-light);border:0.5px solid var(--orange);border-radius:9px;padding:12px">
+        <div style="font-size:11px;font-weight:600;color:var(--amber-dark);margin-bottom:5px">Consistent logging</div>
+        <div style="font-size:11px;color:var(--black);line-height:1.6">No reminders, no gaps. Every interaction logged before the end of shift. This should be automatic by the end of Q2.</div>
       </div>
     </div>
-    <div class="mc-body">
-      <div class="action-list">
-        <div class="action-item"><div class="ai-num" style="background:var(--purple)">1</div><div><strong>Month 4:</strong> Ask the AGM: what specific ownership has been given this quarter? If the answer is vague — push for specifics.</div></div>
-        <div class="action-item"><div class="ai-num" style="background:var(--purple)">2</div><div><strong>Month 5:</strong> Conduct a brief Coffee Chat with the Coordinator — informally assess how they're feeling and what they're learning.</div></div>
-        <div class="action-item"><div class="ai-num" style="background:var(--purple)">3</div><div><strong>End of Q2:</strong> Review AGM's evidence log and ratings. If the Coordinator is not advancing — decide: extension or fundamental review.</div></div>
+    <div style="background:var(--cream);border-radius:8px;padding:10px 14px;display:flex;align-items:flex-start;gap:10px">
+      <div style="font-size:18px;flex-shrink:0">💡</div>
+      <div style="font-size:11px;color:var(--black);line-height:1.65">
+        <strong>The shift happening in Q2:</strong> Q1 was learning with guidance. Q2 is doing without it. The Buddy steps back. Saad steps back. When something goes wrong — and it will — your job is to handle it, not to wait for someone to tell you what to do.
       </div>
     </div>
   </div>
 
-  <div class="section-title">Q2 checklist — team member</div>
+  <div class="section-title">Q2 checklist — Beesan</div>
   <div class="checklist">
     <label class="cl-item"><input type="checkbox" onchange="updateItem(this)"><span>Led one complete Arrival independently — Neighbour experience seamless</span></label>
     <label class="cl-item"><input type="checkbox" onchange="updateItem(this)"><span>Resolved 5 Neighbour cases independently without escalation</span></label>
@@ -628,61 +801,45 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
     <label class="cl-item"><input type="checkbox" onchange="updateItem(this)"><span>Senior RX Associate rating ≥ 3.5 / 4.0</span></label>
   </div>
 
-  <div class="section-title">Competency ratings — AGM completes at end of Q2</div>
-  <div class="scale-legend">
-    <span class="sl-label">Scale:</span>
-    <span class="sl-chip sl1">1 — Awareness</span>
-    <span class="sl-chip sl2">2 — Application</span>
-    <span class="sl-chip sl3">3 — Proficiency</span>
-    <span class="sl-chip sl4">4 — Mastery</span>
-  </div>
+  <div class="section-title">Competency ratings — Saad completes at end of Q2</div>
+  <div class="scale-legend"><span class="sl-label">Scale:</span><span class="sl-chip sl1">1</span><span class="sl-chip sl2">2</span><span class="sl-chip sl3">3</span><span class="sl-chip sl4">4</span></div>
   <div class="comp-section">
     <div class="comp-section-title">All competencies — updated rating</div>
-    <div class="comp-row">
-      <div class="comp-row-top">
-        <div><div class="comp-name">End-to-end issue resolution</div><div class="comp-desc">Owns Neighbour interactions from contact to closure without prompting</div></div>
-        <div class="rating-group"><div class="rg-label">AGM rating</div><div class="rating-btns" id="r-q2-1"><button class="r-btn" onclick="rate('q2-1',1,this)">1</button><button class="r-btn" onclick="rate('q2-1',2,this)">2</button><button class="r-btn" onclick="rate('q2-1',3,this)">3</button><button class="r-btn" onclick="rate('q2-1',4,this)">4</button></div></div>
-      </div>
-      <textarea class="agm-note" placeholder="Specific observations this quarter..."></textarea>
-    </div>
-    <div class="comp-row">
-      <div class="comp-row-top">
-        <div><div class="comp-name">Service recovery</div><div class="comp-desc">Handles difficult situations with composure — resolves before escalating</div></div>
-        <div class="rating-group"><div class="rg-label">AGM rating</div><div class="rating-btns" id="r-q2-2"><button class="r-btn" onclick="rate('q2-2',1,this)">1</button><button class="r-btn" onclick="rate('q2-2',2,this)">2</button><button class="r-btn" onclick="rate('q2-2',3,this)">3</button><button class="r-btn" onclick="rate('q2-2',4,this)">4</button></div></div>
-      </div>
-      <textarea class="agm-note" placeholder="Specific observations..."></textarea>
-    </div>
-    <div class="comp-row">
-      <div class="comp-row-top">
-        <div><div class="comp-name">Operational readiness ownership</div><div class="comp-desc">Building maintained at standard independently — no prompting required</div></div>
-        <div class="rating-group"><div class="rg-label">AGM rating</div><div class="rating-btns" id="r-q2-3"><button class="r-btn" onclick="rate('q2-3',1,this)">1</button><button class="r-btn" onclick="rate('q2-3',2,this)">2</button><button class="r-btn" onclick="rate('q2-3',3,this)">3</button><button class="r-btn" onclick="rate('q2-3',4,this)">4</button></div></div>
-      </div>
-      <textarea class="agm-note" placeholder="Specific observations..."></textarea>
-    </div>
-    <div class="comp-row">
-      <div class="comp-row-top">
-        <div><div class="comp-name">Field judgement</div><div class="comp-desc">Decides within scope, escalates appropriately, brings context when escalating</div></div>
-        <div class="rating-group"><div class="rg-label">AGM rating</div><div class="rating-btns" id="r-q2-4"><button class="r-btn" onclick="rate('q2-4',1,this)">1</button><button class="r-btn" onclick="rate('q2-4',2,this)">2</button><button class="r-btn" onclick="rate('q2-4',3,this)">3</button><button class="r-btn" onclick="rate('q2-4',4,this)">4</button></div></div>
-      </div>
-      <textarea class="agm-note" placeholder="Specific observations..."></textarea>
-    </div>
+    <div class="comp-row"><div class="comp-row-top"><div><div class="comp-name">End-to-end issue resolution</div></div><div class="rating-group"><div class="rg-label">Saad's rating</div><div class="rating-btns" id="r-q2-1"><button class="r-btn" onclick="rate('q2-1',1,this)">1</button><button class="r-btn" onclick="rate('q2-1',2,this)">2</button><button class="r-btn" onclick="rate('q2-1',3,this)">3</button><button class="r-btn" onclick="rate('q2-1',4,this)">4</button></div></div></div><textarea class="agm-note" placeholder="Saad's observations Q2..."></textarea></div>
+    <div class="comp-row"><div class="comp-row-top"><div><div class="comp-name">Service recovery</div></div><div class="rating-group"><div class="rg-label">Saad's rating</div><div class="rating-btns" id="r-q2-2"><button class="r-btn" onclick="rate('q2-2',1,this)">1</button><button class="r-btn" onclick="rate('q2-2',2,this)">2</button><button class="r-btn" onclick="rate('q2-2',3,this)">3</button><button class="r-btn" onclick="rate('q2-2',4,this)">4</button></div></div></div><textarea class="agm-note" placeholder="Saad's observations Q2..."></textarea></div>
+    <div class="comp-row"><div class="comp-row-top"><div><div class="comp-name">Operational readiness ownership</div></div><div class="rating-group"><div class="rg-label">Saad's rating</div><div class="rating-btns" id="r-q2-3"><button class="r-btn" onclick="rate('q2-3',1,this)">1</button><button class="r-btn" onclick="rate('q2-3',2,this)">2</button><button class="r-btn" onclick="rate('q2-3',3,this)">3</button><button class="r-btn" onclick="rate('q2-3',4,this)">4</button></div></div></div><textarea class="agm-note" placeholder="Saad's observations Q2..."></textarea></div>
+    <div class="comp-row"><div class="comp-row-top"><div><div class="comp-name">Field judgement</div><div class="comp-desc">Decides within scope, escalates appropriately, brings context when escalating</div></div><div class="rating-group"><div class="rg-label">Saad's rating</div><div class="rating-btns" id="r-q2-4"><button class="r-btn" onclick="rate('q2-4',1,this)">1</button><button class="r-btn" onclick="rate('q2-4',2,this)">2</button><button class="r-btn" onclick="rate('q2-4',3,this)">3</button><button class="r-btn" onclick="rate('q2-4',4,this)">4</button></div></div></div><textarea class="agm-note" placeholder="Saad's observations Q2..."></textarea></div>
+    <div class="comp-row"><div class="comp-row-top"><div><div class="comp-name">Logging & documentation</div><div class="comp-desc">All interactions, issues, and resolutions logged accurately before end of shift — no reminders, no gaps</div></div><div class="rating-group"><div class="rg-label">Saad's rating</div><div class="rating-btns" id="r-q2-5"><button class="r-btn" onclick="rate('q2-5',1,this)">1</button><button class="r-btn" onclick="rate('q2-5',2,this)">2</button><button class="r-btn" onclick="rate('q2-5',3,this)">3</button><button class="r-btn" onclick="rate('q2-5',4,this)">4</button></div></div></div><textarea class="agm-note" placeholder="Saad's observations Q2..."></textarea></div>
   </div>
 
   <div class="section-title">Evidence log — Q2</div>
   <div id="ev-q2"></div>
   <button class="ev-add-btn" onclick="addEvidence('q2')">+ Add evidence entry</button>
 
+  <div class="manager-card mc-agm">
+    <div class="mc-header"><div class="mc-icon">🏢</div><div class="mc-title"><div class="mct-label">Saad (AGM) — your actions this quarter</div><div class="mct-name">Q2: step back deliberately — but stay close</div></div></div>
+    <div class="mc-body">
+      <p class="mc-intro">Q2 is about giving Beesan real ownership — and watching honestly what happens. Resist the urge to jump in before she has had a chance to handle it.</p>
+      <div class="action-list">
+        <div class="action-item"><div class="ai-num" style="background:var(--amber)">1</div><div><strong>Month 4:</strong> Brief the Buddy: step back to weekly debrief only. Beesan owns her interactions now.</div></div>
+        <div class="action-item"><div class="ai-num" style="background:var(--amber)">2</div><div><strong>Month 4:</strong> Assign first solo Arrival — brief her before, debrief her after. Write a specific observation.</div></div>
+        <div class="action-item"><div class="ai-num" style="background:var(--amber)">3</div><div><strong>Month 5:</strong> Let Beesan handle the first real complaint independently. Do not intervene unless she is about to make a serious mistake.</div></div>
+        <div class="action-item"><div class="ai-num" style="background:var(--amber)">4</div><div><strong>End of Q2:</strong> Rate all competencies. Minimum 3 new evidence entries this quarter. Complete decision and sign.</div></div>
+      </div>
+    </div>
+  </div>
+
   <div class="section-title">Q2 decision</div>
   <div class="quarter-decision">
-    <div class="qd-title">AGM decision — end of Q2</div>
+    <div class="qd-title">Saad's decision — end of Q2</div>
     <div class="qd-options">
       <div class="qd-opt d-advance" onclick="selectDecision('q2','advance',this)"><div class="qdo-title">Advancing to Q3</div><div class="qdo-desc">All checklist items complete. Ratings trending to 3+. Evidence on file.</div></div>
-      <div class="qd-opt d-extend" onclick="selectDecision('q2','extend',this)"><div class="qdo-title">Extended review</div><div class="qdo-desc">Gaps identified. Written improvement plan. Reassess in __ weeks.</div></div>
-      <div class="qd-opt d-review" onclick="selectDecision('q2','review',this)"><div class="qdo-title">Fundamental review</div><div class="qdo-desc">Multiple criteria unmet. AGM + GM meeting required.</div></div>
+      <div class="qd-opt d-extend" onclick="selectDecision('q2','extend',this)"><div class="qdo-title">Extended review</div><div class="qdo-desc">Gaps identified. Written improvement plan.</div></div>
+      <div class="qd-opt d-review" onclick="selectDecision('q2','review',this)"><div class="qdo-title">Fundamental review</div><div class="qdo-desc">Multiple criteria unmet. Saad + Hafsa meeting required.</div></div>
     </div>
     <div class="sig-row">
-      <div class="sig-field"><label>AGM signature & date</label><input class="sig-input" placeholder="Name / date"></div>
-      <div class="sig-field"><label>GM acknowledgement & date</label><input class="sig-input" placeholder="Name / date"></div>
+      <div class="sig-field"><label>Saad — signature & date</label><input class="sig-input" placeholder="Name / date"></div>
+      <div class="sig-field"><label>Hafsa — acknowledgement & date</label><input class="sig-input" placeholder="Name / date"></div>
     </div>
   </div>
 </div>
@@ -690,46 +847,39 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 <!-- ── Q3 PAGE ── -->
 <div class="page" id="page-q3">
   <div class="page-header">
-    <h1>Q3 — Proving Ownership <span style="font-size:14px;font-weight:400;color:var(--gray)">Months 7–9</span></h1>
-    <p>The Coordinator handles complexity, guides newer team members, and leads community moments.</p>
+    <h1>Q3 — Proving Ownership <span style="font-size:14px;font-weight:400;color:var(--gray)">Dec 2026–Mar 2027</span></h1>
+    <p>Beesan handles complexity, guides newer team members, and leads community moments.</p>
   </div>
-  <div class="manager-card mc-agm">
-    <div class="mc-header">
-      <div class="mc-icon">🏢</div>
-      <div class="mc-title">
-        <div class="mct-label">AGM — your actions this quarter</div>
-        <div class="mct-name">Q3: assign real challenges — not safe ones</div>
-      </div>
-    </div>
-    <div class="mc-body">
-      <p class="mc-intro">Q3 is where you find out if they are truly ready. Give them situations that are at the edge of their current capability — and observe honestly.</p>
-      <div class="action-list">
-        <div class="action-item"><div class="ai-num" style="background:var(--amber)">1</div><div><strong>Month 7:</strong> Assign the Coordinator to own a zone or floor independently for a full shift. Debrief in detail.</div></div>
-        <div class="action-item"><div class="ai-num" style="background:var(--amber)">2</div><div><strong>Month 8:</strong> Let them guide a newer team member on at least one task — observe how they explain and support.</div></div>
-        <div class="action-item"><div class="ai-num" style="background:var(--amber)">3</div><div><strong>Month 8–9:</strong> Plan and debrief one community activation they lead end-to-end.</div></div>
-        <div class="action-item"><div class="ai-num" style="background:var(--amber)">4</div><div><strong>Month 9:</strong> Cover a full Associate shift independently — you are not available. Debrief the next day.</div></div>
-        <div class="action-item"><div class="ai-num" style="background:var(--amber)">5</div><div><strong>End of Q3:</strong> Honest mid-point review. If they are not at ≥ 3 on most competencies — do not let this reach Q4 unprepared.</div></div>
-      </div>
-    </div>
+  <div style="background:var(--gray-light);border:0.5px solid var(--border);border-radius:10px;padding:20px;text-align:center;color:var(--gray);font-size:13px;">
+    Q3 opens after Saad completes the Q2 decision in December 2026.
   </div>
-  <div class="manager-card mc-gm">
-    <div class="mc-header">
-      <div class="mc-icon">⭐</div>
-      <div class="mc-title">
-        <div class="mct-label">GM — your role in Q3</div>
-        <div class="mct-name">Is this person truly performing at Associate level?</div>
+
+  <!-- Beesan Q3 Focus -->
+  <div style="background:var(--white);border:0.5px solid var(--border);border-radius:12px;padding:18px 20px;margin:20px 0">
+    <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--orange);margin-bottom:12px">What Beesan is developing this quarter</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px">
+      <div style="background:var(--green-light);border:0.5px solid var(--green);border-radius:9px;padding:12px">
+        <div style="font-size:11px;font-weight:600;color:var(--green-dark);margin-bottom:5px">Handling complexity</div>
+        <div style="font-size:11px;color:var(--black);line-height:1.6">Difficult Neighbours, layered issues, situations with no clear answer. Handle them calmly and completely — without escalating what she can own.</div>
+      </div>
+      <div style="background:var(--purple-light);border:0.5px solid var(--purple);border-radius:9px;padding:12px">
+        <div style="font-size:11px;font-weight:600;color:var(--purple-dark);margin-bottom:5px">Guiding others</div>
+        <div style="font-size:11px;color:var(--black);line-height:1.6">Start helping newer team members — not by being asked, but by noticing what they need and stepping in naturally.</div>
+      </div>
+      <div style="background:var(--orange-light);border:0.5px solid var(--orange);border-radius:9px;padding:12px">
+        <div style="font-size:11px;font-weight:600;color:var(--amber-dark);margin-bottom:5px">Community leadership</div>
+        <div style="font-size:11px;color:var(--black);line-height:1.6">Lead one community activation end-to-end. Plan it, run it, follow up after it. Not just participate — own it.</div>
       </div>
     </div>
-    <div class="mc-body">
-      <div class="action-list">
-        <div class="action-item"><div class="ai-num" style="background:var(--purple)">1</div><div><strong>Month 8:</strong> Ask the AGM directly: "Is this person ready for promotion in one more quarter?" If the answer is uncertain — discuss now.</div></div>
-        <div class="action-item"><div class="ai-num" style="background:var(--purple)">2</div><div><strong>End of Q3:</strong> Review evidence log — are entries specific and substantive? If they are vague, the AGM is not observing properly.</div></div>
-        <div class="action-item"><div class="ai-num" style="background:var(--purple)">3</div><div><strong>End of Q3:</strong> If ratings are below 3 on more than 2 competencies — an extension or path review is needed before Q4.</div></div>
+    <div style="background:var(--cream);border-radius:8px;padding:10px 14px;display:flex;align-items:flex-start;gap:10px">
+      <div style="font-size:18px;flex-shrink:0">💡</div>
+      <div style="font-size:11px;color:var(--black);line-height:1.65">
+        <strong>The shift happening in Q3:</strong> By now you can handle your job. Q3 is about proving you are ready for the next one. An Associate doesn't just serve the Neighbours in front of them — they make the building better for everyone. That starts here.
       </div>
     </div>
   </div>
 
-  <div class="section-title">Q3 checklist — team member</div>
+  <div class="section-title">Q3 checklist — Beesan</div>
   <div class="checklist">
     <label class="cl-item"><input type="checkbox" onchange="updateItem(this)"><span>Owned a zone or floor independently for a full shift — consistent</span></label>
     <label class="cl-item"><input type="checkbox" onchange="updateItem(this)"><span>Handled 3+ difficult Neighbour situations without escalation</span></label>
@@ -737,34 +887,56 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
     <label class="cl-item"><input type="checkbox" onchange="updateItem(this)"><span>Guided a newer team member on at least one task</span></label>
     <label class="cl-item"><input type="checkbox" onchange="updateItem(this)"><span>Covered a full Associate shift independently</span></label>
     <label class="cl-item"><input type="checkbox" onchange="updateItem(this)"><span>Senior RX Associate rating ≥ 4.0 / 4.0</span></label>
+    <label class="cl-item"><input type="checkbox" onchange="updateItem(this)"><span>Majority of shift naturally spent on-floor — building and community coverage is instinctive, not prompted (Associate split: 69% on-floor)</span></label>
   </div>
-
-  <div class="section-title">Competency ratings — AGM completes at end of Q3</div>
+  <div class="section-title">Competency ratings — Saad completes at end of Q3</div>
   <div class="scale-legend"><span class="sl-label">Scale:</span><span class="sl-chip sl1">1</span><span class="sl-chip sl2">2</span><span class="sl-chip sl3">3</span><span class="sl-chip sl4">4</span></div>
   <div class="comp-section">
-    <div class="comp-section-title">Full competency update — all 5</div>
-    <div class="comp-row"><div class="comp-row-top"><div><div class="comp-name">End-to-end issue resolution</div></div><div class="rating-group"><div class="rg-label">AGM rating</div><div class="rating-btns" id="r-q3-1"><button class="r-btn" onclick="rate('q3-1',1,this)">1</button><button class="r-btn" onclick="rate('q3-1',2,this)">2</button><button class="r-btn" onclick="rate('q3-1',3,this)">3</button><button class="r-btn" onclick="rate('q3-1',4,this)">4</button></div></div></div><textarea class="agm-note" placeholder="Specific observations Q3..."></textarea></div>
-    <div class="comp-row"><div class="comp-row-top"><div><div class="comp-name">Service recovery</div></div><div class="rating-group"><div class="rg-label">AGM rating</div><div class="rating-btns" id="r-q3-2"><button class="r-btn" onclick="rate('q3-2',1,this)">1</button><button class="r-btn" onclick="rate('q3-2',2,this)">2</button><button class="r-btn" onclick="rate('q3-2',3,this)">3</button><button class="r-btn" onclick="rate('q3-2',4,this)">4</button></div></div></div><textarea class="agm-note" placeholder="Specific observations Q3..."></textarea></div>
-    <div class="comp-row"><div class="comp-row-top"><div><div class="comp-name">Operational readiness ownership</div></div><div class="rating-group"><div class="rg-label">AGM rating</div><div class="rating-btns" id="r-q3-3"><button class="r-btn" onclick="rate('q3-3',1,this)">1</button><button class="r-btn" onclick="rate('q3-3',2,this)">2</button><button class="r-btn" onclick="rate('q3-3',3,this)">3</button><button class="r-btn" onclick="rate('q3-3',4,this)">4</button></div></div></div><textarea class="agm-note" placeholder="Specific observations Q3..."></textarea></div>
-    <div class="comp-row"><div class="comp-row-top"><div><div class="comp-name">Field judgement</div></div><div class="rating-group"><div class="rg-label">AGM rating</div><div class="rating-btns" id="r-q3-4"><button class="r-btn" onclick="rate('q3-4',1,this)">1</button><button class="r-btn" onclick="rate('q3-4',2,this)">2</button><button class="r-btn" onclick="rate('q3-4',3,this)">3</button><button class="r-btn" onclick="rate('q3-4',4,this)">4</button></div></div></div><textarea class="agm-note" placeholder="Specific observations Q3..."></textarea></div>
-    <div class="comp-row"><div class="comp-row-top"><div><div class="comp-name">Community activation</div><div class="comp-desc">Leads community moments independently — brings energy and engagement</div></div><div class="rating-group"><div class="rg-label">AGM rating</div><div class="rating-btns" id="r-q3-5"><button class="r-btn" onclick="rate('q3-5',1,this)">1</button><button class="r-btn" onclick="rate('q3-5',2,this)">2</button><button class="r-btn" onclick="rate('q3-5',3,this)">3</button><button class="r-btn" onclick="rate('q3-5',4,this)">4</button></div></div></div><textarea class="agm-note" placeholder="Specific observations Q3..."></textarea></div>
+    <div class="comp-row"><div class="comp-row-top"><div><div class="comp-name">End-to-end issue resolution</div></div><div class="rating-group"><div class="rg-label">Saad's rating</div><div class="rating-btns" id="r-q3-1"><button class="r-btn" onclick="rate('q3-1',1,this)">1</button><button class="r-btn" onclick="rate('q3-1',2,this)">2</button><button class="r-btn" onclick="rate('q3-1',3,this)">3</button><button class="r-btn" onclick="rate('q3-1',4,this)">4</button></div></div></div><textarea class="agm-note" placeholder="Saad's observations Q3..."></textarea></div>
+    <div class="comp-row"><div class="comp-row-top"><div><div class="comp-name">Service recovery</div></div><div class="rating-group"><div class="rg-label">Saad's rating</div><div class="rating-btns" id="r-q3-2"><button class="r-btn" onclick="rate('q3-2',1,this)">1</button><button class="r-btn" onclick="rate('q3-2',2,this)">2</button><button class="r-btn" onclick="rate('q3-2',3,this)">3</button><button class="r-btn" onclick="rate('q3-2',4,this)">4</button></div></div></div><textarea class="agm-note" placeholder="Saad's observations Q3..."></textarea></div>
+    <div class="comp-row"><div class="comp-row-top"><div><div class="comp-name">Operational readiness ownership</div></div><div class="rating-group"><div class="rg-label">Saad's rating</div><div class="rating-btns" id="r-q3-3"><button class="r-btn" onclick="rate('q3-3',1,this)">1</button><button class="r-btn" onclick="rate('q3-3',2,this)">2</button><button class="r-btn" onclick="rate('q3-3',3,this)">3</button><button class="r-btn" onclick="rate('q3-3',4,this)">4</button></div></div></div><textarea class="agm-note" placeholder="Saad's observations Q3..."></textarea></div>
+    <div class="comp-row"><div class="comp-row-top"><div><div class="comp-name">Field judgement</div></div><div class="rating-group"><div class="rg-label">Saad's rating</div><div class="rating-btns" id="r-q3-4"><button class="r-btn" onclick="rate('q3-4',1,this)">1</button><button class="r-btn" onclick="rate('q3-4',2,this)">2</button><button class="r-btn" onclick="rate('q3-4',3,this)">3</button><button class="r-btn" onclick="rate('q3-4',4,this)">4</button></div></div></div><textarea class="agm-note" placeholder="Saad's observations Q3..."></textarea></div>
+    <div class="comp-row"><div class="comp-row-top"><div><div class="comp-name">Community activation</div><div class="comp-desc">Leads community moments independently — brings energy and engagement</div></div><div class="rating-group"><div class="rg-label">Saad's rating</div><div class="rating-btns" id="r-q3-5"><button class="r-btn" onclick="rate('q3-5',1,this)">1</button><button class="r-btn" onclick="rate('q3-5',2,this)">2</button><button class="r-btn" onclick="rate('q3-5',3,this)">3</button><button class="r-btn" onclick="rate('q3-5',4,this)">4</button></div></div></div><textarea class="agm-note" placeholder="Saad's observations Q3..."></textarea></div>
+    <div class="comp-row"><div class="comp-row-top"><div><div class="comp-name">Logging & documentation</div><div class="comp-desc">Administration and record-keeping fully independent — accurate, timely, zero follow-ups needed from Saad</div></div><div class="rating-group"><div class="rg-label">Saad's rating</div><div class="rating-btns" id="r-q3-6"><button class="r-btn" onclick="rate('q3-6',1,this)">1</button><button class="r-btn" onclick="rate('q3-6',2,this)">2</button><button class="r-btn" onclick="rate('q3-6',3,this)">3</button><button class="r-btn" onclick="rate('q3-6',4,this)">4</button></div></div></div><textarea class="agm-note" placeholder="Saad's observations Q3..."></textarea></div>
   </div>
-
   <div class="section-title">Evidence log — Q3</div>
   <div id="ev-q3"></div>
   <button class="ev-add-btn" onclick="addEvidence('q3')">+ Add evidence entry</button>
+  <div class="manager-card mc-agm">
+    <div class="mc-header"><div class="mc-icon">🏢</div><div class="mc-title"><div class="mct-label">Saad (AGM) — your actions this quarter</div><div class="mct-name">Q3: observe consistently — is she ready for the gate?</div></div></div>
+    <div class="mc-body">
+      <p class="mc-intro">Q3 is where you form your honest preliminary view on promotion. Don't save that assessment for Q4 — if she's not on track, act now.</p>
+      <div class="action-list">
+        <div class="action-item"><div class="ai-num" style="background:var(--amber)">1</div><div><strong>Month 7:</strong> Assign one complex situation deliberately — a difficult Neighbour or a multi-issue shift. Observe without stepping in.</div></div>
+        <div class="action-item"><div class="ai-num" style="background:var(--amber)">2</div><div><strong>Month 8:</strong> Observe Beesan guiding a newer team member. Did she do it voluntarily or only when asked?</div></div>
+        <div class="action-item"><div class="ai-num" style="background:var(--amber)">3</div><div><strong>Month 9:</strong> Confirm her community activation was genuinely end-to-end — planning, execution, and follow-up all owned by her.</div></div>
+        <div class="action-item"><div class="ai-num" style="background:var(--amber)">4</div><div><strong>End of Q3:</strong> Rate all competencies. Write your preliminary promotion recommendation in the notes — even if it's uncertain.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="manager-card mc-gm">
+    <div class="mc-header"><div class="mc-icon">⭐</div><div class="mc-title"><div class="mct-label">Hafsa (GM) — quarterly check-in · Q3</div><div class="mct-name">Month 8 meeting — form your own view before Q4</div></div></div>
+    <div class="mc-body">
+      <p class="mc-intro">Don't wait for Q4 to meet Beesan directly. Your view at the promotion gate should be built on three quarters of contact, not one Coffee Chat.</p>
+      <div class="action-list">
+        <div class="action-item"><div class="ai-num" style="background:var(--purple)">1</div><div><strong>Month 8:</strong> 15-minute direct conversation with Beesan. Ask: "What's the hardest thing you've handled this quarter?" A specific answer is a good sign.</div></div>
+        <div class="action-item"><div class="ai-num" style="background:var(--purple)">2</div><div><strong>End of Q3:</strong> Ask Saad directly: "Is Beesan ready for the gate?" If he hesitates — Q4 should include a written improvement plan before the final review.</div></div>
+      </div>
+    </div>
+  </div>
 
   <div class="section-title">Q3 decision</div>
   <div class="quarter-decision">
-    <div class="qd-title">AGM decision — end of Q3</div>
+    <div class="qd-title">Saad's decision — end of Q3</div>
     <div class="qd-options">
-      <div class="qd-opt d-advance" onclick="selectDecision('q3','advance',this)"><div class="qdo-title">Advancing to Q4 gate</div><div class="qdo-desc">All checklist items complete. Majority of ratings at 3+. On track for promotion.</div></div>
-      <div class="qd-opt d-extend" onclick="selectDecision('q3','extend',this)"><div class="qdo-title">Extended review</div><div class="qdo-desc">Gaps remain. Extension with written plan. Q4 gate delayed.</div></div>
-      <div class="qd-opt d-review" onclick="selectDecision('q3','review',this)"><div class="qdo-title">Fundamental review</div><div class="qdo-desc">Significant gaps. Path review with AGM + GM needed.</div></div>
+      <div class="qd-opt d-advance" onclick="selectDecision('q3','advance',this)"><div class="qdo-title">Advancing to Q4 gate</div><div class="qdo-desc">Majority of ratings at 3+. On track for promotion.</div></div>
+      <div class="qd-opt d-extend" onclick="selectDecision('q3','extend',this)"><div class="qdo-title">Extended review</div><div class="qdo-desc">Gaps remain. Q4 gate delayed.</div></div>
+      <div class="qd-opt d-review" onclick="selectDecision('q3','review',this)"><div class="qdo-title">Fundamental review</div><div class="qdo-desc">Significant gaps. Saad + Hafsa meeting needed.</div></div>
     </div>
     <div class="sig-row">
-      <div class="sig-field"><label>AGM signature & date</label><input class="sig-input" placeholder="Name / date"></div>
-      <div class="sig-field"><label>GM acknowledgement & date</label><input class="sig-input" placeholder="Name / date"></div>
+      <div class="sig-field"><label>Saad — signature & date</label><input class="sig-input" placeholder="Name / date"></div>
+      <div class="sig-field"><label>Hafsa — acknowledgement & date</label><input class="sig-input" placeholder="Name / date"></div>
     </div>
   </div>
 </div>
@@ -772,43 +944,34 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 <!-- ── Q4 PROMOTION GATE ── -->
 <div class="page" id="page-q4">
   <div class="page-header">
-    <h1>Q4 — Promotion Gate <span style="font-size:14px;font-weight:400;color:var(--gray)">Months 10–12</span></h1>
-    <p>Final assessment. All criteria must be met and documented before the promotion is approved.</p>
+    <h1>Q4 — Promotion Gate <span style="font-size:14px;font-weight:400;color:var(--gray)">Mar–Jun 2027</span></h1>
+    <p>Final assessment. All criteria must be met before Hafsa approves promotion to RX Associate.</p>
+  </div>
+  <div style="background:var(--gray-light);border:0.5px solid var(--border);border-radius:10px;padding:20px;text-align:center;color:var(--gray);font-size:13px;margin-bottom:20px;">
+    Q4 opens after Saad completes the Q3 decision in March 2027.
   </div>
 
-  <div class="manager-card mc-agm">
-    <div class="mc-header">
-      <div class="mc-icon">🏢</div>
-      <div class="mc-title">
-        <div class="mct-label">AGM — your actions in Q4</div>
-        <div class="mct-name">Build the evidence file and make the case</div>
+  <!-- Beesan Q4 Focus -->
+  <div style="background:var(--white);border:0.5px solid var(--border);border-radius:12px;padding:18px 20px;margin:20px 0">
+    <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--green);margin-bottom:12px">What Beesan is proving this quarter</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px">
+      <div style="background:var(--green-light);border:0.5px solid var(--green);border-radius:9px;padding:12px">
+        <div style="font-size:11px;font-weight:600;color:var(--green-dark);margin-bottom:5px">Consistent performance</div>
+        <div style="font-size:11px;color:var(--black);line-height:1.6">Not just on good days. Every shift. Saad is watching for the same standard on a difficult Monday as on a calm Thursday.</div>
+      </div>
+      <div style="background:var(--purple-light);border:0.5px solid var(--purple);border-radius:9px;padding:12px">
+        <div style="font-size:11px;font-weight:600;color:var(--purple-dark);margin-bottom:5px">Time naturally at Associate split</div>
+        <div style="font-size:11px;color:var(--black);line-height:1.6">Community Experience leading (54%), on-floor majority (69%) — without being told. The split should feel like her default, not something she remembers to do.</div>
+      </div>
+      <div style="background:var(--orange-light);border:0.5px solid var(--orange);border-radius:9px;padding:12px">
+        <div style="font-size:11px;font-weight:600;color:var(--amber-dark);margin-bottom:5px">Evidence file ready</div>
+        <div style="font-size:11px;color:var(--black);line-height:1.6">12+ entries across all 4 quarters. Specific, dated, written in her voice. The file is the argument — not her memory of what happened.</div>
       </div>
     </div>
-    <div class="mc-body">
-      <p class="mc-intro">If you have done Q1–Q3 well, Q4 should be confirmation — not discovery. The promotion file is built from everything you've documented, not from what you remember.</p>
-      <div class="action-list">
-        <div class="action-item"><div class="ai-num" style="background:var(--amber)">1</div><div><strong>Month 10–11:</strong> Observe consistently performing at Associate level — not just occasionally. Document every instance.</div></div>
-        <div class="action-item"><div class="ai-num" style="background:var(--amber)">2</div><div><strong>Month 11:</strong> Request the Buddy's final written rating and observation.</div></div>
-        <div class="action-item"><div class="ai-num" style="background:var(--amber)">3</div><div><strong>Month 12:</strong> Complete all final competency ratings. Calculate the readiness score. Prepare the written promotion recommendation.</div></div>
-        <div class="action-item"><div class="ai-num" style="background:var(--amber)">4</div><div><strong>Month 12:</strong> Submit the full evidence file to the GM — not a summary, the full file with all quarterly ratings and evidence entries.</div></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="manager-card mc-gm">
-    <div class="mc-header">
-      <div class="mc-icon">⭐</div>
-      <div class="mc-title">
-        <div class="mct-label">GM — promotion approval</div>
-        <div class="mct-name">Review the evidence — then decide</div>
-      </div>
-    </div>
-    <div class="mc-body">
-      <div class="action-list">
-        <div class="action-item"><div class="ai-num" style="background:var(--purple)">1</div><div><strong>Month 11:</strong> Conduct a Coffee Chat with the Coordinator — 15 minutes. You are assessing leadership maturity, not testing knowledge.</div></div>
-        <div class="action-item"><div class="ai-num" style="background:var(--purple)">2</div><div><strong>Month 12:</strong> Review the full evidence file — not just the final ratings. Are there enough evidence entries? Are they substantive?</div></div>
-        <div class="action-item"><div class="ai-num" style="background:var(--purple)">3</div><div><strong>Month 12:</strong> If the score is ≥ 3.5 and the evidence file is complete — approve promotion and notify HR formally.</div></div>
-        <div class="action-item"><div class="ai-num" style="background:var(--purple)">4</div><div>If you are not satisfied with the evidence — do not approve. Ask the AGM to extend and add more documented evidence before resubmitting.</div></div>
+    <div style="background:var(--cream);border-radius:8px;padding:10px 14px;display:flex;align-items:flex-start;gap:10px">
+      <div style="font-size:18px;flex-shrink:0">💡</div>
+      <div style="font-size:11px;color:var(--black);line-height:1.65">
+        <strong>The shift in Q4:</strong> you stop developing and start demonstrating. Saad and Hafsa are not looking for potential anymore — they are looking for proof.
       </div>
     </div>
   </div>
@@ -819,43 +982,35 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
     <label class="cl-item"><input type="checkbox" onchange="updateItem(this)"><span>Zero unnecessary escalations — all within-scope situations resolved independently</span></label>
     <label class="cl-item"><input type="checkbox" onchange="updateItem(this)"><span>Building maintained at standard throughout Q4</span></label>
     <label class="cl-item"><input type="checkbox" onchange="updateItem(this)"><span>Buddy final rating ≥ 4.0 / 4.0</span></label>
-    <label class="cl-item"><input type="checkbox" onchange="updateItem(this)"><span>AGM final rating ≥ 4.0 / 4.0</span></label>
+    <label class="cl-item"><input type="checkbox" onchange="updateItem(this)"><span>Saad final rating ≥ 4.0 / 4.0</span></label>
     <label class="cl-item"><input type="checkbox" onchange="updateItem(this)"><span>Evidence file complete — minimum 12 entries across all 4 quarters</span></label>
-    <label class="cl-item"><input type="checkbox" onchange="updateItem(this)"><span>AGM written promotion recommendation submitted to GM</span></label>
-    <label class="cl-item"><input type="checkbox" onchange="updateItem(this)"><span>GM Coffee Chat completed — GM satisfied with readiness</span></label>
+    <label class="cl-item"><input type="checkbox" onchange="updateItem(this)"><span>Saad written promotion recommendation submitted to Hafsa</span></label>
+    <label class="cl-item"><input type="checkbox" onchange="updateItem(this)"><span>Hafsa Coffee Chat completed — Hafsa satisfied with readiness</span></label>
+    <label class="cl-item"><input type="checkbox" onchange="updateItem(this)"><span>Time allocation naturally at Associate level — Community Experience leading over Building Operations (54% vs 46%), on-floor majority of every shift</span></label>
   </div>
 
   <div class="section-title">Final competency ratings — Q4</div>
   <div class="scale-legend"><span class="sl-label">Scale:</span><span class="sl-chip sl1">1</span><span class="sl-chip sl2">2</span><span class="sl-chip sl3">3</span><span class="sl-chip sl4">4</span><span style="font-size:11px;color:var(--gray);margin-left:6px">Minimum for promotion: all ≥ 3.0</span></div>
   <div class="comp-section">
-    <div class="comp-row"><div class="comp-row-top"><div><div class="comp-name">End-to-end issue resolution</div></div><div class="rating-group"><div class="rg-label">Final AGM rating</div><div class="rating-btns" id="r-q4-1"><button class="r-btn" onclick="rate('q4-1',1,this);calcScore()">1</button><button class="r-btn" onclick="rate('q4-1',2,this);calcScore()">2</button><button class="r-btn" onclick="rate('q4-1',3,this);calcScore()">3</button><button class="r-btn" onclick="rate('q4-1',4,this);calcScore()">4</button></div></div></div><textarea class="agm-note" placeholder="Final assessment..."></textarea></div>
-    <div class="comp-row"><div class="comp-row-top"><div><div class="comp-name">Service recovery</div></div><div class="rating-group"><div class="rg-label">Final AGM rating</div><div class="rating-btns" id="r-q4-2"><button class="r-btn" onclick="rate('q4-2',1,this);calcScore()">1</button><button class="r-btn" onclick="rate('q4-2',2,this);calcScore()">2</button><button class="r-btn" onclick="rate('q4-2',3,this);calcScore()">3</button><button class="r-btn" onclick="rate('q4-2',4,this);calcScore()">4</button></div></div></div><textarea class="agm-note" placeholder="Final assessment..."></textarea></div>
-    <div class="comp-row"><div class="comp-row-top"><div><div class="comp-name">Operational readiness ownership</div></div><div class="rating-group"><div class="rg-label">Final AGM rating</div><div class="rating-btns" id="r-q4-3"><button class="r-btn" onclick="rate('q4-3',1,this);calcScore()">1</button><button class="r-btn" onclick="rate('q4-3',2,this);calcScore()">2</button><button class="r-btn" onclick="rate('q4-3',3,this);calcScore()">3</button><button class="r-btn" onclick="rate('q4-3',4,this);calcScore()">4</button></div></div></div><textarea class="agm-note" placeholder="Final assessment..."></textarea></div>
-    <div class="comp-row"><div class="comp-row-top"><div><div class="comp-name">Field judgement</div></div><div class="rating-group"><div class="rg-label">Final AGM rating</div><div class="rating-btns" id="r-q4-4"><button class="r-btn" onclick="rate('q4-4',1,this);calcScore()">1</button><button class="r-btn" onclick="rate('q4-4',2,this);calcScore()">2</button><button class="r-btn" onclick="rate('q4-4',3,this);calcScore()">3</button><button class="r-btn" onclick="rate('q4-4',4,this);calcScore()">4</button></div></div></div><textarea class="agm-note" placeholder="Final assessment..."></textarea></div>
-    <div class="comp-row"><div class="comp-row-top"><div><div class="comp-name">Community activation</div></div><div class="rating-group"><div class="rg-label">Final AGM rating</div><div class="rating-btns" id="r-q4-5"><button class="r-btn" onclick="rate('q4-5',1,this);calcScore()">1</button><button class="r-btn" onclick="rate('q4-5',2,this);calcScore()">2</button><button class="r-btn" onclick="rate('q4-5',3,this);calcScore()">3</button><button class="r-btn" onclick="rate('q4-5',4,this);calcScore()">4</button></div></div></div><textarea class="agm-note" placeholder="Final assessment..."></textarea></div>
-    <div class="comp-row"><div class="comp-row-top"><div><div class="comp-name">Brand Voice — natural</div></div><div class="rating-group"><div class="rg-label">Final AGM rating</div><div class="rating-btns" id="r-q4-6"><button class="r-btn" onclick="rate('q4-6',1,this);calcScore()">1</button><button class="r-btn" onclick="rate('q4-6',2,this);calcScore()">2</button><button class="r-btn" onclick="rate('q4-6',3,this);calcScore()">3</button><button class="r-btn" onclick="rate('q4-6',4,this);calcScore()">4</button></div></div></div><textarea class="agm-note" placeholder="Final assessment..."></textarea></div>
+    <div class="comp-row"><div class="comp-row-top"><div><div class="comp-name">End-to-end issue resolution</div></div><div class="rating-group"><div class="rg-label">Saad's final rating</div><div class="rating-btns" id="r-q4-1"><button class="r-btn" onclick="rate('q4-1',1,this);calcScore()">1</button><button class="r-btn" onclick="rate('q4-1',2,this);calcScore()">2</button><button class="r-btn" onclick="rate('q4-1',3,this);calcScore()">3</button><button class="r-btn" onclick="rate('q4-1',4,this);calcScore()">4</button></div></div></div><textarea class="agm-note" placeholder="Final assessment..."></textarea></div>
+    <div class="comp-row"><div class="comp-row-top"><div><div class="comp-name">Service recovery</div></div><div class="rating-group"><div class="rg-label">Saad's final rating</div><div class="rating-btns" id="r-q4-2"><button class="r-btn" onclick="rate('q4-2',1,this);calcScore()">1</button><button class="r-btn" onclick="rate('q4-2',2,this);calcScore()">2</button><button class="r-btn" onclick="rate('q4-2',3,this);calcScore()">3</button><button class="r-btn" onclick="rate('q4-2',4,this);calcScore()">4</button></div></div></div><textarea class="agm-note" placeholder="Final assessment..."></textarea></div>
+    <div class="comp-row"><div class="comp-row-top"><div><div class="comp-name">Operational readiness ownership</div></div><div class="rating-group"><div class="rg-label">Saad's final rating</div><div class="rating-btns" id="r-q4-3"><button class="r-btn" onclick="rate('q4-3',1,this);calcScore()">1</button><button class="r-btn" onclick="rate('q4-3',2,this);calcScore()">2</button><button class="r-btn" onclick="rate('q4-3',3,this);calcScore()">3</button><button class="r-btn" onclick="rate('q4-3',4,this);calcScore()">4</button></div></div></div><textarea class="agm-note" placeholder="Final assessment..."></textarea></div>
+    <div class="comp-row"><div class="comp-row-top"><div><div class="comp-name">Field judgement</div></div><div class="rating-group"><div class="rg-label">Saad's final rating</div><div class="rating-btns" id="r-q4-4"><button class="r-btn" onclick="rate('q4-4',1,this);calcScore()">1</button><button class="r-btn" onclick="rate('q4-4',2,this);calcScore()">2</button><button class="r-btn" onclick="rate('q4-4',3,this);calcScore()">3</button><button class="r-btn" onclick="rate('q4-4',4,this);calcScore()">4</button></div></div></div><textarea class="agm-note" placeholder="Final assessment..."></textarea></div>
+    <div class="comp-row"><div class="comp-row-top"><div><div class="comp-name">Community activation</div></div><div class="rating-group"><div class="rg-label">Saad's final rating</div><div class="rating-btns" id="r-q4-5"><button class="r-btn" onclick="rate('q4-5',1,this);calcScore()">1</button><button class="r-btn" onclick="rate('q4-5',2,this);calcScore()">2</button><button class="r-btn" onclick="rate('q4-5',3,this);calcScore()">3</button><button class="r-btn" onclick="rate('q4-5',4,this);calcScore()">4</button></div></div></div><textarea class="agm-note" placeholder="Final assessment..."></textarea></div>
+    <div class="comp-row"><div class="comp-row-top"><div><div class="comp-name">Brand Voice — natural</div></div><div class="rating-group"><div class="rg-label">Saad's final rating</div><div class="rating-btns" id="r-q4-6"><button class="r-btn" onclick="rate('q4-6',1,this);calcScore()">1</button><button class="r-btn" onclick="rate('q4-6',2,this);calcScore()">2</button><button class="r-btn" onclick="rate('q4-6',3,this);calcScore()">3</button><button class="r-btn" onclick="rate('q4-6',4,this);calcScore()">4</button></div></div></div><textarea class="agm-note" placeholder="Final assessment..."></textarea></div>
+    <div class="comp-row"><div class="comp-row-top"><div><div class="comp-name">Administration & record-keeping</div><div class="comp-desc">All logging, documentation, and admin tasks at Associate standard — accurate, independent, zero gaps</div></div><div class="rating-group"><div class="rg-label">Saad's final rating</div><div class="rating-btns" id="r-q4-7"><button class="r-btn" onclick="rate('q4-7',1,this);calcScore()">1</button><button class="r-btn" onclick="rate('q4-7',2,this);calcScore()">2</button><button class="r-btn" onclick="rate('q4-7',3,this);calcScore()">3</button><button class="r-btn" onclick="rate('q4-7',4,this);calcScore()">4</button></div></div></div><textarea class="agm-note" placeholder="Final assessment..."></textarea></div>
   </div>
 
   <div class="section-title">External ratings</div>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px">
     <div style="background:var(--white);border:0.5px solid var(--border);border-radius:10px;padding:14px 16px">
       <div style="font-size:11px;font-weight:500;margin-bottom:8px">Buddy final rating</div>
-      <div class="rating-btns" id="r-buddy" style="justify-content:flex-start">
-        <button class="r-btn" onclick="rate('buddy',1,this);calcScore()">1</button>
-        <button class="r-btn" onclick="rate('buddy',2,this);calcScore()">2</button>
-        <button class="r-btn" onclick="rate('buddy',3,this);calcScore()">3</button>
-        <button class="r-btn" onclick="rate('buddy',4,this);calcScore()">4</button>
-      </div>
+      <div class="rating-btns" id="r-buddy" style="justify-content:flex-start"><button class="r-btn" onclick="rate('buddy',1,this);calcScore()">1</button><button class="r-btn" onclick="rate('buddy',2,this);calcScore()">2</button><button class="r-btn" onclick="rate('buddy',3,this);calcScore()">3</button><button class="r-btn" onclick="rate('buddy',4,this);calcScore()">4</button></div>
       <div style="font-size:10px;color:var(--gray);margin-top:6px">Minimum: 4.0 for promotion</div>
     </div>
     <div style="background:var(--white);border:0.5px solid var(--border);border-radius:10px;padding:14px 16px">
-      <div style="font-size:11px;font-weight:500;margin-bottom:8px">GM final rating (after Coffee Chat)</div>
-      <div class="rating-btns" id="r-gm" style="justify-content:flex-start">
-        <button class="r-btn" onclick="rate('gm',1,this);calcScore()">1</button>
-        <button class="r-btn" onclick="rate('gm',2,this);calcScore()">2</button>
-        <button class="r-btn" onclick="rate('gm',3,this);calcScore()">3</button>
-        <button class="r-btn" onclick="rate('gm',4,this);calcScore()">4</button>
-      </div>
+      <div style="font-size:11px;font-weight:500;margin-bottom:8px">Hafsa final rating (after Coffee Chat)</div>
+      <div class="rating-btns" id="r-gm" style="justify-content:flex-start"><button class="r-btn" onclick="rate('gm',1,this);calcScore()">1</button><button class="r-btn" onclick="rate('gm',2,this);calcScore()">2</button><button class="r-btn" onclick="rate('gm',3,this);calcScore()">3</button><button class="r-btn" onclick="rate('gm',4,this);calcScore()">4</button></div>
       <div style="font-size:10px;color:var(--gray);margin-top:6px">Minimum: 4.0 for promotion</div>
     </div>
   </div>
@@ -863,39 +1018,64 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
   <div class="section-title">Promotion readiness score</div>
   <div class="promo-score">
     <div class="ps-head">
-      <h3>Overall Readiness Score</h3>
+      <h3>Beesan Harb — Overall Readiness Score</h3>
       <div class="ps-total" id="ps-total">—</div>
     </div>
     <div class="ps-body">
       <div class="ps-components">
         <div class="ps-comp"><div class="psc-label">Competency avg</div><div class="psc-val" id="ps-comp-avg">—</div><div class="psc-max">/ 4.0 · min: 3.0</div></div>
         <div class="ps-comp"><div class="psc-label">Buddy rating</div><div class="psc-val" id="ps-buddy">—</div><div class="psc-max">/ 4.0 · min: 4.0</div></div>
-        <div class="ps-comp"><div class="psc-label">GM rating</div><div class="psc-val" id="ps-gm">—</div><div class="psc-max">/ 4.0 · min: 4.0</div></div>
-        <div class="ps-comp"><div class="psc-label">Checklist</div><div class="psc-val" id="ps-checklist">—</div><div class="psc-max">/ 8 items</div></div>
+        <div class="ps-comp"><div class="psc-label">Hafsa rating</div><div class="psc-val" id="ps-gm">—</div><div class="psc-max">/ 4.0 · min: 4.0</div></div>
+        <div class="ps-comp"><div class="psc-label">Checklist</div><div class="psc-val" id="ps-checklist">—</div><div class="psc-max">/ 9 items</div></div>
       </div>
       <div class="ps-bar-wrap">
         <div class="ps-bar-track"><div class="ps-bar-fill" id="ps-bar" style="width:0%"></div></div>
         <div class="ps-bar-label" id="ps-bar-label">0 / 4.0</div>
       </div>
       <div class="ps-thresholds">
-        <div class="pst pst-p"><div class="plabel">Promote</div><div class="range">≥ 3.5</div><div class="pdesc">AGM submits to GM. GM approves and notifies HR.</div></div>
+        <div class="pst pst-p"><div class="plabel">Promote</div><div class="range">≥ 3.5</div><div class="pdesc">Saad submits to Hafsa. Hafsa approves and notifies HR.</div></div>
         <div class="pst pst-e"><div class="plabel">Extended review</div><div class="range">3.0 – 3.4</div><div class="pdesc">Written improvement plan. Reassess after agreed period.</div></div>
-        <div class="pst pst-r"><div class="plabel">Fundamental review</div><div class="range">Below 3.0</div><div class="pdesc">AGM + GM meeting. Career path conversation needed.</div></div>
+        <div class="pst pst-r"><div class="plabel">Fundamental review</div><div class="range">Below 3.0</div><div class="pdesc">Saad + Hafsa meeting. Career path conversation needed.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="manager-card mc-agm">
+    <div class="mc-header"><div class="mc-icon">🏢</div><div class="mc-title"><div class="mct-label">Saad (AGM) — Q4 actions</div><div class="mct-name">Build the evidence file and make the case to Hafsa</div></div></div>
+    <div class="mc-body">
+      <p class="mc-intro">If you have done Q1–Q3 well, Q4 should be confirmation — not discovery. The promotion file is built from everything you've documented, not from what you remember.</p>
+      <div class="action-list">
+        <div class="action-item"><div class="ai-num" style="background:var(--amber)">1</div><div><strong>Month 10–11:</strong> Observe Beesan consistently performing at Associate level — not just occasionally. Document every instance.</div></div>
+        <div class="action-item"><div class="ai-num" style="background:var(--amber)">2</div><div><strong>Month 11:</strong> Request the Buddy's final written rating and observation.</div></div>
+        <div class="action-item"><div class="ai-num" style="background:var(--amber)">3</div><div><strong>Month 12:</strong> Complete all final ratings. Calculate readiness score. Prepare written promotion recommendation for Hafsa.</div></div>
+        <div class="action-item"><div class="ai-num" style="background:var(--amber)">4</div><div><strong>Month 12:</strong> Submit full evidence file to Hafsa — not a summary. The full file with all quarterly ratings and entries.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="manager-card mc-gm">
+    <div class="mc-header"><div class="mc-icon">⭐</div><div class="mc-title"><div class="mct-label">Hafsa (GM) — promotion approval</div><div class="mct-name">Review the evidence — then decide</div></div></div>
+    <div class="mc-body">
+      <div class="action-list">
+        <div class="action-item"><div class="ai-num" style="background:var(--purple)">1</div><div><strong>Month 11:</strong> Conduct a Coffee Chat with Beesan — 15 minutes. Assessing leadership maturity, not testing knowledge.</div></div>
+        <div class="action-item"><div class="ai-num" style="background:var(--purple)">2</div><div><strong>Month 12:</strong> Review the full evidence file — are there enough entries? Are they substantive?</div></div>
+        <div class="action-item"><div class="ai-num" style="background:var(--purple)">3</div><div><strong>Month 12:</strong> If score ≥ 3.5 and evidence file is complete — approve promotion and notify HR formally.</div></div>
+        <div class="action-item"><div class="ai-num" style="background:var(--purple)">4</div><div>If not satisfied with the evidence — do not approve. Ask Saad to extend and add more documented evidence.</div></div>
       </div>
     </div>
   </div>
 
   <div class="section-title">Promotion decision</div>
   <div class="quarter-decision">
-    <div class="qd-title">GM promotion decision — final gate</div>
+    <div class="qd-title">Hafsa (GM) promotion decision — final gate</div>
     <div class="qd-options">
-      <div class="qd-opt d-advance" onclick="selectDecision('q4','promote',this)"><div class="qdo-title">✓ Promote to RX Associate</div><div class="qdo-desc">Evidence file complete. Score ≥ 3.5. All criteria met. AGM notifies HR formally.</div></div>
-      <div class="qd-opt d-extend" onclick="selectDecision('q4','extend',this)"><div class="qdo-title">Extended review period</div><div class="qdo-desc">Score between 3.0–3.4 or evidence insufficient. Written plan. Reassess in __ weeks.</div></div>
-      <div class="qd-opt d-review" onclick="selectDecision('q4','review',this)"><div class="qdo-title">Fundamental review</div><div class="qdo-desc">Score below 3.0 or core criteria unmet. AGM + GM meeting. Path decision required.</div></div>
+      <div class="qd-opt d-advance" onclick="selectDecision('q4','promote',this)"><div class="qdo-title">✓ Promote Beesan to RX Associate</div><div class="qdo-desc">Evidence file complete. Score ≥ 3.5. All criteria met. Saad notifies HR formally.</div></div>
+      <div class="qd-opt d-extend" onclick="selectDecision('q4','extend',this)"><div class="qdo-title">Extended review period</div><div class="qdo-desc">Score 3.0–3.4 or evidence insufficient. Written plan. Reassess.</div></div>
+      <div class="qd-opt d-review" onclick="selectDecision('q4','review',this)"><div class="qdo-title">Fundamental review</div><div class="qdo-desc">Score below 3.0. Saad + Hafsa meeting. Path decision required.</div></div>
     </div>
     <div class="sig-row">
-      <div class="sig-field"><label>AGM signature & date</label><input class="sig-input" placeholder="Name / date"></div>
-      <div class="sig-field"><label>GM formal approval & date</label><input class="sig-input" placeholder="Name / date"></div>
+      <div class="sig-field"><label>Saad — signature & date</label><input class="sig-input" placeholder="Name / date"></div>
+      <div class="sig-field"><label>Hafsa — formal approval & date</label><input class="sig-input" placeholder="Name / date"></div>
     </div>
   </div>
 </div>
@@ -904,7 +1084,9 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 </div>
 
 <script>
-const ratings = {};
+const ratings = {
+  'q1-1': 2, 'q1-2': 2, 'q1-3': 2, 'q1-4': 3
+};
 
 function showPage(id, el) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -913,17 +1095,10 @@ function showPage(id, el) {
   if (el) el.classList.add('active');
 }
 
-function syncName(val) {
-  document.getElementById('emp-name-sb') && (document.getElementById('emp-name-sb').value = val);
-  document.getElementById('emp-name') && (document.getElementById('emp-name').value = val);
-}
-
 function rate(key, val, btn) {
   ratings[key] = val;
   const group = btn.parentElement;
-  group.querySelectorAll('.r-btn').forEach(b => {
-    b.className = 'r-btn';
-  });
+  group.querySelectorAll('.r-btn').forEach(b => { b.className = 'r-btn'; });
   btn.classList.add('sel-' + val);
 }
 
@@ -944,7 +1119,7 @@ function addEvidence(quarter) {
       <div class="ev-field"><label>Situation</label><input class="ev-input" placeholder="Brief description of what happened"></div>
       <div class="ev-field" style="max-width:140px"><label>Competency area</label><input class="ev-input" placeholder="e.g. Service recovery"></div>
     </div>
-    <div class="ev-field"><label>What the Coordinator did — specifically</label><textarea class="ev-textarea" placeholder="Describe exactly what they did and how — not general impressions"></textarea></div>
+    <div class="ev-field"><label>What Beesan did — specifically</label><textarea class="ev-textarea" placeholder="Describe exactly what she did and how — not general impressions"></textarea></div>
     <div class="ev-outcome">
       <span style="font-size:11px;color:var(--gray);margin-right:4px;line-height:28px">Outcome:</span>
       <button class="out-btn" onclick="setOutcome(this,'strong')">Strong</button>
@@ -964,7 +1139,6 @@ function selectDecision(quarter, decision, el) {
   const opts = el.closest('.qd-options').querySelectorAll('.qd-opt');
   opts.forEach(o => o.classList.remove('selected'));
   el.classList.add('selected');
-
   const statusMap = {
     advance: { text: '✓', bg: '#E1F5EE', color: '#085041' },
     promote: { text: '✓', bg: '#E1F5EE', color: '#085041' },
@@ -973,15 +1147,11 @@ function selectDecision(quarter, decision, el) {
   };
   const s = statusMap[decision];
   const nav = document.getElementById('nav-' + quarter + '-status');
-  if (nav && s) {
-    nav.textContent = s.text;
-    nav.style.background = s.bg;
-    nav.style.color = s.color;
-  }
+  if (nav && s) { nav.textContent = s.text; nav.style.background = s.bg; nav.style.color = s.color; }
 }
 
 function calcScore() {
-  const q4Keys = ['q4-1','q4-2','q4-3','q4-4','q4-5','q4-6'];
+  const q4Keys = ['q4-1','q4-2','q4-3','q4-4','q4-5','q4-6','q4-7'];
   const compRatings = q4Keys.map(k => ratings[k] || 0).filter(v => v > 0);
   const compAvg = compRatings.length > 0 ? (compRatings.reduce((a,b) => a+b, 0) / compRatings.length) : 0;
   const buddyR = ratings['buddy'] || 0;
@@ -992,18 +1162,16 @@ function calcScore() {
   document.getElementById('ps-gm').textContent = gmR > 0 ? gmR.toFixed(1) : '—';
 
   const checked = document.querySelectorAll('#page-q4 .cl-item input:checked').length;
-  document.getElementById('ps-checklist').textContent = checked + '/8';
+  document.getElementById('ps-checklist').textContent = checked + '/9';
 
   if (compAvg > 0 && buddyR > 0 && gmR > 0) {
     const total = (compAvg * 0.5) + (buddyR * 0.25) + (gmR * 0.25);
     document.getElementById('ps-total').textContent = total.toFixed(1);
     document.getElementById('ps-bar').style.width = (total / 4 * 100) + '%';
     document.getElementById('ps-bar-label').textContent = total.toFixed(1) + ' / 4.0';
-
     const color = total >= 3.5 ? '#1D9E75' : total >= 3.0 ? '#EF9F27' : '#E07050';
     document.getElementById('ps-bar').style.background = color;
     document.getElementById('ps-total').style.color = color;
-
     document.getElementById('sb-score').textContent = total.toFixed(1) + ' / 4.0';
     document.getElementById('sb-bar').style.width = (total / 4 * 100) + '%';
     document.getElementById('sb-bar').style.background = color;
