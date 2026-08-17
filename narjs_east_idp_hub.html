@@ -1,0 +1,1447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Narjs East — IDP Hub</title>
+<style>
+:root{--black:#1C1C1C;--white:#fff;--cream:#F5F0E8;--border:#D3D1C7;--gray:#888780;--gl:#F1EFE8;--green:#1D9E75;--gl2:#E1F5EE;--gd:#085041;--amber:#EF9F27;--al:#FAEEDA;--red:#E07050;--rl:#FAECE7;--rd:#4A1B0C;--purple:#7C5CBF;--pl:#EEEDFE;--pd:#26215C;--orange:#C8853A;--ol2:#FAEEE8;--od:#6B2210;--teal:#0D6E5C;--tl:#E0F4F0;--td:#063D32}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--cream);color:var(--black);min-height:100vh}
+.topnav{position:sticky;top:0;z-index:100;background:var(--black);display:flex;align-items:center;padding:0 20px;height:50px;border-bottom:1px solid rgba(255,255,255,.06)}
+.nav-brand{display:flex;align-items:center;gap:9px;padding-right:18px;border-right:1px solid rgba(255,255,255,.1);margin-right:12px;flex-shrink:0}
+.nav-icon{width:26px;height:26px;border-radius:6px;background:var(--green);display:flex;align-items:center;justify-content:center;font-size:12px}
+.nav-name{font-size:12px;font-weight:500;color:#F5F0E8}
+.nav-sub{font-size:9px;color:#444240}
+.nav-tabs{display:flex;gap:0;overflow-x:auto;flex:1;scrollbar-width:none}
+.nav-tabs::-webkit-scrollbar{display:none}
+.ntab{font-size:11px;font-weight:500;padding:0 14px;height:50px;color:#555350;cursor:pointer;border:none;background:transparent;border-bottom:2px solid transparent;font-family:inherit;white-space:nowrap;display:flex;align-items:center;gap:6px;transition:color .15s}
+.ntab:hover{color:#F5F0E8}
+.ntab.active{color:#F5F0E8;border-bottom-color:var(--green)}
+.nbadge{font-size:9px;padding:1px 7px;border-radius:8px;font-weight:600}
+.nav-av{width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:#fff;flex-shrink:0}
+.view{display:none;padding:20px;min-height:calc(100vh - 50px)}
+.view.on{display:block}
+/* IDP layout */
+.idp-wrap{display:flex;min-height:calc(100vh - 50px - 40px);background:var(--white);border-radius:12px;overflow:hidden;border:.5px solid var(--border)}
+.idp-sb{width:190px;flex-shrink:0;background:#1C1C1C;display:flex;flex-direction:column}
+.idp-main{flex:1;overflow-y:auto;background:var(--cream)}
+/* Sidebar */
+.sb-top{padding:16px 14px;border-bottom:1px solid rgba(255,255,255,.07)}
+.sb-av{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;margin-bottom:8px}
+.sb-name{font-size:12px;font-weight:500;color:#F5F0E8}
+.sb-role{font-size:10px;color:#444240;margin-top:2px;line-height:1.4}
+.sb-bar{height:3px;background:rgba(255,255,255,.07);border-radius:3px;margin-top:10px;overflow:hidden}
+.sb-fill{height:3px;border-radius:3px;transition:width .4s}
+.sb-nav{padding:10px 8px;flex:1}
+.sb-q{display:flex;align-items:center;gap:7px;padding:8px 9px;border-radius:7px;cursor:pointer;margin-bottom:2px;transition:background .1s}
+.sb-q:hover{background:rgba(255,255,255,.05)}
+.sb-q.on{background:rgba(255,255,255,.1)}
+.sb-q.done{opacity:.6}
+.sq-num{width:19px;height:19px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#444240;border:1px solid rgba(255,255,255,.1);flex-shrink:0;transition:all .2s}
+.sb-q.on .sq-num{color:#fff;border-color:transparent;background:var(--ec,#1D9E75)}
+.sb-q.done .sq-num{color:#666360;border-color:transparent;background:#262320}
+.sq-info{flex:1;min-width:0}
+.sq-theme{font-size:11px;font-weight:500;color:#666360;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sb-q.on .sq-theme{color:#F5F0E8}
+.sq-period{font-size:9px;color:#333230;margin-top:1px}
+.sb-q.on .sq-period{color:#888580}
+/* Hero */
+.q-hero{background:var(--black);padding:22px 24px 18px}
+.q-qtag{font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;margin-bottom:5px}
+.q-title{font-size:19px;font-weight:400;color:#F5F0E8;margin-bottom:5px}
+.q-tagline{font-size:11px;color:#555350;line-height:1.6;max-width:500px}
+.q-pbadge{font-size:10px;font-weight:600;padding:3px 10px;border-radius:10px;display:inline-block;margin-top:9px}
+.q-body{padding:18px 22px}
+.slbl{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--gray);margin:16px 0 8px;padding-bottom:5px;border-bottom:.5px solid var(--border)}
+.slbl:first-child{margin-top:0}
+/* Focus */
+.fi{display:flex;align-items:flex-start;gap:9px;padding:8px 11px;background:var(--white);border:.5px solid var(--border);border-radius:7px;margin-bottom:5px}
+.fd{width:5px;height:5px;border-radius:50%;flex-shrink:0;margin-top:5px}
+.ft{font-size:11px;line-height:1.55}
+/* Callout */
+.callout{border-radius:8px;padding:11px 13px;margin-bottom:12px;border-left:3px solid;font-size:11px;line-height:1.65}
+/* Manager cards */
+.mc{border-radius:9px;overflow:hidden;margin-bottom:9px}
+.mc-hd{padding:11px 13px;display:flex;align-items:center;gap:9px}
+.mc-av{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;flex-shrink:0}
+.mc-who{font-size:11px;font-weight:500}
+.mc-subrole{font-size:10px;opacity:.65;margin-top:1px}
+.mc-bd{padding:9px 13px 12px;background:var(--white)}
+.mc-intro{font-size:11px;color:var(--gray);line-height:1.6;margin-bottom:9px;padding:7px 9px;background:var(--cream);border-radius:6px}
+.mi{display:flex;align-items:flex-start;gap:8px;padding:7px 9px;border-radius:6px;margin-bottom:3px;background:var(--cream)}
+.mi.now{background:var(--rl);border:.5px solid #E5B5A8}
+.mi.acc{background:var(--pl)}
+.mi-when{font-size:9px;font-weight:700;color:var(--amber);white-space:nowrap;margin-top:2px;min-width:68px}
+.mi.now .mi-when{color:var(--red)}
+.mi.acc .mi-when{color:var(--purple)}
+.mi-text{font-size:11px;line-height:1.5}
+/* Warn */
+.warn{border-radius:9px;overflow:hidden;border:.5px solid #E5B5A8;margin-bottom:9px}
+.warn-hd{background:var(--rl);padding:10px 13px;display:flex;align-items:center;gap:7px}
+.warn-title{font-size:11px;font-weight:600;color:var(--rd)}
+.warn-bd{padding:9px 13px;background:var(--white)}
+.wi{display:flex;gap:7px;padding:6px 8px;background:var(--cream);border-radius:5px;margin-bottom:3px;font-size:11px;line-height:1.5;color:var(--gray)}
+/* Competencies */
+.cg{margin-bottom:12px}
+.cg-title{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--gray);margin-bottom:6px;padding:4px 9px;background:var(--cream);border-radius:4px}
+.ci{background:var(--white);border:.5px solid var(--border);border-radius:8px;margin-bottom:4px;overflow:hidden}
+.ci-hd{padding:9px 11px;display:flex;align-items:center;gap:7px;cursor:pointer}
+.ci-hd:hover{background:#FAFAF8}
+.ci-name{font-size:12px;font-weight:500;flex:1}
+.ci-rate{display:flex;gap:3px;flex-shrink:0}
+.rb{width:21px;height:21px;border-radius:4px;border:.5px solid var(--border);background:transparent;cursor:pointer;font-size:10px;font-weight:600;color:var(--gray);transition:all .1s;font-family:inherit}
+.rb:hover{border-color:var(--ec);color:var(--ec)}
+.rb.on{background:var(--ec);border-color:var(--ec);color:#fff}
+.ci-desc{padding:0 11px 9px;font-size:11px;color:var(--gray);line-height:1.6;display:none}
+.ci.exp .ci-desc{display:block}
+.ci-note{font-size:10px;color:var(--amber);margin-top:4px;font-style:italic}
+/* Checklist */
+.cl{display:flex;align-items:flex-start;gap:8px;padding:8px 11px;background:var(--white);border:.5px solid var(--border);border-radius:7px;margin-bottom:4px;cursor:pointer}
+.cl input{width:14px;height:14px;flex-shrink:0;margin-top:2px;cursor:pointer}
+.cl.done{background:var(--gl2);border-color:var(--green)}
+.cl-text{font-size:11px;line-height:1.5}
+.cl.done .cl-text{text-decoration:line-through;color:var(--gray)}
+/* Evidence */
+.ev{background:var(--white);border:.5px solid var(--border);border-radius:7px;padding:9px 11px;margin-bottom:5px}
+.ev-date{font-size:9px;color:var(--gray);margin-bottom:2px}
+.ev-text{font-size:11px;line-height:1.5}
+.ev-add{display:flex;gap:7px;margin-top:7px}
+.ev-in{flex:1;padding:7px 9px;border:.5px solid var(--border);border-radius:6px;font-size:11px;font-family:inherit;background:var(--cream);outline:none;resize:none;height:34px}
+.ev-in:focus{border-color:var(--ec);background:var(--white)}
+.ev-btn{padding:0 13px;height:34px;border-radius:6px;border:none;font-size:11px;font-weight:500;cursor:pointer;font-family:inherit;background:var(--ec);color:#fff}
+/* Decision */
+.dec{border-radius:10px;overflow:hidden;border:.5px solid var(--border);margin-top:18px}
+.dec-hd{padding:12px 14px;background:var(--black);color:#F5F0E8;font-size:12px;font-weight:500}
+.dec-grid{display:grid;grid-template-columns:repeat(3,1fr)}
+.dec-col{padding:12px 13px;border-right:.5px solid var(--border)}
+.dec-col:last-child{border-right:none}
+.dec-lbl{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+.dec-text{font-size:10px;line-height:1.6;color:var(--gray)}
+/* Gate score */
+.score-wrap{background:var(--white);border:.5px solid var(--border);border-radius:10px;padding:16px;margin-bottom:12px}
+.score-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
+.sp{text-align:center;padding:10px;background:var(--cream);border-radius:7px}
+.sp-val{font-size:18px;font-weight:500}
+.sp-lbl{font-size:10px;color:var(--gray);margin-top:2px}
+.er-wrap{background:var(--cream);border-radius:8px;padding:10px 12px;margin-bottom:7px}
+.er-lbl{font-size:11px;font-weight:500;margin-bottom:7px}
+.er-rate{display:flex;gap:4px;flex-wrap:wrap}
+.erb{padding:4px 10px;border-radius:6px;border:.5px solid var(--border);background:var(--white);cursor:pointer;font-size:10px;font-weight:500;font-family:inherit;transition:all .1s}
+.erb:hover,.erb.on{background:var(--ec);border-color:var(--ec);color:#fff}
+.score-total{text-align:center;padding:12px;border-top:.5px solid var(--border)}
+.stv{font-size:24px;font-weight:500}
+.stl{font-size:10px;color:var(--gray);margin-top:3px}
+/* Dashboard cards */
+.emp-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px}
+.ec{background:var(--white);border:.5px solid var(--border);border-radius:11px;overflow:hidden;cursor:pointer;transition:box-shadow .15s,transform .1s}
+.ec:hover{box-shadow:0 4px 14px rgba(0,0,0,.09);transform:translateY(-1px)}
+.ec-hd{padding:12px 14px;display:flex;align-items:center;gap:9px}
+.ec-av{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;flex-shrink:0}
+.ec-n{font-size:13px;font-weight:500}
+.ec-r{font-size:10px;color:var(--gray);margin-top:1px}
+.ec-st{margin-left:auto;font-size:9px;font-weight:600;padding:2px 8px;border-radius:8px}
+.ec-bd{padding:9px 14px 13px;border-top:.5px solid var(--border)}
+.ec-track{display:flex;gap:3px;margin-bottom:7px}
+.ec-seg{height:4px;border-radius:3px;flex:1}
+.ec-meta{font-size:10px;color:var(--gray)}
+.ec-act{font-size:10px;font-weight:500;color:var(--green);margin-top:6px}
+</style>
+</head>
+<body>
+
+<div class="topnav">
+  <div class="nav-brand">
+    <div class="nav-icon">🏢</div>
+    <div>
+      <div class="nav-name">Narjs East</div>
+      <div class="nav-sub">IDP Hub · 2026–2027</div>
+    </div>
+  </div>
+  <div class="nav-tabs">
+    <button class="ntab active" onclick="showView('dash',this)">Property Overview</button>
+    <button class="ntab" onclick="openEmp('beesan',this)">
+      <div class="nav-av" style="background:#1D9E75">BH</div> Beesan
+      <span class="nbadge" style="background:#E1F5EE;color:#085041">Q1 Active</span>
+    </button>
+    <button class="ntab" onclick="openEmp('ali',this)">
+      <div class="nav-av" style="background:#C8853A">AL</div> Ali
+      <span class="nbadge" style="background:#FAEEDA;color:#412402">Suggested</span>
+    </button>
+    <button class="ntab" onclick="openEmp('rawan',this)">
+      <div class="nav-av" style="background:#C8853A">RA</div> Rawan
+      <span class="nbadge" style="background:#FAEEDA;color:#412402">Suggested</span>
+    </button>
+    <button class="ntab" onclick="openEmp('rakan',this)">
+      <div class="nav-av" style="background:#7C5CBF">RK</div> Rakan
+      <span class="nbadge" style="background:#EEEDFE;color:#26215C">Priority</span>
+    </button>
+  </div>
+</div>
+
+<div class="view on" id="view-dash"><div id="dash-content"></div></div>
+
+<div class="view" id="view-beesan">
+  <div class="idp-wrap" style="--ec:#1D9E75;--el:#E1F5EE;--ed:#085041">
+    <div class="idp-sb" id="sb-beesan"></div>
+    <div class="idp-main" id="main-beesan"></div>
+  </div>
+</div>
+<div class="view" id="view-ali">
+  <div class="idp-wrap" style="--ec:#C8853A;--el:#FAEEE8;--ed:#6B2210">
+    <div class="idp-sb" id="sb-ali"></div>
+    <div class="idp-main" id="main-ali"></div>
+  </div>
+</div>
+<div class="view" id="view-rawan">
+  <div class="idp-wrap" style="--ec:#C8853A;--el:#FAEEE8;--ed:#6B2210">
+    <div class="idp-sb" id="sb-rawan"></div>
+    <div class="idp-main" id="main-rawan"></div>
+  </div>
+</div>
+<div class="view" id="view-rakan">
+  <div class="idp-wrap" style="--ec:#7C5CBF;--el:#EEEDFE;--ed:#26215C">
+    <div class="idp-sb" id="sb-rakan"></div>
+    <div class="idp-main" id="main-rakan"></div>
+  </div>
+</div>
+
+<script>
+const ST = {
+  r: JSON.parse(localStorage.getItem('ne_r')||'{}'),
+  c: JSON.parse(localStorage.getItem('ne_c')||'{}'),
+  e: JSON.parse(localStorage.getItem('ne_e')||'{}'),
+  q: JSON.parse(localStorage.getItem('ne_q')||'{}'),
+  save(){ ['r','c','e','q'].forEach(k=>localStorage.setItem('ne_'+k,JSON.stringify(ST[k]))); }
+};
+
+function x(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function showView(id, btn){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('on'));
+  document.querySelectorAll('.ntab').forEach(b=>b.classList.remove('active'));
+  document.getElementById('view-'+id).classList.add('on');
+  if(btn) btn.classList.add('active');
+  if(id==='dash') renderDash();
+}
+
+function openEmp(key, btn){
+  showView(key, btn);
+  buildIDP(key);
+}
+
+// ── Sidebar ──
+function buildSB(key){
+  const E = EMPLOYEES[key], qs = E.qs;
+  const cur = ST.q[key] ?? 0;
+  const prog = Math.round((cur / qs.length) * 100);
+  const qBtns = qs.map((q,i) => `
+    <div class="sb-q ${i===cur?'on':''} ${i<cur?'done':''}" onclick="showQ('${key}',${i})">
+      <div class="sq-num">${i<cur?'✓':i+1}</div>
+      <div class="sq-info">
+        <div class="sq-theme">${x(q.theme)}</div>
+        <div class="sq-period">${x(q.period)}</div>
+      </div>
+    </div>`).join('');
+  document.getElementById('sb-'+key).innerHTML = `
+    <div class="sb-top">
+      <div class="sb-av" style="background:${E.color}">${x(E.initials)}</div>
+      <div class="sb-name">${x(E.name)}</div>
+      <div class="sb-role">${x(E.from)} → ${x(E.to)}</div>
+      <div class="sb-bar"><div class="sb-fill" style="width:${prog}%;background:${E.color}"></div></div>
+    </div>
+    <div class="sb-nav">${qBtns}</div>`;
+}
+
+// ── Render helpers ──
+function rFocus(items, color){
+  return `<div>${items.map(f=>`<div class="fi"><div class="fd" style="background:${color}"></div><div class="ft">${x(f)}</div></div>`).join('')}</div>`;
+}
+
+function rMC(mc, type){
+  if(type==='warn') return `<div class="warn">
+    <div class="warn-hd">⚠️ <span class="warn-title">${x(mc.title)}</span></div>
+    <div class="warn-bd">${mc.acts.map(a=>`<div class="wi">• ${x(a)}</div>`).join('')}</div>
+  </div>`;
+  const colors={agm:'#7C5CBF',gm:'#0D6E5C'}, bgs={agm:'#EEEDFE',gm:'#E0F4F0'};
+  const c=colors[type], bg=bgs[type];
+  const av=mc.name.split(' ').map(w=>w[0]).join('').slice(0,2);
+  return `<div class="mc">
+    <div class="mc-hd" style="background:${bg}">
+      <div class="mc-av" style="background:${c}">${av}</div>
+      <div><div class="mc-who" style="color:${c}">${x(mc.name)}</div><div class="mc-subrole" style="color:${c}">${x(mc.label||'')}</div></div>
+    </div>
+    <div class="mc-bd">
+      ${mc.intro?`<div class="mc-intro">${x(mc.intro)}</div>`:''}
+      ${mc.acts.map((a,i)=>{
+        const isNow=a.when&&(a.when.includes('NOW')||a.when.includes('Month 2'));
+        const isAcc=mc.acc&&mc.acc.includes(i);
+        return `<div class="mi ${isNow?'now':isAcc?'acc':''}">
+          ${a.when?`<div class="mi-when">${x(a.when)}</div>`:''}
+          <div class="mi-text">${x(a.text)}</div>
+        </div>`;
+      }).join('')}
+    </div>
+  </div>`;
+}
+
+function rComps(groups, key, qIdx, color){
+  return groups.map(g=>`<div class="cg">
+    <div class="cg-title">${x(g.group)}</div>
+    ${g.comps.map(c=>{
+      const rk=`${key}_${qIdx}_${c.id}`, cur=ST.r[rk]||0;
+      return `<div class="ci" id="ci-${key}-${qIdx}-${c.id}">
+        <div class="ci-hd" onclick="this.parentElement.classList.toggle('exp')">
+          <div class="ci-name">${x(c.name)}</div>
+          <div class="ci-rate" style="--ec:${color}">
+            ${[1,2,3,4].map(v=>`<button class="rb ${cur>=v?'on':''}" onclick="setR('${key}',${qIdx},'${c.id}',${v},this,event)">${v}</button>`).join('')}
+          </div>
+        </div>
+        <div class="ci-desc">${x(c.desc)}${c.note?`<div class="ci-note">↳ ${x(c.note)}</div>`:''}</div>
+      </div>`;
+    }).join('')}
+  </div>`).join('');
+}
+
+function rCL(items, key, qIdx){
+  return items.map((item,i)=>{
+    const ck=`${key}_${qIdx}_${i}`, done=ST.c[ck]||false;
+    return `<label class="cl ${done?'done':''}" id="cl-${key}-${qIdx}-${i}">
+      <input type="checkbox" ${done?'checked':''} onchange="tgCL('${key}',${qIdx},${i},this)">
+      <span class="cl-text">${x(item)}</span>
+    </label>`;
+  }).join('');
+}
+
+function rEv(key){
+  const entries=ST.e[key]||[];
+  return `${entries.length?entries.map(e=>`<div class="ev"><div class="ev-date">${x(e.d)}</div><div class="ev-text">${x(e.t)}</div></div>`).join('')
+    :'<div style="font-size:11px;color:var(--gray);padding:4px 0">No entries yet.</div>'}
+  <div class="ev-add" style="--ec:${EMPLOYEES[key].color}">
+    <textarea class="ev-in" id="evin-${key}" placeholder="Describe what you observed or achieved..."></textarea>
+    <button class="ev-btn" onclick="addEv('${key}')">Add</button>
+  </div>`;
+}
+
+function rDec(dec){
+  return `<div class="dec">
+    <div class="dec-hd">${x(dec.title)}</div>
+    <div class="dec-grid">
+      <div class="dec-col"><div class="dec-lbl" style="color:#1D9E75">Advance ✓</div><div class="dec-text">${x(dec.advance)}</div></div>
+      <div class="dec-col"><div class="dec-lbl" style="color:#EF9F27">Extended</div><div class="dec-text">${x(dec.extend)}</div></div>
+      <div class="dec-col"><div class="dec-lbl" style="color:#E07050">Fundamental Review</div><div class="dec-text">${x(dec.review)}</div></div>
+    </div>
+  </div>`;
+}
+
+// ── Render quarter ──
+function renderQ(key, qIdx){
+  const E=EMPLOYEES[key], q=E.qs[qIdx];
+  const body = q.gate ? renderGate(E,q,key,qIdx) : renderStd(E,q,key,qIdx);
+  document.getElementById('main-'+key).innerHTML = body;
+  document.getElementById('main-'+key).scrollTop = 0;
+}
+
+function renderStd(E, q, key, qIdx){
+  return `<div>
+    <div class="q-hero">
+      <div class="q-qtag" style="color:${E.color}">Q${qIdx+1} — ${x(q.title)}</div>
+      <div class="q-title">${x(q.theme)}</div>
+      <div class="q-tagline">${x(q.tagline)}</div>
+      <div class="q-pbadge" style="background:${E.light};color:${E.dark}">${x(q.period)}</div>
+    </div>
+    <div class="q-body">
+      ${q.callout?`<div class="callout" style="background:${E.light};border-color:${E.color};color:${E.dark}">${x(q.callout)}</div>`:''}
+      <div class="slbl">Quarter Focus</div>
+      ${rFocus(q.focus, E.color)}
+      ${q.agm?`<div class="slbl">AGM Monthly Actions — ${x(q.agm.name)}</div>${rMC(q.agm,'agm')}`:''}
+      ${q.gm?`<div class="slbl">GM Monthly Actions — ${x(q.gm.name)}</div>${rMC(q.gm,'gm')}`:''}
+      ${q.warn?`<div class="slbl">Warning Signals</div>${rMC(q.warn,'warn')}`:''}
+      ${q.cl&&q.cl.length?`<div class="slbl">Quarter Checklist</div><div style="--ec:${E.color}">${rCL(q.cl,key,qIdx)}</div>`:''}
+      <div class="slbl">Competency Ratings</div>
+      <div style="--ec:${E.color}">${rComps(q.compGroups,key,qIdx,E.color)}</div>
+      <div class="slbl">Evidence Log</div>
+      <div id="ev-${key}-${qIdx}" style="--ec:${E.color}">${rEv(key)}</div>
+      ${rDec(q.decision)}
+    </div>
+  </div>`;
+}
+
+function renderGate(E, q, key, qIdx){
+  const extHTML=(q.external||[]).map((ex,i)=>{
+    const ek=`${key}_${qIdx}_ex${i}`, cur=ST.r[ek]||0;
+    return `<div class="er-wrap"><div class="er-lbl">${x(ex.label)}</div>
+      <div class="er-rate" style="--ec:${E.color}">
+        ${[1,2,3,4].map(v=>`<button class="erb ${cur===v?'on':''}" onclick="setER('${key}',${qIdx},${i},${v},this)">${v} — ${['Awareness','Application','Proficiency','Mastery'][v-1]}</button>`).join('')}
+      </div></div>`;
+  }).join('');
+  const vals=[];
+  (q.compGroups||[]).forEach(g=>g.comps.forEach(c=>{const r=ST.r[`${key}_${qIdx}_${c.id}`]||0;if(r)vals.push(r);}));
+  const avg=vals.length?(vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(2):'—';
+  return `<div>
+    <div class="q-hero">
+      <div class="q-qtag" style="color:${E.color}">Q4 — Promotion Gate</div>
+      <div class="q-title">${x(q.theme)}</div>
+      <div class="q-tagline">${x(q.tagline)}</div>
+      <div class="q-pbadge" style="background:${E.light};color:${E.dark}">${x(q.period)}</div>
+    </div>
+    <div class="q-body">
+      ${q.callout?`<div class="callout" style="background:${E.light};border-color:${E.color};color:${E.dark}">${x(q.callout)}</div>`:''}
+      <div class="slbl">Final Focus</div>
+      ${rFocus(q.focus,E.color)}
+      ${q.agm?`<div class="slbl">AGM — ${x(q.agm.name)}</div>${rMC(q.agm,'agm')}`:''}
+      ${q.gm?`<div class="slbl">GM — ${x(q.gm.name)}</div>${rMC(q.gm,'gm')}`:''}
+      <div class="slbl">Promotion Score</div>
+      <div class="score-wrap">
+        <div class="score-row">
+          <div class="sp"><div class="sp-val" style="color:${E.color}">${avg}</div><div class="sp-lbl">Competency Avg (50%)</div></div>
+          <div class="sp"><div class="sp-val" style="color:#7C5CBF" id="bv-${key}">—</div><div class="sp-lbl">Buddy (${q.weights?Math.round(q.weights[1]*100):25}%)</div></div>
+          <div class="sp"><div class="sp-val" style="color:#0D6E5C" id="ev2-${key}">—</div><div class="sp-lbl">External (${q.weights?Math.round(q.weights[2]*100):25}%)</div></div>
+        </div>
+        ${extHTML}
+        <div class="score-total"><div class="stv" style="color:${E.color}">Pending</div><div class="stl">≥3.5 Promote · 3.0–3.4 Extended · &lt;3.0 Fundamental Review</div></div>
+      </div>
+      <div class="slbl">Gate Checklist</div>
+      <div style="--ec:${E.color}">${rCL(q.cl||[],key,qIdx)}</div>
+      <div class="slbl">Competencies — Final</div>
+      <div style="--ec:${E.color}">${rComps(q.compGroups||[],key,qIdx,E.color)}</div>
+      <div class="slbl">Evidence Log</div>
+      <div id="ev-${key}-${qIdx}" style="--ec:${E.color}">${rEv(key)}</div>
+      ${rDec(q.decision)}
+    </div>
+  </div>`;
+}
+
+function buildIDP(key){
+  const qIdx = ST.q[key] ?? 0;
+  buildSB(key);
+  renderQ(key, qIdx);
+}
+
+function showQ(key, qIdx){
+  ST.q[key]=qIdx; ST.save();
+  buildSB(key);
+  renderQ(key, qIdx);
+}
+
+// ── Interactions ──
+function setR(key,qIdx,cid,val,btn,ev){
+  ev.stopPropagation();
+  ST.r[`${key}_${qIdx}_${cid}`]=val; ST.save();
+  btn.closest('.ci-rate').querySelectorAll('.rb').forEach((b,i)=>b.classList.toggle('on',i<val));
+}
+function setER(key,qIdx,i,val,btn){
+  ST.r[`${key}_${qIdx}_ex${i}`]=val; ST.save();
+  btn.closest('.er-rate').querySelectorAll('.erb').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+}
+function tgCL(key,qIdx,i,cb){
+  const ck=`${key}_${qIdx}_${i}`;
+  ST.c[ck]=cb.checked; ST.save();
+  const lbl=document.getElementById(`cl-${key}-${qIdx}-${i}`);
+  if(lbl){ lbl.classList.toggle('done',cb.checked); }
+}
+function addEv(key){
+  const inp=document.getElementById('evin-'+key);
+  if(!inp||!inp.value.trim()) return;
+  if(!ST.e[key]) ST.e[key]=[];
+  const d=new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
+  ST.e[key].unshift({d,t:inp.value.trim()});
+  ST.save(); inp.value='';
+  const qIdx=ST.q[key]??0;
+  const cont=document.getElementById(`ev-${key}-${qIdx}`);
+  if(cont) cont.innerHTML=rEv(key);
+}
+
+// ── Dashboard ──
+function renderDash(){
+  const order=['beesan','ali','rawan','rakan'];
+  const stColors={active:'background:#E1F5EE;color:#085041',suggested:'background:#FAEEDA;color:#412402',priority:'background:#EEEDFE;color:#26215C'};
+  const stLabels={active:'Q1 Active',suggested:'Suggested',priority:'Priority #1'};
+  const cards = order.map(key=>{
+    const E=EMPLOYEES[key];
+    if(!E) return '';
+    const qIdx=ST.q[key]??0;
+    const sc=stColors[E.status]||'background:var(--gl);color:var(--gray)';
+    const track=E.qs.map((_,i)=>`<div class="ec-seg" style="background:${i<=qIdx?E.color:'var(--border)'}"></div>`).join('');
+    return `<div class="ec" onclick="openEmpFromDash('${key}')">
+      <div class="ec-hd">
+        <div class="ec-av" style="background:${E.color}">${x(E.initials)}</div>
+        <div><div class="ec-n">${x(E.name)}</div><div class="ec-r">${x(E.from)} → ${x(E.to)}</div></div>
+        <div class="ec-st" style="${sc}">${stLabels[E.status]||E.status}</div>
+      </div>
+      <div class="ec-bd">
+        <div class="ec-track">${track}</div>
+        <div class="ec-meta">Q${qIdx+1} of 4 · ${x(E.qs[qIdx]?.theme||'')}</div>
+        <div class="ec-act">Open IDP →</div>
+      </div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('dash-content').innerHTML = `
+    <div style="background:var(--black);border-radius:12px;padding:18px 22px;margin-bottom:18px;display:flex;align-items:center;justify-content:space-between">
+      <div style="display:flex;align-items:center;gap:12px">
+        <div style="width:40px;height:40px;border-radius:10px;background:var(--green);display:flex;align-items:center;justify-content:center;font-size:18px">🏢</div>
+        <div>
+          <div style="font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--green)">Flow MENA · RX Team</div>
+          <div style="font-size:17px;font-weight:500;color:#F5F0E8;margin-top:2px">Narjs East — IDP Hub</div>
+          <div style="font-size:10px;color:#444240;margin-top:2px">GM: Saad Alajmi · AGM: Raghdah Safar · Aug 2026</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:22px;text-align:center">
+        <div><div style="font-size:19px;font-weight:500;color:#F5F0E8">4</div><div style="font-size:10px;color:#444240">On IDP Path</div></div>
+        <div><div style="font-size:19px;font-weight:500;color:var(--green)">1</div><div style="font-size:10px;color:#444240">Active</div></div>
+        <div><div style="font-size:19px;font-weight:500;color:var(--amber)">3</div><div style="font-size:10px;color:#444240">To Start</div></div>
+      </div>
+    </div>
+    <div style="font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--gray);margin-bottom:9px">Individual Development Plans</div>
+    <div class="emp-grid">${cards}</div>
+    <div style="font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--gray);margin-bottom:9px">Manager Accountability — Aug 2026</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      ${managerCard('Saad Alajmi','SA','#0D6E5C','General Manager · Q1 IDP Responsibilities',[
+        {done:true,when:'Week 1',text:'Book all IDP sessions in calendar. Assign no delegation for this step.'},
+        {done:true,when:'Month 1',text:'Confirm Raghdah has assigned Beesan a buddy and training is running.'},
+        {done:false,when:'Month 2 ⚡',text:'Ask Raghdah for one concrete ownership moment from Beesan — vague answers are a red flag.'},
+        {done:false,when:'End of Q1',text:'Rate all 5 competency areas. Confirm ≥3 evidence entries. Sign Q1 decision.'},
+      ])}
+      ${managerCard('Raghdah Safar','RS','#7C5CBF','AGM · Q1 IDP Responsibilities',[
+        {done:true,when:'Week 1',text:'Assign Beesan a buddy. Set Q1 success standard in writing — share it with Beesan.'},
+        {done:true,when:'Week 2',text:'Walk the building with Beesan. Identify 3 specific things for her to track daily.'},
+        {done:false,when:'Month 2 ⚡',text:'Confirm training modules complete. Ask Beesan for 2 specific examples from this week.'},
+        {done:false,when:'Monthly',text:'Review buddy observations. Write specific feedback — not general impressions.'},
+        {done:false,when:'End of Q1',text:'Review all competency areas with Beesan before Saad signs off.'},
+      ])}
+    </div>`;
+}
+
+function managerCard(name, initials, color, role, items){
+  return `<div style="background:var(--white);border:.5px solid var(--border);border-radius:11px;overflow:hidden">
+    <div style="padding:11px 14px;border-bottom:.5px solid var(--border);display:flex;align-items:center;gap:8px">
+      <div style="width:28px;height:28px;border-radius:50%;background:${color};display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff">${initials}</div>
+      <div><div style="font-size:12px;font-weight:500">${name}</div><div style="font-size:10px;color:var(--gray)">${role}</div></div>
+    </div>
+    <div style="padding:10px 14px">
+      ${items.map(a=>`<div style="display:flex;align-items:flex-start;gap:8px;padding:7px 9px;border-radius:6px;margin-bottom:3px;background:${a.done?'var(--gl2)':'var(--cream)'};border:.5px solid ${a.done?'var(--green)':'var(--border)'}">
+        <input type="checkbox" ${a.done?'checked':''} style="width:13px;height:13px;accent-color:${color};flex-shrink:0;margin-top:2px">
+        <div>
+          <div style="font-size:9px;font-weight:600;color:${a.done?'var(--gd)':a.when.includes('⚡')?'var(--red)':'var(--amber)'};margin-bottom:1px">${a.when}</div>
+          <div style="font-size:11px;${a.done?'text-decoration:line-through;color:var(--gray)':''}">${a.text}</div>
+        </div>
+      </div>`).join('')}
+    </div>
+  </div>`;
+}
+
+function openEmpFromDash(key){
+  const btn=[...document.querySelectorAll('.ntab')][['dash','beesan','ali','rawan','rakan'].indexOf(key)];
+  openEmp(key, btn);
+}
+
+// ── EMPLOYEES (data added in next parts) ──
+const EMPLOYEES = {};
+// <<BEESAN>>
+EMPLOYEES.beesan = {
+  name:'Beesan Harb', initials:'BH', prop:'Narjs East',
+  from:'RX Coordinator', to:'RX Associate',
+  agm:'Raghdah Safar', gm:'Saad Alajmi',
+  color:'#1D9E75', light:'#E1F5EE', dark:'#085041',
+  status:'active',
+  qs:[
+    { title:'Foundation', theme:'Foundation', period:'Jun–Sep 2026',
+      tagline:'Build the habits, knowledge, and presence that great RX work is built on.',
+      callout:'This quarter is about absorbing — observe everything, ask constantly, and begin to build your daily rhythm.',
+      focus:[
+        'Complete all 4 onboarding training modules within the first 3 weeks',
+        'Shadow your buddy (L2 colleague) for all major resident interactions for the first month',
+        'Learn every resident touchpoint: check-in, requests, issue logging, checkout',
+        'Build a consistent daily presence — punctual, prepared, well-presented',
+      ],
+      agm:{ name:'Raghdah Safar', label:'AGM · Monthly Actions',
+        intro:'Your job this quarter is to set Beesan up for success — not to wait and see.',
+        acts:[
+          {when:'Week 1', text:'Welcome Beesan formally. Assign her buddy from the L2 team. Tell her exactly what Q1 success looks like — in writing.'},
+          {when:'Week 2', text:'Walk the building together. Point out 3 things for Beesan to observe and track daily.'},
+          {when:'Month 2 NOW', text:'Check training modules progress. Ask Beesan for 2 specific examples of things she noticed about residents this week.'},
+          {when:'Monthly', text:'Review buddy observations in writing. Give 1 specific example of what Beesan did well + 1 clear improvement area.'},
+          {when:'End of Q1', text:'Review all 5 competency areas with Beesan before Saad signs off. Confirm ≥3 evidence entries exist.'},
+        ]},
+      gm:{ name:'Saad Alajmi', label:'GM · Monthly Actions', acc:[2],
+        intro:'Your role is to hold Raghdah accountable for the day-to-day — and to make the final call at end of Q1.',
+        acts:[
+          {when:'Week 1', text:'Book all monthly IDP sessions in your calendar now. Do not delegate this step.'},
+          {when:'Month 1', text:'Confirm with Raghdah that the buddy is assigned and training is running.'},
+          {when:'Month 2 NOW', text:'Ask Raghdah: "What specific moment has Beesan owned without prompting?" A vague answer means the process is not working — push directly.'},
+          {when:'End of Q1', text:'Rate all 5 competency areas. Confirm ≥3 evidence entries. Sign the Q1 decision.'},
+        ]},
+      warn:{ title:'Warning Signals — Q1',
+        acts:[
+          'Still asking "what should I do next?" by Week 6 — daily tasks not yet internalised',
+          'Buddy reports zero independent actions by Month 2 — dependency not broken',
+          'No evidence entries added after 8 weeks — documentation habit not forming',
+          'Resident feedback about inconsistent greetings or missed interactions by Month 2',
+        ]},
+      cl:['All 4 training modules signed off','Shadowed buddy for all major interaction types for 4+ weeks',
+          'Handled first-line requests independently for 2 consecutive weeks','Building walkthrough completed with zero missed items — twice',
+          'Buddy rating submitted for Q1 — minimum 3.0'],
+      compGroups:[
+        {group:'Resident Experience', comps:[
+          {id:'greeting',name:'Greeting & First Impressions',desc:'Q1: Greets all residents by name when known. Maintains consistent eye contact and warm tone. No resident walks past the front desk without acknowledgement.'},
+          {id:'comms',name:'Communication & Clarity',desc:'Q1: Communicates instructions and updates clearly and simply. Asks for confirmation when uncertain rather than guessing.'},
+          {id:'anticipate',name:'Needs Anticipation',desc:'Q1: Begins to notice patterns — knows which residents typically have requests, which times are busy, what issues repeat.',note:'This develops slowly — focus on observation this quarter'},
+        ]},
+        {group:'Service Recovery', comps:[
+          {id:'issueid',name:'Issue Identification',desc:'Q1: Identifies a service failure or resident complaint correctly and logs it accurately. Does not minimise or dismiss.'},
+          {id:'escalation',name:'Escalation Judgement',desc:'Q1: Knows which issues to handle independently and which require AGM involvement. Defaults to asking Raghdah when uncertain.'},
+          {id:'followup',name:'Resolution Follow-through',desc:'Q1: Confirms with the resident that the issue has been resolved. Does not consider an issue closed until the resident does.'},
+        ]},
+        {group:'Building Operations', comps:[
+          {id:'walkthrough',name:'Daily Walkthrough',desc:'Q1: Completes the assigned building walkthrough route daily. Logs all findings — both issues and clear items.'},
+          {id:'vendor',name:'Vendor & Contractor Interaction',desc:'Q1: Knows which vendors are active in the building. Greets contractors professionally and logs their entry and exit.'},
+        ]},
+        {group:'Brand & Voice', comps:[
+          {id:'brand',name:'Flow Brand Knowledge',desc:"Q1: Can explain Flow's positioning to a new resident in one sentence. Uses the brand's vocabulary — not generic hospitality language."},
+          {id:'written',name:'Written Communication',desc:'Q1: All written communication (messages, emails, forms) is clear, free of errors, and uses a professional tone.'},
+        ]},
+        {group:'Logging & Documentation', comps:[
+          {id:'sysacc',name:'System Accuracy',desc:'Q1: All interactions logged correctly in the system within the same shift. No missing fields.'},
+          {id:'evidence',name:'Evidence Quality',desc:'Q1: Evidence entries describe specific situations — not general statements. Minimum 3 entries by end of Q1.'},
+        ]},
+      ],
+      decision:{title:'Q1 Decision',
+        advance:'All 5 competencies rated ≥2. ≥3 evidence entries. Buddy confirms independent behaviour emerging. Proceed to Q2.',
+        extend:'2–3 competencies below 2.0 OR buddy raises specific concerns. Extend Q1 by 4–6 weeks with a focused action plan.',
+        review:'Multiple competencies at 1.0. Buddy reports no independent behaviour by Month 3. Raghdah + Saad to review the match and the plan.'}
+    },
+    { title:'Building Confidence', theme:'Building Confidence', period:'Sep–Dec 2026',
+      tagline:'Move from shadowing to doing — handle standard situations independently.',
+      callout:'The test is simple: can you hold the front desk without your buddy in earshot?',
+      focus:[
+        'Manage the front desk solo during standard hours — AGM available on call only',
+        'Handle all tier-1 resident requests without escalating to AGM',
+        'Complete two building walkthroughs per week and log all findings accurately',
+        'Identify one process improvement idea and present it to Raghdah with a simple rationale',
+      ],
+      agm:{name:'Raghdah Safar',label:'AGM · Monthly Actions',
+        acts:[
+          {when:'Month 1',text:'Brief Beesan on what "solo" means — same standard, different support level. Set a specific week for the first solo shift.'},
+          {when:'Monthly',text:'Review evidence log. Ask Beesan to name one thing she handled differently than Q1 — and why.'},
+          {when:'Mid-Q2',text:'Observe Beesan during a solo shift for 30 minutes without intervening. Write up what you saw.'},
+          {when:'End of Q2',text:'Review all competency areas. Confirm ≥6 total evidence entries across Q1+Q2. Prepare rating for Saad.'},
+        ]},
+      gm:{name:'Saad Alajmi',label:'GM · Monthly Actions',
+        acts:[
+          {when:'Month 1',text:'Ask Raghdah which shift will be Beesan\'s first solo. Add it to your calendar — check in the next day.'},
+          {when:'End of Q2',text:'Rate all competencies. Review Raghdah\'s mid-Q2 observation notes. Sign Q2 decision.'},
+        ]},
+      warn:{title:'Warning Signals — Q2',acts:[
+        'Still calling Raghdah during every solo shift by Month 2 of Q2',
+        'Evidence log shows fewer entries in Q2 than Q1 — activity is not translating to documentation',
+        'No process improvement idea presented by end of Q2',
+        'Resident complaints increase during Beesan\'s solo shifts',
+      ]},
+      cl:['First solo shift completed — no escalations','Two walkthroughs per week maintained for 6+ weeks',
+          'Process improvement idea presented to Raghdah','≥6 total evidence entries (Q1+Q2 combined)'],
+      compGroups:[
+        {group:'Resident Experience',comps:[
+          {id:'greeting',name:'Greeting & First Impressions',desc:'Q2: Greets residents proactively — does not wait for them to approach. Remembers preferences and notes them in the system.'},
+          {id:'comms',name:'Communication & Clarity',desc:'Q2: Adapts communication style to the resident — different tone for a complaint vs a general request. No miscommunication incidents.'},
+          {id:'anticipate',name:'Needs Anticipation',desc:'Q2: Anticipates at least 2 recurring resident needs per week and addresses them before being asked.'},
+        ]},
+        {group:'Service Recovery',comps:[
+          {id:'issueid',name:'Issue Identification',desc:'Q2: Catches issues before they become complaints. Notices environmental problems (noise, cleanliness) proactively.'},
+          {id:'escalation',name:'Escalation Judgement',desc:'Q2: Handles tier-1 independently with confidence. Escalates tier-2 with a clear brief — not just "there\'s a problem."'},
+          {id:'followup',name:'Resolution Follow-through',desc:'Q2: Follows up within 24 hours on all open issues. Resident satisfaction confirmed before closure.'},
+        ]},
+        {group:'Building Operations',comps:[
+          {id:'walkthrough',name:'Daily Walkthrough',desc:'Q2: Walkthrough completed before 10am daily. Flags are specific enough that a contractor can act without asking follow-up questions.'},
+          {id:'vendor',name:'Vendor Coordination',desc:'Q2: Briefs vendors directly on the issue. Follows up to confirm completion. No issue goes from "in progress" to "forgotten."'},
+        ]},
+        {group:'Brand & Voice',comps:[
+          {id:'brand',name:'Flow Brand Knowledge',desc:'Q2: Applies brand positioning in difficult conversations — a dissatisfied resident still experiences a Flow interaction.'},
+          {id:'written',name:'Written Communication',desc:'Q2: Messages are responded to within 2 hours during shift. Tone is consistent regardless of the resident\'s mood.'},
+        ]},
+        {group:'Logging & Documentation',comps:[
+          {id:'sysacc',name:'System Accuracy',desc:'Q2: Zero missing or incomplete logs. Retroactive edits require AGM sign-off.'},
+          {id:'evidence',name:'Evidence Quality',desc:'Q2: Evidence entries cite specific dates, interactions, and outcomes. At least 3 new entries added this quarter.'},
+        ]},
+      ],
+      decision:{title:'Q2 Decision',advance:'All competencies ≥2.5. Solo shifts running without escalation. ≥6 cumulative evidence entries. Proceed to Q3.',
+        extend:'1–2 competencies below 2.0 OR solo shifts still require AGM calls. Extend by 4 weeks.',
+        review:'Consistent resident complaints during solo shifts OR evidence log not maintained. Full review with Saad.'}
+    },
+    { title:'Proving Ownership', theme:'Proving Ownership', period:'Dec–Mar 2027',
+      tagline:'Own at least one process end-to-end — from start to finish, without prompting.',
+      callout:'Ownership means nobody reminds you. You notice, you act, you close, you document.',
+      focus:[
+        'Run the new-resident welcome process independently for all move-ins this quarter',
+        'Lead one community activation — can be small: coffee morning, notice board refresh, package collection drive',
+        'Proactively identify and log a recurring maintenance issue before it becomes a resident complaint',
+        'Complete one full week of operation with no escalations and no reminders from Raghdah',
+      ],
+      agm:{name:'Raghdah Safar',label:'AGM · Monthly Actions',
+        acts:[
+          {when:'Month 1',text:'Hand over the new-resident welcome process to Beesan in writing. She is the owner — you are the backup.'},
+          {when:'Monthly',text:'Review evidence log. Ask: "What did you own completely this month that you didn\'t own in Q2?" Expect a specific answer.'},
+          {when:'End of Q3',text:'Prepare the Q3 rating brief for Saad. Include one concrete example of ownership that demonstrates Q4 readiness.'},
+        ]},
+      gm:{name:'Saad Alajmi',label:'GM · Monthly Actions', acc:[1],
+        acts:[
+          {when:'Month 1',text:'Ask Raghdah which process Beesan now fully owns. If the answer is "none yet" — that is the Q3 blocker to fix immediately.'},
+          {when:'End of Q3',text:'Read Raghdah\'s rating brief before scoring. Rate all competencies. Sign Q3 decision.'},
+        ]},
+      warn:{title:'Warning Signals — Q3',acts:[
+        'Beesan cannot name one process she owns end-to-end by Month 2 of Q3',
+        'Community activation not initiated by Month 2 — waiting to be told',
+        'Raghdah still sending daily reminders — ownership not transferred',
+        'Recurring maintenance issue logged only after becoming a complaint',
+      ]},
+      cl:['New-resident welcome process owned end-to-end for full quarter','Community activation planned and completed',
+          'Recurring maintenance issue identified proactively — not reactively','Full week of zero escalations and zero reminders completed',
+          '≥9 total evidence entries (Q1+Q2+Q3 combined)'],
+      compGroups:[
+        {group:'Resident Experience',comps:[
+          {id:'greeting',name:'Greeting & First Impressions',desc:'Q3: Recognised by name by most residents. Tone and presence are consistent across all interaction types.'},
+          {id:'comms',name:'Communication & Clarity',desc:'Q3: Leads difficult conversations calmly and constructively. Resident leaves the interaction feeling heard, even if the answer was no.'},
+          {id:'anticipate',name:'Needs Anticipation',desc:'Q3: Runs a monthly proactive outreach to residents (check-in, upcoming events, maintenance reminders) without being prompted.'},
+        ]},
+        {group:'Service Recovery',comps:[
+          {id:'issueid',name:'Issue Identification',desc:'Q3: Has created at least one systemic fix — not just resolving individual issues but identifying root causes.'},
+          {id:'escalation',name:'Escalation Judgement',desc:'Q3: Escalations are rare and well-briefed. AGM receives full context — problem, options considered, recommended path.'},
+          {id:'followup',name:'Resolution Follow-through',desc:'Q3: Resident satisfaction loop is closed for every issue. Can produce a 3-month trend of open vs closed issues.'},
+        ]},
+        {group:'Building Operations',comps:[
+          {id:'walkthrough',name:'Daily Walkthrough',desc:'Q3: Walkthrough includes a monthly trend note — not just today\'s issues, but "this corridor has had 3 lighting issues in 8 weeks."'},
+          {id:'vendor',name:'Vendor Coordination',desc:'Q3: Manages vendor relationships independently. Knows lead times, quality standards, and escalation contacts for all regular contractors.'},
+        ]},
+        {group:'Brand & Voice',comps:[
+          {id:'brand',name:'Flow Brand Knowledge',desc:"Q3: Acts as an informal brand ambassador — newcomers to the building have a clear sense of Flow's identity from Beesan's interactions."},
+          {id:'written',name:'Written Communication',desc:'Q3: Drafts resident communications (notices, updates, follow-up messages) that require minimal edits from Raghdah.'},
+        ]},
+        {group:'Logging & Documentation',comps:[
+          {id:'sysacc',name:'System Accuracy',desc:'Q3: System is the record of truth — anything said in a conversation is logged the same day.'},
+          {id:'evidence',name:'Evidence Quality',desc:'Q3: Evidence entries tell a story of ownership — not just "I did X" but "I noticed Y, did X, and the outcome was Z."'},
+        ]},
+      ],
+      decision:{title:'Q3 Decision',advance:'All competencies ≥3.0. Owns at least one process end-to-end. ≥9 cumulative evidence entries. Community activation completed. Proceed to Q4 Gate.',
+        extend:'Ownership not demonstrated on any process. Extend Q3 by 6 weeks with specific ownership handover agreement.',
+        review:'Competencies declining from Q2. No evidence of independent initiative. Full programme review required.'}
+    },
+    { title:'Promotion Gate', theme:'Promotion Gate', period:'Mar–Jun 2027', gate:true,
+      tagline:'Demonstrate you are ready to operate as a full RX Associate — independently and consistently.',
+      callout:'The gate is not a test — it is a confirmation of work already done. If Q1–Q3 went well, this is a formality.',
+      focus:[
+        'All 5 competency groups rated ≥3.5 average across all quarters',
+        'Buddy rating submitted and ≥3.5',
+        'External reviewer rating submitted and ≥3.5',
+        'Evidence log shows ≥12 entries total across all 4 quarters',
+        'Zero unresolved resident complaints in the last 30 days',
+      ],
+      agm:{name:'Raghdah Safar',label:'AGM · Gate Responsibilities',
+        acts:[
+          {when:'Week 1 of Q4',text:'Complete the Buddy Rating form — be specific, cite examples, do not round up or be vague.'},
+          {when:'Week 2 of Q4',text:'Coordinate the external reviewer — brief them on the IDP structure and what a 3.5 looks like.'},
+          {when:'Gate Meeting',text:'Present your Q1–Q3 summary to Saad. Your recommendation carries weight — be honest.'},
+        ]},
+      gm:{name:'Saad Alajmi',label:'GM · Gate Responsibilities',
+        acts:[
+          {when:'Week 1 of Q4',text:'Review all evidence entries. Count them. If <12, this is a flag to discuss before the gate.'},
+          {when:'Gate Meeting',text:'Rate all competencies independently. Listen to Raghdah\'s summary. Make the final call.'},
+          {when:'Decision',text:'Communicate the outcome to Beesan directly and in writing within 48 hours of the gate meeting.'},
+        ]},
+      external:[
+        {label:'Buddy Rating — L2 Colleague (named by Raghdah in Week 1)', min:3.5},
+        {label:'External Reviewer — Peer GM from a different property (coordinated by Saad)', min:3.5},
+      ],
+      weights:[0.5,0.25,0.25],
+      cl:['12+ evidence entries confirmed across Q1–Q4','Buddy rating submitted','External reviewer rating submitted',
+          'Zero unresolved resident complaints in last 30 days','Q1–Q3 competency averages all ≥3.0',
+          'Raghdah Q1–Q3 summary brief presented to Saad','Gate meeting held with all three parties',
+          'Written decision delivered to Beesan within 48 hours'],
+      compGroups:[
+        {group:'Resident Experience',comps:[
+          {id:'greeting',name:'Greeting & First Impressions',desc:'Gate: Consistent, proactive, warm, and personalised across all 4 quarters. Residents feel recognised.'},
+          {id:'comms',name:'Communication & Clarity',desc:'Gate: No miscommunication incidents. All written comms professional and brand-aligned.'},
+          {id:'anticipate',name:'Needs Anticipation',desc:'Gate: Demonstrated proactive outreach. Can cite 3 examples of anticipating resident needs before being asked.'},
+        ]},
+        {group:'Service Recovery',comps:[
+          {id:'issueid',name:'Issue Identification',desc:'Gate: Has surfaced at least one systemic fix across the year. Issue identification is proactive, not reactive.'},
+          {id:'escalation',name:'Escalation Judgement',desc:'Gate: Escalations are rare, well-briefed, and always accompanied by a recommendation.'},
+          {id:'followup',name:'Resolution Follow-through',desc:'Gate: All issues closed with resident satisfaction confirmed. No open issues >48 hours without a clear owner and timeline.'},
+        ]},
+        {group:'Building Operations',comps:[
+          {id:'walkthrough',name:'Daily Walkthrough',desc:'Gate: Walkthrough is the standard — no gaps, no shortcuts, trend analysis included in monthly notes.'},
+          {id:'vendor',name:'Vendor Coordination',desc:'Gate: Manages all regular vendor relationships independently. AGM not needed in the loop.'},
+        ]},
+        {group:'Brand & Voice',comps:[
+          {id:'brand',name:'Flow Brand Knowledge',desc:'Gate: Can train a new L1 on brand standards from memory. Is the brand reference point for Narjs East.'},
+          {id:'written',name:'Written Communication',desc:'Gate: All resident communications require zero edits from AGM. Tone is consistently Flow.'},
+        ]},
+        {group:'Logging & Documentation',comps:[
+          {id:'sysacc',name:'System Accuracy',desc:'Gate: System is always current. Auditable. No missing entries.'},
+          {id:'evidence',name:'Evidence Quality',desc:'Gate: 12+ entries. Each tells a story of ownership, growth, and initiative.'},
+        ]},
+      ],
+      decision:{title:'Promotion Decision',
+        advance:'Promote to RX Associate (L2). Comp avg ≥3.5, buddy ≥3.5, external ≥3.5. All gate checklist items complete.',
+        extend:'Overall score 3.0–3.4. Extend by one additional quarter with a specific target to hit for re-gate.',
+        review:'Score <3.0 OR gate checklist items not complete. Return to Q3 level with a revised development plan.'}
+    },
+  ]
+};
+// <<ALI>>
+function makeL2(name, initials, status){
+  const color='#C8853A', light='#FAEEE8', dark='#6B2210';
+  return {
+    name, initials, prop:'Narjs East', from:'RX Associate', to:'Senior RX Associate',
+    agm:'Raghdah Safar', gm:'Saad Alajmi',
+    color, light, dark, status,
+    qs:[
+      { title:'Building Ownership', theme:'Building Ownership', period:'Q1 · 3 months',
+        tagline:'Take ownership beyond the task list — start thinking like a senior, not an executor.',
+        callout:'The shift from L2 to L3 is not about doing more tasks. It is about owning outcomes.',
+        focus:[
+          'Independently manage one building area — take full responsibility for its standards and issues',
+          'Guide an L1 team member through at least one complete process from start to finish',
+          'Generate a monthly property activity report with your own observations and recommendations',
+          'Identify and fix one recurring process inefficiency — document the before and after',
+        ],
+        agm:{name:'Raghdah Safar',label:'AGM · Monthly Actions',
+          intro:'You are delegating real responsibility — not assigning extra tasks.',
+          acts:[
+            {when:'Week 1',text:'Define which building area or process this person now owns. Write it down. Share it with the whole team.'},
+            {when:'Month 1',text:'Review the first monthly report — not for format, but for the quality of observations. Ask: "What would you do differently next month?"'},
+            {when:'Monthly',text:'Check in on the L1 guidance. Ask: "What specific thing did you teach this month?" Not a general answer.'},
+            {when:'End of Q1',text:'Prepare rating brief for Saad. Include one example of a decision this person made independently.'},
+          ]},
+        gm:{name:'Saad Alajmi',label:'GM · Monthly Actions', acc:[1],
+          acts:[
+            {when:'Week 1',text:'Confirm Raghdah has assigned a specific area of ownership in writing — not just told them verbally.'},
+            {when:'Month 2 NOW',text:'Ask Raghdah: "Has this person made any decision in the last 4 weeks without consulting you?" If no — the ownership hasn\'t landed yet.'},
+            {when:'End of Q1',text:'Review the monthly report. Rate all competencies. Sign Q1 decision.'},
+          ]},
+        warn:{title:'Warning Signals — Q1',acts:[
+          'Monthly report reads like a task log, not an observations document — thinking hasn\'t shifted',
+          'L1 guidance is described in vague terms: "I helped them out" — no specific teaching moment',
+          'Still asking Raghdah for permission on every minor decision within their owned area',
+          'Process inefficiency identified but fix not implemented — stops at diagnosis',
+        ]},
+        cl:['Specific area of ownership assigned in writing and shared with team',
+            'First monthly report submitted with original observations',
+            'L1 guided through one complete process — can describe it specifically',
+            'One process inefficiency identified and fixed — documented'],
+        compGroups:[
+          {group:'Building Ownership',comps:[
+            {id:'areaown',name:'Area Ownership',desc:'Q1: Takes full responsibility for one building area — standards, issues, vendor coordination, and resident feedback related to it.'},
+            {id:'decision',name:'Independent Decision-Making',desc:'Q1: Makes routine decisions within their area without checking with AGM. Flags only when the issue is outside their remit or scope.'},
+            {id:'proactive',name:'Proactive Problem Solving',desc:'Q1: Identifies problems before they surface as complaints. Acts on them. Documents the action taken.'},
+          ]},
+          {group:'Resident & Service',comps:[
+            {id:'seniorres',name:'Senior Resident Handling',desc:'Q1: Handles complex or emotionally charged resident interactions calmly. AGM not needed unless the issue is escalation-level.'},
+            {id:'feedback',name:'Feedback Collection & Action',desc:'Q1: Gathers informal resident feedback proactively. Reports trends — not just individual instances.'},
+          ]},
+          {group:'Team Development',comps:[
+            {id:'l1guide',name:'L1 Guidance',desc:'Q1: Acts as the go-to resource for L1 colleagues on process questions. Answers without creating dependency.'},
+            {id:'standards',name:'Setting Standards',desc:'Q1: Models the standard they expect from others. Does not ask L1 to do anything they wouldn\'t do themselves.'},
+          ]},
+          {group:'Operational Excellence',comps:[
+            {id:'reporting',name:'Reporting Quality',desc:'Q1: Monthly report is structured, specific, and includes at least one recommendation — not just a summary of events.'},
+            {id:'sysuse',name:'System & Documentation',desc:'Q1: System entries are complete, consistent, and detailed enough for someone else to pick up the context.'},
+          ]},
+        ],
+        decision:{title:'Q1 Decision',advance:'All competencies ≥2.5. Area of ownership demonstrated. Monthly report quality above basic summary level. L1 guidance documented. Proceed to Q2.',
+          extend:'Ownership not demonstrated — still operating as a task executor. Extend Q1 with specific ownership transfer agreement.',
+          review:'Competencies flat from L2 baseline. No evidence of proactive action. Full review with Saad and Raghdah.'}
+      },
+      { title:'Supporting Management', theme:'Supporting Management', period:'Q2 · 3 months',
+        tagline:'Step into the gap when Raghdah is unavailable — and be ready to lead a decision, not just relay one.',
+        callout:'This quarter is about building upward trust. Saad and Raghdah need to know you can hold the floor.',
+        focus:[
+          'Cover for Raghdah during at least two full days — log all decisions made',
+          'Lead the weekly team briefing for 4 consecutive weeks',
+          'Handle one L1 performance conversation with Raghdah observing (not intervening)',
+          'Produce a monthly occupancy and activity summary with recommendations',
+        ],
+        agm:{name:'Raghdah Safar',label:'AGM · Monthly Actions',
+          acts:[
+            {when:'Month 1',text:'Plan your first full-day absence. Brief this person on what to expect. Do not check in unless contacted.'},
+            {when:'Month 1',text:'Observe the first weekly team briefing silently. Debrief privately immediately after.'},
+            {when:'Monthly',text:'Review the coverage log from any AGM absence days. Ask: "What decision did you make that you\'re least sure about?"'},
+            {when:'End of Q2',text:'Prepare a Q2 summary for Saad that includes your honest assessment of their readiness to manage a team.'},
+          ]},
+        gm:{name:'Saad Alajmi',label:'GM · Monthly Actions', acc:[2],
+          acts:[
+            {when:'Month 1',text:'Ask Raghdah when the first planned absence day is. If it hasn\'t been scheduled — that\'s the Q2 first action.'},
+            {when:'Month 2',text:'Read the coverage log from the absence day. If no log exists — this is a process gap to fix immediately.'},
+            {when:'End of Q2',text:'Rate all competencies. Review Raghdah\'s team readiness assessment. Sign Q2 decision.'},
+          ]},
+        warn:{title:'Warning Signals — Q2',acts:[
+          'Called Raghdah multiple times on the first absence day — not yet ready to hold the floor',
+          'Team briefing lacks structure — no agenda, items not followed up from previous week',
+          'Coverage log not maintained — decisions made during absence not documented',
+          'Monthly summary reads like a data dump without analysis or recommendations',
+        ]},
+        cl:['Two full AGM absence days covered — decisions logged','Weekly team briefing led for 4 consecutive weeks',
+            'L1 performance conversation conducted with Raghdah observing','Monthly summary with recommendations submitted'],
+        compGroups:[
+          {group:'Building Ownership',comps:[
+            {id:'areaown',name:'Area Ownership',desc:'Q2: Area ownership maintained with zero deterioration during AGM absence days.'},
+            {id:'decision',name:'Independent Decision-Making',desc:'Q2: Made at least one non-routine decision during AGM absence. Can explain the rationale clearly.'},
+            {id:'proactive',name:'Proactive Problem Solving',desc:'Q2: Identified and resolved one issue that arose during an absence day independently.'},
+          ]},
+          {group:'Resident & Service',comps:[
+            {id:'seniorres',name:'Senior Resident Handling',desc:'Q2: Handled a complex resident situation during an AGM absence — outcome satisfactory.'},
+            {id:'feedback',name:'Feedback Collection & Action',desc:'Q2: Monthly summary includes resident feedback trend — not just positive anecdotes.'},
+          ]},
+          {group:'Team Development',comps:[
+            {id:'l1guide',name:'L1 Guidance',desc:'Q2: L1 colleagues seek guidance from this person without being told to. Natural authority is forming.'},
+            {id:'standards',name:'Setting Standards',desc:'Q2: Standards in their area are maintained by the team — not just by this person enforcing them in person.'},
+          ]},
+          {group:'Operational Excellence',comps:[
+            {id:'reporting',name:'Reporting Quality',desc:'Q2: Monthly summary is structured as: situation → trend → recommendation. Not a list of events.'},
+            {id:'sysuse',name:'System & Documentation',desc:'Q2: Coverage log maintained during all absence days. System entries made same-day without exception.'},
+          ]},
+        ],
+        decision:{title:'Q2 Decision',advance:'AGM absence covered successfully. Weekly briefings running independently. Competencies ≥3.0. Proceed to Q3.',
+          extend:'AGM absence coverage had significant gaps or required multiple check-ins. Extend Q2 with a specific handover plan.',
+          review:'Competencies declining or team feedback negative. Full review required before Q3.'}
+      },
+      { title:'Finance & People Leadership', theme:'Finance & People Leadership', period:'Q3 · 3 months',
+        tagline:'Demonstrate financial awareness and the ability to lead a team through a full quarter — independently.',
+        callout:'Senior RX is not just a service role. It is a commercial and people role. This quarter tests both.',
+        focus:[
+          'Review utility bills and flag any anomalies — present findings to Raghdah with a recommendation',
+          'Lead a team retrospective with action items — follow up on all items the following month',
+          'Cover for Raghdah for a full week without check-ins',
+          'Produce a quarterly performance summary for Saad (with Raghdah\'s review, not direction)',
+        ],
+        agm:{name:'Raghdah Safar',label:'AGM · Monthly Actions',
+          acts:[
+            {when:'Month 1',text:'Hand over utility bill review for the quarter. Brief once — do not guide the analysis.'},
+            {when:'Month 2',text:'Plan a full-week absence. Leave a single briefing document. No check-ins unless contacted for a genuine emergency.'},
+            {when:'End of Q3',text:'Review the quarterly performance summary — mark what you would have written differently, not what they got wrong. Use this to calibrate Q4.'},
+          ]},
+        gm:{name:'Saad Alajmi',label:'GM · Monthly Actions', acc:[1,2],
+          acts:[
+            {when:'Month 1',text:'Ask: "What did you find in the utility bill review?" If the answer is vague, dig deeper — this is a financial literacy signal.'},
+            {when:'Month 2',text:'Confirm Raghdah\'s full-week absence is scheduled. Ask for a 2-line status update at the end of each day — not a check-in.'},
+            {when:'End of Q3',text:'Read the quarterly summary before rating. Competencies rated independently — then compare with Raghdah.'},
+          ]},
+        warn:{title:'Warning Signals — Q3',acts:[
+          'Utility bill review flagged nothing — either nothing wrong (confirm) or not actually reviewed carefully',
+          'Full-week AGM absence required multiple check-ins — capacity for independent management in question',
+          'Team retrospective held but action items not followed up the following month',
+          'Quarterly summary is a copy of Raghdah\'s format — no original analysis or perspective',
+        ]},
+        cl:['Utility bill review completed — anomalies flagged and presented','Team retrospective held — action items logged and followed up',
+            'Full AGM absence week covered — check-in log maintained','Quarterly performance summary written and reviewed by Raghdah'],
+        compGroups:[
+          {group:'Building Ownership',comps:[
+            {id:'areaown',name:'Area Ownership',desc:'Q3: Property runs at standard during AGM\'s full-week absence. No deterioration visible in walkthrough logs.'},
+            {id:'decision',name:'Independent Decision-Making',desc:'Q3: Made multiple non-routine decisions during absence week. Can present a decision log with reasoning.'},
+            {id:'proactive',name:'Proactive Problem Solving',desc:'Q3: Identified and resolved a financial or operational issue before it was flagged by management.'},
+          ]},
+          {group:'Resident & Service',comps:[
+            {id:'seniorres',name:'Senior Resident Handling',desc:'Q3: Resident satisfaction maintained or improved during AGM absence week.'},
+            {id:'feedback',name:'Feedback Collection & Action',desc:'Q3: Resident feedback trend shows improvement in at least one area since Q1 baseline.'},
+          ]},
+          {group:'Team Development',comps:[
+            {id:'l1guide',name:'L1 Guidance',desc:'Q3: L1 team operates to standard during absence week without additional supervision or instruction.'},
+            {id:'standards',name:'Setting Standards',desc:'Q3: Can articulate the property standard in one paragraph — and team members can confirm they know it.'},
+          ]},
+          {group:'Operational Excellence',comps:[
+            {id:'reporting',name:'Reporting Quality',desc:'Q3: Quarterly summary is executive-ready — Saad could share it with senior leadership without editing.'},
+            {id:'sysuse',name:'System & Documentation',desc:'Q3: Financial review documented with methodology and sources. Not just conclusions.'},
+          ]},
+        ],
+        decision:{title:'Q3 Decision',advance:'Full AGM absence covered. Financial review completed. Competencies ≥3.0 across all groups. Proceed to Q4 Senior Readiness Gate.',
+          extend:'AGM absence week not manageable independently. Extend Q3 — plan for a second full-week absence before gating.',
+          review:'Financial awareness absent OR team deteriorated during absence week. Return to Q2 baseline with a revised plan.'}
+      },
+      { title:'Senior Readiness Gate', theme:'Senior Readiness Gate', period:'Q4 · 3 months', gate:true,
+        tagline:'Demonstrate you are ready to be the operational anchor of Narjs East when Raghdah is unavailable.',
+        callout:'The gate confirms one thing: can this person hold the property to standard when the AGM is out for 2 weeks?',
+        focus:[
+          'All competency groups rated ≥3.5 across the programme',
+          'Buddy rating (peer GM) ≥3.5',
+          'External reviewer (Saad independently) ≥3.5',
+          'Evidence log ≥12 entries — each demonstrating ownership or independent decision',
+          'Full AGM absence of 2 weeks covered with zero deterioration',
+        ],
+        agm:{name:'Raghdah Safar',label:'AGM · Gate Responsibilities',
+          acts:[
+            {when:'Week 1 of Q4',text:'Complete your assessment independently — do not discuss with Saad first. Be specific with examples.'},
+            {when:'Week 2 of Q4',text:'Coordinate the peer reviewer (a GM or Senior RX from another property). Brief them on the programme.'},
+            {when:'Gate Meeting',text:'Present a 2-week absence plan — what would you hand over? Is this person ready to hold it?'},
+          ]},
+        gm:{name:'Saad Alajmi',label:'GM · Gate Responsibilities',
+          acts:[
+            {when:'Week 1 of Q4',text:'Confirm ≥12 evidence entries across all 4 quarters. If <12 — address before the gate.'},
+            {when:'Gate Meeting',text:'Rate all competencies independently (before seeing Raghdah\'s assessment). Compare after.'},
+            {when:'Decision',text:'Communicate the outcome in writing within 48 hours. If promoted, update the team structure the same day.'},
+          ]},
+        external:[
+          {label:'Peer Rating — Senior RX or GM from another property (coordinated by Raghdah)', min:3.5},
+          {label:'Independent Assessment — Saad Alajmi, rated without consulting Raghdah first', min:3.5},
+        ],
+        weights:[0.5,0.25,0.25],
+        cl:['12+ evidence entries across Q1–Q4','Peer rating submitted','Saad independent assessment complete',
+            '2-week AGM absence covered with zero deterioration','Financial review and team retrospective completed in Q3',
+            'Quarterly performance summary written and approved','Gate meeting held','Written decision within 48 hours'],
+        compGroups:[
+          {group:'Building Ownership',comps:[
+            {id:'areaown',name:'Area Ownership',desc:'Gate: Full property maintained to standard for 2 weeks without AGM. Demonstrable.'},
+            {id:'decision',name:'Independent Decision-Making',desc:'Gate: Decision log from absence weeks shows a range of non-routine decisions — all sound.'},
+            {id:'proactive',name:'Proactive Problem Solving',desc:'Gate: At least one systemic fix implemented across the programme — not just individual issue resolution.'},
+          ]},
+          {group:'Resident & Service',comps:[
+            {id:'seniorres',name:'Senior Resident Handling',desc:'Gate: Complex interactions handled without AGM involvement throughout Q3–Q4.'},
+            {id:'feedback',name:'Feedback Collection & Action',desc:'Gate: Resident satisfaction trend positive across the programme. Can cite specific improvements driven.'},
+          ]},
+          {group:'Team Development',comps:[
+            {id:'l1guide',name:'L1 Guidance',desc:'Gate: L1 team has improved measurably under this person\'s guidance across the programme.'},
+            {id:'standards',name:'Setting Standards',desc:'Gate: Standards documented and maintained by the team — not just enforced by this person.'},
+          ]},
+          {group:'Operational Excellence',comps:[
+            {id:'reporting',name:'Reporting Quality',desc:'Gate: All reports across the programme have been executive-ready without Raghdah\'s structural guidance.'},
+            {id:'sysuse',name:'System & Documentation',desc:'Gate: Documentation is auditable, complete, and detailed enough for a new AGM to understand the property state instantly.'},
+          ]},
+        ],
+        decision:{title:'Promotion Decision',
+          advance:'Promote to Senior RX Associate (L3). All competencies ≥3.5. Gate checklist complete. Peer and independent ratings ≥3.5.',
+          extend:'Score 3.0–3.4. Extend by one quarter. Specific competency gap named and action plan agreed.',
+          review:'Score <3.0 OR AGM absence not manageable. Return to Q2 baseline. Programme structure reviewed with Saad.'}
+      },
+    ]
+  };
+}
+
+EMPLOYEES.ali   = makeL2('Ali Nour',     'AL', 'suggested');
+// <<RAWAN>>
+EMPLOYEES.rawan = makeL2('Rawan Alattas','RA', 'suggested');
+// <<RAKAN>>
+EMPLOYEES.rakan = {
+  name:'Rakan Shisha', initials:'RK', prop:'Narjs East',
+  from:'Senior RX Associate', to:'Assistant General Manager',
+  agm:'Raghdah Safar', gm:'Saad Alajmi',
+  color:'#7C5CBF', light:'#EEEDFE', dark:'#26215C',
+  status:'priority',
+  qs:[
+    { title:'Leadership Foundations', theme:'Leadership Foundations', period:'Q1 · 3 months',
+      tagline:'Begin operating like a deputy — not a senior team member. The gap between Senior RX and AGM is a mindset shift, not a task list.',
+      callout:'Raghdah is your mentor this quarter, not your manager. You will shadow, then shadow while doing, then do with Raghdah observing.',
+      focus:[
+        'Take ownership of one AGM responsibility per month — rotate across: vendor oversight, team 1-on-1s, incident log review',
+        'Conduct structured monthly 1-on-1s with all L1 and L2 team members — document key points',
+        'Complete the CAPEX log for your assigned area — zero missed entries across the quarter',
+        'Shadow Raghdah in 3 vendor or operational meetings — take notes, ask one question per meeting',
+      ],
+      agm:{name:'Raghdah Safar',label:'AGM · Mentor Role — Q1',
+        intro:'You are not managing Rakan this quarter. You are deliberately creating space for him to grow into your role.',
+        acts:[
+          {when:'Week 1',text:'Define the 3 AGM responsibilities Rakan will rotate through. Write them down. Share expectations for each in writing.'},
+          {when:'Monthly',text:'Debrief after each responsibility handover: what went well, what would you have done differently, what did you learn?'},
+          {when:'Month 2',text:'Observe Rakan in a vendor meeting without intervening. Debrief after. Ask: "What would you do differently if you were the AGM in that room?"'},
+          {when:'End of Q1',text:'Write a candid Q1 brief for Saad: is Rakan ready to expand responsibility in Q2, or does he need more time in one area?'},
+        ]},
+      gm:{name:'Saad Alajmi',label:'GM · Q1 Oversight',acc:[1],
+        acts:[
+          {when:'Week 1',text:'Confirm with Raghdah that the 3 rotating responsibilities are defined in writing and communicated to Rakan.'},
+          {when:'Month 2 NOW',text:'Ask Rakan directly: "What have you learned in the last 4 weeks that you didn\'t know as Senior RX?" A specific, reflective answer is a green flag.'},
+          {when:'End of Q1',text:'Read Raghdah\'s Q1 brief before rating. Rate competencies. Sign Q1 decision.'},
+        ]},
+      warn:{title:'Warning Signals — Q1',acts:[
+        'CAPEX log not maintained — operational discipline not at AGM level',
+        '1-on-1 notes describe conversations, not insights or action items — listening but not leading',
+        'Rakan describes the vendor meetings as "just observing" by Month 2 — mindset shift not happening',
+        'Raghdah still prompting every step — Rakan waiting to be told rather than seeking to own',
+      ]},
+      cl:['Three rotating AGM responsibilities defined in writing','Monthly 1-on-1s with all L1/L2 team — notes documented',
+          'CAPEX log maintained with zero gaps','Three vendor/operational meetings observed — questions asked in each'],
+      compGroups:[
+        {group:'Leadership & People',comps:[
+          {id:'1on1',name:'1-on-1 Quality',desc:'Q1: 1-on-1s are structured — preparation visible, notes specific, action items assigned and followed up. Not just a check-in conversation.'},
+          {id:'authority',name:'Natural Authority',desc:'Q1: Team seeks Rakan\'s input on non-routine matters without being told to. Authority is emerging organically.'},
+        ]},
+        {group:'Operational Excellence',comps:[
+          {id:'capex',name:'CAPEX & Financial Logging',desc:'Q1: CAPEX log complete, accurate, and submitted on time. No entries missing or approximate.'},
+          {id:'standards',name:'Maintaining Standards',desc:'Q1: Property standards maintained at Raghdah\'s level during any periods of responsibility. No deterioration.'},
+        ]},
+        {group:'Financial Literacy',comps:[
+          {id:'bills',name:'Cost Awareness',desc:'Q1: Can identify the top 3 cost drivers for the property. Knows where anomalies tend to appear.'},
+          {id:'budget',name:'Budget Understanding',desc:'Q1: Has reviewed the property budget with Raghdah. Can explain where the property is tracking vs plan.'},
+        ]},
+        {group:'Resident Strategy',comps:[
+          {id:'nps',name:'NPS & Satisfaction Ownership',desc:'Q1: Knows the current NPS score and the top 2 resident satisfaction drivers — and can explain what is being done about them.'},
+          {id:'proact',name:'Proactive Experience Design',desc:'Q1: Has proposed at least one initiative to improve resident experience that goes beyond standard operations.'},
+        ]},
+        {group:'Communication & Influence',comps:[
+          {id:'upward',name:'Upward Communication',desc:'Q1: Communicates with Saad in executive format — situation, key points, recommendation. Not a list of what happened.'},
+          {id:'crossteam',name:'Cross-Team Awareness',desc:'Q1: Knows how Narjs East\'s performance compares to other properties. Can identify one lesson from another property.'},
+        ]},
+      ],
+      decision:{title:'Q1 Decision',advance:'Three rotating responsibilities owned without Raghdah prompting. 1-on-1s documented. CAPEX log complete. Competencies ≥2.5. Proceed to Q2.',
+        extend:'One or more responsibilities not transferred — Raghdah still running them. Extend Q1 with a clearer handover plan.',
+        review:'CAPEX log incomplete OR 1-on-1s not conducted. Fundamental discipline gaps — full review required.'}
+    },
+    { title:'Operational Command', theme:'Operational Command', period:'Q2 · 3 months',
+      tagline:'Run the building with Raghdah in the background, not the foreground. You are first call, she is backup.',
+      callout:'This quarter, Raghdah\'s job is to become harder to reach — and Rakan\'s job is to need her less.',
+      focus:[
+        'Lead the weekly team briefing every week — Raghdah attends but does not speak unless directly asked',
+        'Handle all vendor escalations independently — Raghdah only notified after resolution',
+        'Produce the monthly property performance summary for Saad — Raghdah reviews, does not rewrite',
+        'Cover for Raghdah for a full week — no check-ins, decision log maintained',
+      ],
+      agm:{name:'Raghdah Safar',label:'AGM · Backstep Role — Q2',
+        intro:'Your goal this quarter is to become the backup, not the lead. Silence in team meetings is the measure.',
+        acts:[
+          {when:'Week 1',text:'Announce to the team: "Rakan leads the weekly briefing from now on." Do not chair it, do not signal corrections — debrief privately.'},
+          {when:'Monthly',text:'Review the vendor escalation log. Count how many were resolved before you were notified. That number should increase month to month.'},
+          {when:'Month 2',text:'Plan and execute a full-week absence. Leave one briefing document — nothing else. Review the decision log on return.'},
+          {when:'End of Q2',text:'Write the Q2 brief for Saad: in what specific situations does Rakan still need you? This is what Q3 targets.'},
+        ]},
+      gm:{name:'Saad Alajmi',label:'GM · Q2 Oversight',acc:[0,2],
+        acts:[
+          {when:'Week 1',text:'Confirm that Rakan is now leading weekly briefings — not co-leading, not supporting. Leading.'},
+          {when:'End of Q2',text:'Read Rakan\'s performance summary before Raghdah\'s assessment. Compare your independent read with hers. The gap tells you something.'},
+          {when:'Sign-off',text:'Rate all competencies. Read the vendor escalation log. Sign Q2 decision.'},
+        ]},
+      warn:{title:'Warning Signals — Q2',acts:[
+        'Raghdah speaks more than twice in the first weekly briefing of the quarter — handover not real',
+        'Vendor escalations are still being routed to Raghdah first — Rakan is not first call yet',
+        'Performance summary requires significant rewriting — executive communication not yet there',
+        'Decision log during absence week is thin or general — decisions not being made',
+      ]},
+      cl:['Weekly briefing led every week — Raghdah silent role confirmed','All vendor escalations handled before Raghdah notified',
+          'Monthly performance summary reviewed (not rewritten) by Raghdah','Full-week absence covered — decision log maintained'],
+      compGroups:[
+        {group:'Leadership & People',comps:[
+          {id:'1on1',name:'1-on-1 Quality',desc:'Q2: 1-on-1s now drive measurable changes in team member behaviour. Can point to one specific improvement per team member.'},
+          {id:'authority',name:'Natural Authority',desc:'Q2: Team routes questions to Rakan by default — Raghdah is no longer first contact for operational matters.'},
+        ]},
+        {group:'Operational Excellence',comps:[
+          {id:'capex',name:'CAPEX & Financial Logging',desc:'Q2: CAPEX log submitted independently on time for the third consecutive month.'},
+          {id:'standards',name:'Maintaining Standards',desc:'Q2: Property standards maintained during full AGM absence week. Walkthrough logs confirm no deterioration.'},
+        ]},
+        {group:'Financial Literacy',comps:[
+          {id:'bills',name:'Cost Awareness',desc:'Q2: Flagged one cost anomaly or vendor pricing issue. Presented it to Saad with a recommendation.'},
+          {id:'budget',name:'Budget Understanding',desc:'Q2: Can speak to the property\'s budget tracking position in a 2-minute briefing without notes.'},
+        ]},
+        {group:'Resident Strategy',comps:[
+          {id:'nps',name:'NPS & Satisfaction Ownership',desc:'Q2: NPS trend moving positively. Can trace at least one improvement to a specific initiative this person led.'},
+          {id:'proact',name:'Proactive Experience Design',desc:'Q2: One resident experience initiative proposed in Q1 is now implemented and measured.'},
+        ]},
+        {group:'Communication & Influence',comps:[
+          {id:'upward',name:'Upward Communication',desc:'Q2: Monthly performance summary is structured, specific, and ready for Saad without editorial rework.'},
+          {id:'crossteam',name:'Cross-Team Awareness',desc:'Q2: Attended or contributed to one cross-property discussion. Brought a perspective from Narjs East.'},
+        ]},
+      ],
+      decision:{title:'Q2 Decision',advance:'Weekly briefings led independently. Vendor escalations handled before Raghdah. Absence week covered. Competencies ≥3.0. Proceed to Q3.',
+        extend:'AGM absence week required check-ins OR performance summary needs rewriting. Extend Q2 with a specific handover target.',
+        review:'Team briefing not real — Raghdah still leading in practice. Return to Q1 handover process.'}
+    },
+    { title:'Strategic Influence', theme:'Strategic Influence', period:'Q3 · 3 months',
+      tagline:'Demonstrate impact beyond Narjs East. An AGM is not just a property manager — they shape culture, systems, and people.',
+      callout:'If Q2 was about running the building, Q3 is about improving it — and helping improve something beyond it.',
+      focus:[
+        'Propose and execute one property improvement that Saad approves — measurable outcome agreed upfront',
+        'Support one cross-property initiative — attend as a Narjs East representative, contribute a specific insight',
+        'Mentor one L2 team member through a full quarter — document the plan and outcomes',
+        'Cover for Raghdah for 2 full weeks — property at standard on return, confirmed by walkthrough',
+      ],
+      agm:{name:'Raghdah Safar',label:'AGM · Advisory Role — Q3',
+        intro:'You are now an advisor, not a manager. Rakan should be consulting you by choice, not by protocol.',
+        acts:[
+          {when:'Month 1',text:'Approve the property improvement proposal — but let Rakan define it. Ask one question: "How will we know if this worked?"'},
+          {when:'Month 2',text:'Plan a 2-week absence. The only check-in: a 5-minute call on Day 7 — to confirm you\'re not needed, not to guide.'},
+          {when:'End of Q3',text:'Write a 2-paragraph Q3 brief for Saad: what would you trust Rakan to do without you, and what wouldn\'t you trust yet?'},
+        ]},
+      gm:{name:'Saad Alajmi',label:'GM · Q3 Oversight',acc:[0,1],
+        acts:[
+          {when:'Month 1',text:'Approve the property improvement proposal. Agree on the measurable outcome before Rakan begins. Review at Q4 gate.'},
+          {when:'Month 2',text:'Ask Rakan to brief you on the cross-property initiative after he attends. Expect a structured brief — situation, contribution, takeaway.'},
+          {when:'End of Q3',text:'Rate all competencies independently before reading Raghdah\'s brief. Sign Q3 decision.'},
+        ]},
+      warn:{title:'Warning Signals — Q3',acts:[
+        'Property improvement proposal is vague — no measurable outcome agreed — not yet thinking at AGM level',
+        'Cross-property initiative contribution is passive ("I attended") — no specific insight or action from Narjs East',
+        'L2 mentoring is described as "checking in" — no documented plan or measurable outcomes',
+        '2-week absence required the Day 7 call to extend — not yet fully independent',
+      ]},
+      cl:['Property improvement proposal approved with measurable outcome defined','Cross-property initiative attended — specific contribution made',
+          'L2 mentoring plan documented — outcomes tracked across the quarter',
+          '2-week AGM absence covered — confirmed by walkthrough on return'],
+      compGroups:[
+        {group:'Leadership & People',comps:[
+          {id:'1on1',name:'1-on-1 Quality',desc:'Q3: L2 mentee shows measurable improvement. Rakan can point to a specific before/after.'},
+          {id:'authority',name:'Natural Authority',desc:'Q3: Team\'s performance improves during the 2-week absence — not just maintained. This is AGM-level authority.'},
+        ]},
+        {group:'Operational Excellence',comps:[
+          {id:'capex',name:'CAPEX & Financial Logging',desc:'Q3: Financial logging at full standard during both AGM absence periods. Zero corrections required.'},
+          {id:'standards',name:'Maintaining Standards',desc:'Q3: Property walkthrough on return from 2-week absence shows full standard — no catch-up required.'},
+        ]},
+        {group:'Financial Literacy',comps:[
+          {id:'bills',name:'Cost Awareness',desc:'Q3: Property improvement proposal includes a cost-benefit analysis — even if simple.'},
+          {id:'budget',name:'Budget Understanding',desc:'Q3: Can present a 3-month rolling budget view for the property from memory — not from reading the sheet.'},
+        ]},
+        {group:'Resident Strategy',comps:[
+          {id:'nps',name:'NPS & Satisfaction Ownership',desc:'Q3: NPS score has improved or held since Q1 baseline. One initiative is directly credited.'},
+          {id:'proact',name:'Proactive Experience Design',desc:'Q3: Property improvement initiative is measurable and on track. Outcome visible by Q4 gate.'},
+        ]},
+        {group:'Communication & Influence',comps:[
+          {id:'upward',name:'Upward Communication',desc:'Q3: Cross-property contribution brief presented to Saad — structured, specific, actionable.'},
+          {id:'crossteam',name:'Cross-Team Awareness',desc:'Q3: Cross-property insight brought back to Narjs East and applied — not just shared as information.'},
+        ]},
+      ],
+      decision:{title:'Q3 Decision',advance:'2-week absence covered. Property improvement on track. Competencies ≥3.0. L2 mentoring documented. Proceed to Q4 AGM Readiness Gate.',
+        extend:'2-week absence required guidance. Extend Q3 — plan for a second 2-week absence before gating.',
+        review:'Property improvement undefined OR mentoring not executed. Fundamental readiness gap — return to Q2.'}
+    },
+    { title:'AGM Readiness Gate', theme:'AGM Readiness Gate', period:'Q4 · 3 months', gate:true,
+      tagline:'One question: can Rakan hold this property to standard if Raghdah moves on tomorrow?',
+      callout:'The gate is not about potential — it is about demonstrated capability across 12 months of increasing responsibility.',
+      focus:[
+        'All competency groups rated ≥3.5 across the programme',
+        'Cross-property peer rating ≥3.5',
+        'Saad independent rating ≥3.5',
+        'Evidence log ≥12 entries — each demonstrating leadership or independent decision',
+        'Property improvement outcome confirmed and measured',
+      ],
+      agm:{name:'Raghdah Safar',label:'AGM · Gate Responsibilities',
+        acts:[
+          {when:'Week 1',text:'Write your gate assessment independently before the meeting. Be specific — what can Rakan do, what can\'t he do yet?'},
+          {when:'Week 2',text:'Coordinate the peer reviewer — a GM or AGM from another property, briefed on the programme structure.'},
+          {when:'Gate Meeting',text:'Present the Q1–Q3 journey. Where did Rakan surprise you? Where is the remaining gap? Be candid.'},
+        ]},
+      gm:{name:'Saad Alajmi',label:'GM · Gate Decision',acc:[0,1,2],
+        acts:[
+          {when:'Week 1',text:'Confirm ≥12 evidence entries. Review the property improvement outcome — was the agreed measurable target met?'},
+          {when:'Gate Meeting',text:'Rate all competencies independently. Compare with Raghdah\'s assessment. Divergence >0.5 on any competency triggers a discussion.'},
+          {when:'Decision',text:'Communicate outcome in writing within 48 hours. If promoted: update org structure and brief the team the same day.'},
+        ]},
+      external:[
+        {label:'Peer Rating — AGM or GM from another property (not Narjs East)', min:3.5},
+        {label:'Independent Rating — Saad Alajmi, before seeing Raghdah\'s assessment', min:3.5},
+      ],
+      weights:[0.5,0.25,0.25],
+      cl:['12+ evidence entries across Q1–Q4','Peer rating submitted','Saad independent rating submitted',
+          'Property improvement outcome measured and confirmed','2-week absence covered in Q3 — confirmed by walkthrough',
+          'L2 mentee outcome documented','Gate meeting held with all three parties',
+          'Written decision within 48 hours of gate meeting'],
+      compGroups:[
+        {group:'Leadership & People',comps:[
+          {id:'1on1',name:'1-on-1 Quality',desc:'Gate: All L1 and L2 team members have had structured 1-on-1s throughout the programme. One measurable improvement per team member documented.'},
+          {id:'authority',name:'Natural Authority',desc:'Gate: Team routes all operational questions to Rakan by default. Raghdah is reached only for strategy or exceptions.'},
+        ]},
+        {group:'Operational Excellence',comps:[
+          {id:'capex',name:'CAPEX & Financial Logging',desc:'Gate: Financial logging at full standard across all 4 quarters. Auditable with zero corrections.'},
+          {id:'standards',name:'Maintaining Standards',desc:'Gate: Property performance maintained or improved across all absence periods. No exception.'},
+        ]},
+        {group:'Financial Literacy',comps:[
+          {id:'bills',name:'Cost Awareness',desc:'Gate: Has flagged at least one cost anomaly and driven a resolution. Financial vigilance is proactive.'},
+          {id:'budget',name:'Budget Understanding',desc:'Gate: Can present the property budget position to Saad in a 5-minute briefing — from memory, with context.'},
+        ]},
+        {group:'Resident Strategy',comps:[
+          {id:'nps',name:'NPS & Satisfaction Ownership',desc:'Gate: NPS trend positive. Property improvement initiative delivered a measurable resident-visible outcome.'},
+          {id:'proact',name:'Proactive Experience Design',desc:'Gate: Has designed and executed at least 2 resident experience initiatives across the programme.'},
+        ]},
+        {group:'Communication & Influence',comps:[
+          {id:'upward',name:'Upward Communication',desc:'Gate: All communication with Saad across the programme has been executive-format. No rework needed.'},
+          {id:'crossteam',name:'Cross-Team Awareness',desc:'Gate: Has contributed to one cross-property initiative and brought a learning back to Narjs East with a visible application.'},
+        ]},
+      ],
+      decision:{title:'AGM Promotion Decision',
+        advance:'Promote to Assistant General Manager (L4). All competencies ≥3.5. Gate checklist complete. Peer and Saad ratings ≥3.5.',
+        extend:'Score 3.0–3.4. Extend by one quarter — specific competency gap and action plan agreed before extension.',
+        review:'Score <3.0 OR property deteriorated during absence periods. Return to Q2 baseline. Programme restructured with external input.'}
+    },
+  ]
+};
+// <<INIT>>
+// ── JD-Corrected Competencies & Focus (17/08/2026) ──────────────────────────
+// Source: RX Coordinator, RX Associate, Senior RX Associate, AGM Job Descriptions
+// Key shifts per JD analysis:
+//   L1→L2: "flag and escalate" → "follow through to resolution" | Community +10% | Desk new (31%)
+//   L2→L3: Community drops 35%→1% | Financial/Admin rises | "Assist Management with" is the new standard
+//   L3→L4: "Assist Management with X" → "Execute X" | Deposit accounting, Notices, Briefings, Procurement NEW
+;(function(){
+
+// ── BEESAN L1→L2 ────────────────────────────────────────────────────────────
+const bq={
+  0:{taskcomp:'Q1: Complete all assigned building operational tasks every shift. No skipped items. Flag any task you cannot complete — do not leave it undone silently.',
+     walkthrough:'Q1: Monitor shared spaces and amenities. Flag anything below standard to your Associate with clear location and description before your shift ends.',
+     issueresolution:'Q1: Escalate maintenance and operational issues promptly. Provide location, severity, and timing. The Associate resolves; your job is to flag accurately.',note1:'Target at L2: you will resolve — for now, escalate well.',
+     servicedelivery:'Q1: Deliver warm, responsive service in every resident interaction. Observe how Associates handle the desk: pacing, tone, and the desk-to-floor balance.',
+     followthrough:'Q1: Understand the difference between "logged" and "resolved." After an issue is logged, ask your Associate how they confirm closure.',note2:'Target at L2: you follow through until the resident confirms resolution.',
+     relationships:'Q1: Learn the names of residents in your areas. Greet by name. Note preferences in your log.',
+     commevents:'Q1: Support Associates in community touchpoints. Know what is planned each week. Show up prepared with one specific execution task per event.',
+     welcomeatm:'Q1: Notice when a shared space does not feel right — cleanliness, lighting, setup — and flag it to your Associate before residents notice.',
+     reckeeping:'Q1: Complete all required records during your shift. No missing fields. Ask if unsure rather than leaving blank.',
+     riskaware:'Q1: Learn what "compliant" means for your daily tasks — what can and cannot be skipped, and why.',},
+  1:{taskcomp:'Q2: Complete tasks without being prompted. Understand the purpose behind each task — not just the checklist item.',
+     walkthrough:'Q2: Conduct a structured walkthrough of assigned areas. Log all findings with clear location and time — both issues and clear areas.',
+     issueresolution:'Q2: Resolve simple operational issues independently. Escalate complex ones with your recommended action included.',
+     servicedelivery:'Q2: Take desk shifts with an Associate on-call but not on-site. Handle standard resident requests without support.',
+     followthrough:'Q2: Follow through on at least 3 resident issues per week until the resident confirms resolution. Do not mark an issue closed until they do.',
+     relationships:'Q2: Know the regular patterns and preferences of at least 10 residents. Record them in the system — not just in your head.',
+     commevents:'Q2: Take one concrete ownership role in a community event — resident comms, setup coordination, or follow-up reporting.',
+     welcomeatm:'Q2: Proactively improve the atmosphere in your assigned areas each shift — do not wait to be told.',
+     reckeeping:'Q2: Records complete, accurate, and on time without being prompted. Zero missing fields.',
+     riskaware:'Q2: Flag anything that looks non-compliant or risky — specific and prompt, before it becomes an incident.',},
+  2:{taskcomp:'Q3: Task completion is instinctive. You notice what the shift requires without a checklist. You catch what others miss.',
+     walkthrough:'Q3: Walkthrough findings surface patterns — "this area has had 3 lighting issues in 6 weeks." Not just today\'s issues.',
+     issueresolution:'Q3: You are first call for most building issues in your areas. Escalation is the exception. Associate is backup.',
+     servicedelivery:'Q3: Desk (31%) and floor (69%) balance maintained without direction. You shift between them based on where you are needed.',
+     followthrough:'Q3: Every open resident issue has an owner (you), a timeline, and a follow-up. Nothing sits unresolved past 24 hours.',
+     relationships:'Q3: Residents seek you out proactively. You can name at least 15 residents, their units, and their typical needs from memory.',
+     commevents:'Q3: Plan and run one community event end-to-end without direction — from idea to execution to resident follow-up.',
+     welcomeatm:'Q3: Shared spaces in your areas consistently meet Flow\'s hospitality-grade standard. Residents notice the atmosphere.',
+     reckeeping:'Q3: Records detailed enough for another team member to understand the full context of any open issue immediately.',
+     riskaware:'Q3: Risk awareness is built into how you operate — you notice potential compliance gaps before they become incidents.',},
+  3:{taskcomp:'Gate: Zero incomplete or skipped tasks across the quarter. Task ownership is instinctive and consistent.',
+     walkthrough:'Gate: Walkthrough log is the operational record of truth for your areas — no gaps, trend analysis included.',
+     issueresolution:'Gate: Issues are closed, not just logged. Resident-confirmed resolution rate is at L2 standard across the quarter.',
+     servicedelivery:'Gate: Desk (31%) and floor (69%) balance maintained at standard across all shifts without direction.',
+     followthrough:'Gate: Residents confirm closure before any issue is marked done. No open issue sits unresolved.',
+     relationships:'Gate: You can describe the needs and preferences of at least 15 residents from memory. Retention-driving relationships.',
+     commevents:'Gate: Community activations planned and delivered without direction — idea to execution independently.',
+     welcomeatm:'Gate: Shared spaces meet hospitality-grade standard every shift — not just when checked.',
+     reckeeping:'Gate: Zero incomplete or inaccurate records across the quarter.',
+     riskaware:'Gate: No compliance gaps or incidents related to your areas across the quarter.',},
+};
+function bGroups(q){return[
+  {group:'Building Operations & Issue Resolution',comps:[
+    {id:'taskcomp',name:'Daily Task Completion',desc:bq[q].taskcomp},
+    {id:'walkthrough',name:'Walkthrough & Property Standards',desc:bq[q].walkthrough},
+    {id:'issueresolution',name:'Issue Resolution — Escalation to Closure',desc:bq[q].issueresolution,note:bq[q].note1||undefined},
+  ]},
+  {group:'Neighbour Experience & Follow-Through',comps:[
+    {id:'servicedelivery',name:'Service Delivery — Desk & Floor',desc:bq[q].servicedelivery},
+    {id:'followthrough',name:'Follow-Through to Resolution',desc:bq[q].followthrough,note:bq[q].note2||undefined},
+    {id:'relationships',name:'Relationship Building & Retention',desc:bq[q].relationships},
+  ]},
+  {group:'Community Experience & Activation (25%→35%)',comps:[
+    {id:'commevents',name:'Community Events & Activations',desc:bq[q].commevents},
+    {id:'welcomeatm',name:'Welcoming Atmosphere',desc:bq[q].welcomeatm},
+  ]},
+  {group:'Administration & Records',comps:[
+    {id:'reckeeping',name:'Daily Record-Keeping Accuracy',desc:bq[q].reckeeping},
+    {id:'riskaware',name:'Risk & Compliance Awareness',desc:bq[q].riskaware},
+  ]},
+];}
+EMPLOYEES.beesan.qs[0].focus=['Complete all assigned building operational tasks every shift — no skipped items, no incomplete checklist','Monitor shared spaces and report any issue with clear location, description, and urgency to your Associate','Support Associates in community touchpoints — know what is planned each week and show up with a specific execution task','Observe how Associates serve residents at the desk: the pacing, the standard, and the 31% desk / 69% floor balance'];
+EMPLOYEES.beesan.qs[1].focus=['Begin following through on simple maintenance issues to resolution — not just logging and escalating to your Associate','Take desk shifts independently with Associate on-call; handle standard resident requests without on-site support','Take one concrete ownership role in a community event — setup, resident comms, or post-event follow-up','Conduct structured walkthroughs of assigned areas; log findings with location, priority, and time'];
+EMPLOYEES.beesan.qs[2].focus=['Resolve tier-1 operational issues independently — Associate is backup, not first call','Cover the desk solo for full shifts; maintain the 31% desk / 69% floor balance without direction','Plan and run one community event end-to-end — from concept through execution to resident follow-up','Build trusted relationships with at least 15 residents — name, unit, preferences, and typical needs logged in system'];
+EMPLOYEES.beesan.qs[3].focus=['Operating at 31% desk / 69% floor balance without guidance across all shift types','All maintenance and building issues followed through to resident-confirmed resolution — no exceptions','Community events planned and delivered without direction from Associate or AGM','Records complete, accurate, and on time every shift — zero exceptions across the quarter'];
+[0,1,2,3].forEach(i=>{ EMPLOYEES.beesan.qs[i].compGroups=bGroups(i); });
+
+// ── ALI / RAWAN L2→L3 ───────────────────────────────────────────────────────
+// JD: Community drops 35%→1%. Financial/Admin rises 3%→10%. People appears (2%). Operational Excellence new (5%).
+// Core identity shift: "Assist Management with" replaces "complete independently."
+// L3 is "the operational backbone and management support layer — leasing, finance, facilities, people."
+function l2l3Groups(q){return[
+  {group:'Operational Excellence & Leasing Support',comps:[
+    {id:'opsanchor',name:'Operational Anchoring — 30% Desk / 70% On-Property',
+     desc:{0:'Q1: Run daily building operations at the 30/70 desk-to-property split. You are the operational anchor — not a contributor to someone else\'s anchor.',1:'Q2: Operational anchoring demonstrated during Management absence days. Standard held without direction.',2:'Q3: Full-week Management absence covered at operational standard. On-property presence continuous.',3:'Gate: 30/70 balance maintained consistently across the quarter. Operational anchor confirmed by Management.'}[q]},
+    {id:'leasing',name:'Leasing Coordination Support',
+     desc:{0:'Q1: Learn the leasing coordination process — what flows, what documents are needed, what timelines apply. Shadow the AGM in at least one leasing task.',1:'Q2: Assist Management with leasing coordination independently — unit preparation, move-in coordination, documentation.',2:'Q3: Leasing support runs during Management absence. No coordination gap.',3:'Gate: Leasing coordination assistance reliable — Management delegates without follow-up.'}[q]},
+    {id:'facilities',name:'Facilities & Maintenance Coordination',
+     desc:{0:'Q1: Learn which vendors handle which issues. Understand the path from issue-logged to vendor-dispatched to issue-closed.',1:'Q2: Assist Management with facilities coordination — brief vendors clearly, follow up to confirmed closure.',2:'Q3: Facilities coordination handled independently during absence. No issue falls through.',3:'Gate: Vendor coordination owned end-to-end. Management receives a summary, not a direction request.'}[q]},
+  ]},
+  {group:'Financial Management Basics',comps:[
+    {id:'arap',name:'Accounts Receivable & Payable Processing',
+     desc:{0:'Q1: Learn the AR/AP process — what invoices look like, what receivables tracking involves. Observe AGM processing one of each.',1:'Q2: Assist Management with AR/AP processing — data entry, invoice matching, receivables follow-up with clear AGM oversight.',2:'Q3: Process AR/AP inputs accurately and on time during Management absence. Flag discrepancies before payment.',3:'Gate: AR/AP processing accurate, on time, and audit-ready across the quarter. Management reviews, does not redo.'}[q]},
+    {id:'finreview',name:'Monthly Financial Review Contribution',
+     desc:{0:'Q1: Understand what the monthly financial review covers — what inputs are needed and what the output looks like.',1:'Q2: Contribute accurate, on-time inputs to the monthly financial review. No corrections needed from Management.',2:'Q3: Monthly financial review contributions complete and accurate during Management absence periods.',3:'Gate: Financial review contributions reliable across the quarter. Management submits them with confidence.'}[q]},
+    {id:'plreporting',name:'P&L & Quarterly Reporting Inputs',
+     desc:{0:'Q1: Read the property P&L with the AGM — understand what each line means and where the numbers come from.',1:'Q2: Contribute data inputs to the quarterly management report. Understand what the inputs feed into.',2:'Q3: P&L inputs and quarterly reporting submitted accurately without AGM prompting.',3:'Gate: Reporting inputs complete, accurate, and structured across the quarter. Senior Management can rely on them.'}[q]},
+  ]},
+  {group:'People & Team Support',comps:[
+    {id:'recruitment',name:'Recruitment & Onboarding Assistance',
+     desc:{0:'Q1: Learn the recruitment and onboarding process — the steps, the documents, and what the new-joiner experience should be.',1:'Q2: Assist Management with at least one recruitment or onboarding task — interview scheduling, documentation, or new-joiner orientation.',2:'Q3: Onboarding coordination handled independently for at least one new team member.',3:'Gate: Recruitment and onboarding assistance reliable — Management delegates specific steps without follow-up.'}[q]},
+    {id:'training',name:'Training & Schedule Management',
+     desc:{0:'Q1: Understand the team schedule and training plan — what exists, how it is maintained, who is responsible.',1:'Q2: Support training delivery for L1 team members — shadowing sessions, module sign-offs, skills checks.',2:'Q3: Manage the team schedule for one full week during Management absence. No gaps.',3:'Gate: Training support and schedule management consistent. L1 team progress visible and documented.'}[q]},
+  ]},
+  {group:'Escalated Service & Dispute Resolution',comps:[
+    {id:'escalcomp',name:'Escalated Complaint Resolution',
+     desc:{0:'Q1: Understand what an escalated complaint looks like — why it went beyond L2 and what the resolution process involves. Observe the AGM in one resolution.',1:'Q2: Assist Management in resolving an escalated complaint — resident communication, documentation, and follow-up.',2:'Q3: Handle escalated complaints independently within your remit. AGM notified, not directing.',3:'Gate: Escalated complaints handled to resident satisfaction. Recurrence-prevention action documented in every case.'}[q]},
+    {id:'earlyterm',name:'Early Termination & Dispute Handling',
+     desc:{0:'Q1: Learn what an early termination involves — the documentation, the legal timeline, and the financial implications.',1:'Q2: Assist Management in processing an early termination — documentation, resident communication, financial settlement inputs.',2:'Q3: Early termination documentation prepared accurately and on time with minimal AGM oversight.',3:'Gate: Dispute and termination cases handled to completion — documentation audit-ready, resident communication professional.'}[q]},
+    {id:'nxreview',name:'Neighbour Experience Review Support',
+     desc:{0:'Q1: Attend the weekly neighbour experience review. Understand what is discussed, what is decided, and what actions are assigned.',1:'Q2: Contribute one specific observation or recommendation to the neighbour experience review each week.',2:'Q3: Prepare and present the neighbour experience review summary for a full month during Management absence.',3:'Gate: Contributions to the neighbour experience review are substantive — patterns identified, actions proposed, outcomes tracked.'}[q]},
+  ]},
+  {group:'Reporting & Management Partnership',comps:[
+    {id:'weeklywalk',name:'Weekly Property Walkthrough Support',
+     desc:{0:'Q1: Assist Management with the weekly property walkthrough — learn the route, the standards checklist, and what gets flagged.',1:'Q2: Lead sections of the weekly walkthrough. Flag defects with full context — severity and recommended action, not just location.',2:'Q3: Lead the full weekly walkthrough during Management absence. Defect log submitted on time.',3:'Gate: Weekly walkthrough assistance reliable — Management receives a complete log they can act on without asking follow-up questions.'}[q]},
+    {id:'emergency',name:'Emergency Response Support',
+     desc:{0:'Q1: Learn the emergency response process — who is called, in what order, and what documentation is required.',1:'Q2: Assist Management in an emergency response — documentation, resident communication, vendor coordination.',2:'Q3: Handle emergency first response independently. AGM notified immediately. Documentation complete within the hour.',3:'Gate: Emergency response instinctive — first response, documentation, and resolution follow a consistent standard.'}[q]},
+  ]},
+];}
+function applyL2(emp){
+  emp.qs[0].focus=['Anchor daily building operations at 30% desk / 70% on-property — you are the operational backbone, not a contributor','Learn the AR/AP process: shadow the AGM processing at least one invoice and one receivable this quarter','Attend the weekly property walkthrough and the neighbour experience review — not to observe but to contribute one specific input','Community activations are now 1% of your time — your energy shifts to operations, finance, and management support'];
+  emp.qs[1].focus=['Assist Management with leasing coordination and facilities tasks independently — brief vendors, follow up to closure without prompting','Process AR/AP inputs accurately for the monthly financial review — no corrections required from Management','Lead sections of the weekly property walkthrough and contribute a specific recommendation to the neighbour experience review','Cover for Management for at least two full days — log all decisions made and all issues resolved'];
+  emp.qs[2].focus=['Cover for Management for a full week — operations at standard, AR/AP on time, no handover gaps','Handle one escalated complaint end-to-end — resident satisfaction confirmed, recurrence-prevention action logged','Prepare and present the neighbour experience review summary for a full month without Management direction','Contribute P&L inputs and quarterly reporting data accurately and on time — no corrections needed'];
+  emp.qs[3].focus=['All 5 competency groups rated ≥3.5 across the programme','Financial contributions (AR/AP, monthly review, P&L inputs) reliable and audit-ready — Management does not redo them','Escalated complaints and dispute cases handled to resolution — documentation clean, resident-confirmed','Full Management absence week covered at operational standard — confirmed by walkthrough on return'];
+  [0,1,2,3].forEach(i=>{ emp.qs[i].compGroups=l2l3Groups(i); });
+}
+applyL2(EMPLOYEES.ali);
+applyL2(EMPLOYEES.rawan);
+
+// ── RAKAN L3→L4 ─────────────────────────────────────────────────────────────
+// JD: Every "Assist Management with X" becomes "Execute X" or "Oversee X"
+// NEW at L4: Deposit Accounting | Notices & Warnings (legal timelines) | Procurement & Vendor Reconciliation
+// NEW at L4: Shift Handover + Daily Briefing ownership | Weekly Team Meetings | Community Newsletter
+// Walkthrough: twice per shift, 10:00–11:00 and 18:00–19:00, named SOP in JD
+function rakanGroups(q){return[
+  {group:'Financial & Administrative Ownership',comps:[
+    {id:'depositacct',name:'Deposit Accounting',
+     desc:{0:'Q1: Learn deposit accounting — how deposits are received, held, reconciled, and returned. Review the last 3 move-out settlements with Raghdah.',1:'Q2: Execute deposit accounting for move-outs with Raghdah reviewing. Zero discrepancies. Damage charges documented and agreed by all parties.',2:'Q3: Execute deposit accounting independently. Raghdah reviews, does not redo. All settlements completed within required timeframes.',3:'Gate: All deposit accounting reconciled, accurate, and audit-ready across the quarter. No disputes outstanding.'}[q]},
+    {id:'vendorrec',name:'Vendor Procurement & Invoice Reconciliation',
+     desc:{0:'Q1: Learn the vendor procurement process — how supply is secured, how invoices are matched to contracts, and how discrepancies are raised before payment.',1:'Q2: Reconcile vendor invoices against contracts for the month with Raghdah. Flag one discrepancy before payment is approved.',2:'Q3: Execute vendor reconciliation independently. Discrepancies resolved before payment. No invoice approved without contract match.',3:'Gate: Vendor procurement and reconciliation owned end-to-end. Saad receives a signed-off reconciliation, not a draft for review.'}[q]},
+    {id:'gmreporting',name:'Full GM Reporting — Operational & Financial',
+     desc:{0:'Q1: Understand what the GM reporting package contains — operational, financial, and risk sections. Read last quarter\'s report with Raghdah.',1:'Q2: Draft one section of the GM report independently. Raghdah marks what she would change — not what is wrong.',2:'Q3: Draft the full GM report during Raghdah\'s absence week. Saad receives it on time and reviews without rewriting.',3:'Gate: GM reporting delivered on time, accurate, and compliant across the quarter. Saad relies on it without requesting corrections.'}[q]},
+  ]},
+  {group:'Legal Compliance & Risk Management',comps:[
+    {id:'notices',name:'Notices & Warnings — Legal Execution',
+     desc:{0:'Q1: Learn the Notices & Warnings process — what triggers a notice, what the legal timelines are, and what makes a record audit-ready.',1:'Q2: Draft one notice under Raghdah\'s review. All fields accurate, timeline correct, record audit-ready before it leaves the building.',2:'Q3: Serve notices independently within legal timelines. Raghdah confirms accuracy after, not before.',3:'Gate: All notices and warnings across the quarter served within legal timelines. Audit-ready records maintained without exception.'}[q]},
+    {id:'incidents',name:'Incident Documentation & Risk Management',
+     desc:{0:'Q1: Learn the incident documentation process — what constitutes an incident, how it is logged, who is escalated to, and what the resolution record requires.',1:'Q2: Document one incident end-to-end — log, escalation record, resolution, and risk minimization action.',2:'Q3: All incidents during Raghdah\'s absence documented, escalated, and resolved. Financial and safety risk minimized and recorded.',3:'Gate: No incident left without a complete resolution record and a risk minimization note across the quarter.'}[q]},
+    {id:'guidelines',name:'Community Guidelines Enforcement',
+     desc:{0:'Q1: Know the Community Guidelines — what the rules are, what the enforcement process is, and what documentation is required.',1:'Q2: Issue one Community Guidelines reminder or warning accurately — appropriate tone, correct documentation.',2:'Q3: Community Guidelines enforcement handled independently during Raghdah\'s absence. Records audit-ready.',3:'Gate: Guidelines enforcement consistent and documented across the quarter. Zero unaddressed violations.'}[q]},
+  ]},
+  {group:'Operational Systems & SOP Execution',comps:[
+    {id:'walkthrusop',name:'Daily Property Walkthrough SOP — Twice Per Shift',
+     desc:{0:'Q1: Execute the Daily Property Walkthrough SOP independently — early shift 10:00–11:00 and late shift 18:00–19:00, every shift. Log defects, safety hazards, and cleanliness issues per SOP. Follow up to closure.',1:'Q2: Walkthrough SOP consistent across all shifts. Follow-up to closure confirmed per SOP. Zero missed shifts.',2:'Q3: Walkthrough SOP maintained during Raghdah\'s full-week absence. Saad reviews the defect log on return — no gaps.',3:'Gate: Twice-daily walkthrough executed without exception across the quarter. Defect log is the operational record of truth.',note:'JD specifies exact SOP times: 10:00–11:00 and 18:00–19:00 — non-negotiable standard'}[q]},
+    {id:'shifthover',name:'Shift Handover & Daily Briefing Ownership',
+     desc:{0:'Q1: Execute shift handovers per SOP — no critical building information, overnight incidents, or move-in/move-out priorities lost between shifts. Own the Daily Briefing — teams start shifts with a clear, actionable plan.',1:'Q2: Shift handovers and Daily Briefings run consistently. Every critical item has an owner before the incoming shift begins.',2:'Q3: Shift handovers and briefings at full standard during absence week. Zero handover gaps confirmed.',3:'Gate: Shift handover and Daily Briefing owned every shift. No critical information is ever lost between teams.'}[q]},
+    {id:'housekeeping',name:'Housekeeping & Security Coordination',
+     desc:{0:'Q1: Oversee housekeeping — units and common areas clean, turnover-ready, to standard. Learn the advance communication process for any service that cannot be completed.',1:'Q2: Direct security coordination for continuous coverage across Security, Watch, and RX. No coverage gap.',2:'Q3: Housekeeping and security run at standard during absence week. Saad confirms on return — no catch-up.',3:'Gate: Housekeeping and security coordination consistent across the quarter. Turnover-ready standard maintained.'}[q]},
+  ]},
+  {group:'Team Alignment & Shift Leadership',comps:[
+    {id:'teammeetings',name:'Weekly Team Meetings & Alignment',
+     desc:{0:'Q1: Run the weekly team meeting — RX team aligned on priorities and resident issues, action items assigned, follow-through from the previous week reviewed first.',1:'Q2: Weekly team meetings consistent. Every prior action item reviewed before new ones are assigned.',2:'Q3: Team meetings run independently during Raghdah\'s absence. Team aligned and performing at standard.',3:'Gate: Weekly team alignment owned — team follows through consistently, priorities clear across the quarter.'}[q]},
+    {id:'crossshift',name:'Cross-Shift Coordination',
+     desc:{0:'Q1: Maintain clear coordination across shifts — no critical issue lost, no confusion between incoming and outgoing teams.',1:'Q2: Cross-shift coordination smooth and documented during any absence coverage period.',2:'Q3: All shifts during absence week start with a clear briefing and end with a clean handover. Zero issues fall through.',3:'Gate: Cross-shift coordination institutional — system runs whether or not Raghdah is present.'}[q]},
+    {id:'newsletter',name:'Community Newsletter & Events Calendar',
+     desc:{0:'Q1: Execute the Community Newsletter on schedule — residents informed of building news and events on a consistent cadence.',1:'Q2: Coordinate the community events calendar with the Community Engagement Lead. Events delivered on schedule.',2:'Q3: Newsletter and events coordination maintained independently during absence week. No gap in resident communications.',3:'Gate: Community communications and events calendar owned consistently. Residents informed on schedule without exception.'}[q]},
+  ]},
+  {group:'End-to-End Service Accountability',comps:[
+    {id:'complclosure',name:'Complaint Closure & Recurrence Prevention',
+     desc:{0:'Q1: Acknowledge every complaint, track it to closure, and document one action to prevent recurrence. No complaint acknowledged without a closure plan.',1:'Q2: Complaint pipeline owned — every complaint has an owner, a timeline, and a follow-up. Recurrence rate tracked monthly.',2:'Q3: Complaint closure and recurrence prevention maintained during absence week. Saad sees no escalation on return.',3:'Gate: Every complaint across the quarter acknowledged, tracked, closed. Recurrence-prevention action documented in every case.',note:'JD outcome metric: "recurring issues driven down to lower support volume per occupied unit"'}[q]},
+    {id:'moveops',name:'Move-In & Move-Out Oversight',
+     desc:{0:'Q1: Oversee move-ins — smooth, welcoming arrivals. Resolve unit readiness issues before or at move-in day. Inspect and turn units over after move-out promptly.',1:'Q2: Move-in and move-out managed independently. Deposit documentation accurate, inspections on time.',2:'Q3: Move-in and move-out at full standard during absence week. Vacancy gaps minimized.',3:'Gate: Move-in and move-out oversight owned — every arrival welcoming, every unit turned over promptly and accurately.'}[q]},
+    {id:'serviceown',name:'Full Service Line Ownership',
+     desc:{0:'Q1: Know every service line — packages, billing support, flex-stay, renewals, ancillary services. Understand the standard and the logging requirement for each.',1:'Q2: All service lines running to standard — accurate logging, prompt resident communication, satisfaction confirmed.',2:'Q3: All service lines maintained during absence week. No service line falls below standard.',3:'Gate: Full service line ownership demonstrated consistently. Support volume per unit declining — recurring issues driven down.'}[q]},
+  ]},
+];}
+EMPLOYEES.rakan.qs[0].focus=['Execute the Daily Property Walkthrough SOP independently — early 10:00–11:00 and late 18:00–19:00, every shift','Learn deposit accounting and vendor reconciliation — review last 3 move-out settlements and 3 vendor invoices with Raghdah','Run the weekly team meeting independently — priorities set, action items from last week reviewed first, follow-through tracked','Learn the Notices & Warnings process — what triggers a notice, the legal timeline, and what makes the record audit-ready'];
+EMPLOYEES.rakan.qs[1].focus=['Execute deposit accounting for move-outs with Raghdah reviewing — zero discrepancies, all damage charges documented','Cover for Raghdah for two full days — shift handovers, Daily Briefings, team alignment, and complaint pipeline maintained','Draft one section of the GM report independently — Raghdah marks what she would change, not what is wrong','Reconcile vendor invoices against contracts for the month — flag one discrepancy before payment is approved'];
+EMPLOYEES.rakan.qs[2].focus=['Cover for Raghdah for a full week — twice-daily walkthrough SOP maintained, shift handovers clean, team aligned','Execute vendor reconciliation and deposit accounting independently — Raghdah reviews, does not redo','Draft the full GM report — Saad receives it on time and reviews without rewriting a single section','Handle all complaints to closure, all service lines to standard — Saad sees no escalation on return from the absence week'];
+EMPLOYEES.rakan.qs[3].focus=['All 5 competency groups rated ≥3.5 — demonstrated across Q1–Q3, confirmed at gate','Deposit accounting, vendor reconciliation, and GM reporting owned end-to-end — audit-ready, zero corrections outstanding','Notices, incidents, and Community Guidelines enforcement within legal timelines and documentation standards throughout the quarter','Twice-daily walkthrough SOP, shift handovers, and Daily Briefings maintained without exception across the quarter'];
+[0,1,2,3].forEach(i=>{ EMPLOYEES.rakan.qs[i].compGroups=rakanGroups(i); });
+
+})();
+window.addEventListener('DOMContentLoaded', () => { renderDash(); });
+</script>
+</body>
+</html>
