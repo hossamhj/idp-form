@@ -4,413 +4,594 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>RX Team Structure · Flow</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
+
+/* ── TOKENS ── */
 :root{
-  --cream:#F5F0E8;
-  --cream2:#EDE5D4;
-  --ink:#1A1208;
-  --ink2:#5A4A30;
-  --ink3:#8A7A60;
-  --l5:#2A1810;--l5l:#EDE5DC;--l5m:#A07848;
-  --l4:#354A20;--l4l:#E2EDD6;--l4m:#7A9A48;
-  --l3:#7A5C0C;--l3l:#F5EDD0;--l3m:#C8A030;
-  --l2:#8C2844;--l2l:#F5DDE6;--l2m:#D06088;
-  --l1:#264A7A;--l1l:#DCE8F8;--l1m:#6090D0;
-}
-body{background:var(--cream);font-family:'Inter',sans-serif;color:var(--ink);min-height:100vh}
+  --cream:  #F4EFE6;
+  --cream2: #EAE2D2;
+  --cream3: #DDD3BF;
+  --ink:    #18110A;
+  --ink2:   #4A3A26;
+  --ink3:   #9A8A72;
 
-/* ── PAGE HEADER ── */
-.ph{
+  /* Level palette — extracted from PDF */
+  --c5:  #2C1A0E; /* espresso  */
+  --c4:  #2E4020; /* army olive */
+  --c3:  #7A560A; /* amber-gold */
+  --c2:  #7C2040; /* deep rose  */
+  --c1:  #1A3660; /* steel navy */
+
+  --l5:  #F0E8DF;
+  --l4:  #DDE8D2;
+  --l3:  #F4EBCC;
+  --l2:  #F4DCE6;
+  --l1:  #D8E4F4;
+}
+
+body{
   background:var(--cream);
-  border-bottom:1px solid var(--cream2);
-  text-align:center;
-  padding:52px 24px 36px;
-  position:relative;
-}
-.ph-eyebrow{
-  font-size:10px;letter-spacing:.22em;text-transform:uppercase;
-  color:var(--ink3);margin-bottom:14px;
-}
-.ph-title{
-  font-family:'Playfair Display',serif;font-size:40px;font-weight:700;
-  color:var(--ink);line-height:1.15;margin-bottom:10px;
-}
-.ph-meta{
-  font-size:12px;color:var(--ink3);letter-spacing:.06em;
-}
-.ph-rule{
-  width:48px;height:2px;background:var(--ink2);
-  margin:18px auto 0;border-radius:2px;
+  font-family:'Inter',sans-serif;
+  color:var(--ink);
+  min-height:100vh;
 }
 
-/* ── LEGEND ── */
-.legend{
-  display:flex;justify-content:center;gap:20px;flex-wrap:wrap;
-  padding:18px 24px;border-bottom:1px solid var(--cream2);
-  background:var(--cream);
+/* ── PAGE MASTHEAD ── */
+.masthead{
+  background:var(--ink);
+  color:#fff;
+  padding:56px 48px 48px;
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:24px;
+  flex-wrap:wrap;
 }
-.leg-item{display:flex;align-items:center;gap:7px;font-size:11px;color:var(--ink2)}
-.leg-sq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+.mh-left{}
+.mh-eyebrow{
+  font-size:10px;letter-spacing:.28em;text-transform:uppercase;
+  color:rgba(255,255,255,.45);margin-bottom:16px;font-weight:500;
+}
+.mh-title{
+  font-family:'Playfair Display',serif;
+  font-size:52px;font-weight:700;line-height:1.05;
+  color:#fff;margin-bottom:14px;
+}
+.mh-title em{font-style:italic;font-weight:400;color:rgba(255,255,255,.7)}
+.mh-meta{
+  font-size:12px;color:rgba(255,255,255,.5);
+  letter-spacing:.08em;font-weight:400;
+}
+.mh-right{
+  display:flex;flex-direction:column;align-items:flex-end;gap:8px;
+}
+.mh-brand{
+  font-family:'Playfair Display',serif;
+  font-size:28px;font-weight:700;letter-spacing:.12em;
+  color:rgba(255,255,255,.9);
+}
+.mh-tag{
+  font-size:9px;letter-spacing:.18em;text-transform:uppercase;
+  color:rgba(255,255,255,.4);text-align:right;
+}
 
-/* ── GRID ── */
-.grid{
+/* ── LEVEL LEGEND BAR ── */
+.legend-bar{
+  background:var(--cream2);
+  border-bottom:1px solid var(--cream3);
+  padding:14px 48px;
+  display:flex;align-items:center;gap:28px;flex-wrap:wrap;
+}
+.lbar-label{
+  font-size:9px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--ink3);font-weight:600;margin-right:4px;white-space:nowrap;
+}
+.lbar-items{display:flex;gap:16px;flex-wrap:wrap;align-items:center}
+.lbar-item{
+  display:flex;align-items:center;gap:7px;
+  font-size:10.5px;color:var(--ink2);font-weight:500;
+}
+.lbar-sq{
+  width:14px;height:14px;border-radius:3px;flex-shrink:0;
+}
+
+/* ── MAIN GRID ── */
+.main-grid{
   display:grid;
   grid-template-columns:repeat(4,1fr);
-  min-height:600px;
+  border-top:1px solid var(--cream3);
 }
-.col{
-  border-right:1px solid var(--cream2);
-  padding:28px 18px 48px;
+.prop-col{
+  border-right:1px solid var(--cream3);
+  display:flex;flex-direction:column;
 }
-.col:last-child{border-right:none}
+.prop-col:last-child{border-right:none}
 
-/* Property header */
-.col-head{margin-bottom:24px}
-.col-name{
-  font-family:'Playfair Display',serif;
-  font-size:18px;font-weight:700;color:var(--ink);
-  margin-bottom:3px;line-height:1.2;
+/* Property Header */
+.prop-head{
+  padding:28px 24px 20px;
+  border-bottom:1px solid var(--cream3);
+  background:var(--cream);
 }
-.col-ar{
-  font-size:11px;color:var(--ink3);letter-spacing:.02em;
+.prop-name{
+  font-family:'Playfair Display',serif;
+  font-size:20px;font-weight:700;color:var(--ink);
+  line-height:1.15;margin-bottom:4px;
+}
+.prop-ar{
+  font-size:12px;color:var(--ink3);
+  font-family:'Playfair Display',serif;font-style:italic;
+}
+.prop-count{
+  margin-top:8px;font-size:9.5px;color:var(--ink3);
+  letter-spacing:.06em;text-transform:uppercase;font-weight:500;
+}
+
+/* ── LEVEL CARDS ── */
+.org-stack{
+  display:flex;flex-direction:column;flex:1;
+  padding:20px 16px 32px;gap:0;
+}
+
+.lv-block{display:flex;flex-direction:column;align-items:center}
+.lv-connector{
+  width:1px;height:14px;
+  background:linear-gradient(var(--cream3),var(--cream3));
+  flex-shrink:0;
+}
+
+.lv-card{
+  width:100%;
+  border-radius:10px;
+  overflow:hidden;
+  box-shadow:0 1px 4px rgba(0,0,0,.07),0 4px 16px rgba(0,0,0,.05);
+  border:1px solid rgba(0,0,0,.06);
+}
+
+/* Card header band */
+.lv-head{
+  padding:12px 14px 10px;
+  display:flex;flex-direction:column;gap:3px;
+}
+.lv-badge{
+  display:inline-block;
+  font-size:8.5px;font-weight:700;letter-spacing:.16em;
+  text-transform:uppercase;color:rgba(255,255,255,.75);
   margin-bottom:2px;
 }
-.col-count{
-  font-size:10px;color:var(--ink3);margin-top:4px;
+.lv-role-title{
+  font-family:'Playfair Display',serif;
+  font-size:13px;font-weight:600;
+  color:rgba(255,255,255,.95);line-height:1.25;
 }
 
-/* ── ORG TREE ── */
-.tree{display:flex;flex-direction:column;gap:0}
-
-.node{position:relative}
-.node:not(:last-child)::after{
-  content:'';display:block;width:1px;height:14px;
-  background:var(--cream2);margin:0 auto;border-left:1px dashed var(--cream2);
-  border-width:0;
-  background:linear-gradient(var(--ink3),var(--ink3)) center/1px 100% no-repeat;
-  opacity:.4;
+/* Card body — names */
+.lv-body{
+  padding:10px 12px 11px;
+  background:rgba(255,255,255,.45);
+  display:flex;flex-wrap:wrap;gap:5px;
+  align-items:center;
+  min-height:38px;
+}
+.lv-name{
+  font-size:11px;font-weight:500;color:var(--ink);
+  padding:3px 9px;border-radius:100px;
+  background:rgba(255,255,255,.85);
+  border:1px solid rgba(0,0,0,.08);
+  line-height:1.4;white-space:nowrap;
 }
 
-.card{
-  border-radius:8px;padding:12px 13px;
-  border:1px solid rgba(0,0,0,.07);
-  position:relative;overflow:hidden;
-  transition:box-shadow .15s;
-}
-.card:hover{box-shadow:0 3px 16px rgba(0,0,0,.1)}
-
-/* left accent bar */
-.card::before{
-  content:'';position:absolute;left:0;top:0;bottom:0;width:3px;
+/* Empty levels */
+.lv-card.empty .lv-head{opacity:.4}
+.lv-card.empty .lv-body{background:transparent}
+.lv-empty-note{
+  font-size:10px;color:var(--ink3);font-style:italic;
 }
 
-/* empty / no-role cards */
-.card.empty{opacity:.38;pointer-events:none}
+/* Level color themes */
+.lv5 .lv-head{background:var(--c5)}
+.lv5 .lv-body{background:var(--l5)}
+.lv5 .lv-name{border-color:rgba(44,26,14,.15)}
 
-/* level tag */
-.ltag{
-  display:inline-flex;align-items:center;
-  font-size:9px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
-  padding:2px 7px;border-radius:3px;margin-bottom:7px;
+.lv4 .lv-head{background:var(--c4)}
+.lv4 .lv-body{background:var(--l4)}
+.lv4 .lv-name{border-color:rgba(46,64,32,.15)}
+
+.lv3 .lv-head{background:var(--c3)}
+.lv3 .lv-body{background:var(--l3)}
+.lv3 .lv-name{border-color:rgba(122,86,10,.15)}
+
+.lv2 .lv-head{background:var(--c2)}
+.lv2 .lv-body{background:var(--l2)}
+.lv2 .lv-name{border-color:rgba(124,32,64,.15)}
+
+.lv1 .lv-head{background:var(--c1)}
+.lv1 .lv-body{background:var(--l1)}
+.lv1 .lv-name{border-color:rgba(26,54,96,.15)}
+
+/* ── FOCUS AREAS ── */
+.focus-section{
+  background:var(--ink);
+  padding:44px 48px 48px;
+  display:flex;gap:48px;align-items:flex-start;flex-wrap:wrap;
 }
-
-/* role subtitle */
-.lrole{font-size:10px;margin-bottom:8px;opacity:.6;font-weight:500}
-
-/* name chips */
-.chips{display:flex;flex-wrap:wrap;gap:4px}
-.chip{
-  display:inline-block;font-size:11.5px;font-weight:500;
-  padding:4px 10px;border-radius:100px;line-height:1.3;
+.focus-left{flex:0 0 200px}
+.focus-eyebrow{
+  font-size:9px;letter-spacing:.22em;text-transform:uppercase;
+  color:rgba(255,255,255,.4);margin-bottom:10px;font-weight:600;
 }
-
-/* ── Level colour sets ── */
-.lv5 .card{background:var(--l5l)}
-.lv5 .card::before{background:var(--l5)}
-.lv5 .ltag{background:var(--l5);color:#fff}
-.lv5 .chip{background:var(--l5);color:#fff}
-
-.lv4 .card{background:var(--l4l)}
-.lv4 .card::before{background:var(--l4)}
-.lv4 .ltag{background:var(--l4);color:#fff}
-.lv4 .chip{background:var(--l4);color:#fff}
-
-.lv3 .card{background:var(--l3l)}
-.lv3 .card::before{background:var(--l3)}
-.lv3 .ltag{background:var(--l3);color:#fff}
-.lv3 .chip{background:var(--l3);color:#fff}
-
-.lv2 .card{background:var(--l2l)}
-.lv2 .card::before{background:var(--l2)}
-.lv2 .ltag{background:var(--l2);color:#fff}
-.lv2 .chip{background:var(--l2);color:#fff}
-
-.lv1 .card{background:var(--l1l)}
-.lv1 .card::before{background:var(--l1)}
-.lv1 .ltag{background:var(--l1);color:#fff}
-.lv1 .chip{background:var(--l1);color:#fff}
+.focus-heading{
+  font-family:'Playfair Display',serif;
+  font-size:22px;font-weight:700;color:rgba(255,255,255,.9);
+  line-height:1.25;
+}
+.focus-right{
+  flex:1;min-width:280px;
+  display:grid;grid-template-columns:repeat(2,1fr);gap:12px;
+}
+.focus-card{
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:10px;
+  padding:18px 18px 20px;
+}
+.focus-icon{
+  font-size:20px;margin-bottom:10px;display:block;
+}
+.focus-name{
+  font-size:12px;font-weight:600;color:rgba(255,255,255,.85);
+  line-height:1.4;
+}
+.focus-desc{
+  font-size:10.5px;color:rgba(255,255,255,.4);
+  margin-top:4px;line-height:1.5;
+}
 
 /* ── FOOTER ── */
-.ft{
-  border-top:1px solid var(--cream2);
-  text-align:center;padding:22px 24px;
-  font-size:11px;color:var(--ink3);letter-spacing:.05em;
-  display:flex;align-items:center;justify-content:center;gap:16px;
-}
-.ft-brand{
-  font-family:'Playfair Display',serif;
-  font-weight:700;font-size:13px;color:var(--ink2);
-  letter-spacing:.1em;
-}
-
-/* ── FOCUS AREAS (page 1 of PDF) ── */
-.focus-section{
+.footer{
   background:var(--cream2);
-  border-top:1px solid var(--cream2);
-  padding:28px 28px 32px;
+  border-top:1px solid var(--cream3);
+  padding:20px 48px;
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:12px;
 }
-.focus-title{
-  font-family:'Playfair Display',serif;font-size:15px;font-weight:700;
-  color:var(--ink);margin-bottom:18px;text-align:center;letter-spacing:.02em;
+.footer-left{font-size:11px;color:var(--ink3);letter-spacing:.05em}
+.footer-brand{
+  font-family:'Playfair Display',serif;
+  font-size:16px;font-weight:700;letter-spacing:.12em;color:var(--ink2);
 }
-.focus-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-.focus-card{
-  background:var(--cream);border:1px solid rgba(0,0,0,.08);
-  border-radius:8px;padding:14px 14px 16px;text-align:center;
-}
-.focus-icon{font-size:22px;margin-bottom:8px}
-.focus-name{font-size:11px;font-weight:600;color:var(--ink);line-height:1.4}
 
 /* ── RESPONSIVE ── */
-@media(max-width:960px){
-  .grid{grid-template-columns:repeat(2,1fr)}
-  .col:nth-child(2){border-right:none}
-  .col:nth-child(3){border-right:1px solid var(--cream2)}
-  .focus-grid{grid-template-columns:repeat(2,1fr)}
+@media(max-width:1024px){
+  .main-grid{grid-template-columns:repeat(2,1fr)}
+  .prop-col:nth-child(2){border-right:none}
+  .prop-col:nth-child(1),.prop-col:nth-child(2){border-bottom:1px solid var(--cream3)}
+  .prop-col:nth-child(3){border-right:1px solid var(--cream3)}
+  .focus-right{grid-template-columns:repeat(2,1fr)}
 }
-@media(max-width:540px){
-  .grid{grid-template-columns:1fr}
-  .col{border-right:none;border-bottom:1px solid var(--cream2)}
-  .focus-grid{grid-template-columns:repeat(2,1fr)}
-  .ph-title{font-size:30px}
+@media(max-width:640px){
+  .main-grid{grid-template-columns:1fr}
+  .prop-col{border-right:none!important;border-bottom:1px solid var(--cream3)}
+  .masthead{padding:36px 24px 32px}
+  .mh-title{font-size:36px}
+  .legend-bar,.footer{padding-left:24px;padding-right:24px}
+  .focus-section{padding:32px 24px 36px;gap:28px}
+  .focus-right{grid-template-columns:1fr}
 }
 </style>
 </head>
 <body>
 
-<!-- ── HEADER ── -->
-<header class="ph">
-  <div class="ph-eyebrow">Flow · Resident Experience</div>
-  <h1 class="ph-title">Team Structure</h1>
-  <div class="ph-meta">Four Properties &nbsp;·&nbsp; August 2026</div>
-  <div class="ph-rule"></div>
+<!-- ── MASTHEAD ── -->
+<header class="masthead">
+  <div class="mh-left">
+    <div class="mh-eyebrow">Resident Experience · Four Properties</div>
+    <h1 class="mh-title">Team<br><em>Structure</em></h1>
+    <div class="mh-meta">August 2026 &nbsp;·&nbsp; IDP Programme</div>
+  </div>
+  <div class="mh-right">
+    <div class="mh-brand">FLOW</div>
+    <div class="mh-tag">Resident Experience</div>
+  </div>
 </header>
 
 <!-- ── LEGEND ── -->
-<div class="legend">
-  <div class="leg-item"><div class="leg-sq" style="background:var(--l5)"></div>L5 · General Manager</div>
-  <div class="leg-item"><div class="leg-sq" style="background:var(--l4)"></div>L4 · Asst. General Manager</div>
-  <div class="leg-item"><div class="leg-sq" style="background:var(--l3)"></div>L3 · Senior RX Associate</div>
-  <div class="leg-item"><div class="leg-sq" style="background:var(--l2)"></div>L2 · RX Associate</div>
-  <div class="leg-item"><div class="leg-sq" style="background:var(--l1)"></div>L1 · RX Coordinator</div>
+<div class="legend-bar">
+  <span class="lbar-label">Career Levels</span>
+  <div class="lbar-items">
+    <div class="lbar-item"><div class="lbar-sq" style="background:var(--c5)"></div>L5 · General Manager</div>
+    <div class="lbar-item"><div class="lbar-sq" style="background:var(--c4)"></div>L4 · Asst. General Manager</div>
+    <div class="lbar-item"><div class="lbar-sq" style="background:var(--c3)"></div>L3 · Senior RX Associate</div>
+    <div class="lbar-item"><div class="lbar-sq" style="background:var(--c2)"></div>L2 · RX Associate</div>
+    <div class="lbar-item"><div class="lbar-sq" style="background:var(--c1)"></div>L1 · RX Coordinator</div>
+  </div>
 </div>
 
 <!-- ── PROPERTIES GRID ── -->
-<div class="grid">
+<div class="main-grid">
 
-  <!-- ═══ NARJS EAST ═══ -->
-  <div class="col">
-    <div class="col-head">
-      <div class="col-name">Narjs East</div>
-      <div class="col-ar">نرجس الشرقية</div>
-      <div class="col-count">5 team members</div>
+  <!-- ══ NARJS EAST ══ -->
+  <div class="prop-col">
+    <div class="prop-head">
+      <div class="prop-name">Narjs East</div>
+      <div class="prop-ar">نرجس الشرقية</div>
+      <div class="prop-count">5 team members · Full structure</div>
     </div>
-    <div class="tree">
-      <div class="node lv5">
-        <div class="card">
-          <div class="ltag">L5 · GM</div>
-          <div class="lrole">General Manager</div>
-          <div class="chips"><span class="chip">Saad Alajmi</span></div>
-        </div>
-      </div>
-      <div class="node lv4">
-        <div class="card">
-          <div class="ltag">L4 · AGM</div>
-          <div class="lrole">Asst. General Manager</div>
-          <div class="chips"><span class="chip">Raghdah Safar</span></div>
-        </div>
-      </div>
-      <div class="node lv3">
-        <div class="card">
-          <div class="ltag">L3 · Senior</div>
-          <div class="lrole">Senior RX Associate</div>
-          <div class="chips"><span class="chip">Rakan Shisha</span></div>
-        </div>
-      </div>
-      <div class="node lv2">
-        <div class="card">
-          <div class="ltag">L2 · Associate</div>
-          <div class="lrole">RX Associate</div>
-          <div class="chips">
-            <span class="chip">Ali Nour</span>
-            <span class="chip">Rawan Alattas</span>
+    <div class="org-stack">
+      <div class="lv-block lv5">
+        <div class="lv-card lv5">
+          <div class="lv-head">
+            <span class="lv-badge">Level 5</span>
+            <div class="lv-role-title">General Manager</div>
+          </div>
+          <div class="lv-body">
+            <span class="lv-name">Saad Alajmi</span>
           </div>
         </div>
       </div>
-      <div class="node lv1">
-        <div class="card">
-          <div class="ltag">L1 · Coordinator</div>
-          <div class="lrole">RX Coordinator</div>
-          <div class="chips"><span class="chip">Beesan Harb</span></div>
+      <div class="lv-connector"></div>
+      <div class="lv-block lv4">
+        <div class="lv-card lv4">
+          <div class="lv-head">
+            <span class="lv-badge">Level 4</span>
+            <div class="lv-role-title">Asst. General Manager</div>
+          </div>
+          <div class="lv-body">
+            <span class="lv-name">Raghdah Safar</span>
+          </div>
+        </div>
+      </div>
+      <div class="lv-connector"></div>
+      <div class="lv-block lv3">
+        <div class="lv-card lv3">
+          <div class="lv-head">
+            <span class="lv-badge">Level 3</span>
+            <div class="lv-role-title">Senior RX Associate</div>
+          </div>
+          <div class="lv-body">
+            <span class="lv-name">Rakan Shisha</span>
+          </div>
+        </div>
+      </div>
+      <div class="lv-connector"></div>
+      <div class="lv-block lv2">
+        <div class="lv-card lv2">
+          <div class="lv-head">
+            <span class="lv-badge">Level 2</span>
+            <div class="lv-role-title">RX Associate</div>
+          </div>
+          <div class="lv-body">
+            <span class="lv-name">Ali Nour</span>
+            <span class="lv-name">Rawan Alattas</span>
+          </div>
+        </div>
+      </div>
+      <div class="lv-connector"></div>
+      <div class="lv-block lv1">
+        <div class="lv-card lv1">
+          <div class="lv-head">
+            <span class="lv-badge">Level 1</span>
+            <div class="lv-role-title">RX Coordinator</div>
+          </div>
+          <div class="lv-body">
+            <span class="lv-name">Beesan Harb</span>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- ═══ GRANADA ═══ -->
-  <div class="col">
-    <div class="col-head">
-      <div class="col-name">Granada</div>
-      <div class="col-ar">غرناطة</div>
-      <div class="col-count">5 team members</div>
+  <!-- ══ GRANADA ══ -->
+  <div class="prop-col">
+    <div class="prop-head">
+      <div class="prop-name">Granada</div>
+      <div class="prop-ar">غرناطة</div>
+      <div class="prop-count">5 team members · Full structure</div>
     </div>
-    <div class="tree">
-      <div class="node lv5">
-        <div class="card">
-          <div class="ltag">L5 · GM</div>
-          <div class="lrole">General Manager</div>
-          <div class="chips"><span class="chip">Weesam Khuja</span></div>
-        </div>
-      </div>
-      <div class="node lv4">
-        <div class="card">
-          <div class="ltag">L4 · AGM</div>
-          <div class="lrole">Asst. General Manager</div>
-          <div class="chips"><span class="chip">Sarah Niazi</span></div>
-        </div>
-      </div>
-      <div class="node lv3">
-        <div class="card">
-          <div class="ltag">L3 · Senior</div>
-          <div class="lrole">Senior RX Associate</div>
-          <div class="chips"><span class="chip">Alharith Hassan</span></div>
-        </div>
-      </div>
-      <div class="node lv2">
-        <div class="card">
-          <div class="ltag">L2 · Associate</div>
-          <div class="lrole">RX Associate</div>
-          <div class="chips">
-            <span class="chip">Mamdouh Omar</span>
-            <span class="chip">Suliman Alkholaif</span>
+    <div class="org-stack">
+      <div class="lv-block lv5">
+        <div class="lv-card lv5">
+          <div class="lv-head">
+            <span class="lv-badge">Level 5</span>
+            <div class="lv-role-title">General Manager</div>
+          </div>
+          <div class="lv-body">
+            <span class="lv-name">Weesam Khuja</span>
           </div>
         </div>
       </div>
-      <div class="node lv1">
-        <div class="card">
-          <div class="ltag">L1 · Coordinator</div>
-          <div class="lrole">RX Coordinator</div>
-          <div class="chips"><span class="chip">Meshal Almutairi</span></div>
+      <div class="lv-connector"></div>
+      <div class="lv-block lv4">
+        <div class="lv-card lv4">
+          <div class="lv-head">
+            <span class="lv-badge">Level 4</span>
+            <div class="lv-role-title">Asst. General Manager</div>
+          </div>
+          <div class="lv-body">
+            <span class="lv-name">Sarah Niazi</span>
+          </div>
+        </div>
+      </div>
+      <div class="lv-connector"></div>
+      <div class="lv-block lv3">
+        <div class="lv-card lv3">
+          <div class="lv-head">
+            <span class="lv-badge">Level 3</span>
+            <div class="lv-role-title">Senior RX Associate</div>
+          </div>
+          <div class="lv-body">
+            <span class="lv-name">Alharith Hassan</span>
+          </div>
+        </div>
+      </div>
+      <div class="lv-connector"></div>
+      <div class="lv-block lv2">
+        <div class="lv-card lv2">
+          <div class="lv-head">
+            <span class="lv-badge">Level 2</span>
+            <div class="lv-role-title">RX Associate</div>
+          </div>
+          <div class="lv-body">
+            <span class="lv-name">Mamdouh Omar</span>
+            <span class="lv-name">Suliman Alkholaif</span>
+          </div>
+        </div>
+      </div>
+      <div class="lv-connector"></div>
+      <div class="lv-block lv1">
+        <div class="lv-card lv1">
+          <div class="lv-head">
+            <span class="lv-badge">Level 1</span>
+            <div class="lv-role-title">RX Coordinator</div>
+          </div>
+          <div class="lv-body">
+            <span class="lv-name">Meshal Almutairi</span>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- ═══ NARJS WEST ═══ -->
-  <div class="col">
-    <div class="col-head">
-      <div class="col-name">Narjs West</div>
-      <div class="col-ar">نرجس الغربية</div>
-      <div class="col-count">5 team members</div>
+  <!-- ══ NARJS WEST ══ -->
+  <div class="prop-col">
+    <div class="prop-head">
+      <div class="prop-name">Narjs West</div>
+      <div class="prop-ar">نرجس الغربية</div>
+      <div class="prop-count">5 team members · No AGM</div>
     </div>
-    <div class="tree">
-      <div class="node lv5">
-        <div class="card">
-          <div class="ltag">L5 · GM</div>
-          <div class="lrole">General Manager</div>
-          <div class="chips"><span class="chip">Husni Abdulrazzaq</span></div>
-        </div>
-      </div>
-      <div class="node lv4">
-        <div class="card empty">
-          <div class="ltag">L4 · AGM</div>
-          <div class="lrole">No AGM · Direct to GM</div>
-        </div>
-      </div>
-      <div class="node lv3">
-        <div class="card">
-          <div class="ltag">L3 · Senior</div>
-          <div class="lrole">Senior RX Associate</div>
-          <div class="chips">
-            <span class="chip">Abdulelah</span>
-            <span class="chip">Moayad</span>
+    <div class="org-stack">
+      <div class="lv-block lv5">
+        <div class="lv-card lv5">
+          <div class="lv-head">
+            <span class="lv-badge">Level 5</span>
+            <div class="lv-role-title">General Manager</div>
+          </div>
+          <div class="lv-body">
+            <span class="lv-name">Husni Abdulrazzaq</span>
           </div>
         </div>
       </div>
-      <div class="node lv2">
-        <div class="card">
-          <div class="ltag">L2 · Associate</div>
-          <div class="lrole">RX Associate</div>
-          <div class="chips">
-            <span class="chip">Mizanur Rahman</span>
-            <span class="chip">Muataz</span>
+      <div class="lv-connector"></div>
+      <div class="lv-block lv4">
+        <div class="lv-card lv4 empty">
+          <div class="lv-head">
+            <span class="lv-badge">Level 4</span>
+            <div class="lv-role-title">Asst. General Manager</div>
+          </div>
+          <div class="lv-body">
+            <span class="lv-empty-note">Vacant · L3 reports to GM</span>
           </div>
         </div>
       </div>
-      <div class="node lv1">
-        <div class="card">
-          <div class="ltag">L1 · Coordinator</div>
-          <div class="lrole">RX Coordinator</div>
-          <div class="chips"><span class="chip">Nader</span></div>
+      <div class="lv-connector"></div>
+      <div class="lv-block lv3">
+        <div class="lv-card lv3">
+          <div class="lv-head">
+            <span class="lv-badge">Level 3</span>
+            <div class="lv-role-title">Senior RX Associate</div>
+          </div>
+          <div class="lv-body">
+            <span class="lv-name">Abdulelah</span>
+            <span class="lv-name">Moayad</span>
+          </div>
+        </div>
+      </div>
+      <div class="lv-connector"></div>
+      <div class="lv-block lv2">
+        <div class="lv-card lv2">
+          <div class="lv-head">
+            <span class="lv-badge">Level 2</span>
+            <div class="lv-role-title">RX Associate</div>
+          </div>
+          <div class="lv-body">
+            <span class="lv-name">Mizanur Rahman</span>
+            <span class="lv-name">Muataz</span>
+          </div>
+        </div>
+      </div>
+      <div class="lv-connector"></div>
+      <div class="lv-block lv1">
+        <div class="lv-card lv1">
+          <div class="lv-head">
+            <span class="lv-badge">Level 1</span>
+            <div class="lv-role-title">RX Coordinator</div>
+          </div>
+          <div class="lv-body">
+            <span class="lv-name">Nader</span>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- ═══ OLAYA ═══ -->
-  <div class="col">
-    <div class="col-head">
-      <div class="col-name">Olaya</div>
-      <div class="col-ar">العليا</div>
-      <div class="col-count">4 team members</div>
+  <!-- ══ OLAYA ══ -->
+  <div class="prop-col">
+    <div class="prop-head">
+      <div class="prop-name">Olaya</div>
+      <div class="prop-ar">العليا</div>
+      <div class="prop-count">4 team members · No AGM or L1</div>
     </div>
-    <div class="tree">
-      <div class="node lv5">
-        <div class="card">
-          <div class="ltag">L5 · GM</div>
-          <div class="lrole">General Manager</div>
-          <div class="chips"><span class="chip">Johnny Hachem</span></div>
-        </div>
-      </div>
-      <div class="node lv4">
-        <div class="card empty">
-          <div class="ltag">L4 · AGM</div>
-          <div class="lrole">No AGM · Direct to GM</div>
-        </div>
-      </div>
-      <div class="node lv3">
-        <div class="card">
-          <div class="ltag">L3 · Senior</div>
-          <div class="lrole">Senior RX Associate</div>
-          <div class="chips">
-            <span class="chip">Kateryna</span>
-            <span class="chip">Majed</span>
+    <div class="org-stack">
+      <div class="lv-block lv5">
+        <div class="lv-card lv5">
+          <div class="lv-head">
+            <span class="lv-badge">Level 5</span>
+            <div class="lv-role-title">General Manager</div>
+          </div>
+          <div class="lv-body">
+            <span class="lv-name">Johnny Hachem</span>
           </div>
         </div>
       </div>
-      <div class="node lv2">
-        <div class="card">
-          <div class="ltag">L2 · Associate</div>
-          <div class="lrole">RX Associate</div>
-          <div class="chips"><span class="chip">Nour</span></div>
+      <div class="lv-connector"></div>
+      <div class="lv-block lv4">
+        <div class="lv-card lv4 empty">
+          <div class="lv-head">
+            <span class="lv-badge">Level 4</span>
+            <div class="lv-role-title">Asst. General Manager</div>
+          </div>
+          <div class="lv-body">
+            <span class="lv-empty-note">Vacant · L3 reports to GM</span>
+          </div>
         </div>
       </div>
-      <div class="node lv1">
-        <div class="card empty">
-          <div class="ltag">L1 · Coordinator</div>
-          <div class="lrole">No L1 at this property</div>
+      <div class="lv-connector"></div>
+      <div class="lv-block lv3">
+        <div class="lv-card lv3">
+          <div class="lv-head">
+            <span class="lv-badge">Level 3</span>
+            <div class="lv-role-title">Senior RX Associate</div>
+          </div>
+          <div class="lv-body">
+            <span class="lv-name">Kateryna</span>
+            <span class="lv-name">Majed</span>
+          </div>
+        </div>
+      </div>
+      <div class="lv-connector"></div>
+      <div class="lv-block lv2">
+        <div class="lv-card lv2">
+          <div class="lv-head">
+            <span class="lv-badge">Level 2</span>
+            <div class="lv-role-title">RX Associate</div>
+          </div>
+          <div class="lv-body">
+            <span class="lv-name">Nour</span>
+          </div>
+        </div>
+      </div>
+      <div class="lv-connector"></div>
+      <div class="lv-block lv1">
+        <div class="lv-card lv1 empty">
+          <div class="lv-head">
+            <span class="lv-badge">Level 1</span>
+            <div class="lv-role-title">RX Coordinator</div>
+          </div>
+          <div class="lv-body">
+            <span class="lv-empty-note">No L1 at this property</span>
+          </div>
         </div>
       </div>
     </div>
@@ -418,36 +599,40 @@ body{background:var(--cream);font-family:'Inter',sans-serif;color:var(--ink);min
 
 </div>
 
-<!-- ── FOCUS AREAS (from PDF page 1) ── -->
+<!-- ── FOCUS AREAS ── -->
 <div class="focus-section">
-  <div class="focus-title">Four Focus Areas</div>
-  <div class="focus-grid">
+  <div class="focus-left">
+    <div class="focus-eyebrow">Programme Design</div>
+    <div class="focus-heading">Four Focus Areas</div>
+  </div>
+  <div class="focus-right">
     <div class="focus-card">
-      <div class="focus-icon">🏗️</div>
+      <span class="focus-icon">🏗️</span>
       <div class="focus-name">Building Operations</div>
+      <div class="focus-desc">Walkthroughs, maintenance, vendor coordination, shift handovers</div>
     </div>
     <div class="focus-card">
-      <div class="focus-icon">🤝</div>
+      <span class="focus-icon">🤝</span>
       <div class="focus-name">Neighbour Experience</div>
+      <div class="focus-desc">Service delivery, complaint resolution, resident satisfaction</div>
     </div>
     <div class="focus-card">
-      <div class="focus-icon">🌿</div>
+      <span class="focus-icon">🌿</span>
       <div class="focus-name">Community Experience</div>
+      <div class="focus-desc">Events, newsletters, community guidelines, culture-building</div>
     </div>
     <div class="focus-card">
-      <div class="focus-icon">📊</div>
+      <span class="focus-icon">📊</span>
       <div class="focus-name">Administration, Finance &amp; Risk</div>
+      <div class="focus-desc">AR, deposits, notices, compliance, vendor reconciliation</div>
     </div>
   </div>
 </div>
 
 <!-- ── FOOTER ── -->
-<footer class="ft">
-  <span>Resident Experience · Team Structure</span>
-  <span>·</span>
-  <span class="ft-brand">FLOW</span>
-  <span>·</span>
-  <span>August 2026</span>
+<footer class="footer">
+  <div class="footer-left">Job Descriptions · Resident Experience &nbsp;·&nbsp; August 2026</div>
+  <div class="footer-brand">FLOW</div>
 </footer>
 
 </body>
