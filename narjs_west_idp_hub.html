@@ -1,0 +1,1148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Narjs West — IDP Hub</title>
+<style>
+:root{--black:#1C1C1C;--white:#fff;--cream:#F5F0E8;--border:#D3D1C7;--gray:#888780;--gl:#F1EFE8;--green:#1D9E75;--gl2:#E1F5EE;--gd:#085041;--amber:#EF9F27;--al:#FAEEDA;--red:#E07050;--rl:#FAECE7;--rd:#4A1B0C;--purple:#7C5CBF;--pl:#EEEDFE;--pd:#26215C;--orange:#C8853A;--ol2:#FAEEE8;--od:#6B2210;--navy:#1D3A8A;--nl:#EEF2FF;--nd:#0F1F4A}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--cream);color:var(--black);min-height:100vh}
+.topnav{position:sticky;top:0;z-index:100;background:var(--black);display:flex;align-items:center;padding:0 20px;height:50px;border-bottom:1px solid rgba(255,255,255,.06)}
+.nav-brand{display:flex;align-items:center;gap:9px;padding-right:18px;border-right:1px solid rgba(255,255,255,.1);margin-right:12px;flex-shrink:0}
+.nav-icon{width:26px;height:26px;border-radius:6px;background:var(--navy);display:flex;align-items:center;justify-content:center;font-size:12px}
+.nav-name{font-size:12px;font-weight:500;color:#F5F0E8}
+.nav-sub{font-size:9px;color:#444240}
+.nav-tabs{display:flex;gap:0;overflow-x:auto;flex:1;scrollbar-width:none}
+.nav-tabs::-webkit-scrollbar{display:none}
+.ntab{font-size:11px;font-weight:500;padding:0 14px;height:50px;color:#555350;cursor:pointer;border:none;background:transparent;border-bottom:2px solid transparent;font-family:inherit;white-space:nowrap;display:flex;align-items:center;gap:6px;transition:color .15s}
+.ntab:hover{color:#F5F0E8}
+.ntab.active{color:#F5F0E8;border-bottom-color:var(--navy)}
+.nbadge{font-size:9px;padding:1px 7px;border-radius:8px;font-weight:600}
+.nav-av{width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:#fff;flex-shrink:0}
+.view{display:none;padding:20px;min-height:calc(100vh - 50px)}
+.view.on{display:block}
+.idp-wrap{display:flex;min-height:calc(100vh - 50px - 40px);background:var(--white);border-radius:12px;overflow:hidden;border:.5px solid var(--border)}
+.idp-sb{width:190px;flex-shrink:0;background:#1C1C1C;display:flex;flex-direction:column}
+.idp-main{flex:1;overflow-y:auto;background:var(--cream)}
+.sb-top{padding:16px 14px;border-bottom:1px solid rgba(255,255,255,.07)}
+.sb-av{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;margin-bottom:8px}
+.sb-name{font-size:12px;font-weight:500;color:#F5F0E8}
+.sb-role{font-size:10px;color:#444240;margin-top:2px;line-height:1.4}
+.sb-bar{height:3px;background:rgba(255,255,255,.07);border-radius:3px;margin-top:10px;overflow:hidden}
+.sb-fill{height:3px;border-radius:3px;transition:width .4s}
+.sb-nav{padding:10px 8px;flex:1}
+.sb-q{display:flex;align-items:center;gap:7px;padding:8px 9px;border-radius:7px;cursor:pointer;margin-bottom:2px;transition:background .1s}
+.sb-q:hover{background:rgba(255,255,255,.05)}
+.sb-q.on{background:rgba(255,255,255,.1)}
+.sb-q.done{opacity:.6}
+.sq-num{width:19px;height:19px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#444240;border:1px solid rgba(255,255,255,.1);flex-shrink:0;transition:all .2s}
+.sb-q.on .sq-num{color:#fff;border-color:transparent;background:var(--ec,#1D9E75)}
+.sb-q.done .sq-num{color:#666360;border-color:transparent;background:#262320}
+.sq-info{flex:1;min-width:0}
+.sq-theme{font-size:11px;font-weight:500;color:#666360;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sb-q.on .sq-theme{color:#F5F0E8}
+.sq-period{font-size:9px;color:#333230;margin-top:1px}
+.sb-q.on .sq-period{color:#888580}
+.q-hero{background:var(--black);padding:22px 24px 18px}
+.q-qtag{font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;margin-bottom:5px}
+.q-title{font-size:19px;font-weight:400;color:#F5F0E8;margin-bottom:5px}
+.q-tagline{font-size:11px;color:#555350;line-height:1.6;max-width:500px}
+.q-pbadge{font-size:10px;font-weight:600;padding:3px 10px;border-radius:10px;display:inline-block;margin-top:9px}
+.q-body{padding:18px 22px}
+.slbl{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--gray);margin:16px 0 8px;padding-bottom:5px;border-bottom:.5px solid var(--border)}
+.slbl:first-child{margin-top:0}
+.fi{display:flex;align-items:flex-start;gap:9px;padding:8px 11px;background:var(--white);border:.5px solid var(--border);border-radius:7px;margin-bottom:5px}
+.fd{width:5px;height:5px;border-radius:50%;flex-shrink:0;margin-top:5px}
+.ft{font-size:11px;line-height:1.55}
+.callout{border-radius:8px;padding:11px 13px;margin-bottom:12px;border-left:3px solid;font-size:11px;line-height:1.65}
+.mc{border-radius:9px;overflow:hidden;margin-bottom:9px}
+.mc-hd{padding:11px 13px;display:flex;align-items:center;gap:9px}
+.mc-av{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;flex-shrink:0}
+.mc-who{font-size:11px;font-weight:500}
+.mc-subrole{font-size:10px;opacity:.65;margin-top:1px}
+.mc-bd{padding:9px 13px 12px;background:var(--white)}
+.mc-intro{font-size:11px;color:var(--gray);line-height:1.6;margin-bottom:9px;padding:7px 9px;background:var(--cream);border-radius:6px}
+.mi{display:flex;align-items:flex-start;gap:8px;padding:7px 9px;border-radius:6px;margin-bottom:3px;background:var(--cream)}
+.mi.now{background:var(--rl);border:.5px solid #E5B5A8}
+.mi.acc{background:var(--nl)}
+.mi-when{font-size:9px;font-weight:700;color:var(--amber);white-space:nowrap;margin-top:2px;min-width:68px}
+.mi.now .mi-when{color:var(--red)}
+.mi.acc .mi-when{color:var(--navy)}
+.mi-text{font-size:11px;line-height:1.5}
+.warn{border-radius:9px;overflow:hidden;border:.5px solid #E5B5A8;margin-bottom:9px}
+.warn-hd{background:var(--rl);padding:10px 13px;display:flex;align-items:center;gap:7px}
+.warn-title{font-size:11px;font-weight:600;color:var(--rd)}
+.warn-bd{padding:9px 13px;background:var(--white)}
+.wi{display:flex;gap:7px;padding:6px 8px;background:var(--cream);border-radius:5px;margin-bottom:3px;font-size:11px;line-height:1.5;color:var(--gray)}
+.cg{margin-bottom:12px}
+.cg-title{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--gray);margin-bottom:6px;padding:4px 9px;background:var(--cream);border-radius:4px}
+.ci{background:var(--white);border:.5px solid var(--border);border-radius:8px;margin-bottom:4px;overflow:hidden}
+.ci-hd{padding:9px 11px;display:flex;align-items:center;gap:7px;cursor:pointer}
+.ci-hd:hover{background:#FAFAF8}
+.ci-name{font-size:12px;font-weight:500;flex:1}
+.ci-rate{display:flex;gap:3px;flex-shrink:0}
+.rb{width:21px;height:21px;border-radius:4px;border:.5px solid var(--border);background:transparent;cursor:pointer;font-size:10px;font-weight:600;color:var(--gray);transition:all .1s;font-family:inherit}
+.rb:hover{border-color:var(--ec);color:var(--ec)}
+.rb.on{background:var(--ec);border-color:var(--ec);color:#fff}
+.ci-desc{padding:0 11px 9px;font-size:11px;color:var(--gray);line-height:1.6;display:none}
+.ci.exp .ci-desc{display:block}
+.ci-note{font-size:10px;color:var(--amber);margin-top:4px;font-style:italic}
+.cl{display:flex;align-items:flex-start;gap:8px;padding:8px 11px;background:var(--white);border:.5px solid var(--border);border-radius:7px;margin-bottom:4px;cursor:pointer}
+.cl input{width:14px;height:14px;flex-shrink:0;margin-top:2px;cursor:pointer}
+.cl.done{background:var(--gl2);border-color:var(--green)}
+.cl-text{font-size:11px;line-height:1.5}
+.cl.done .cl-text{text-decoration:line-through;color:var(--gray)}
+.ev{background:var(--white);border:.5px solid var(--border);border-radius:7px;padding:9px 11px;margin-bottom:5px}
+.ev-date{font-size:9px;color:var(--gray);margin-bottom:2px}
+.ev-text{font-size:11px;line-height:1.5}
+.ev-add{display:flex;gap:7px;margin-top:7px}
+.ev-in{flex:1;padding:7px 9px;border:.5px solid var(--border);border-radius:6px;font-size:11px;font-family:inherit;background:var(--cream);outline:none;resize:none;height:34px}
+.ev-in:focus{border-color:var(--ec);background:var(--white)}
+.ev-btn{padding:0 13px;height:34px;border-radius:6px;border:none;font-size:11px;font-weight:500;cursor:pointer;font-family:inherit;background:var(--ec);color:#fff}
+.dec{border-radius:10px;overflow:hidden;border:.5px solid var(--border);margin-top:18px}
+.dec-hd{padding:12px 14px;background:var(--black);color:#F5F0E8;font-size:12px;font-weight:500}
+.dec-grid{display:grid;grid-template-columns:repeat(3,1fr)}
+.dec-col{padding:12px 13px;border-right:.5px solid var(--border)}
+.dec-col:last-child{border-right:none}
+.dec-lbl{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+.dec-text{font-size:10px;line-height:1.6;color:var(--gray)}
+.score-wrap{background:var(--white);border:.5px solid var(--border);border-radius:10px;padding:16px;margin-bottom:12px}
+.score-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
+.sp{text-align:center;padding:10px;background:var(--cream);border-radius:7px}
+.sp-val{font-size:18px;font-weight:500}
+.sp-lbl{font-size:10px;color:var(--gray);margin-top:2px}
+.er-wrap{background:var(--cream);border-radius:8px;padding:10px 12px;margin-bottom:7px}
+.er-lbl{font-size:11px;font-weight:500;margin-bottom:7px}
+.er-rate{display:flex;gap:4px;flex-wrap:wrap}
+.erb{padding:4px 10px;border-radius:6px;border:.5px solid var(--border);background:var(--white);cursor:pointer;font-size:10px;font-weight:500;font-family:inherit;transition:all .1s}
+.erb:hover,.erb.on{background:var(--ec);border-color:var(--ec);color:#fff}
+.score-total{text-align:center;padding:12px;border-top:.5px solid var(--border)}
+.stv{font-size:24px;font-weight:500}
+.stl{font-size:10px;color:var(--gray);margin-top:3px}
+.emp-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px}
+.ec{background:var(--white);border:.5px solid var(--border);border-radius:11px;overflow:hidden;cursor:pointer;transition:box-shadow .15s,transform .1s}
+.ec:hover{box-shadow:0 4px 14px rgba(0,0,0,.09);transform:translateY(-1px)}
+.ec-hd{padding:12px 14px;display:flex;align-items:center;gap:9px}
+.ec-av{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;flex-shrink:0}
+.ec-n{font-size:13px;font-weight:500}
+.ec-r{font-size:10px;color:var(--gray);margin-top:1px}
+.ec-st{margin-left:auto;font-size:9px;font-weight:600;padding:2px 8px;border-radius:8px}
+.ec-bd{padding:9px 14px 13px;border-top:.5px solid var(--border)}
+.ec-track{display:flex;gap:3px;margin-bottom:7px}
+.ec-seg{height:4px;border-radius:3px;flex:1}
+.ec-meta{font-size:10px;color:var(--gray)}
+.ec-act{font-size:10px;font-weight:500;color:var(--navy);margin-top:6px}
+</style>
+</head>
+<body>
+
+<div class="topnav">
+  <div class="nav-brand">
+    <div class="nav-icon">🏢</div>
+    <div>
+      <div class="nav-name">Narjs West</div>
+      <div class="nav-sub">IDP Hub · 2026–2027</div>
+    </div>
+  </div>
+  <div class="nav-tabs">
+    <button class="ntab active" onclick="showView('dash',this)">Property Overview</button>
+    <button class="ntab" onclick="openEmp('nader',this)">
+      <div class="nav-av" style="background:#1D9E75">NA</div> Nader
+      <span class="nbadge" style="background:#E1F5EE;color:#085041">Q1 Active</span>
+    </button>
+    <button class="ntab" onclick="openEmp('mizanur',this)">
+      <div class="nav-av" style="background:#C8853A">MR</div> Mizanur
+      <span class="nbadge" style="background:#FAEEDA;color:#412402">Suggested</span>
+    </button>
+    <button class="ntab" onclick="openEmp('muataz',this)">
+      <div class="nav-av" style="background:#C8853A">MT</div> Muataz
+      <span class="nbadge" style="background:#FAEEDA;color:#412402">Suggested</span>
+    </button>
+    <button class="ntab" onclick="openEmp('abdulelah',this)">
+      <div class="nav-av" style="background:#7C5CBF">AB</div> Abdulelah
+      <span class="nbadge" style="background:#EEEDFE;color:#26215C">Priority</span>
+    </button>
+    <button class="ntab" onclick="openEmp('moayad',this)">
+      <div class="nav-av" style="background:#7C5CBF">MY</div> Moayad
+      <span class="nbadge" style="background:#EEEDFE;color:#26215C">Priority</span>
+    </button>
+    <button class="ntab" onclick="showView('husni',this);renderMgrView('husni')">
+      <div class="nav-av" style="background:#1D3A8A;font-size:11px">GM</div> Husni
+      <span class="nbadge" style="background:#EEF2FF;color:#0F1F4A">My Actions</span>
+    </button>
+  </div>
+</div>
+
+<div class="view on" id="view-dash"><div id="dash-content"></div></div>
+
+<div class="view" id="view-husni">
+<style>
+.mgr-page{max-width:800px;margin:0 auto;padding:24px 20px}
+.mgr-hero{background:linear-gradient(135deg,#1D3A8A,#0F1F4A);color:#fff;border-radius:14px;padding:24px 28px;margin-bottom:24px;display:flex;align-items:center;gap:18px}
+.mgr-hero-av{width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;flex-shrink:0}
+.mgr-hero-txt h2{margin:0 0 4px;font-size:20px}
+.mgr-hero-txt p{margin:0;opacity:0.85;font-size:13px}
+.mgr-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px}
+.mgr-stat{background:#fff;border:1px solid #E5E7EB;border-radius:10px;padding:14px 16px;text-align:center}
+.mgr-stat-n{font-size:24px;font-weight:800;color:#1D3A8A}
+.mgr-stat-l{font-size:11px;color:#6B7280;margin-top:2px}
+.mgr-section-title{font-size:12px;font-weight:700;color:#6B7280;text-transform:uppercase;letter-spacing:0.06em;margin:0 0 10px}
+.mcard{background:#fff;border:1px solid #E5E7EB;border-radius:12px;margin-bottom:16px;overflow:hidden;border-top:3px solid var(--mc)}
+.mcard-head{display:flex;align-items:center;gap:14px;padding:16px 18px;border-bottom:1px solid #F3F4F6}
+.mcard-av{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:13px;flex-shrink:0}
+.mcard-info{flex:1}
+.mcard-name{font-weight:700;font-size:14px;color:#111827}
+.mcard-meta{font-size:11px;color:#9CA3AF;margin-top:1px}
+.mcard-prog{text-align:right}
+.mcard-pct{font-size:20px;font-weight:800;color:var(--mc)}
+.mcard-pct-l{font-size:10px;color:#9CA3AF}
+.mcard-intro{font-size:12px;color:#374151;background:#F9FAFB;padding:10px 18px;border-bottom:1px solid #F3F4F6;line-height:1.5}
+.mcard-acts{padding:10px 18px;display:flex;flex-direction:column;gap:6px}
+.mact{display:flex;align-items:flex-start;gap:10px;padding:9px 11px;border-radius:8px;border:1px solid #E5E7EB;cursor:pointer;transition:all 0.15s}
+.mact:hover{background:#F9FAFB}
+.mact.mdone{background:#F0FDF4;border-color:#BBF7D0}
+.mact.mdone .mact-txt{text-decoration:line-through;color:#9CA3AF}
+.mact.mhi{border-color:var(--mc);background:var(--ml)}
+.mact input[type=checkbox]{margin-top:2px;flex-shrink:0;accent-color:var(--mc);width:15px;height:15px;cursor:pointer}
+.mwhen{flex-shrink:0;font-size:10px;font-weight:600;padding:2px 7px;border-radius:20px;white-space:nowrap;margin-top:1px}
+.mact-txt{font-size:12.5px;color:#374151;line-height:1.5}
+.mwarn{background:#FEF2F2;border-top:1px solid #FECACA;padding:12px 18px}
+.mwarn-t{font-size:12px;font-weight:700;color:#B91C1C;margin-bottom:5px}
+.mwarn-a{font-size:11.5px;color:#7F1D1D;padding:2px 0}
+.mcard-suggest{background:#F9FAFB;padding:14px 18px;font-size:12px;color:#6B7280;display:flex;align-items:center;gap:8px}
+</style>
+<div class="mgr-page" id="mgr-husni-page"></div>
+</div>
+
+<div class="view" id="view-nader">
+  <div class="idp-wrap" style="--ec:#1D9E75;--el:#E1F5EE;--ed:#085041">
+    <div class="idp-sb" id="sb-nader"></div>
+    <div class="idp-main" id="main-nader"></div>
+  </div>
+</div>
+<div class="view" id="view-mizanur">
+  <div class="idp-wrap" style="--ec:#C8853A;--el:#FAEEE8;--ed:#6B2210">
+    <div class="idp-sb" id="sb-mizanur"></div>
+    <div class="idp-main" id="main-mizanur"></div>
+  </div>
+</div>
+<div class="view" id="view-muataz">
+  <div class="idp-wrap" style="--ec:#C8853A;--el:#FAEEE8;--ed:#6B2210">
+    <div class="idp-sb" id="sb-muataz"></div>
+    <div class="idp-main" id="main-muataz"></div>
+  </div>
+</div>
+<div class="view" id="view-abdulelah">
+  <div class="idp-wrap" style="--ec:#7C5CBF;--el:#EEEDFE;--ed:#26215C">
+    <div class="idp-sb" id="sb-abdulelah"></div>
+    <div class="idp-main" id="main-abdulelah"></div>
+  </div>
+</div>
+<div class="view" id="view-moayad">
+  <div class="idp-wrap" style="--ec:#7C5CBF;--el:#EEEDFE;--ed:#26215C">
+    <div class="idp-sb" id="sb-moayad"></div>
+    <div class="idp-main" id="main-moayad"></div>
+  </div>
+</div>
+
+<script>
+const ST = {
+  r: JSON.parse(localStorage.getItem('nw_r')||'{}'),
+  c: JSON.parse(localStorage.getItem('nw_c')||'{}'),
+  e: JSON.parse(localStorage.getItem('nw_e')||'{}'),
+  q: JSON.parse(localStorage.getItem('nw_q')||'{}'),
+  save(){ ['r','c','e','q'].forEach(k=>localStorage.setItem('nw_'+k,JSON.stringify(ST[k]))); }
+};
+
+function x(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function showView(id, btn){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('on'));
+  document.querySelectorAll('.ntab').forEach(b=>b.classList.remove('active'));
+  document.getElementById('view-'+id).classList.add('on');
+  if(btn) btn.classList.add('active');
+  if(id==='dash') renderDash();
+}
+
+function openEmp(key, btn){
+  showView(key, btn);
+  buildIDP(key);
+}
+
+function buildSB(key){
+  const E = EMPLOYEES[key], qs = E.qs;
+  const cur = ST.q[key] ?? 0;
+  const prog = Math.round((cur / qs.length) * 100);
+  const qBtns = qs.map((q,i) => `
+    <div class="sb-q ${i===cur?'on':''} ${i<cur?'done':''}" onclick="showQ('${key}',${i})">
+      <div class="sq-num">${i<cur?'✓':i+1}</div>
+      <div class="sq-info">
+        <div class="sq-theme">${x(q.theme)}</div>
+        <div class="sq-period">${x(q.period)}</div>
+      </div>
+    </div>`).join('');
+  document.getElementById('sb-'+key).innerHTML = `
+    <div class="sb-top">
+      <div class="sb-av" style="background:${E.color}">${x(E.initials)}</div>
+      <div class="sb-name">${x(E.name)}</div>
+      <div class="sb-role">${x(E.from)} → ${x(E.to)}</div>
+      <div class="sb-bar"><div class="sb-fill" style="width:${prog}%;background:${E.color}"></div></div>
+    </div>
+    <div class="sb-nav">${qBtns}</div>`;
+}
+
+function rFocus(items, color){
+  return `<div>${items.map(f=>`<div class="fi"><div class="fd" style="background:${color}"></div><div class="ft">${x(f)}</div></div>`).join('')}</div>`;
+}
+
+function rMC(mc, type){
+  if(type==='warn') return `<div class="warn">
+    <div class="warn-hd">⚠️ <span class="warn-title">${x(mc.title)}</span></div>
+    <div class="warn-bd">${mc.acts.map(a=>`<div class="wi">• ${x(a)}</div>`).join('')}</div>
+  </div>`;
+  const colors={gm:'#1D3A8A'}, bgs={gm:'#EEF2FF'};
+  const c=colors[type]||'#1D3A8A', bg=bgs[type]||'#EEF2FF';
+  const av=mc.name.split(' ').map(w=>w[0]).join('').slice(0,2);
+  return `<div class="mc">
+    <div class="mc-hd" style="background:${bg}">
+      <div class="mc-av" style="background:${c}">${av}</div>
+      <div><div class="mc-who" style="color:${c}">${x(mc.name)}</div><div class="mc-subrole" style="color:${c}">${x(mc.label||'')}</div></div>
+    </div>
+    <div class="mc-bd">
+      ${mc.intro?`<div class="mc-intro">${x(mc.intro)}</div>`:''}
+      ${mc.acts.map((a,i)=>{
+        const isNow=a.when&&(a.when.includes('NOW')||a.when.includes('Month 2'));
+        const isAcc=mc.acc&&mc.acc.includes(i);
+        return `<div class="mi ${isNow?'now':isAcc?'acc':''}">
+          ${a.when?`<div class="mi-when">${x(a.when)}</div>`:''}
+          <div class="mi-text">${x(a.text)}</div>
+        </div>`;
+      }).join('')}
+    </div>
+  </div>`;
+}
+
+function rComps(groups, key, qIdx, color){
+  return groups.map(g=>`<div class="cg">
+    <div class="cg-title">${x(g.group)}</div>
+    ${g.comps.map(c=>{
+      const rk=`${key}_${qIdx}_${c.id}`, cur=ST.r[rk]||0;
+      return `<div class="ci" id="ci-${key}-${qIdx}-${c.id}">
+        <div class="ci-hd" onclick="this.parentElement.classList.toggle('exp')">
+          <div class="ci-name">${x(c.name)}</div>
+          <div class="ci-rate" style="--ec:${color}">
+            ${[1,2,3,4].map(v=>`<button class="rb ${cur>=v?'on':''}" onclick="setR('${key}',${qIdx},'${c.id}',${v},this,event)">${v}</button>`).join('')}
+          </div>
+        </div>
+        <div class="ci-desc">${x(c.desc)}${c.note?`<div class="ci-note">↳ ${x(c.note)}</div>`:''}</div>
+      </div>`;
+    }).join('')}
+  </div>`).join('');
+}
+
+function rCL(items, key, qIdx){
+  return items.map((item,i)=>{
+    const ck=`${key}_${qIdx}_${i}`, done=ST.c[ck]||false;
+    return `<label class="cl ${done?'done':''}" id="cl-${key}-${qIdx}-${i}">
+      <input type="checkbox" ${done?'checked':''} onchange="tgCL('${key}',${qIdx},${i},this)">
+      <span class="cl-text">${x(item)}</span>
+    </label>`;
+  }).join('');
+}
+
+function rEv(key){
+  const entries=ST.e[key]||[];
+  return `${entries.length?entries.map(e=>`<div class="ev"><div class="ev-date">${x(e.d)}</div><div class="ev-text">${x(e.t)}</div></div>`).join('')
+    :'<div style="font-size:11px;color:var(--gray);padding:4px 0">No entries yet.</div>'}
+  <div class="ev-add" style="--ec:${EMPLOYEES[key].color}">
+    <textarea class="ev-in" id="evin-${key}" placeholder="Describe what you observed or achieved..."></textarea>
+    <button class="ev-btn" onclick="addEv('${key}')">Add</button>
+  </div>`;
+}
+
+function rDec(dec){
+  return `<div class="dec">
+    <div class="dec-hd">${x(dec.title)}</div>
+    <div class="dec-grid">
+      <div class="dec-col"><div class="dec-lbl" style="color:#1D9E75">Advance ✓</div><div class="dec-text">${x(dec.advance)}</div></div>
+      <div class="dec-col"><div class="dec-lbl" style="color:#EF9F27">Extended</div><div class="dec-text">${x(dec.extend)}</div></div>
+      <div class="dec-col"><div class="dec-lbl" style="color:#E07050">Fundamental Review</div><div class="dec-text">${x(dec.review)}</div></div>
+    </div>
+  </div>`;
+}
+
+function renderQ(key, qIdx){
+  const E=EMPLOYEES[key], q=E.qs[qIdx];
+  const body = q.gate ? renderGate(E,q,key,qIdx) : renderStd(E,q,key,qIdx);
+  document.getElementById('main-'+key).innerHTML = body;
+  document.getElementById('main-'+key).scrollTop = 0;
+}
+
+function renderStd(E, q, key, qIdx){
+  return `<div>
+    <div class="q-hero">
+      <div class="q-qtag" style="color:${E.color}">Q${qIdx+1} — ${x(q.title)}</div>
+      <div class="q-title">${x(q.theme)}</div>
+      <div class="q-tagline">${x(q.tagline)}</div>
+      <div class="q-pbadge" style="background:${E.light};color:${E.dark}">${x(q.period)}</div>
+    </div>
+    <div class="q-body">
+      ${q.callout?`<div class="callout" style="background:${E.light};border-color:${E.color};color:${E.dark}">${x(q.callout)}</div>`:''}
+      <div class="slbl">Quarter Focus</div>
+      ${rFocus(q.focus, E.color)}
+      ${q.gm?`<div class="slbl">GM Monthly Actions — ${x(q.gm.name)}</div>${rMC(q.gm,'gm')}`:''}
+      ${q.warn?`<div class="slbl">Warning Signals</div>${rMC(q.warn,'warn')}`:''}
+      ${q.cl&&q.cl.length?`<div class="slbl">Quarter Checklist</div><div style="--ec:${E.color}">${rCL(q.cl,key,qIdx)}</div>`:''}
+      <div class="slbl">Competency Ratings</div>
+      <div style="--ec:${E.color}">${rComps(q.compGroups||[],key,qIdx,E.color)}</div>
+      <div class="slbl">Evidence Log</div>
+      <div id="ev-${key}-${qIdx}" style="--ec:${E.color}">${rEv(key)}</div>
+      ${rDec(q.decision)}
+    </div>
+  </div>`;
+}
+
+function renderGate(E, q, key, qIdx){
+  const extHTML=(q.external||[]).map((ex,i)=>{
+    const ek=`${key}_${qIdx}_ex${i}`, cur=ST.r[ek]||0;
+    return `<div class="er-wrap"><div class="er-lbl">${x(ex.label)}</div>
+      <div class="er-rate" style="--ec:${E.color}">
+        ${[1,2,3,4].map(v=>`<button class="erb ${cur===v?'on':''}" onclick="setER('${key}',${qIdx},${i},${v},this)">${v} — ${['Awareness','Application','Proficiency','Mastery'][v-1]}</button>`).join('')}
+      </div></div>`;
+  }).join('');
+  const vals=[];
+  (q.compGroups||[]).forEach(g=>g.comps.forEach(c=>{const r=ST.r[`${key}_${qIdx}_${c.id}`]||0;if(r)vals.push(r);}));
+  const avg=vals.length?(vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(2):'—';
+  return `<div>
+    <div class="q-hero">
+      <div class="q-qtag" style="color:${E.color}">Q4 — Promotion Gate</div>
+      <div class="q-title">${x(q.theme)}</div>
+      <div class="q-tagline">${x(q.tagline)}</div>
+      <div class="q-pbadge" style="background:${E.light};color:${E.dark}">${x(q.period)}</div>
+    </div>
+    <div class="q-body">
+      ${q.callout?`<div class="callout" style="background:${E.light};border-color:${E.color};color:${E.dark}">${x(q.callout)}</div>`:''}
+      <div class="slbl">Final Focus</div>
+      ${rFocus(q.focus,E.color)}
+      ${q.gm?`<div class="slbl">GM — ${x(q.gm.name)}</div>${rMC(q.gm,'gm')}`:''}
+      <div class="slbl">Promotion Score</div>
+      <div class="score-wrap">
+        <div class="score-row">
+          <div class="sp"><div class="sp-val" style="color:${E.color}">${avg}</div><div class="sp-lbl">Competency Avg (50%)</div></div>
+          <div class="sp"><div class="sp-val" style="color:#7C5CBF" id="bv-${key}">—</div><div class="sp-lbl">Buddy (${q.weights?Math.round(q.weights[1]*100):25}%)</div></div>
+          <div class="sp"><div class="sp-val" style="color:#1D3A8A" id="ev2-${key}">—</div><div class="sp-lbl">External (${q.weights?Math.round(q.weights[2]*100):25}%)</div></div>
+        </div>
+        ${extHTML}
+        <div class="score-total"><div class="stv" style="color:${E.color}">Pending</div><div class="stl">≥3.5 Promote · 3.0–3.4 Extended · &lt;3.0 Fundamental Review</div></div>
+      </div>
+      <div class="slbl">Gate Checklist</div>
+      <div style="--ec:${E.color}">${rCL(q.cl||[],key,qIdx)}</div>
+      <div class="slbl">Competencies — Final</div>
+      <div style="--ec:${E.color}">${rComps(q.compGroups||[],key,qIdx,E.color)}</div>
+      <div class="slbl">Evidence Log</div>
+      <div id="ev-${key}-${qIdx}" style="--ec:${E.color}">${rEv(key)}</div>
+      ${rDec(q.decision)}
+    </div>
+  </div>`;
+}
+
+function buildIDP(key){
+  const qIdx = ST.q[key] ?? 0;
+  buildSB(key);
+  renderQ(key, qIdx);
+}
+
+function showQ(key, qIdx){
+  ST.q[key]=qIdx; ST.save();
+  buildSB(key);
+  renderQ(key, qIdx);
+}
+
+function setR(key,qIdx,cid,val,btn,ev){
+  ev.stopPropagation();
+  ST.r[`${key}_${qIdx}_${cid}`]=val; ST.save();
+  btn.closest('.ci-rate').querySelectorAll('.rb').forEach((b,i)=>b.classList.toggle('on',i<val));
+}
+function setER(key,qIdx,i,val,btn){
+  ST.r[`${key}_${qIdx}_ex${i}`]=val; ST.save();
+  btn.closest('.er-rate').querySelectorAll('.erb').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+}
+function tgCL(key,qIdx,i,cb){
+  const ck=`${key}_${qIdx}_${i}`;
+  ST.c[ck]=cb.checked; ST.save();
+  const lbl=document.getElementById(`cl-${key}-${qIdx}-${i}`);
+  if(lbl){ lbl.classList.toggle('done',cb.checked); }
+}
+function addEv(key){
+  const inp=document.getElementById('evin-'+key);
+  if(!inp||!inp.value.trim()) return;
+  if(!ST.e[key]) ST.e[key]=[];
+  const d=new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
+  ST.e[key].unshift({d,t:inp.value.trim()});
+  ST.save(); inp.value='';
+  const qIdx=ST.q[key]??0;
+  const cont=document.getElementById(`ev-${key}-${qIdx}`);
+  if(cont) cont.innerHTML=rEv(key);
+}
+
+function renderDash(){
+  const order=['nader','mizanur','muataz','abdulelah','moayad'];
+  const stColors={active:'background:#E1F5EE;color:#085041',suggested:'background:#FAEEDA;color:#412402',priority:'background:#EEEDFE;color:#26215C'};
+  const stLabels={active:'Q1 Active',suggested:'Suggested',priority:'Priority'};
+  const cards = order.map(key=>{
+    const E=EMPLOYEES[key];
+    if(!E) return '';
+    const qIdx=ST.q[key]??0;
+    const sc=stColors[E.status]||'background:var(--gl);color:var(--gray)';
+    const track=E.qs.map((_,i)=>`<div class="ec-seg" style="background:${i<=qIdx?E.color:'var(--border)'}"></div>`).join('');
+    return `<div class="ec" onclick="openEmpFromDash('${key}')">
+      <div class="ec-hd">
+        <div class="ec-av" style="background:${E.color}">${x(E.initials)}</div>
+        <div><div class="ec-n">${x(E.name)}</div><div class="ec-r">${x(E.from)} → ${x(E.to)}</div></div>
+        <div class="ec-st" style="${sc}">${stLabels[E.status]||E.status}</div>
+      </div>
+      <div class="ec-bd">
+        <div class="ec-track">${track}</div>
+        <div class="ec-meta">Q${qIdx+1} of 4 · ${x(E.qs[qIdx]?.theme||'')}</div>
+        <div class="ec-act">Open IDP →</div>
+      </div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('dash-content').innerHTML = `
+    <div style="background:var(--black);border-radius:12px;padding:18px 22px;margin-bottom:18px;display:flex;align-items:center;justify-content:space-between">
+      <div style="display:flex;align-items:center;gap:12px">
+        <div style="width:40px;height:40px;border-radius:10px;background:var(--navy);display:flex;align-items:center;justify-content:center;font-size:18px">🏢</div>
+        <div>
+          <div style="font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--navy)">Flow MENA · RX Team</div>
+          <div style="font-size:17px;font-weight:500;color:#F5F0E8;margin-top:2px">Narjs West — IDP Hub</div>
+          <div style="font-size:10px;color:#444240;margin-top:2px">GM: Husni Abdulrazzaq · No AGM · Aug 2026</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:22px;text-align:center">
+        <div><div style="font-size:19px;font-weight:500;color:#F5F0E8">5</div><div style="font-size:10px;color:#444240">On IDP Path</div></div>
+        <div><div style="font-size:19px;font-weight:500;color:var(--green)">1</div><div style="font-size:10px;color:#444240">Active</div></div>
+        <div><div style="font-size:19px;font-weight:500;color:var(--amber)">4</div><div style="font-size:10px;color:#444240">To Start</div></div>
+      </div>
+    </div>
+    <div style="font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--gray);margin-bottom:9px">Individual Development Plans</div>
+    <div class="emp-grid">${cards}</div>
+    <div style="font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--gray);margin-bottom:9px">Manager Accountability — Aug 2026</div>
+    <div style="display:grid;grid-template-columns:1fr;gap:12px">
+      ${managerCard('Husni Abdulrazzaq','HK','#1D3A8A','General Manager · Q1 IDP Responsibilities',[
+        {done:false,when:'Week 1',text:'Run IDP orientation with all 5 team members. Confirm programme structure and quarterly expectations.'},
+        {done:false,when:'Month 1',text:'Confirm Nader\'s task completion log — zero skipped items. Set observation standard in writing.'},
+        {done:false,when:'Month 2 ⚡',text:'Review Abdulelah and Moayad on SOP ownership — twice-daily walkthrough confirmed from log.'},
+        {done:false,when:'End of Q1',text:'Rate all active IDPs. Confirm evidence entries. Sign Q1 decisions for Nader, Abdulelah, Moayad.'},
+      ])}
+    </div>`;
+}
+
+function managerCard(name, initials, color, role, items){
+  return `<div style="background:var(--white);border:.5px solid var(--border);border-radius:11px;overflow:hidden">
+    <div style="padding:11px 14px;border-bottom:.5px solid var(--border);display:flex;align-items:center;gap:8px">
+      <div style="width:28px;height:28px;border-radius:50%;background:${color};display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff">${initials}</div>
+      <div><div style="font-size:12px;font-weight:500">${name}</div><div style="font-size:10px;color:var(--gray)">${role}</div></div>
+    </div>
+    <div style="padding:10px 14px">
+      ${items.map(a=>`<div style="display:flex;align-items:flex-start;gap:8px;padding:7px 9px;border-radius:6px;margin-bottom:3px;background:${a.done?'var(--gl2)':'var(--cream)'};border:.5px solid ${a.done?'var(--green)':'var(--border)'}">
+        <input type="checkbox" ${a.done?'checked':''} style="width:13px;height:13px;accent-color:${color};flex-shrink:0;margin-top:2px">
+        <div>
+          <div style="font-size:9px;font-weight:600;color:${a.done?'var(--gd)':a.when.includes('⚡')?'var(--red)':'var(--amber)'};margin-bottom:1px">${a.when}</div>
+          <div style="font-size:11px;${a.done?'text-decoration:line-through;color:var(--gray)':''}">${a.text}</div>
+        </div>
+      </div>`).join('')}
+    </div>
+  </div>`;
+}
+
+function openEmpFromDash(key){
+  const btn=[...document.querySelectorAll('.ntab')][['dash','nader','mizanur','muataz','abdulelah','moayad'].indexOf(key)];
+  openEmp(key, btn);
+}
+
+// ── EMPLOYEES ──
+const EMPLOYEES = {};
+
+EMPLOYEES.nader = {
+  name:'Nader', initials:'NA', prop:'Narjs West',
+  from:'RX Coordinator', to:'RX Associate',
+  agm:null, gm:'Husni Abdulrazzaq',
+  color:'#1D9E75', light:'#E1F5EE', dark:'#085041',
+  status:'active',
+  qs:[
+    { title:'Foundation', theme:'Foundation', period:'Sep–Dec 2026',
+      tagline:'Build the habits, knowledge, and presence that great RX work is built on.',
+      callout:'This quarter is about absorbing — observe everything, ask constantly, and begin to build your daily rhythm. Complete every task, flag every issue, and start learning the names and faces of residents in your areas.',
+      focus:[],
+      gm:{ name:'Husni Abdulrazzaq', label:'GM · Monthly Actions', acc:[0],
+        intro:'Husni, your role this quarter is to set Nader up for success — establish the coaching cadence, set the observation standard in writing, and confirm the operational baseline before moving to independent coverage.',
+        acts:[
+          {when:'Week 1', text:'Run orientation walkthrough with Nader covering all building areas, SOP standards, and emergency protocols — set the observation standard from Day 1.'},
+          {when:'Month 1', text:'Review Nader\'s task completion log — confirm zero skipped items. Address any pattern of incomplete tasks directly in Month 1, not Month 3.'},
+          {when:'Monthly', text:'Weekly 30-min check-in: one thing working, one thing to sharpen, one skill to practise this week.'},
+          {when:'Month 2 NOW', text:'Accompany Nader on a floor walkthrough — give immediate feedback on observation detail and flagging quality.'},
+          {when:'Month 3', text:'Review Nader\'s resident interaction log — confirm names, preferences, and greeting standard met for at least 8 residents.'},
+          {when:'End of Q1', text:'Rate Nader on all 4 competency groups. Complete Q1 decision — advance, extend, or review.'},
+        ]},
+      warn:{ title:'Risk: Silent non-completion', acts:['Any uncompleted task must be flagged before shift end — not left blank','Silent non-completion is the fastest way to lose trust at this stage — address in Week 1 if it appears']},
+      cl:['Building walkthrough completed and logged — early and late shift','All assigned operational tasks completed — nothing skipped or blank','At least 3 maintenance issues escalated with full location, severity, and timing','Attended community touchpoint this week with a specific task owned','Resident interaction log updated — at least 5 names and preferences recorded','Records complete with zero blank fields across all shifts this week'],
+      compGroups:[],
+      decision:{ title:'Q1 Decision — Foundation',
+        advance:'Zero skipped tasks across the quarter. Walkthrough log complete. Escalations include full context. Resident name recall reaching 8+.',
+        extend:'Inconsistent task completion or walkthrough quality. Escalations lack detail. Resident relationships not building.',
+        review:'Repeated skipped tasks or silent non-completion. No improvement after coaching. Escalations require correction each time.'}
+    },
+    { title:'Independence', theme:'Independence', period:'Jan–Mar 2027',
+      tagline:'From following the checklist to owning the shift — this quarter you start resolving, not just flagging.',
+      callout:'Q2 shifts your role: you are no longer learning what to flag — you are starting to resolve. Simple issues are yours to close. The desk is yours for full shifts with Husni on-call, not on-site.',
+      focus:[],
+      gm:{ name:'Husni Abdulrazzaq', label:'GM · Monthly Actions', acc:[0],
+        intro:'Husni, Q2 shifts Nader from observer to independent operator. Confirm desk coverage is real, assess follow-through quality (not just escalation count), and prepare the L2 readiness case for Q3.',
+        acts:[
+          {when:'Month 1', text:'Confirm Nader is covering the desk solo for full shifts — not with on-site support. Audit one shift unannounced.'},
+          {when:'Month 2 NOW', text:'Review Nader\'s resident issue log — confirm follow-through to closure pattern, not just escalation count.'},
+          {when:'Monthly', text:'Weekly check-in: review 2–3 resident interactions from the week — what standard was hit, what to sharpen.'},
+          {when:'Month 3', text:'Brief Nader on L2 expectations before Q3 — what changes in standard, what new responsibilities begin.'},
+          {when:'End of Q2', text:'Rate Nader on all 4 competency groups. Complete Q2 decision — advance, extend, or review.'},
+        ]},
+      warn:{ title:'Risk: Escalating everything at L1 standard', acts:['Q2 target is resolution, not escalation — if Nader is still escalating all issues, address the gap directly','Desk coverage must be solo — on-site support defeats the purpose of Q2']},
+      cl:['Handled desk solo for at least 3 full shifts this week without on-site support','Resolved at least 2 maintenance issues independently — without escalating to manager','Followed 3 resident issues to confirmed closure — resident said it was resolved','Took ownership of a community event task — not just attended','Resident relationships: 10+ names and preferences logged in system','Records: zero missing fields, zero corrections required from manager'],
+      compGroups:[],
+      decision:{ title:'Q2 Decision — Independence',
+        advance:'Desk solo coverage confirmed. Follow-through to closure pattern established. 10+ resident relationships. Simple issues resolved independently.',
+        extend:'Desk coverage not yet solo or inconsistent. Still escalating everything. Follow-through not established.',
+        review:'No independent desk coverage after 3 months. Escalation-only approach unchanged.'}
+    },
+    { title:'Ownership', theme:'Ownership', period:'Apr–Jun 2027',
+      tagline:'Operational ownership — the floor is yours, the residents know you, the manager is backup.',
+      callout:'Q3 is ownership. Tier-1 issues are yours to resolve — Husni is backup, not first call. Residents come to you proactively. Community events are planned and delivered without direction.',
+      focus:[],
+      gm:{ name:'Husni Abdulrazzaq', label:'GM · Monthly Actions', acc:[0],
+        intro:'Husni, Q3 is Nader\'s ownership quarter. Your role shifts from coaching basics to assessing L2 readiness. Confirm issue resolution without escalation is the default, not the exception.',
+        acts:[
+          {when:'Month 1', text:'Review Q3 gate criteria with Nader — what must be demonstrated across the quarter to pass the gate.'},
+          {when:'Monthly', text:'Monthly check-in: review one issue resolved independently and one community event contributed — assess standard.'},
+          {when:'Month 3', text:'Review Nader\'s resident relationship log — confirm 15+ names, units, and preferences from memory.'},
+          {when:'End of Q3', text:'Rate Nader on all 4 competency groups. Assess Q3 gate readiness before Q4 opens.'},
+        ]},
+      warn:{ title:'Risk: Husni still as first call', acts:['If Nader is still escalating tier-1 issues, the L2 promotion is not warranted','Community events must be planned without direction — not just executed when told']},
+      cl:['Resolved all tier-1 building issues independently this week — Husni not called for any routine issue','Floor coverage 69% confirmed — desk at 31% without direction','Community event planned and executed without direction — idea to resident follow-up independently','Resident list: 15+ names, units, and preferences documented in system','Records detailed enough for another team member to understand all open issues immediately','No compliance gap or missed SOP item across all shifts this week'],
+      compGroups:[],
+      decision:{ title:'Q3 Decision — Ownership',
+        advance:'Tier-1 resolution without escalation is the default. 15+ resident relationships confirmed. Community event delivered independently.',
+        extend:'Still escalating tier-1 issues. Resident relationships below 15. Community events require direction.',
+        review:'No meaningful shift from Q2 standard. Manager still needed for routine issues.'}
+    },
+    { title:'Promotion Gate', theme:'Gate — L2', period:'Jul–Sep 2027', gate:true,
+      tagline:'Promotion Gate — demonstrate L2 standard across all four pillars.',
+      callout:'The gate quarter. Everything from Q1–Q3 is confirmed against L2 standard. Evidence must be observable — not self-reported.',
+      focus:[],
+      external:[
+        {label:'GM Assessment — Husni Abdulrazzaq'},
+      ],
+      weights:[0.5,0,0.5],
+      cl:['Zero incomplete or skipped tasks across the quarter — confirmed by log review','Desk 31% / floor 69% balance maintained without direction across all shift types','All tier-1 issues resolved independently — Husni escalated for complex cases only','Every open resident issue followed to resident-confirmed closure — nothing sits unresolved','15+ resident relationships confirmed from memory — name, unit, preferences logged','One community event planned and delivered without direction — idea to follow-up independently','Records complete and accurate every shift — zero exceptions across the quarter','No compliance gap in Nader\'s areas across the quarter'],
+      compGroups:[],
+      gm:{ name:'Husni Abdulrazzaq', label:'GM · Gate Assessment', acc:[0],
+        intro:'Husni, Q4 is the gate. Confirm or deny based on observable evidence. Complete the gate assessment and submit the promotion recommendation to Senior Management.',
+        acts:[
+          {when:'Month 1', text:'Confirm all Q4 gate criteria are observable — set up the evidence review process with Nader.'},
+          {when:'Month 2 NOW', text:'Mid-gate check: review evidence to date — any criteria not on track must be flagged now, not at gate close.'},
+          {when:'End of Q4', text:'Complete full gate assessment. Submit promotion recommendation to Senior Management with supporting evidence.'},
+        ]},
+      decision:{ title:'Q4 Gate Decision',
+        advance:'All gate criteria confirmed with observable evidence. Promotion to RX Associate (L2) recommended.',
+        extend:'1–2 criteria not yet confirmed. One additional quarter to close the gap.',
+        review:'Multiple criteria not met. Programme review required.'}
+    },
+  ]
+};
+
+
+// ── L2→L3 Factory ──
+function makeL2NW(name, initials, color, light, dark, status){
+  return {
+    name, initials, prop:'Narjs West',
+    from:'RX Associate', to:'Senior RX Associate',
+    agm:null, gm:'Husni Abdulrazzaq',
+    color, light, dark, status,
+    qs:[
+      { title:'Assessment', theme:'Baseline Assessment', period:'Sep–Dec 2026',
+        tagline:'Map where you are against L3 standard — know which gaps to close and which strengths to build on.',
+        callout:'Q1 is a diagnosis quarter. Husni will work with you on two areas where you\'ll transition from "assist" to "own". By the end of Q1 you should know your financial baseline, have done your first leasing coordination task, and have taken one escalated service case through to closure.',
+        focus:[],
+        gm:{ name:'Husni Abdulrazzaq', label:'GM · Monthly Actions', acc:[0],
+          intro:'Husni, Q1 is baseline-setting for the L3 path. Confirm the operational anchor is solid, assign the first financial and leasing tasks, and identify the escalated service gap to close over the year.',
+          acts:[
+            {when:'Week 1', text:'Sit down with '+name+' and map the L3 competency gaps together — agree on 2 priority areas for the year.'},
+            {when:'Month 1', text:'Assign the first leasing coordination task — a real unit handover or move-out coordination. Debrief afterwards.'},
+            {when:'Month 2 NOW', text:'Review '+name+'\'s first financial report input — AR or AP entry. Confirm accuracy and flag any gap in understanding.'},
+            {when:'Monthly', text:'Monthly 30-min L3 coaching session — one thing improving, one thing to sharpen, one task to try this quarter.'},
+            {when:'End of Q1', text:'Rate '+name+' on all 5 competency groups. Sign Q1 decision — advance, extend, or review.'},
+          ]},
+        warn:{ title:'Risk: Staying at L2 standard', acts:['L3 is not "more of the same" — if '+name+' is not attempting financial or escalation tasks, address in Month 2','The shift from assisting to owning must be demonstrated, not claimed']},
+        cl:['Completed one leasing coordination task from start to resident confirmation','Submitted one financial report input (AR or AP) — reviewed and accurate','Taken one escalated resident complaint to closed-and-confirmed status','Operational anchor confirmed: 30/70 desk/floor split met for the week','Records: zero corrections required from manager across all shifts this week'],
+        compGroups:[],
+        decision:{ title:'Q1 Decision — Baseline',
+          advance:'First financial task completed. One escalation closed. L3 gap map agreed with Husni.',
+          extend:'Financial or escalation tasks not yet attempted. Still operating fully at L2 standard.',
+          review:'No meaningful movement toward L3 — all tasks at L2 level after 3 months.'}
+      },
+      { title:'Ownership', theme:'Owning New Responsibilities', period:'Jan–Mar 2027',
+        tagline:'From assisting to owning — financial tasks, leasing coordination, and escalations are now your lane.',
+        callout:'Q2 is the ownership shift. Financial entries, leasing coordination, and escalated service cases are no longer assigned — they\'re expected. Husni is still available for complex cases, but your first response to every situation should be your own.',
+        focus:[],
+        gm:{ name:'Husni Abdulrazzaq', label:'GM · Monthly Actions', acc:[0],
+          intro:'Husni, Q2 is where the ownership shift happens. Confirm '+name+' is initiating financial and escalation tasks without prompting — not waiting to be assigned.',
+          acts:[
+            {when:'Month 1', text:'Audit one week: did '+name+' initiate any financial or leasing task without being assigned? Confirm the ownership shift is real.'},
+            {when:'Month 2 NOW', text:'Review the escalated complaint log — confirm '+name+' is taking cases through to resident-confirmed closure without escalating to you.'},
+            {when:'Monthly', text:'Monthly coaching: one financial entry reviewed together — check for accuracy, flag any gaps.'},
+            {when:'Month 3', text:'Brief '+name+' on people management responsibilities coming in Q3 — scheduling, onboarding support.'},
+            {when:'End of Q2', text:'Rate '+name+' on all 5 competency groups. Sign Q2 decision.'},
+          ]},
+        warn:{ title:'Risk: Waiting to be assigned', acts:['If '+name+' is still waiting for Husni to assign financial or leasing tasks, the ownership shift is not real','Self-initiated tasks are the L3 standard — passive completion of assigned tasks is not sufficient']},
+        cl:['Self-initiated at least one financial task this week — not assigned','Leasing coordination: one unit turnover or move-out tracked end-to-end','Escalated complaint: one case closed with resident confirmation — not escalated to Husni','Team support: contributed to one onboarding or scheduling task','Records: detailed and complete across all shifts — zero blank fields or corrections needed'],
+        compGroups:[],
+        decision:{ title:'Q2 Decision — Ownership',
+          advance:'Financial and leasing tasks self-initiated. One escalation per week closed independently. Team support tasks completed.',
+          extend:'Still waiting to be assigned financial or leasing tasks. Escalations still going to Husni.',
+          review:'No change from Q1 standard. Ownership shift not demonstrated after 6 months.'}
+      },
+      { title:'Partnership', theme:'Management Partnership', period:'Apr–Jun 2027',
+        tagline:'You\'re the operational anchor when Husni is out — own the shift, lead the briefing, manage the team.',
+        callout:'Q3 is partnership. You run the daily briefing. You own the weekly walkthrough report. You handle the team schedule. Husni is the strategic layer — you are the operational one.',
+        focus:[],
+        gm:{ name:'Husni Abdulrazzaq', label:'GM · Monthly Actions', acc:[0],
+          intro:'Husni, Q3 is your handoff quarter. '+name+' should be running daily briefings and walkthrough reports without prompting. Confirm the reporting standard is consistent, then step back.',
+          acts:[
+            {when:'Month 1', text:'Observe '+name+'\'s first daily briefing — give structured feedback in writing. Set the standard for the quarter.'},
+            {when:'Monthly', text:'Review weekly walkthrough report — confirm detail level, issue follow-through, and accuracy.'},
+            {when:'Month 2 NOW', text:'Confirm team schedule ownership — '+name+' sets the weekly schedule, you approve it.'},
+            {when:'Month 3', text:'Review the L3 gate criteria with '+name+' — what must be demonstrated in Q4 to pass.'},
+            {when:'End of Q3', text:'Rate '+name+' on all 5 competency groups. Assess gate readiness before Q4 opens.'},
+          ]},
+        warn:{ title:'Risk: Waiting for Husni to initiate briefings', acts:['Daily briefings must be self-initiated — not prompted by Husni','Walkthrough reports must be submitted before end of shift — not the following day']},
+        cl:['Daily briefing run without prompting — all shifts this week','Weekly walkthrough report submitted before end of shift, every day','Team schedule set and distributed for next week — approved by Husni','Escalated complaint handled and closed without Husni involvement — confirmed','Financial monthly review input completed — submitted on time'],
+        compGroups:[],
+        decision:{ title:'Q3 Decision — Partnership',
+          advance:'Daily briefings and walkthrough reports self-initiated every shift. Schedule ownership confirmed. Escalations resolved without Husni.',
+          extend:'Briefings or reports still require prompting. Schedule still set by Husni.',
+          review:'No meaningful shift from Q2. Operational partnership not demonstrated.'}
+      },
+      { title:'Gate — L3', theme:'Promotion Gate', period:'Jul–Sep 2027', gate:true,
+        tagline:'Promotion Gate — confirm L3 standard across all five pillars.',
+        callout:'The gate quarter. Observable evidence across all 5 L3 competency groups. Husni assesses and submits the promotion recommendation.',
+        focus:[],
+        external:[{label:'GM Assessment — Husni Abdulrazzaq'}],
+        weights:[0.5,0,0.5],
+        cl:['Leasing coordination: one unit end-to-end with zero corrections','Financial: AR/AP entries for the quarter — zero errors, submitted on time','Escalated complaints: all cases closed with resident confirmation — none escalated to Husni','Daily briefings: every shift without prompting — documented log','Weekly walkthrough reports: on-time every week — zero missed submissions','Team schedule: set and distributed weekly — approved by Husni','People: contributed to onboarding or training of one new team member','Reporting: weekly management report submitted — detail level confirmed by Husni'],
+        compGroups:[],
+        gm:{ name:'Husni Abdulrazzaq', label:'GM · Gate Assessment', acc:[0],
+          intro:'Husni, Q4 is the gate. Evidence must be observable. Submit the promotion recommendation to Senior Management with supporting evidence.',
+          acts:[
+            {when:'Month 1', text:'Confirm all gate criteria are trackable — set up the evidence review process with '+name+'.'},
+            {when:'Month 2 NOW', text:'Mid-gate check: review evidence to date. Any criteria off-track must be flagged now.'},
+            {when:'End of Q4', text:'Complete gate assessment. Submit promotion recommendation to Senior Management.'},
+          ]},
+        decision:{ title:'Q4 Gate Decision',
+          advance:'All gate criteria confirmed with observable evidence. Promotion to Senior RX Associate (L3) recommended.',
+          extend:'1–2 criteria not yet confirmed. One additional quarter to close the gap.',
+          review:'Multiple criteria not met. Programme review required.'}
+      },
+    ]
+  };
+}
+
+EMPLOYEES.mizanur = makeL2NW('Mizanur Rahman','MR','#C8853A','#FAEEE8','#6B2210','suggested');
+EMPLOYEES.muataz  = makeL2NW('Muataz','MT','#C8853A','#FAEEE8','#6B2210','suggested');
+
+// ── L3→L4: Abdulelah ──
+EMPLOYEES.abdulelah = {
+  name:'Abdulelah', initials:'AB', prop:'Narjs West',
+  from:'Senior RX Associate', to:'AGM / Senior Manager',
+  agm:null, gm:'Husni Abdulrazzaq',
+  color:'#7C5CBF', light:'#EEEDFE', dark:'#26215C',
+  status:'priority',
+  qs:[
+    { title:'Systems', theme:'Owning the Systems', period:'Sep–Dec 2026',
+      tagline:'You now own the SOP, the daily briefing, and the shift handover — not as backup, but as the system owner.',
+      callout:'Q1 is where "Senior Associate" becomes "operational leader". The daily walkthrough SOP is yours to execute and enforce. Shift handovers are formal. The daily briefing is yours. Husni steps back from these — you step in.',
+      focus:[],
+      gm:{ name:'Husni Abdulrazzaq', label:'GM · Monthly Actions', acc:[0],
+        intro:'Husni, Q1 is your formal handoff of the operational systems to Abdulelah. Confirm SOP ownership is real — not nominal. Set the walkthrough standard in writing from Week 1.',
+        acts:[
+          {when:'Week 1 NOW', text:'Walk the daily SOP with Abdulelah — 10:00–11:00 and 18:00–19:00 windows. Confirm the standard in writing. After this week, Abdulelah owns it.'},
+          {when:'Month 1', text:'Review the shift handover log — confirm it\'s completed every shift with full detail. Address any gap in Month 1.'},
+          {when:'Month 2 NOW', text:'Attend one daily briefing unannounced — assess standard, give written feedback.'},
+          {when:'Monthly', text:'Monthly 30-min coaching: one SOP issue reviewed, one team coordination win named.'},
+          {when:'End of Q1', text:'Rate Abdulelah on all 5 competency groups. Sign Q1 decision.'},
+        ]},
+      warn:{ title:'Risk: SOP ownership in name only', acts:['If the daily walkthrough SOP is not being executed at 10:00–11:00 and 18:00–19:00, address immediately','Shift handovers that are blank or one-line are not acceptable — flag in Month 1']},
+      cl:['Daily SOP walkthrough: 10:00–11:00 and 18:00–19:00 executed and logged — no exceptions this week','Shift handover completed formally — full detail, all open issues captured','Daily briefing delivered — all team members present, outcomes logged','Deposit accounting entry reviewed for accuracy — zero errors this week','One compliance check completed — community guidelines confirmed, no violations missed'],
+      compGroups:[],
+      decision:{ title:'Q1 Decision — Systems',
+        advance:'SOP executed every shift. Shift handover formal and detailed every day. Briefing delivered without prompting.',
+        extend:'SOP or handover not yet consistent. Briefing still prompted by Husni.',
+        review:'No meaningful ownership of operational systems after 3 months.'}
+    },
+    { title:'Finance & Legal', theme:'Financial & Legal Ownership', period:'Jan–Mar 2027',
+      tagline:'Deposits, vendor reconciliation, notices — from supporting to owning.',
+      callout:'Q2 is finance and legal ownership. Deposit accounting, vendor reconciliation, and Notices & Warnings (legal timelines) are now your responsibility. Husni approves — you execute.',
+      focus:[],
+      gm:{ name:'Husni Abdulrazzaq', label:'GM · Monthly Actions', acc:[0],
+        intro:'Husni, Q2 is where the financial and legal ownership shifts to Abdulelah. Confirm Notice issuance is accurate and on-time. Any legal timeline error must be caught and corrected in Month 1.',
+        acts:[
+          {when:'Month 1', text:'Review first batch of Notices & Warnings issued by Abdulelah — confirm legal timelines are correct before submission.'},
+          {when:'Month 2 NOW', text:'Audit deposit accounting for the month — confirm accuracy and correct reconciliation.'},
+          {when:'Monthly', text:'Monthly review of vendor reconciliation — confirm all invoices matched and no discrepancies unresolved.'},
+          {when:'Month 3', text:'Brief Abdulelah on Q3 team leadership expectations — weekly team meetings, cross-shift coordination.'},
+          {when:'End of Q2', text:'Rate Abdulelah on all 5 competency groups. Sign Q2 decision.'},
+        ]},
+      warn:{ title:'Risk: Legal timeline errors', acts:['Any Notice issued with incorrect timing must be escalated to Husni immediately — do not correct silently','Vendor reconciliation gaps carry financial risk — confirm zero unresolved discrepancies monthly']},
+      cl:['Deposit accounting: entries accurate, reconciled — zero discrepancies this week','Notices & Warnings: all issued on correct legal timeline — confirmed with Husni','Vendor invoices: all matched and reconciled for the week — zero outstanding gaps','Financial report input: submitted on time and accurate — reviewed by Husni','SOP and briefing: continued from Q1 — no regression this week'],
+      compGroups:[],
+      decision:{ title:'Q2 Decision — Finance & Legal',
+        advance:'Deposit accounting and vendor reconciliation accurate. Notices issued on correct timeline. No legal errors.',
+        extend:'One area of financial or legal ownership still requiring Husni\'s correction. Needs another quarter.',
+        review:'Repeated financial or legal errors. Programme review required.'}
+    },
+    { title:'Team Leadership', theme:'Team & Shift Leadership', period:'Apr–Jun 2027',
+      tagline:'You lead the team meetings, set the shift standard, and own the community newsletter.',
+      callout:'Q3 is team leadership. Weekly team meetings are yours to chair. Cross-shift coordination is yours to manage. The community newsletter is your communication output. Husni reviews — you produce.',
+      focus:[],
+      gm:{ name:'Husni Abdulrazzaq', label:'GM · Monthly Actions', acc:[0],
+        intro:'Husni, Q3 is team leadership ownership. Confirm Abdulelah is chairing team meetings and managing cross-shift coordination without prompting. Review one meeting output monthly.',
+        acts:[
+          {when:'Month 1', text:'Attend first team meeting chaired by Abdulelah — give structured feedback on agenda, facilitation, and follow-through.'},
+          {when:'Monthly', text:'Review community newsletter before distribution — confirm quality, tone, and accuracy.'},
+          {when:'Month 2 NOW', text:'Confirm cross-shift handover standard — no open issues falling through between shifts.'},
+          {when:'Month 3', text:'Review gate criteria with Abdulelah — what must be demonstrated in Q4 to pass the L4 gate.'},
+          {when:'End of Q3', text:'Rate Abdulelah on all 5 competency groups. Assess gate readiness.'},
+        ]},
+      warn:{ title:'Risk: Team meetings not chaired effectively', acts:['If team meetings require Husni to redirect or take over, address the facilitation gap directly','Community newsletter must be distributed on schedule — not when Abdulelah remembers to send it']},
+      cl:['Weekly team meeting chaired — agenda set, outcomes logged, follow-through confirmed','Cross-shift: zero open issues falling through between shifts — handover complete every day','Community newsletter: drafted and reviewed by Husni this week','Complaint: one escalated case closed with recurrence prevention step documented','SOP, briefing, finance, legal: all Q1–Q2 standards maintained — no regression'],
+      compGroups:[],
+      decision:{ title:'Q3 Decision — Team Leadership',
+        advance:'Team meetings self-chaired. Cross-shift coordination gap-free. Newsletter on schedule. No regression from Q1–Q2.',
+        extend:'Team meetings still require Husni involvement. Newsletter not yet consistent.',
+        review:'No meaningful leadership demonstrated after 9 months.'}
+    },
+    { title:'Gate — L4', theme:'Promotion Gate', period:'Jul–Sep 2027', gate:true,
+      tagline:'Promotion Gate — confirm L4 standard across all five pillars.',
+      callout:'The gate quarter. Observable evidence across all 5 L4 competency groups. Husni completes the gate assessment and submits the recommendation.',
+      focus:[],
+      external:[{label:'GM Assessment — Husni Abdulrazzaq'}],
+      weights:[0.5,0,0.5],
+      cl:['Daily walkthrough SOP: 10:00–11:00 and 18:00–19:00 — zero missed slots across the quarter','Shift handover: formal and detailed every shift — confirmed by team members','Daily briefing: every shift without prompting — log confirms it','Deposit accounting: zero discrepancies across the quarter','Notices & Warnings: all issued on correct legal timeline — confirmed by Husni','Vendor reconciliation: all invoices matched — zero outstanding gaps','Team meetings: weekly, self-chaired — outcomes logged every session','Community newsletter: distributed on schedule every month','Complaint closure: all cases with recurrence prevention step — none escalated to Husni'],
+      compGroups:[],
+      gm:{ name:'Husni Abdulrazzaq', label:'GM · Gate Assessment', acc:[0],
+        intro:'Husni, Q4 is the gate for Abdulelah\'s L4 promotion. Complete the gate assessment and submit the recommendation to Senior Management.',
+        acts:[
+          {when:'Month 1', text:'Confirm all gate criteria are observable — set up the evidence review process with Abdulelah.'},
+          {when:'Month 2 NOW', text:'Mid-gate check: review evidence to date. Any criteria off-track flagged now.'},
+          {when:'End of Q4', text:'Complete gate assessment. Submit promotion recommendation to Senior Management.'},
+        ]},
+      decision:{ title:'Q4 Gate Decision',
+        advance:'All gate criteria confirmed with observable evidence. Promotion to AGM / Senior Manager (L4) recommended.',
+        extend:'1–2 criteria not yet confirmed. One additional quarter.',
+        review:'Multiple criteria not met. Programme review required.'}
+    },
+  ]
+};
+
+// ── L3→L4: Moayad ──
+EMPLOYEES.moayad = {
+  name:'Moayad', initials:'MY', prop:'Narjs West',
+  from:'Senior RX Associate', to:'AGM / Senior Manager',
+  agm:null, gm:'Husni Abdulrazzaq',
+  color:'#7C5CBF', light:'#EEEDFE', dark:'#26215C',
+  status:'priority',
+  qs:[
+    { title:'Systems', theme:'Owning the Systems', period:'Sep–Dec 2026',
+      tagline:'SOP, daily briefing, shift handover — from senior team member to operational lead.',
+      callout:'Q1 is where "Senior Associate" becomes "operational leader". The daily walkthrough SOP is yours to execute and enforce. Shift handovers are formal. The daily briefing is yours. Husni steps back from these — you step in.',
+      focus:[],
+      gm:{ name:'Husni Abdulrazzaq', label:'GM · Monthly Actions', acc:[0],
+        intro:'Husni, Q1 is your formal handoff of the operational systems to Moayad. Confirm SOP ownership is real from Week 1.',
+        acts:[
+          {when:'Week 1 NOW', text:'Walk the daily SOP with Moayad — 10:00–11:00 and 18:00–19:00 windows. Confirm the standard in writing. After this week, Moayad owns it.'},
+          {when:'Month 1', text:'Review the shift handover log — confirm it\'s completed every shift with full detail.'},
+          {when:'Month 2 NOW', text:'Attend one daily briefing unannounced — assess standard, give written feedback.'},
+          {when:'Monthly', text:'Monthly 30-min coaching: one SOP issue reviewed, one team coordination win named.'},
+          {when:'End of Q1', text:'Rate Moayad on all 5 competency groups. Sign Q1 decision.'},
+        ]},
+      warn:{ title:'Risk: SOP ownership in name only', acts:['If the daily walkthrough SOP is not being executed at 10:00–11:00 and 18:00–19:00, address immediately','Shift handovers that are blank or one-line are not acceptable — flag in Month 1']},
+      cl:['Daily SOP walkthrough: 10:00–11:00 and 18:00–19:00 executed and logged — no exceptions this week','Shift handover completed formally — full detail, all open issues captured','Daily briefing delivered — all team members present, outcomes logged','Deposit accounting entry reviewed for accuracy — zero errors this week','One compliance check completed — community guidelines confirmed, no violations missed'],
+      compGroups:[],
+      decision:{ title:'Q1 Decision — Systems',
+        advance:'SOP executed every shift. Shift handover formal and detailed every day. Briefing delivered without prompting.',
+        extend:'SOP or handover not yet consistent. Briefing still prompted by Husni.',
+        review:'No meaningful ownership of operational systems after 3 months.'}
+    },
+    { title:'Finance & Legal', theme:'Financial & Legal Ownership', period:'Jan–Mar 2027',
+      tagline:'Deposits, vendor reconciliation, notices — from supporting to owning.',
+      callout:'Q2 is finance and legal ownership. Deposit accounting, vendor reconciliation, and Notices & Warnings (legal timelines) are now your responsibility. Husni approves — you execute.',
+      focus:[],
+      gm:{ name:'Husni Abdulrazzaq', label:'GM · Monthly Actions', acc:[0],
+        intro:'Husni, Q2 is where the financial and legal ownership shifts to Moayad. Confirm Notice issuance is accurate and on-time.',
+        acts:[
+          {when:'Month 1', text:'Review first batch of Notices & Warnings issued by Moayad — confirm legal timelines are correct before submission.'},
+          {when:'Month 2 NOW', text:'Audit deposit accounting for the month — confirm accuracy and correct reconciliation.'},
+          {when:'Monthly', text:'Monthly review of vendor reconciliation — confirm all invoices matched and no discrepancies unresolved.'},
+          {when:'Month 3', text:'Brief Moayad on Q3 team leadership expectations — weekly team meetings, cross-shift coordination.'},
+          {when:'End of Q2', text:'Rate Moayad on all 5 competency groups. Sign Q2 decision.'},
+        ]},
+      warn:{ title:'Risk: Legal timeline errors', acts:['Any Notice issued with incorrect timing must be escalated to Husni immediately','Vendor reconciliation gaps carry financial risk — confirm zero unresolved discrepancies monthly']},
+      cl:['Deposit accounting: entries accurate, reconciled — zero discrepancies this week','Notices & Warnings: all issued on correct legal timeline — confirmed with Husni','Vendor invoices: all matched and reconciled for the week — zero outstanding gaps','Financial report input: submitted on time and accurate — reviewed by Husni','SOP and briefing: continued from Q1 — no regression this week'],
+      compGroups:[],
+      decision:{ title:'Q2 Decision — Finance & Legal',
+        advance:'Deposit accounting and vendor reconciliation accurate. Notices issued on correct timeline.',
+        extend:'One area of financial or legal ownership still requiring Husni\'s correction.',
+        review:'Repeated financial or legal errors. Programme review required.'}
+    },
+    { title:'Team Leadership', theme:'Team & Shift Leadership', period:'Apr–Jun 2027',
+      tagline:'Weekly team meetings, cross-shift coordination, community newsletter — yours to own.',
+      callout:'Q3 is team leadership. Weekly team meetings are yours to chair. Cross-shift coordination is yours to manage. The community newsletter is your communication output.',
+      focus:[],
+      gm:{ name:'Husni Abdulrazzaq', label:'GM · Monthly Actions', acc:[0],
+        intro:'Husni, Q3 is team leadership ownership. Confirm Moayad is chairing team meetings and managing cross-shift coordination without prompting.',
+        acts:[
+          {when:'Month 1', text:'Attend first team meeting chaired by Moayad — give structured feedback on agenda, facilitation, and follow-through.'},
+          {when:'Monthly', text:'Review community newsletter before distribution — confirm quality, tone, and accuracy.'},
+          {when:'Month 2 NOW', text:'Confirm cross-shift handover standard — no open issues falling through between shifts.'},
+          {when:'Month 3', text:'Review gate criteria with Moayad — what must be demonstrated in Q4 to pass the L4 gate.'},
+          {when:'End of Q3', text:'Rate Moayad on all 5 competency groups. Assess gate readiness.'},
+        ]},
+      warn:{ title:'Risk: Team meetings not chaired effectively', acts:['If team meetings require Husni to redirect or take over, address the facilitation gap directly','Community newsletter must be distributed on schedule']},
+      cl:['Weekly team meeting chaired — agenda set, outcomes logged, follow-through confirmed','Cross-shift: zero open issues falling through between shifts — handover complete every day','Community newsletter: drafted and reviewed by Husni this week','Complaint: one escalated case closed with recurrence prevention step documented','SOP, briefing, finance, legal: all Q1–Q2 standards maintained — no regression'],
+      compGroups:[],
+      decision:{ title:'Q3 Decision — Team Leadership',
+        advance:'Team meetings self-chaired. Cross-shift coordination gap-free. Newsletter on schedule.',
+        extend:'Team meetings still require Husni involvement. Newsletter not yet consistent.',
+        review:'No meaningful leadership demonstrated after 9 months.'}
+    },
+    { title:'Gate — L4', theme:'Promotion Gate', period:'Jul–Sep 2027', gate:true,
+      tagline:'Promotion Gate — confirm L4 standard across all five pillars.',
+      callout:'The gate quarter. Observable evidence across all 5 L4 competency groups.',
+      focus:[],
+      external:[{label:'GM Assessment — Husni Abdulrazzaq'}],
+      weights:[0.5,0,0.5],
+      cl:['Daily walkthrough SOP: 10:00–11:00 and 18:00–19:00 — zero missed slots across the quarter','Shift handover: formal and detailed every shift','Daily briefing: every shift without prompting','Deposit accounting: zero discrepancies across the quarter','Notices & Warnings: all issued on correct legal timeline','Vendor reconciliation: all invoices matched — zero outstanding gaps','Team meetings: weekly, self-chaired — outcomes logged','Community newsletter: distributed on schedule every month','Complaint closure: all cases with recurrence prevention step'],
+      compGroups:[],
+      gm:{ name:'Husni Abdulrazzaq', label:'GM · Gate Assessment', acc:[0],
+        intro:'Husni, Q4 is the gate for Moayad\'s L4 promotion. Complete the gate assessment and submit the recommendation to Senior Management.',
+        acts:[
+          {when:'Month 1', text:'Confirm all gate criteria are observable — set up the evidence review process with Moayad.'},
+          {when:'Month 2 NOW', text:'Mid-gate check: review evidence to date. Any criteria off-track flagged now.'},
+          {when:'End of Q4', text:'Complete gate assessment. Submit promotion recommendation to Senior Management.'},
+        ]},
+      decision:{ title:'Q4 Gate Decision',
+        advance:'All gate criteria confirmed with observable evidence. Promotion to AGM / Senior Manager (L4) recommended.',
+        extend:'1–2 criteria not yet confirmed. One additional quarter.',
+        review:'Multiple criteria not met. Programme review required.'}
+    },
+  ]
+};
+
+// ── MGR_CONFIG ──
+const MGR_CONFIG = {
+  husni:{
+    name:'Husni Abdulrazzaq', role:'GM — Narjs West', initials:'HK',
+    color:'#1D3A8A', light:'#EEF2FF',
+    pageId:'mgr-husni-page', lsKey:'nw_hk',
+    empOrder:['abdulelah','moayad','nader','mizanur','muataz'],
+    cardKey:'gm',
+  },
+};
+
+function renderMgrView(mgrKey){
+  const M=MGR_CONFIG[mgrKey];
+  if(!M) return;
+  const mAcks=JSON.parse(localStorage.getItem(M.lsKey)||'{}');
+  let totalActs=0, doneActs=0;
+  const cards = M.empOrder.map(empKey=>{
+    const E=EMPLOYEES[empKey];
+    if(!E) return '';
+    const qIdx=ST.q[empKey]??0;
+    const q=E.qs[qIdx];
+    const card=q?q[M.cardKey]:null;
+    if(!card){
+      return `<div style="background:var(--white);border:.5px solid var(--border);border-radius:11px;padding:13px 16px;margin-bottom:12px;border-top:3px solid ${E.color};--mc:${E.color};--ml:${E.light}">
+        <div style="display:flex;align-items:center;gap:9px">
+          <div style="width:30px;height:30px;border-radius:50%;background:${E.color};display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff">${x(E.initials)}</div>
+          <div><div style="font-size:12px;font-weight:500">${x(E.name)}</div><div style="font-size:10px;color:var(--gray)">${x(E.from)} → ${x(E.to)}</div></div>
+          <div style="margin-left:auto;font-size:10px;font-weight:600;padding:3px 9px;border-radius:8px;background:#F3F4F6;color:var(--gray)">Not Started</div>
+        </div>
+        <div style="font-size:11px;color:var(--gray);margin-top:9px;padding:8px 10px;background:var(--cream);border-radius:6px">IDP not yet active. Actions begin when ${x(E.name)} starts Q1.</div>
+      </div>`;
+    }
+    const acts=card.acts||[];
+    totalActs+=acts.length;
+    const done=acts.filter((_,i)=>mAcks[`${empKey}_${qIdx}_${i}`]).length;
+    doneActs+=done;
+    const pct=acts.length?Math.round(done/acts.length*100):0;
+    const actsHTML=acts.map((a,i)=>{
+      const ck=`${empKey}_${qIdx}_${i}`, isDone=!!mAcks[ck];
+      const isNow=a.when&&(a.when.includes('NOW')||a.when.includes('Week 1'));
+      return `<div class="mact ${isDone?'mdone':isNow?'mhi':''}" onclick="mgrAck('${mgrKey}','${empKey}',${qIdx},${i},this)" style="--mc:${M.color};--ml:${M.light}">
+        <input type="checkbox" ${isDone?'checked':''} onclick="event.stopPropagation();mgrAck('${mgrKey}','${empKey}',${qIdx},${i},this.closest('.mact').querySelector('input[type=checkbox]'))">
+        ${a.when?`<span class="mwhen" style="background:${isDone?'#D1FAE5;color:#065F46':isNow?'#FEE2E2;color:#B91C1C':'#FEF3C7;color:#92400E'}">${x(a.when)}</span>`:''}
+        <span class="mact-txt">${x(a.text)}</span>
+      </div>`;
+    }).join('');
+    const warnBlock=q.warn?`<div class="mwarn"><div class="mwarn-t">⚠️ ${x(q.warn.title)}</div>${q.warn.acts.map(a=>`<div class="mwarn-a">• ${x(a)}</div>`).join('')}</div>`:'';
+    return `<div class="mcard" style="--mc:${E.color};--ml:${E.light};border-top-color:${E.color}">
+      <div class="mcard-head">
+        <div class="mcard-av" style="background:${E.color}">${x(E.initials)}</div>
+        <div class="mcard-info">
+          <div class="mcard-name">${x(E.name)}</div>
+          <div class="mcard-meta">${x(E.from)} → ${x(E.to)} · Q${qIdx+1}: ${x(q.theme||'')}</div>
+        </div>
+        <div class="mcard-prog"><div class="mcard-pct" style="color:${E.color}">${pct}%</div><div class="mcard-pct-l">done</div></div>
+      </div>
+      ${card.intro?`<div class="mcard-intro">${x(card.intro)}</div>`:''}
+      <div class="mcard-acts">${actsHTML}</div>
+      ${warnBlock}
+    </div>`;
+  }).join('');
+
+  const activeCount=M.empOrder.filter(k=>EMPLOYEES[k]&&EMPLOYEES[k].status==='active').length;
+  document.getElementById(M.pageId).innerHTML=`
+    <div class="mgr-hero">
+      <div class="mgr-hero-av">${x(M.initials)}</div>
+      <div class="mgr-hero-txt">
+        <h2>${x(M.name)}</h2>
+        <p>${x(M.role)} · IDP Manager Actions</p>
+      </div>
+    </div>
+    <div class="mgr-summary">
+      <div class="mgr-stat"><div class="mgr-stat-n" style="color:${M.color}">${activeCount}</div><div class="mgr-stat-l">Active IDPs</div></div>
+      <div class="mgr-stat"><div class="mgr-stat-n" style="color:#1D9E75">${doneActs}</div><div class="mgr-stat-l">Actions Done</div></div>
+      <div class="mgr-stat"><div class="mgr-stat-n" style="color:#EF9F27">${totalActs-doneActs}</div><div class="mgr-stat-l">Remaining</div></div>
+    </div>
+    <div class="mgr-section-title">Team IDPs — Your Actions</div>
+    ${cards}`;
+}
+
+function mgrAck(mgrKey, empKey, qIdx, actIdx, el){
+  const M=MGR_CONFIG[mgrKey];
+  if(!M) return;
+  const mAcks=JSON.parse(localStorage.getItem(M.lsKey)||'{}');
+  const ck=`${empKey}_${qIdx}_${actIdx}`;
+  mAcks[ck]=!mAcks[ck];
+  localStorage.setItem(M.lsKey,JSON.stringify(mAcks));
+  renderMgrView(mgrKey);
+}
+
+// ── JD-Based Competency Override ──
+;(function(){
+  // L1→L2 competencies — Nader
+  const L1COMPS=[
+    {group:'Building Operations & Issue Resolution', comps:[
+      {id:'b1',name:'Task Completion',desc:'Completes all assigned operational tasks on shift — zero skipped or blank items.',note:'L2 target: proactive completion without manager reminder'},
+      {id:'b2',name:'Building Walkthrough',desc:'Executes floor walkthroughs at correct frequency — issues found and logged with location, severity, and timing.',note:'Coverage standard: all assigned areas visited every shift'},
+      {id:'b3',name:'Issue Escalation Quality',desc:'Escalates issues with full context — location, tenant, severity, first response attempted.',note:'L1: reports. L2: reports with context and attempted first step'},
+      {id:'b4',name:'Emergency Protocol Awareness',desc:'Knows all emergency protocols and can follow them without direction.',note:''},
+    ]},
+    {group:'Neighbour Experience & Follow-Through', comps:[
+      {id:'n1',name:'Desk / Floor Balance',desc:'Maintains desk 31% / floor 69% split as specified in JD — not desk-heavy by default.',note:'The 31/70 split is explicitly in the JD — enforce from Q1'},
+      {id:'n2',name:'Resident Interaction Quality',desc:'Greets residents proactively, handles queries to completion, follows up on open items.',note:'L2 target: follows up to confirmed closure without reminding'},
+      {id:'n3',name:'Resident Knowledge',desc:'Knows names, units, and preferences for residents in assigned areas.',note:'Target by Q2: 10+ residents from memory'},
+    ]},
+    {group:'Community Experience & Activation', comps:[
+      {id:'c1',name:'Community Event Participation',desc:'Attends community events with an assigned task — contributes actively, not passively.',note:'25% of JD time — this is not optional'},
+      {id:'c2',name:'Community Touchpoint Ownership',desc:'Owns a specific touchpoint at each community event — not just present.',note:''},
+    ]},
+    {group:'Administration & Records', comps:[
+      {id:'a1',name:'Record Completeness',desc:'All shift records completed with zero blank fields — every shift, every time.',note:''},
+      {id:'a2',name:'Compliance Awareness',desc:'Knows the relevant SOPs and community guidelines — flags any violation observed on shift.',note:''},
+    ]},
+  ];
+  const L1FOCUS=['Zero incomplete tasks across the quarter — confirmed by log review','Desk 31% / floor 69% balance becoming default — not requiring prompting','Resident names and preferences growing — 5+ by end of Q1, 10+ by end of Q2','Issue escalations include full context — location, timing, severity, first step attempted','Records complete with zero blank fields — every shift'];
+  ['nader'].forEach(k=>{
+    const E=EMPLOYEES[k];
+    if(!E) return;
+    E.qs.forEach(q=>{ q.compGroups=JSON.parse(JSON.stringify(L1COMPS)); q.focus=[...L1FOCUS]; });
+  });
+
+  // L2→L3 competencies — Mizanur, Muataz
+  const L2COMPS=[
+    {group:'Operational Excellence & Leasing Support', comps:[
+      {id:'o1',name:'Operational Anchor',desc:'Maintains the 30/70 operational anchor — desk coordination and floor ownership as primary standard.',note:'L3 JD: "operational anchor" — not assisting, owning'},
+      {id:'o2',name:'Leasing Coordination',desc:'Coordinates unit turnovers, move-ins, and move-outs end-to-end — no manager hand-holding.',note:''},
+      {id:'o3',name:'Facilities Coordination',desc:'Coordinates maintenance and vendor tasks — schedules, follows up to completion, confirms with resident.',note:''},
+    ]},
+    {group:'Financial Management Basics', comps:[
+      {id:'f1',name:'AR / AP Processing',desc:'Processes accounts receivable and payable entries accurately — zero errors after correction cycle.',note:'Explicitly named in L3 JD'},
+      {id:'f2',name:'Monthly Financial Review Input',desc:'Contributes to monthly financial review — figures accurate, submitted on time.',note:''},
+      {id:'f3',name:'P&L Inputs',desc:'Provides monthly P&L inputs to the GM — line items accurate and attributed correctly.',note:'Explicitly named in L3 JD'},
+    ]},
+    {group:'People & Team Support', comps:[
+      {id:'p1',name:'Recruitment Support',desc:'Assists with recruitment coordination — scheduling interviews, candidate communication.',note:'New in L3 JD'},
+      {id:'p2',name:'Onboarding',desc:'Supports new team member onboarding — completes checklist, walks through SOPs.',note:''},
+      {id:'p3',name:'Training Contribution',desc:'Delivers at least one training segment to a junior team member per quarter.',note:''},
+      {id:'p4',name:'Scheduling',desc:'Contributes to team scheduling — covers gaps, flags conflicts proactively.',note:''},
+    ]},
+    {group:'Escalated Service & Dispute Resolution', comps:[
+      {id:'e1',name:'Escalated Complaint Handling',desc:'Takes escalated resident complaints from receipt to closed-and-confirmed — no re-escalation.',note:'L3 standard: closes without going back to manager'},
+      {id:'e2',name:'Early Termination Coordination',desc:'Handles early termination cases — correct process, correct documentation, resident-confirmed.',note:''},
+    ]},
+    {group:'Reporting & Management Partnership', comps:[
+      {id:'r1',name:'Weekly Walkthrough Report',desc:'Submits weekly walkthrough report before end of shift — full detail, zero missed submissions.',note:''},
+      {id:'r2',name:'Emergency Response',desc:'Leads first response on emergencies in the absence of the GM — correct protocol, correct documentation.',note:''},
+    ]},
+  ];
+  const L2FOCUS=['Financial tasks (AR/AP, P&L inputs) initiated without prompting — not assigned','Escalated complaints closed by you — not re-escalated to Husni','Leasing coordination end-to-end: unit handed over with zero corrections','Weekly walkthrough report on time every shift — zero missed submissions','People support: one onboarding or training contribution per quarter'];
+  ['mizanur','muataz'].forEach(k=>{
+    const E=EMPLOYEES[k];
+    if(!E) return;
+    E.qs.forEach(q=>{ q.compGroups=JSON.parse(JSON.stringify(L2COMPS)); q.focus=[...L2FOCUS]; });
+  });
+
+  // L3→L4 competencies — Abdulelah, Moayad
+  const L3COMPS=[
+    {group:'Financial & Administrative Ownership', comps:[
+      {id:'f1',name:'Deposit Accounting',desc:'Owns all deposit accounting entries — accurate, reconciled, zero discrepancies per month.',note:'Explicitly named in L4 JD — not in L3'},
+      {id:'f2',name:'Vendor Procurement & Reconciliation',desc:'Manages vendor invoices — all matched and reconciled, zero outstanding gaps.',note:'Explicitly named in L4 JD'},
+      {id:'f3',name:'GM Reporting',desc:'Provides financial reporting inputs to GM — on-time, accurate, with commentary.',note:''},
+    ]},
+    {group:'Legal Compliance & Risk Management', comps:[
+      {id:'l1',name:'Notices & Warnings (Legal Timelines)',desc:'Issues all Notices & Warnings on correct legal timelines — zero late or incorrect issuances.',note:'Explicitly named in L4 JD — legal risk category'},
+      {id:'l2',name:'Incident Documentation',desc:'Documents all incidents with full detail — timeline, parties, actions taken, outcome.',note:''},
+      {id:'l3',name:'Community Guidelines Enforcement',desc:'Enforces Community Guidelines consistently — no selective enforcement, no missed violations.',note:''},
+    ]},
+    {group:'Operational Systems & SOP Execution', comps:[
+      {id:'s1',name:'Daily Walkthrough SOP (10:00–11:00 & 18:00–19:00)',desc:'Executes daily walkthrough at 10:00–11:00 and 18:00–19:00 — both windows, every day, logged.',note:'The specific times appear in the L4 JD — this is the standard'},
+      {id:'s2',name:'Shift Handover SOP',desc:'Completes formal shift handover every shift — all open issues captured, next shift briefed.',note:''},
+      {id:'s3',name:'Daily Briefing',desc:'Delivers daily briefing at shift start — agenda set, team present, outcomes logged.',note:'L4 JD: "Daily Briefing ownership"'},
+    ]},
+    {group:'Team Alignment & Shift Leadership', comps:[
+      {id:'t1',name:'Weekly Team Meetings',desc:'Chairs weekly team meeting — agenda prepared, facilitation effective, follow-through confirmed.',note:'Explicitly in L4 JD'},
+      {id:'t2',name:'Cross-Shift Coordination',desc:'Manages cross-shift coordination — no open issues falling through between shifts.',note:''},
+      {id:'t3',name:'Community Newsletter',desc:'Produces and distributes community newsletter on schedule — reviewed by GM before distribution.',note:'Explicitly in L4 JD'},
+    ]},
+    {group:'End-to-End Service Accountability', comps:[
+      {id:'e1',name:'Complaint Closure & Recurrence Prevention',desc:'Closes all complaints with a recurrence prevention step documented — not just resolved, prevented.',note:''},
+      {id:'e2',name:'Move-In / Move-Out Oversight',desc:'Oversees all move-in and move-out processes — end-to-end, zero gaps.',note:''},
+    ]},
+  ];
+  const L3FOCUS=['Daily walkthrough SOP: 10:00–11:00 and 18:00–19:00 — zero missed slots','Shift handover formal every shift — nothing falling through between shifts','Daily briefing self-delivered — not prompted by Husni','Deposit accounting and vendor reconciliation zero-discrepancy','Notices & Warnings on correct legal timeline — zero errors','Team meetings chaired, newsletter distributed, cross-shift coordinated'];
+  ['abdulelah','moayad'].forEach(k=>{
+    const E=EMPLOYEES[k];
+    if(!E) return;
+    E.qs.forEach(q=>{ q.compGroups=JSON.parse(JSON.stringify(L3COMPS)); q.focus=[...L3FOCUS]; });
+  });
+})();
+
+document.addEventListener('DOMContentLoaded', function(){
+  renderDash();
+  renderMgrView('husni');
+});
+</script>
+</body>
+</html>
+
