@@ -22,7 +22,7 @@ body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--black);m
 .ntab.active{color:#F5F0E8;border-bottom-color:#2E4020}
 .nbadge{font-size:9px;padding:1px 7px;border-radius:8px;font-weight:600}
 .nav-av{width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:#fff;flex-shrink:0}
-.view{display:none;padding:20px;min-height:calc(100vh - 50px)}
+.view{display:none;padding:32px 36px;min-height:calc(100vh - 54px)}
 .view.on{display:block}
 .idp-wrap{display:flex;min-height:calc(100vh - 50px - 40px);background:var(--white);border-radius:12px;overflow:hidden;border:.5px solid var(--border)}
 .idp-sb{width:190px;flex-shrink:0;background:#1C1C1C;display:flex;flex-direction:column}
@@ -123,8 +123,8 @@ body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--black);m
 .stv{font-size:24px;font-weight:500}
 .stl{font-size:10px;color:var(--gray);margin-top:3px}
 .emp-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px}
-.ec{background:var(--white);border:.5px solid var(--border);border-radius:11px;overflow:hidden;cursor:pointer;transition:box-shadow .15s,transform .1s}
-.ec:hover{box-shadow:0 4px 14px rgba(0,0,0,.09);transform:translateY(-1px)}
+.ec{background:var(--white);border:1px solid #D8D4CC;border-radius:12px;overflow:hidden;cursor:pointer;transition:transform .18s,box-shadow .18s}
+.ec:hover{box-shadow:0 12px 32px rgba(0,0,0,.09);transform:translateY(-3px)}
 .ec-hd{padding:12px 14px;display:flex;align-items:center;gap:9px}
 .ec-av{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;flex-shrink:0}
 .ec-n{font-size:13px;font-weight:500}
@@ -603,24 +603,28 @@ function renderDash(){
   }).join('');
 
   document.getElementById('dash-content').innerHTML = `
-    <div style="background:var(--black);border-radius:12px;padding:18px 22px;margin-bottom:18px;display:flex;align-items:center;justify-content:space-between">
-      <div style="display:flex;align-items:center;gap:12px">
-        <div style="width:40px;height:40px;border-radius:10px;background:var(--green);display:flex;align-items:center;justify-content:center;font-size:18px">🏢</div>
-        <div>
-          <div style="font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--green)">Flow MENA · RX Team</div>
-          <div style="font-size:17px;font-weight:500;color:#F5F0E8;margin-top:2px">Granada — IDP Hub</div>
-          <div style="font-size:10px;color:#444240;margin-top:2px">GM: Weesam Khuja · AGM: Sarah Niazi · Aug 2026</div>
+    <div style="padding:0 0 28px;border-bottom:1px solid #D8D4CC;margin-bottom:28px">
+      <div style="font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#9A9895;margin-bottom:14px">Granada · غرناطة</div>
+      <div style="font-family:'Playfair Display',serif;font-size:38px;font-weight:500;color:#1C1C1C;line-height:1.1;margin-bottom:10px">IDP Hub</div>
+      <div style="font-size:13px;color:#5A5855;font-weight:300;line-height:1.5;margin-bottom:24px">AGM: Sarah Niazi · GM: Weesam Khuja · 439 units · 28 buildings</div>
+      <div style="display:flex;border:1px solid #D8D4CC;border-radius:10px;overflow:hidden;width:fit-content">
+        <div style="padding:14px 24px;border-right:1px solid #D8D4CC;text-align:center">
+          <div style="font-family:'Playfair Display',serif;font-size:24px;font-weight:500;color:#1C1C1C;line-height:1">4</div>
+          <div style="font-size:10px;color:#9A9895;text-transform:uppercase;letter-spacing:.08em;font-weight:500;margin-top:5px">On IDP Path</div>
+        </div>
+        <div style="padding:14px 24px;border-right:1px solid #D8D4CC;text-align:center">
+          <div style="font-family:'Playfair Display',serif;font-size:24px;font-weight:500;color:#2E4020;line-height:1">1</div>
+          <div style="font-size:10px;color:#9A9895;text-transform:uppercase;letter-spacing:.08em;font-weight:500;margin-top:5px">Active</div>
+        </div>
+        <div style="padding:14px 24px;text-align:center">
+          <div style="font-family:'Playfair Display',serif;font-size:24px;font-weight:500;color:#7A560A;line-height:1">3</div>
+          <div style="font-size:10px;color:#9A9895;text-transform:uppercase;letter-spacing:.08em;font-weight:500;margin-top:5px">To Start</div>
         </div>
       </div>
-      <div style="display:flex;gap:22px;text-align:center">
-        <div><div style="font-size:19px;font-weight:500;color:#F5F0E8">4</div><div style="font-size:10px;color:#444240">On IDP Path</div></div>
-        <div><div style="font-size:19px;font-weight:500;color:var(--green)">1</div><div style="font-size:10px;color:#444240">Active</div></div>
-        <div><div style="font-size:19px;font-weight:500;color:var(--amber)">3</div><div style="font-size:10px;color:#444240">To Start</div></div>
-      </div>
     </div>
-    <div style="font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--gray);margin-bottom:9px">Individual Development Plans</div>
+    <div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.12em;color:#9A9895;margin-bottom:18px">Individual Development Plans</div>
     <div class="emp-grid">${cards}</div>
-    <div style="font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--gray);margin-bottom:9px">Manager Accountability — Aug 2026</div>
+    <div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.12em;color:#9A9895;margin-bottom:16px;margin-top:8px">Manager Accountability</div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
       ${managerCard('Weesam Khuja','WK','#1D3A8A','General Manager · Q1 IDP Responsibilities',[
         {done:true,when:'Week 1',text:'Book all IDP sessions in calendar. Assign no delegation for this step.'},
