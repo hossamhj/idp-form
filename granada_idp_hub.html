@@ -146,6 +146,7 @@ body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--black);m
       <div class="nav-name">Granada</div>
       <div class="nav-sub">Flow RX · IDP Hub</div>
     </div>
+    <span id="gas-dot" title="Checking sync..." style="width:7px;height:7px;border-radius:50%;background:#CCC;display:inline-block;margin-left:8px;flex-shrink:0;align-self:center"></span>
   </div>
   <div class="nav-tabs">
     <button class="ntab active" onclick="showView('dash',this)">Property Overview</button>
@@ -350,24 +351,79 @@ function gasSync(action, data) {
   if (!url) return;
   fetch(`${url}?${new URLSearchParams({action,...data})}`).catch(()=>{});
 }
+
 async function loadFromGAS() {
   const url = localStorage.getItem('idp_admin_gas_url');
-  if (!url) return;
-  for (const empId of Object.keys(EMPLOYEES)) {
-    try {
-      const [rat,evi,chk] = await Promise.all([
-        fetch(`${url}?action=getRatings&emp_id=${empId}`).then(r=>r.json()),
-        fetch(`${url}?action=getEvidence&emp_id=${empId}`).then(r=>r.json()),
-        fetch(`${url}?action=getChecklists&emp_id=${empId}`).then(r=>r.json()),
-      ]);
-      if(Array.isArray(rat)) rat.forEach(r=>{ if(r.rating) ST.r[`${r.emp_id}_${r.quarter}_${r.comp_id}`]=Number(r.rating); });
-      if(Array.isArray(evi)&&evi.length) ST.e[empId]=evi.map(e=>({d:new Date(e.timestamp).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}),t:e.text}));
-      if(Array.isArray(chk)) chk.forEach(c=>{ ST.c[`${c.emp_id}_${c.quarter}_${c.item_index}`]=c.completed==='true'||c.completed===true; });
-    } catch(e){}
+  const dot = document.getElementById('gas-dot');
+  if (!url) {
+    if (dot) { dot.style.background='#CCC'; dot.title='Not connected'; }
+    return;
   }
-  ST.save();
+  if (dot) { dot.style.background='#F59E0B'; dot.title='Syncing…'; }
+  try {
+    const empIds = Object.keys(EMPLOYEES);
+    const [empData, ...perEmp] = await Promise.all([
+      fetch(`${url}?action=getEmployees`).then(r=>r.json()).catch(()=>[]),
+      ...empIds.map(id => Promise.all([
+        fetch(`${url}?action=getRatings&emp_id=${id}`).then(r=>r.json()).catch(()=>[]),
+        fetch(`${url}?action=getEvidence&emp_id=${id}`).then(r=>r.json()).catch(()=>[]),
+        fetch(`${url}?action=getChecklists&emp_id=${id}`).then(r=>r.json()).catch(()=>[]),
+      ]))
+    ]);
+    if (Array.isArray(empData)) {
+      empData.forEach(e => {
+        if (!EMPLOYEES[e.emp_id]) return;
+        if (e.idp_start) {
+          Object.assign(EMPLOYEES[e.emp_id], {
+            idp_start: e.idp_start, q1_start: e.q1_start, q1_end: e.q1_end,
+            q2_start: e.q2_start, q2_end: e.q2_end, q3_start: e.q3_start,
+            q3_end: e.q3_end, q4_start: e.q4_start, q4_end: e.q4_end
+          });
+          if (ST.q[e.emp_id] === undefined) {
+            const today = new Date();
+            [[e.q1_start,e.q1_end],[e.q2_start,e.q2_end],[e.q3_start,e.q3_end],[e.q4_start,e.q4_end]]
+              .forEach((r,i) => { if (r[0]&&r[1]&&today>=new Date(r[0])&&today<=new Date(r[1])) ST.q[e.emp_id]=i; });
+          }
+        }
+        if (e.status) EMPLOYEES[e.emp_id].status = e.status;
+      });
+    }
+    empIds.forEach((empId, idx) => {
+      const [rat, evi, chk] = perEmp[idx];
+      if (Array.isArray(rat)) rat.forEach(r => { if (r.rating) ST.r[`${r.emp_id}_${r.quarter}_${r.comp_id}`]=Number(r.rating); });
+      if (Array.isArray(evi) && evi.length) {
+        if (!ST.e[empId] || Array.isArray(ST.e[empId])) ST.e[empId] = {};
+        evi.forEach(e => {
+          const qi = String(e.quarter);
+          if (!ST.e[empId][qi]) ST.e[empId][qi] = [];
+          ST.e[empId][qi].unshift({d:new Date(e.timestamp).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}),t:e.text});
+        });
+      }
+      if (Array.isArray(chk)) chk.forEach(c => { ST.c[`${c.emp_id}_${c.quarter}_${c.item_index}`]=c.completed==='true'||c.completed===true; });
+    });
+    ST.save();
+    if (dot) { dot.style.background='#1D9E75'; dot.title='Synced with Google Sheets'; }
+  } catch(err) {
+    if (dot) { dot.style.background='#EF4444'; dot.title='Sync error — check GAS URL'; }
+  }
 }
-document.addEventListener('DOMContentLoaded',()=>{ loadFromGAS(); });
+
+document.addEventListener('DOMContentLoaded', () => {
+  if (!localStorage.getItem('idp_admin_gas_url')) {
+    const b = document.createElement('div');
+    b.style.cssText = 'background:#FEF3C7;border-bottom:1px solid #F59E0B;color:#92400E;font-size:11px;text-align:center;padding:6px 16px;font-family:Inter,sans-serif';
+    b.textContent = '⚠ Local-only mode — open the Admin page and paste your GAS URL to enable cross-device sync.';
+    document.body.insertBefore(b, document.body.firstChild);
+  }
+  loadFromGAS();
+  const hash = window.location.hash.slice(1);
+  if (hash && EMPLOYEES[hash]) {
+    document.querySelectorAll('.ntab').forEach(t => {
+      const oc = t.getAttribute('onclick') || '';
+      if (oc.includes(`'${hash}'`) && oc.includes('openEmp')) t.click();
+    });
+  }
+});
 
 function x(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
@@ -465,13 +521,14 @@ function rCL(items, key, qIdx){
   }).join('');
 }
 
-function rEv(key){
-  const entries=ST.e[key]||[];
+function rEv(key, qIdx){
+  const pool = ST.e[key];
+  const entries = (pool && !Array.isArray(pool)) ? (pool[String(qIdx)] || []) : [];
   return `${entries.length?entries.map(e=>`<div class="ev"><div class="ev-date">${x(e.d)}</div><div class="ev-text">${x(e.t)}</div></div>`).join('')
-    :'<div style="font-size:11px;color:var(--gray);padding:4px 0">No entries yet.</div>'}
+    :'<div style="font-size:11px;color:var(--gray);padding:4px 0">No entries for this quarter.</div>'}
   <div class="ev-add" style="--ec:${EMPLOYEES[key].color}">
     <textarea class="ev-in" id="evin-${key}" placeholder="Describe what you observed or achieved..."></textarea>
-    <button class="ev-btn" onclick="addEv('${key}')">Add</button>
+    <button class="ev-btn" onclick="addEv('${key}',${qIdx})">Add</button>
   </div>`;
 }
 
@@ -510,9 +567,10 @@ function renderStd(E, q, key, qIdx){
       ${q.warn?`<div class="slbl">Warning Signals</div>${rMC(q.warn,'warn')}`:''}
       ${q.cl&&q.cl.length?`<div class="slbl">Quarter Checklist</div><div style="--ec:${E.color}">${rCL(q.cl,key,qIdx)}</div>`:''}
       <div class="slbl">Competency Ratings</div>
+      <div style="font-size:10px;color:var(--gray);margin:-8px 0 12px;letter-spacing:.02em">1 Awareness · 2 Application · 3 Proficiency · 4 Mastery</div>
       <div style="--ec:${E.color}">${rComps(q.compGroups,key,qIdx,E.color)}</div>
-      <div class="slbl">Evidence Log</div>
-      <div id="ev-${key}-${qIdx}" style="--ec:${E.color}">${rEv(key)}</div>
+      <div class="slbl">Evidence Log — Q${qIdx+1}</div>
+      <div id="ev-${key}-${qIdx}" style="--ec:${E.color}">${rEv(key,qIdx)}</div>
       ${rDec(q.decision)}
     </div>
   </div>`;
@@ -555,9 +613,10 @@ function renderGate(E, q, key, qIdx){
       <div class="slbl">Gate Checklist</div>
       <div style="--ec:${E.color}">${rCL(q.cl||[],key,qIdx)}</div>
       <div class="slbl">Competencies — Final</div>
+      <div style="font-size:10px;color:var(--gray);margin:-8px 0 12px;letter-spacing:.02em">1 Awareness · 2 Application · 3 Proficiency · 4 Mastery</div>
       <div style="--ec:${E.color}">${rComps(q.compGroups||[],key,qIdx,E.color)}</div>
-      <div class="slbl">Evidence Log</div>
-      <div id="ev-${key}-${qIdx}" style="--ec:${E.color}">${rEv(key)}</div>
+      <div class="slbl">Evidence Log — Q${qIdx+1}</div>
+      <div id="ev-${key}-${qIdx}" style="--ec:${E.color}">${rEv(key,qIdx)}</div>
       ${rDec(q.decision)}
     </div>
   </div>`;
@@ -594,18 +653,19 @@ function tgCL(key,qIdx,i,cb){
   const lbl=document.getElementById(`cl-${key}-${qIdx}-${i}`);
   if(lbl){ lbl.classList.toggle('done',cb.checked); }
 }
-function addEv(key){
+function addEv(key, qIdx){
   const inp=document.getElementById('evin-'+key);
   if(!inp||!inp.value.trim()) return;
-  if(!ST.e[key]) ST.e[key]=[];
+  if(qIdx===undefined) qIdx=ST.q[key]??0;
+  if(!ST.e[key]||Array.isArray(ST.e[key])) ST.e[key]={};
+  if(!ST.e[key][String(qIdx)]) ST.e[key][String(qIdx)]=[];
   const d=new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
   const txt=inp.value.trim();
-  ST.e[key].unshift({d,t:txt});
-  const qIdx=ST.q[key]??0;
+  ST.e[key][String(qIdx)].unshift({d,t:txt});
   ST.save(); inp.value='';
   gasSync('saveEvidence',{emp_id:key,quarter:qIdx,text:txt});
   const cont=document.getElementById(`ev-${key}-${qIdx}`);
-  if(cont) cont.innerHTML=rEv(key);
+  if(cont) cont.innerHTML=rEv(key,qIdx);
 }
 
 function renderDash(){
@@ -1542,6 +1602,7 @@ function mgrAck(mgrKey,empKey,qIdx,actIdx,cb){
   const RA=JSON.parse(localStorage.getItem(cfg.lsKey)||'{}');
   RA[`${empKey}_${qIdx}_${actIdx}`]=cb.checked;
   localStorage.setItem(cfg.lsKey,JSON.stringify(RA));
+  gasSync('saveMgrAction',{mgr_key:mgrKey,emp_key:empKey,quarter:qIdx,act_index:actIdx,done:cb.checked});
   renderMgrView(mgrKey);
 }
 
