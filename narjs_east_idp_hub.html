@@ -357,6 +357,31 @@ const ST = {
   save(){ ['r','c','e','q'].forEach(k=>localStorage.setItem('ne_'+k,JSON.stringify(ST[k]))); }
 };
 
+// ── GAS Sync ──
+function gasSync(action, data) {
+  const url = localStorage.getItem('idp_admin_gas_url');
+  if (!url) return;
+  fetch(`${url}?${new URLSearchParams({action,...data})}`).catch(()=>{});
+}
+async function loadFromGAS() {
+  const url = localStorage.getItem('idp_admin_gas_url');
+  if (!url) return;
+  for (const empId of Object.keys(EMPLOYEES)) {
+    try {
+      const [rat,evi,chk] = await Promise.all([
+        fetch(`${url}?action=getRatings&emp_id=${empId}`).then(r=>r.json()),
+        fetch(`${url}?action=getEvidence&emp_id=${empId}`).then(r=>r.json()),
+        fetch(`${url}?action=getChecklists&emp_id=${empId}`).then(r=>r.json()),
+      ]);
+      if(Array.isArray(rat)) rat.forEach(r=>{ if(r.rating) ST.r[`${r.emp_id}_${r.quarter}_${r.comp_id}`]=Number(r.rating); });
+      if(Array.isArray(evi)&&evi.length) ST.e[empId]=evi.map(e=>({d:new Date(e.timestamp).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}),t:e.text}));
+      if(Array.isArray(chk)) chk.forEach(c=>{ ST.c[`${c.emp_id}_${c.quarter}_${c.item_index}`]=c.completed==='true'||c.completed===true; });
+    } catch(e){}
+  }
+  ST.save();
+}
+document.addEventListener('DOMContentLoaded',()=>{ loadFromGAS(); });
+
 function x(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
 function showView(id, btn){
@@ -570,16 +595,19 @@ function showQ(key, qIdx){
 function setR(key,qIdx,cid,val,btn,ev){
   ev.stopPropagation();
   ST.r[`${key}_${qIdx}_${cid}`]=val; ST.save();
+  gasSync('saveRating',{emp_id:key,quarter:qIdx,comp_id:cid,rating:val});
   btn.closest('.ci-rate').querySelectorAll('.rb').forEach((b,i)=>b.classList.toggle('on',i<val));
 }
 function setER(key,qIdx,i,val,btn){
   ST.r[`${key}_${qIdx}_ex${i}`]=val; ST.save();
+  gasSync('saveRating',{emp_id:key,quarter:qIdx,comp_id:`ex${i}`,rating:val});
   btn.closest('.er-rate').querySelectorAll('.erb').forEach(b=>b.classList.remove('on'));
   btn.classList.add('on');
 }
 function tgCL(key,qIdx,i,cb){
   const ck=`${key}_${qIdx}_${i}`;
   ST.c[ck]=cb.checked; ST.save();
+  gasSync('saveChecklist',{emp_id:key,quarter:qIdx,item_index:i,completed:cb.checked});
   const lbl=document.getElementById(`cl-${key}-${qIdx}-${i}`);
   if(lbl){ lbl.classList.toggle('done',cb.checked); }
 }
@@ -588,9 +616,11 @@ function addEv(key){
   if(!inp||!inp.value.trim()) return;
   if(!ST.e[key]) ST.e[key]=[];
   const d=new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
-  ST.e[key].unshift({d,t:inp.value.trim()});
-  ST.save(); inp.value='';
+  const txt=inp.value.trim();
+  ST.e[key].unshift({d,t:txt});
   const qIdx=ST.q[key]??0;
+  ST.save(); inp.value='';
+  gasSync('saveEvidence',{emp_id:key,quarter:qIdx,text:txt});
   const cont=document.getElementById(`ev-${key}-${qIdx}`);
   if(cont) cont.innerHTML=rEv(key);
 }
