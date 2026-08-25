@@ -7,91 +7,120 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-:root{--cream:#F5F0E8;--ink:#1C1C1C;--ink-soft:#5A5855;--ink-faint:#9A9895;--border:#D8D4CC;--white:#fff;
+:root{
+  --cream:#F5F0E8;--ink:#1C1C1C;--ink-soft:#5A5855;--ink-faint:#9A9895;
+  --border:#D8D4CC;--white:#fff;
   --ne:#1A3660;--nw:#7C2040;--gr:#2E4020;--ol:#7A560A;
-  --ne-l:#EEF2FA;--nw-l:#F9EEF3;--gr-l:#EEF3EE;--ol-l:#F7F2E8}
+  --ne-l:#EEF2FA;--nw-l:#F9EEF3;--gr-l:#EEF3EE;--ol-l:#F7F2E8;
+  --green:#1D9E75;--amber:#EF9F27;--red:#E07050;
+}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--ink);min-height:100vh}
 
-/* ── Nav ── */
-.topnav{position:sticky;top:0;z-index:100;background:#fff;display:flex;align-items:center;padding:0 24px;height:54px;border-bottom:1px solid var(--border)}
-.nav-brand{display:flex;align-items:center;gap:10px;padding-right:20px;border-right:1px solid var(--border);margin-right:16px}
+/* ── Topnav ── */
+.topnav{position:sticky;top:0;z-index:200;background:#fff;display:flex;align-items:center;padding:0 24px;height:54px;border-bottom:1px solid var(--border)}
+.nav-brand{display:flex;align-items:center;gap:10px;padding-right:20px;border-right:1px solid var(--border);margin-right:16px;flex-shrink:0}
 .nav-icon{width:30px;height:30px;border-radius:8px;background:#2C1A0E;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff;letter-spacing:-.3px}
 .nav-name{font-family:'Playfair Display',serif;font-size:15px;font-weight:500;color:var(--ink)}
 .nav-sub{font-size:9px;color:var(--ink-faint);letter-spacing:.04em;text-transform:uppercase}
-.nav-title{font-size:11px;font-weight:600;color:var(--ink-soft);letter-spacing:.06em;text-transform:uppercase;flex:1}
-.hub-link{font-size:10px;font-weight:500;color:#888780;text-decoration:none;padding:0 16px;height:54px;display:flex;align-items:center;gap:5px;border-left:1px solid var(--border);letter-spacing:.04em;text-transform:uppercase;transition:color .15s}
+.hub-link{font-size:10px;font-weight:500;color:#888780;text-decoration:none;padding:0 16px;height:54px;display:flex;align-items:center;gap:5px;border-left:1px solid var(--border);letter-spacing:.04em;text-transform:uppercase;transition:color .15s;margin-left:auto;flex-shrink:0}
 .hub-link:hover{color:var(--ink)}
 
+/* ── Sticky filter bar ── */
+.filter-bar{position:sticky;top:54px;z-index:100;background:rgba(245,240,232,.96);backdrop-filter:blur(8px);border-bottom:1px solid var(--border);padding:10px 24px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.search-wrap{position:relative;flex:1;min-width:180px;max-width:280px}
+.search-wrap svg{position:absolute;left:9px;top:50%;transform:translateY(-50%);opacity:.4;pointer-events:none}
+.search-input{width:100%;font-family:'Inter',sans-serif;font-size:11px;border:1px solid var(--border);border-radius:7px;padding:6px 10px 6px 30px;background:#fff;color:var(--ink);outline:none;transition:border-color .15s}
+.search-input:focus{border-color:#9A9895}
+.filter-pills{display:flex;gap:4px}
+.pill{font-size:10px;font-weight:600;padding:5px 12px;border-radius:20px;border:1px solid var(--border);background:#fff;color:var(--ink-soft);cursor:pointer;letter-spacing:.04em;transition:all .15s;white-space:nowrap}
+.pill.on{color:#fff;border-color:transparent}
+.pill[data-p="ALL"].on{background:var(--ink)}
+.pill[data-p="NE"].on{background:var(--ne)}
+.pill[data-p="GR"].on{background:var(--gr)}
+.pill[data-p="NW"].on{background:var(--nw)}
+.pill[data-p="OL"].on{background:var(--ol)}
+.filter-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+.configured-count{font-size:11px;color:var(--ink-soft);white-space:nowrap}
+.configured-count span{font-weight:600;color:var(--ink)}
+.btn-save-all{font-family:'Inter',sans-serif;font-size:10px;font-weight:600;padding:6px 16px;border-radius:6px;border:none;background:var(--ink);color:#fff;cursor:pointer;letter-spacing:.04em;transition:background .15s;white-space:nowrap}
+.btn-save-all:hover{background:#333}
+
 /* ── Page ── */
-.page{max-width:1100px;margin:0 auto;padding:36px 32px}
-.page-hero{margin-bottom:32px}
-.page-tag{font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:10px}
-.page-title{font-family:'Playfair Display',serif;font-size:36px;font-weight:500;color:var(--ink);margin-bottom:8px}
-.page-sub{font-size:13px;color:var(--ink-soft);line-height:1.6;max-width:520px}
+.page{max-width:1080px;margin:0 auto;padding:28px 24px}
 
-/* ── Status bar ── */
-.status-bar{background:#fff;border:1px solid var(--border);border-radius:10px;padding:10px 16px;margin-bottom:28px;font-size:12px;color:var(--ink-soft);display:flex;align-items:center;gap:8px}
-.status-dot{width:8px;height:8px;border-radius:50%;background:#D8D4CC;flex-shrink:0}
-.status-dot.ok{background:#1D9E75}
-.status-dot.err{background:#E07050}
-.status-dot.loading{background:#EF9F27;animation:pulse 1s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-
-/* ── Section label ── */
-.slbl{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.12em;color:var(--ink-faint);margin:28px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px}
-.slbl-pip{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-
-/* ── Property group ── */
-.prop-group{margin-bottom:32px}
-.prop-header{display:flex;align-items:center;gap:10px;margin-bottom:12px}
-.prop-badge{font-size:9px;font-weight:700;letter-spacing:.08em;padding:3px 10px;border-radius:12px;text-transform:uppercase}
-
-/* ── Employee card ── */
-.emp-card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:16px 18px;margin-bottom:10px;transition:box-shadow .15s}
-.emp-card:hover{box-shadow:0 2px 12px rgba(0,0,0,.06)}
-.emp-top{display:flex;align-items:center;gap:12px;margin-bottom:14px}
-.emp-av{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;flex-shrink:0}
-.emp-name{font-size:14px;font-weight:600;color:var(--ink)}
-.emp-meta{font-size:10px;color:var(--ink-faint);margin-top:1px}
-.lvl-chip{font-size:9px;font-weight:700;padding:2px 8px;border-radius:8px;margin-left:auto;flex-shrink:0}
-
-/* ── Date row ── */
-.date-row{display:flex;align-items:flex-end;gap:10px;flex-wrap:wrap}
-.field{display:flex;flex-direction:column;gap:4px}
-.field label{font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint)}
-.field input[type="date"]{font-family:'Inter',sans-serif;font-size:11px;color:var(--ink);border:1px solid var(--border);border-radius:6px;padding:5px 8px;background:#fff;cursor:pointer;outline:none;transition:border-color .15s}
-.field input[type="date"]:focus{border-color:#9A9895}
-.field-sep{font-size:10px;color:var(--ink-faint);padding-bottom:7px}
-
-/* ── Quarter blocks ── */
-.q-blocks{display:flex;gap:6px;margin-top:12px;flex-wrap:wrap}
-.q-block{flex:1;min-width:120px;border:1px solid var(--border);border-radius:7px;padding:8px 10px}
-.q-label{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:6px}
-.q-dates{display:flex;flex-direction:column;gap:3px}
-.q-date-row{display:flex;flex-direction:column;gap:2px}
-.q-date-lbl{font-size:8px;color:var(--ink-faint);letter-spacing:.05em;text-transform:uppercase}
-.q-date-input{font-family:'Inter',sans-serif;font-size:10px;color:var(--ink);border:1px solid var(--border);border-radius:5px;padding:3px 6px;background:#fff;width:100%;outline:none}
-.q-date-input:focus{border-color:#9A9895}
-
-/* ── Actions ── */
-.card-actions{display:flex;align-items:center;gap:8px;margin-top:14px;padding-top:12px;border-top:1px solid var(--border)}
-.btn-calc{font-family:'Inter',sans-serif;font-size:10px;font-weight:600;padding:6px 14px;border-radius:6px;border:1px solid var(--border);background:#fff;color:var(--ink-soft);cursor:pointer;letter-spacing:.04em;transition:all .15s}
-.btn-calc:hover{border-color:#9A9895;color:var(--ink)}
-.btn-save{font-family:'Inter',sans-serif;font-size:10px;font-weight:600;padding:6px 18px;border-radius:6px;border:none;background:var(--ink);color:#fff;cursor:pointer;letter-spacing:.04em;transition:background .15s;margin-left:auto}
-.btn-save:hover{background:#333}
-.btn-save:disabled{background:#D8D4CC;cursor:default}
-.save-msg{font-size:10px;color:#1D9E75;font-weight:500;opacity:0;transition:opacity .3s}
-.save-msg.show{opacity:1}
-
-/* ── GAS URL config ── */
-.config-banner{background:#fff;border:1px solid var(--border);border-radius:10px;padding:18px 20px;margin-bottom:28px}
-.config-title{font-size:11px;font-weight:600;color:var(--ink);margin-bottom:6px}
+/* ── GAS config ── */
+.config-card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:18px 20px;margin-bottom:24px}
+.config-title{font-size:12px;font-weight:600;color:var(--ink);margin-bottom:4px;display:flex;align-items:center;gap:7px}
 .config-sub{font-size:11px;color:var(--ink-soft);margin-bottom:12px;line-height:1.5}
-.config-row{display:flex;gap:8px;align-items:center}
+.config-row{display:flex;gap:8px}
 .config-input{flex:1;font-family:'Inter',sans-serif;font-size:11px;border:1px solid var(--border);border-radius:6px;padding:7px 10px;color:var(--ink);outline:none}
 .config-input:focus{border-color:#9A9895}
 .btn-connect{font-family:'Inter',sans-serif;font-size:10px;font-weight:600;padding:7px 16px;border-radius:6px;border:none;background:var(--ink);color:#fff;cursor:pointer;white-space:nowrap}
+
+/* ── Status dot ── */
+.conn-dot{width:8px;height:8px;border-radius:50%;background:#D8D4CC;display:inline-block}
+.conn-dot.ok{background:var(--green);animation:none}
+.conn-dot.loading{background:var(--amber);animation:blink 1s infinite}
+.conn-dot.err{background:var(--red)}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.conn-label{font-size:10px;color:var(--ink-soft)}
+
+/* ── Property section ── */
+.prop-section{margin-bottom:20px}
+.prop-head{display:flex;align-items:center;gap:10px;padding:10px 14px;background:#fff;border:1px solid var(--border);border-radius:10px 10px 0 0;cursor:pointer;user-select:none;transition:background .1s}
+.prop-head:hover{background:#FAFAF8}
+.prop-head.collapsed{border-radius:10px}
+.prop-pip{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.prop-name{font-size:12px;font-weight:600;color:var(--ink);letter-spacing:.02em}
+.prop-meta{font-size:10px;color:var(--ink-faint);margin-left:4px}
+.prop-badge{font-size:9px;font-weight:700;padding:2px 8px;border-radius:8px;letter-spacing:.05em;margin-left:4px}
+.prop-chevron{margin-left:auto;font-size:12px;color:var(--ink-faint);transition:transform .2s}
+.prop-head.collapsed .prop-chevron{transform:rotate(-90deg)}
+.prop-body{border:1px solid var(--border);border-top:none;border-radius:0 0 10px 10px;overflow:hidden}
+
+/* ── Employee row ── */
+.emp-row{display:grid;grid-template-columns:220px 110px 1fr auto;gap:12px;align-items:center;padding:12px 16px;border-bottom:1px solid var(--border);background:#fff;transition:background .1s}
+.emp-row:last-child{border-bottom:none}
+.emp-row:hover{background:#FDFCFA}
+.emp-row.hidden{display:none}
+
+.emp-info{display:flex;align-items:center;gap:10px;min-width:0}
+.emp-av{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;flex-shrink:0}
+.emp-name{font-size:12px;font-weight:600;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.emp-id{font-size:9px;color:var(--ink-faint);margin-top:1px}
+.lvl-chip{font-size:8px;font-weight:700;padding:2px 7px;border-radius:6px;flex-shrink:0}
+
+.status-sel{font-family:'Inter',sans-serif;font-size:10px;font-weight:500;border:1px solid var(--border);border-radius:6px;padding:4px 6px;color:var(--ink);background:#fff;cursor:pointer;outline:none;width:110px}
+
+.dates-wrap{display:flex;align-items:center;gap:6px;flex-wrap:nowrap;overflow-x:auto}
+.date-field{display:flex;flex-direction:column;gap:2px;flex-shrink:0}
+.date-lbl{font-size:8px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint)}
+.date-input{font-family:'Inter',sans-serif;font-size:10px;border:1px solid var(--border);border-radius:5px;padding:4px 6px;color:var(--ink);background:#fff;outline:none;width:112px;transition:border-color .15s}
+.date-input:focus{border-color:#9A9895}
+.date-input.idp-start{border-color:#D8D4CC;font-weight:600}
+.date-sep{font-size:9px;color:var(--border);padding-top:12px;flex-shrink:0}
+.q-group{display:flex;flex-direction:column;gap:2px;flex-shrink:0}
+.q-group-lbl{font-size:8px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint);text-align:center}
+.q-dates{display:flex;gap:3px}
+.q-date-mini{font-family:'Inter',sans-serif;font-size:9px;border:1px solid var(--border);border-radius:4px;padding:3px 5px;color:var(--ink);background:#fff;outline:none;width:96px}
+.q-date-mini:focus{border-color:#9A9895}
+.btn-calc-mini{font-family:'Inter',sans-serif;font-size:9px;font-weight:600;padding:4px 8px;border-radius:5px;border:1px solid var(--border);background:#fff;color:var(--ink-soft);cursor:pointer;white-space:nowrap;flex-shrink:0;align-self:flex-end;transition:all .12s}
+.btn-calc-mini:hover{border-color:#9A9895;color:var(--ink)}
+
+.row-actions{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.cfg-dot{width:7px;height:7px;border-radius:50%;background:#E8E4DC;flex-shrink:0;transition:background .3s}
+.cfg-dot.done{background:var(--green)}
+.btn-save-row{font-family:'Inter',sans-serif;font-size:10px;font-weight:600;padding:5px 14px;border-radius:6px;border:none;background:var(--ink);color:#fff;cursor:pointer;white-space:nowrap;transition:background .15s}
+.btn-save-row:hover{background:#333}
+.btn-save-row:disabled{background:#D8D4CC;cursor:default}
+
+/* ── Empty state ── */
+.empty-search{text-align:center;padding:40px;color:var(--ink-faint);font-size:12px}
+
+/* ── Toast ── */
+.toast{position:fixed;bottom:24px;right:24px;background:var(--ink);color:#fff;font-size:11px;font-weight:500;padding:10px 18px;border-radius:8px;opacity:0;transform:translateY(8px);transition:all .25s;pointer-events:none;z-index:999}
+.toast.show{opacity:1;transform:translateY(0)}
 </style>
 </head>
 <body>
@@ -105,59 +134,76 @@ body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--ink);min
       <div class="nav-sub">Cycle Manager</div>
     </div>
   </div>
-  <div class="nav-title">IDP Cycle Settings</div>
   <a href="index.html" class="hub-link">← Hub</a>
 </nav>
 
+<!-- Sticky filter bar -->
+<div class="filter-bar">
+  <div class="search-wrap">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="4.5" stroke="#1C1C1C" stroke-width="1.2"/><path d="M9.5 9.5L12.5 12.5" stroke="#1C1C1C" stroke-width="1.2" stroke-linecap="round"/></svg>
+    <input class="search-input" type="text" id="searchInput" placeholder="Search by name…" oninput="applyFilters()">
+  </div>
+  <div class="filter-pills">
+    <div class="pill on" data-p="ALL" onclick="setPropFilter('ALL')">All</div>
+    <div class="pill" data-p="NE" onclick="setPropFilter('NE')">NE</div>
+    <div class="pill" data-p="GR" onclick="setPropFilter('GR')">Granada</div>
+    <div class="pill" data-p="NW" onclick="setPropFilter('NW')">NW</div>
+    <div class="pill" data-p="OL" onclick="setPropFilter('OL')">Olaya</div>
+  </div>
+  <div class="filter-right">
+    <div class="configured-count"><span id="cfgCount">0</span> / <span id="totalCount">0</span> configured</div>
+    <button class="btn-save-all" onclick="saveAll()">Save All</button>
+    <div style="display:flex;align-items:center;gap:6px">
+      <div class="conn-dot" id="connDot"></div>
+      <span class="conn-label" id="connLabel">Not connected</span>
+    </div>
+  </div>
+</div>
+
 <div class="page">
 
-  <!-- Hero -->
-  <div class="page-hero">
-    <div class="page-tag">Admin Panel</div>
-    <div class="page-title">Cycle Manager</div>
-    <div class="page-sub">Set the IDP start date for each team member. Q1–Q4 dates calculate automatically (3 months each). You can override any quarter manually.</div>
-  </div>
-
   <!-- GAS Config -->
-  <div class="config-banner" id="configBanner">
-    <div class="config-title">Connect to Google Sheets</div>
-    <div class="config-sub">Paste your GAS Web App URL below and click Connect. You get this URL after deploying the script in Apps Script → Deploy → New Deployment.</div>
+  <div class="config-card" id="configCard">
+    <div class="config-title">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1" y="3" width="12" height="9" rx="1.5" stroke="#1C1C1C" stroke-width="1.2"/><path d="M1 6h12" stroke="#1C1C1C" stroke-width="1.2"/></svg>
+      Connect Google Sheets
+    </div>
+    <div class="config-sub">Paste your GAS Web App URL. Deploy via Apps Script → Deploy → New Deployment → Web App (Execute as: Me, Access: Anyone).</div>
     <div class="config-row">
-      <input class="config-input" type="text" id="gasUrlInput" placeholder="https://script.google.com/macros/s/.../exec" />
+      <input class="config-input" type="text" id="gasUrlInput" placeholder="https://script.google.com/macros/s/.../exec">
       <button class="btn-connect" onclick="connectGAS()">Connect</button>
     </div>
   </div>
 
-  <!-- Status -->
-  <div class="status-bar" id="statusBar">
-    <div class="status-dot" id="statusDot"></div>
-    <span id="statusText">Not connected — paste your GAS URL above</span>
-  </div>
-
-  <!-- Employee groups rendered here -->
+  <!-- Employee groups -->
   <div id="empGroups"></div>
+  <div class="empty-search" id="emptySearch" style="display:none">No employees match your search.</div>
 
 </div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
 
 <script>
 // ── Config ───────────────────────────────────────────────
 let GAS_URL = localStorage.getItem('idp_admin_gas_url') || '';
+let ALL_EMPLOYEES = [];
+let activePropFilter = 'ALL';
 
-const PROP_CONFIG = {
-  NE: { label:'Narjs East', color:'#1A3660', light:'#EEF2FA', badge:'#D6E0F0' },
-  NW: { label:'Narjs West', color:'#7C2040', light:'#F9EEF3', badge:'#F0D6E1' },
-  GR: { label:'Granada',    color:'#2E4020', light:'#EEF3EE', badge:'#D6E3D6' },
-  OL: { label:'Olaya',      color:'#7A560A', light:'#F7F2E8', badge:'#EDE0C4' }
+const PROPS = {
+  NE: { label:'Narjs East', color:'#1A3660', light:'#EEF2FA' },
+  NW: { label:'Narjs West', color:'#7C2040', light:'#F9EEF3' },
+  GR: { label:'Granada',    color:'#2E4020', light:'#EEF3EE' },
+  OL: { label:'Olaya',      color:'#7A560A', light:'#F7F2E8' }
 };
-
-const LEVEL_COLORS = {
-  L1:'#1A3660', L2:'#7C2040', L3:'#7A560A', L4:'#2E4020', L5:'#2C1A0E'
-};
+const LEVEL_COLORS = { L1:'#1A3660', L2:'#7C2040', L3:'#7A560A', L4:'#2E4020', L5:'#2C1A0E' };
+const STATUS_OPTS = ['Active','Suggested','Priority','Manager','—'];
 
 // ── Init ─────────────────────────────────────────────────
 window.addEventListener('DOMContentLoaded', () => {
   if (GAS_URL) {
     document.getElementById('gasUrlInput').value = GAS_URL;
+    document.getElementById('configCard').style.display = 'none';
     loadEmployees();
   }
 });
@@ -165,207 +211,249 @@ window.addEventListener('DOMContentLoaded', () => {
 function connectGAS() {
   const url = document.getElementById('gasUrlInput').value.trim();
   if (!url.startsWith('https://script.google.com')) {
-    setStatus('err', 'Invalid URL — must start with https://script.google.com');
-    return;
+    setConn('err', 'Invalid URL'); return;
   }
   GAS_URL = url;
   localStorage.setItem('idp_admin_gas_url', GAS_URL);
+  document.getElementById('configCard').style.display = 'none';
   loadEmployees();
 }
 
-// ── Load employees ───────────────────────────────────────
+// ── Load ─────────────────────────────────────────────────
 async function loadEmployees() {
-  setStatus('loading', 'Loading employees from Google Sheets…');
+  setConn('loading', 'Loading…');
   try {
     const res = await fetch(`${GAS_URL}?action=getEmployees`);
     const data = await res.json();
     if (data.error) throw new Error(data.error);
-    renderGroups(data);
-    setStatus('ok', `${data.length} employees loaded — Google Sheets connected`);
-    document.getElementById('configBanner').style.display = 'none';
-  } catch (err) {
-    setStatus('err', 'Connection failed: ' + err.message);
+    ALL_EMPLOYEES = data;
+    renderAll();
+    updateCounts();
+    setConn('ok', 'Connected · Google Sheets');
+  } catch(err) {
+    setConn('err', 'Failed: ' + err.message);
   }
 }
 
-// ── Render ───────────────────────────────────────────────
-function renderGroups(employees) {
+// ── Render all property groups ────────────────────────────
+function renderAll() {
   const container = document.getElementById('empGroups');
   container.innerHTML = '';
-
-  const grouped = {};
-  employees.forEach(e => {
-    const p = e.property || 'OTHER';
-    if (!grouped[p]) grouped[p] = [];
-    grouped[p].push(e);
-  });
-
-  const order = ['NE', 'GR', 'NW', 'OL'];
-  order.forEach(prop => {
-    if (!grouped[prop]) return;
-    const cfg = PROP_CONFIG[prop] || { label: prop, color:'#555', light:'#f5f5f5', badge:'#ddd' };
-
-    const group = document.createElement('div');
-    group.className = 'prop-group';
-    group.innerHTML = `
-      <div class="slbl">
-        <div class="slbl-pip" style="background:${cfg.color}"></div>
-        ${cfg.label}
-      </div>
-    `;
-
-    grouped[prop].forEach(emp => {
-      group.appendChild(renderEmpCard(emp, cfg));
-    });
-
-    container.appendChild(group);
+  ['NE','GR','NW','OL'].forEach(prop => {
+    const emps = ALL_EMPLOYEES.filter(e => e.property === prop);
+    if (!emps.length) return;
+    container.appendChild(buildPropSection(prop, emps));
   });
 }
 
-function renderEmpCard(emp, cfg) {
-  const card = document.createElement('div');
-  card.className = 'emp-card';
-  card.id = `card-${emp.emp_id}`;
+function buildPropSection(prop, emps) {
+  const cfg = PROPS[prop];
+  const cfgCount = emps.filter(e => e.idp_start).length;
 
-  const initials = emp.name.split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase();
+  const sec = document.createElement('div');
+  sec.className = 'prop-section';
+  sec.dataset.prop = prop;
+
+  const head = document.createElement('div');
+  head.className = 'prop-head';
+  head.innerHTML = `
+    <div class="prop-pip" style="background:${cfg.color}"></div>
+    <div class="prop-name">${cfg.label}</div>
+    <div class="prop-meta">· ${emps.length} members</div>
+    <div class="prop-badge" style="background:${cfg.color}22;color:${cfg.color}" id="badge-${prop}">${cfgCount}/${emps.length} set</div>
+    <div class="prop-chevron">▾</div>
+  `;
+  head.onclick = () => toggleSection(prop);
+
+  const body = document.createElement('div');
+  body.className = 'prop-body';
+  body.id = `body-${prop}`;
+
+  emps.forEach(emp => body.appendChild(buildEmpRow(emp, cfg)));
+
+  sec.appendChild(head);
+  sec.appendChild(body);
+  return sec;
+}
+
+function toggleSection(prop) {
+  const head = document.querySelector(`.prop-section[data-prop="${prop}"] .prop-head`);
+  const body = document.getElementById(`body-${prop}`);
+  const collapsed = head.classList.toggle('collapsed');
+  body.style.display = collapsed ? 'none' : '';
+}
+
+// ── Build employee row ────────────────────────────────────
+function buildEmpRow(emp, cfg) {
+  const row = document.createElement('div');
+  row.className = 'emp-row';
+  row.dataset.emp = emp.emp_id;
+  row.dataset.prop = emp.property;
+  row.dataset.name = (emp.name || '').toLowerCase();
+
+  const initials = (emp.name||'').split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
   const lvlColor = LEVEL_COLORS[emp.level] || '#555';
+  const hasDates = !!emp.idp_start;
 
-  card.innerHTML = `
-    <div class="emp-top">
+  const statusOpts = STATUS_OPTS.map(s =>
+    `<option value="${s}" ${(emp.status||'—')===s?'selected':''}>${s}</option>`
+  ).join('');
+
+  row.innerHTML = `
+    <div class="emp-info">
       <div class="emp-av" style="background:${cfg.color}">${initials}</div>
-      <div>
+      <div style="min-width:0">
         <div class="emp-name">${emp.name}</div>
-        <div class="emp-meta">${cfg.label} · ${emp.emp_id}</div>
+        <div class="emp-id">${emp.emp_id}</div>
       </div>
       <div class="lvl-chip" style="background:${lvlColor}22;color:${lvlColor}">${emp.level}</div>
     </div>
 
-    <div class="date-row">
-      <div class="field">
-        <label>Join Date</label>
-        <input type="date" id="${emp.emp_id}_join" value="${emp.join_date||''}" />
-      </div>
-      <div class="field">
-        <label>IDP Start Date</label>
-        <input type="date" id="${emp.emp_id}_start" value="${emp.idp_start||''}" oninput="autoCalc('${emp.emp_id}')" />
-      </div>
-    </div>
+    <select class="status-sel" id="${emp.emp_id}_status">${statusOpts}</select>
 
-    <div class="q-blocks">
-      ${[1,2,3,4].map(q => `
-        <div class="q-block">
-          <div class="q-label">Q${q}</div>
+    <div class="dates-wrap">
+      <div class="date-field">
+        <div class="date-lbl">IDP Start</div>
+        <input class="date-input idp-start" type="date" id="${emp.emp_id}_start"
+          value="${emp.idp_start||''}" oninput="autoCalc('${emp.emp_id}')" />
+      </div>
+      <button class="btn-calc-mini" onclick="autoCalc('${emp.emp_id}')">↻</button>
+      ${[1,2,3,4].map(q=>`
+        <div class="q-group">
+          <div class="q-group-lbl">Q${q}</div>
           <div class="q-dates">
-            <div class="q-date-row">
-              <div class="q-date-lbl">Start</div>
-              <input class="q-date-input" type="date" id="${emp.emp_id}_q${q}s" value="${emp['q'+q+'_start']||''}" />
-            </div>
-            <div class="q-date-row" style="margin-top:4px">
-              <div class="q-date-lbl">End</div>
-              <input class="q-date-input" type="date" id="${emp.emp_id}_q${q}e" value="${emp['q'+q+'_end']||''}" />
-            </div>
+            <input class="q-date-mini" type="date" id="${emp.emp_id}_q${q}s" value="${emp['q'+q+'_start']||''}" title="Q${q} Start"/>
+            <input class="q-date-mini" type="date" id="${emp.emp_id}_q${q}e" value="${emp['q'+q+'_end']||''}" title="Q${q} End"/>
           </div>
         </div>
       `).join('')}
     </div>
 
-    <div class="card-actions">
-      <button class="btn-calc" onclick="autoCalc('${emp.emp_id}')">↻ Recalculate Q1–Q4</button>
-      <span class="save-msg" id="msg-${emp.emp_id}">Saved ✓</span>
-      <button class="btn-save" onclick="saveEmployee('${emp.emp_id}', '${emp.name}', '${emp.property}', '${emp.level}')">Save</button>
+    <div class="row-actions">
+      <div class="cfg-dot ${hasDates?'done':''}" id="dot-${emp.emp_id}" title="${hasDates?'Configured':'Not configured'}"></div>
+      <button class="btn-save-row" onclick="saveEmployee('${emp.emp_id}','${emp.name}','${emp.property}','${emp.level}',this)">Save</button>
     </div>
   `;
 
-  return card;
+  return row;
 }
 
-// ── Auto-calculate quarters from IDP start date ──────────
+// ── Auto-calc quarters ────────────────────────────────────
 function autoCalc(empId) {
-  const startVal = document.getElementById(`${empId}_start`).value;
+  const startVal = (document.getElementById(`${empId}_start`)||{}).value;
   if (!startVal) return;
-
   const s = new Date(startVal + 'T00:00:00Z');
-  const addMonths = (d, n) => {
-    const r = new Date(d);
-    r.setUTCMonth(r.getUTCMonth() + n);
-    return r;
-  };
-  const addDays = (d, n) => {
-    const r = new Date(d);
-    r.setUTCDate(r.getUTCDate() + n);
-    return r;
-  };
-  const fmt = d => d.toISOString().slice(0,10);
-
-  const q2 = addMonths(s, 3);
-  const q3 = addMonths(s, 6);
-  const q4 = addMonths(s, 9);
-  const q5 = addMonths(s, 12);
-
-  const quarters = [
-    { s: s,  e: addDays(q2,-1) },
-    { s: q2, e: addDays(q3,-1) },
-    { s: q3, e: addDays(q4,-1) },
-    { s: q4, e: addDays(q5,-1) },
-  ];
-
-  quarters.forEach((q, i) => {
-    const n = i + 1;
-    const sEl = document.getElementById(`${empId}_q${n}s`);
-    const eEl = document.getElementById(`${empId}_q${n}e`);
-    if (sEl) sEl.value = fmt(q.s);
-    if (eEl) eEl.value = fmt(q.e);
+  const addM = (d,n)=>{ const r=new Date(d); r.setUTCMonth(r.getUTCMonth()+n); return r; };
+  const addD = (d,n)=>{ const r=new Date(d); r.setUTCDate(r.getUTCDate()+n); return r; };
+  const fmt = d=>d.toISOString().slice(0,10);
+  const q=[s,addM(s,3),addM(s,6),addM(s,9)];
+  q.forEach((qs,i)=>{
+    const n=i+1, qe=addD(i<3?q[i+1]:addM(s,12),-1);
+    const se=document.getElementById(`${empId}_q${n}s`);
+    const ee=document.getElementById(`${empId}_q${n}e`);
+    if(se) se.value=fmt(qs);
+    if(ee) ee.value=fmt(qe);
   });
 }
 
-// ── Save employee to GAS ─────────────────────────────────
-async function saveEmployee(empId, name, property, level) {
-  const btn = document.querySelector(`#card-${empId} .btn-save`);
-  const msg = document.getElementById(`msg-${empId}`);
-  btn.disabled = true;
-  btn.textContent = 'Saving…';
-
-  const g = id => (document.getElementById(id)||{}).value || '';
-
+// ── Save one employee ─────────────────────────────────────
+async function saveEmployee(empId, name, property, level, btn) {
+  btn.disabled=true; btn.textContent='…';
+  const g = id => (document.getElementById(id)||{}).value||'';
   const payload = {
-    action:    'saveEmployee',
-    emp_id:    empId,
-    name:      name,
-    property:  property,
-    level:     level,
-    join_date: g(`${empId}_join`),
-    idp_start: g(`${empId}_start`),
-    q1_start:  g(`${empId}_q1s`),
-    q1_end:    g(`${empId}_q1e`),
-    q2_start:  g(`${empId}_q2s`),
-    q2_end:    g(`${empId}_q2e`),
-    q3_start:  g(`${empId}_q3s`),
-    q3_end:    g(`${empId}_q3e`),
-    q4_start:  g(`${empId}_q4s`),
-    q4_end:    g(`${empId}_q4e`),
+    action:'saveEmployee', emp_id:empId, name, property, level,
+    status:   g(`${empId}_status`),
+    idp_start:g(`${empId}_start`),
+    q1_start: g(`${empId}_q1s`), q1_end:g(`${empId}_q1e`),
+    q2_start: g(`${empId}_q2s`), q2_end:g(`${empId}_q2e`),
+    q3_start: g(`${empId}_q3s`), q3_end:g(`${empId}_q3e`),
+    q4_start: g(`${empId}_q4s`), q4_end:g(`${empId}_q4e`),
   };
-
   try {
-    const params = new URLSearchParams(payload).toString();
-    const res = await fetch(`${GAS_URL}?${params}`);
-    const data = await res.json();
-    if (data.error) throw new Error(data.error);
-    msg.classList.add('show');
-    setTimeout(() => msg.classList.remove('show'), 3000);
-  } catch (err) {
-    alert('Save failed: ' + err.message);
+    await fetch(`${GAS_URL}?${new URLSearchParams(payload)}`);
+    const dot = document.getElementById(`dot-${empId}`);
+    if (dot && payload.idp_start) dot.classList.add('done');
+    showToast(`${name} saved ✓`);
+    updateCounts();
+  } catch(err) {
+    showToast('Save failed: ' + err.message);
   } finally {
-    btn.disabled = false;
-    btn.textContent = 'Save';
+    btn.disabled=false; btn.textContent='Save';
   }
 }
 
-// ── Status helper ────────────────────────────────────────
-function setStatus(type, text) {
-  const dot  = document.getElementById('statusDot');
-  const span = document.getElementById('statusText');
-  dot.className = 'status-dot ' + type;
-  span.textContent = text;
+// ── Save all ──────────────────────────────────────────────
+async function saveAll() {
+  const rows = [...document.querySelectorAll('.emp-row:not(.hidden)')];
+  for (const row of rows) {
+    const btn = row.querySelector('.btn-save-row');
+    const empId = row.dataset.emp;
+    const name  = row.querySelector('.emp-name').textContent;
+    const prop  = row.dataset.prop;
+    const level = row.querySelector('.lvl-chip').textContent;
+    await saveEmployee(empId, name, prop, level, btn);
+  }
+  showToast(`All ${rows.length} employees saved ✓`);
+}
+
+// ── Filters ───────────────────────────────────────────────
+function setPropFilter(prop) {
+  activePropFilter = prop;
+  document.querySelectorAll('.pill').forEach(p => p.classList.toggle('on', p.dataset.p === prop));
+  applyFilters();
+}
+
+function applyFilters() {
+  const q = document.getElementById('searchInput').value.toLowerCase().trim();
+  let visibleTotal = 0;
+
+  document.querySelectorAll('.prop-section').forEach(sec => {
+    const prop = sec.dataset.prop;
+    const propMatch = activePropFilter === 'ALL' || activePropFilter === prop;
+    let secVisible = 0;
+
+    sec.querySelectorAll('.emp-row').forEach(row => {
+      const nameMatch = !q || row.dataset.name.includes(q);
+      const show = propMatch && nameMatch;
+      row.classList.toggle('hidden', !show);
+      if (show) secVisible++;
+    });
+
+    sec.style.display = secVisible > 0 ? '' : 'none';
+    visibleTotal += secVisible;
+  });
+
+  document.getElementById('emptySearch').style.display = visibleTotal === 0 ? '' : 'none';
+}
+
+// ── Counts ────────────────────────────────────────────────
+function updateCounts() {
+  const total = ALL_EMPLOYEES.length;
+  const cfg = document.querySelectorAll('.cfg-dot.done').length;
+  document.getElementById('totalCount').textContent = total;
+  document.getElementById('cfgCount').textContent = cfg;
+
+  // Update per-property badges
+  ['NE','GR','NW','OL'].forEach(prop => {
+    const badge = document.getElementById(`badge-${prop}`);
+    if (!badge) return;
+    const rows = document.querySelectorAll(`.emp-row[data-prop="${prop}"]`);
+    const done = document.querySelectorAll(`.emp-row[data-prop="${prop}"] .cfg-dot.done`);
+    badge.textContent = `${done.length}/${rows.length} set`;
+  });
+}
+
+// ── Helpers ───────────────────────────────────────────────
+function setConn(type, label) {
+  document.getElementById('connDot').className = 'conn-dot ' + type;
+  document.getElementById('connLabel').textContent = label;
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
 }
 </script>
 </body>
