@@ -454,3 +454,57 @@ const COACHES = {
   saad:{name:'Saad Alajmi',ini:'SA',role:'GM',color:'#1D3A8A',property:'Narjs East',
     as:'gm', people:['beesan','rakan','ali','rawan']}
 };
+
+/* ─────────────────── COMPANY / HR LAYER ───────────────────
+   HR sees coaches and the system — never an individual's
+   practice log, self-rating, or the gap between ratings.
+   ─────────────────────────────────────────────────────────── */
+
+const PROPERTIES = [
+  {id:'ne',name:'Narjs East', units:242, gm:'Saad Alajmi',      agm:'Raghdah Safar'},
+  {id:'gr',name:'Granada',    units:439, gm:'Weesam Khuja',     agm:'Sarah Niazi'},
+  {id:'nw',name:'Narjs West', units:238, gm:'Husni Abdulrazzaq',agm:null},
+  {id:'ol',name:'Olaya',      units:50,  gm:'Johnny Hachem',    agm:null}
+];
+
+/* current headcount per level, company-wide */
+const CAPACITY = [
+  {lvl:'L2 · Coordinator / Associate', held:10, inDev:1, note:'Entry and specialist layer'},
+  {lvl:'L3 · Senior',                  held:6,  inDev:0, note:'Operational backbone'},
+  {lvl:'L4 · AGM',                     held:2,  inDev:0, note:'Two properties have none'},
+  {lvl:'L5 · GM',                      held:4,  inDev:0, note:'One per property'}
+];
+
+/* set by leadership — drives the whole capacity calculation */
+const EXPANSION = {newBuildings:null, horizonMonths:18};
+
+/* what a new building consumes */
+const PER_BUILDING = {L5:1, L4:1, L3:2};
+
+/* the four system-level measures */
+const PROGRAMME_METRICS = [
+  {k:'Gate pass rate',              v:null, unit:'%',  reveals:'Whether the standard is set at the right level',
+   warn:'A sharp rise during rapid expansion is a warning, not good news'},
+  {k:'Retention 12 months after promotion', v:null, unit:'%', reveals:'Whether the promotion decision was right',
+   warn:'The clearest signal the model works — and the slowest to arrive'},
+  {k:'Internal fill rate for open roles',   v:null, unit:'%', reveals:'Whether it is actually building capacity',
+   warn:'Falling means expansion is being funded by external hiring'},
+  {k:'Coach compliance',            v:null, unit:'%',  reveals:'Whether the programme is being applied at all',
+   warn:'Everything else is meaningless if this is low'}
+];
+
+/* what HR deliberately cannot see — displayed in the tool itself */
+const HR_BOUNDARY = {
+  sees:[
+    'Whether the monthly session was held',
+    'Whether coach tasks were completed, and on time',
+    'Whether criteria were published before assessment',
+    'Whether calibration happened this quarter',
+    'Whether a coach’s outcomes are unusually skewed'],
+  doesNot:[
+    'The content of anyone’s practice log',
+    'Any individual’s self-rating',
+    'The gap between a self-rating and a manager rating',
+    'Whether a specific person is ready for promotion'],
+  why:'The practice log contains admissions of error. If everyone can read it, people write for the audience and it stops working within a month. Protection is not secrecy — it is the condition for honesty.'
+};
