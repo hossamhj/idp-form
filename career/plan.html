@@ -158,10 +158,12 @@ document.getElementById('journey').innerHTML=`
       const st=q.n<P.quarter?'done':q.n===P.quarter?'now':'next';
       const col=st==='done'?'background:#EAF7F2;color:#0A5540':st==='now'?'background:var(--green);color:#fff':'background:#F2EFE9;color:#8A8780';
       const bd={done:['Complete','background:#EAF7F2;color:#0A5540'],now:['In progress','background:#FEF6E7;color:#7A4A05'],next:['Ahead','background:#F2EFE9;color:#5A5750']}[st];
-      return `<div class="q ${st}">
-        <div class="q-h"><div class="q-tag" style="${col}">Q${q.n}</div>
+      return `<div class="q ${st} ${st==='now'?'open':''}" id="jq${q.n}">
+        <div class="q-h" onclick="document.getElementById('jq${q.n}').classList.toggle('open')">
+          <div class="q-tag" style="${col}">Q${q.n}</div>
           <div><div class="q-goal">${x(q.goal)}</div><div class="q-when">${x(q.period)}</div></div>
-          <span class="q-badge" style="${bd[1]}">${bd[0]}</span></div>
+          <span class="q-badge" style="${bd[1]}">${bd[0]}</span>
+          <span class="q-chev">▾</span></div>
         <div class="q-b">
           ${q.fns.length?`<div class="q-lbl">Functions in focus</div>
             <div class="q-fn">${q.fns.map(f=>`<span class="q-chip">${x(f)}</span>`).join('')}</div>`:''}

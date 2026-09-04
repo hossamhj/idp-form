@@ -70,12 +70,17 @@ body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--ink);fon
 
 .q{border:1px solid var(--line);border-radius:12px;margin-bottom:12px;overflow:hidden;background:#fff}
 .q.done{opacity:.6}.q.now{border-color:var(--green);border-width:2px}
-.q-h{padding:13px 16px;display:flex;align-items:flex-start;gap:12px;background:#FCFBF9}
+.q-h{padding:13px 16px;display:flex;align-items:center;gap:12px;background:#FCFBF9;cursor:pointer;transition:.15s}
+.q-h:hover{background:#F7F4EF}
+.q.open .q-h{background:#fff}
+.q-chev{margin-left:auto;color:var(--gray);font-size:11px;flex-shrink:0;padding-left:8px;transition:transform .18s}
+.q.open .q-chev{transform:rotate(180deg)}
 .q-tag{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:15px;font-weight:600;flex-shrink:0}
 .q-goal{font-size:14.5px;font-weight:600;line-height:1.4}
 .q-when{font-size:10.5px;color:var(--gray);margin-top:3px}
 .q-badge{margin-left:auto;font-size:9.5px;font-weight:600;padding:3px 9px;border-radius:8px;white-space:nowrap}
-.q-b{padding:13px 16px;border-top:1px solid #F0EDE7}
+.q-b{padding:13px 16px;border-top:1px solid #F0EDE7;display:none}
+.q.open .q-b{display:block}
 .q-lbl{font-size:9px;color:var(--gray);letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px}
 .q-fn{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:13px}
 .q-chip{font-size:11px;background:#F2EFE9;border-radius:7px;padding:4px 10px}

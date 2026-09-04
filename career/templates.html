@@ -51,12 +51,18 @@
 .fn-t{margin-left:auto;font-size:9.5px;font-family:ui-monospace,monospace;color:var(--gray);background:#F2EFE9;padding:2px 7px;border-radius:5px;white-space:nowrap}
 .fn-w{font-size:10px;color:#7A4A05;background:#FEF6E7;padding:2px 7px;border-radius:5px;white-space:nowrap}
 
-.q{border:1px solid var(--line);border-radius:12px;margin-bottom:11px;overflow:hidden}
-.q-h{padding:13px 16px;background:#FCFBF9;display:flex;align-items:flex-start;gap:12px}
+.q{border:1px solid var(--line);border-radius:12px;margin-bottom:11px;overflow:hidden;background:#fff}
+.q-h{padding:13px 16px;background:#FCFBF9;display:flex;align-items:center;gap:12px;cursor:pointer;transition:.15s}
+.q-h:hover{background:#F7F4EF}
+.q.open .q-h{background:#fff;border-bottom:1px solid #F0EDE7}
 .q-tag{width:36px;height:36px;border-radius:10px;background:#F2EFE9;color:#5A5750;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:14px;font-weight:600;flex-shrink:0}
+.q.open .q-tag{background:var(--navy);color:#fff}
 .q-g{font-size:14px;font-weight:600;line-height:1.4}
 .q-p{font-size:10.5px;color:var(--gray);margin-top:3px}
-.q-b{padding:13px 16px;border-top:1px solid #F0EDE7}
+.q-chev{margin-left:auto;color:var(--gray);font-size:11px;flex-shrink:0;transition:transform .18s}
+.q.open .q-chev{transform:rotate(180deg)}
+.q-b{padding:13px 16px;display:none}
+.q.open .q-b{display:block}
 .q-chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
 .q-chip{font-size:11px;background:#F2EFE9;border-radius:7px;padding:4px 10px}
 .mo{display:grid;grid-template-columns:44px 1fr;gap:11px;padding:7px 0;border-top:1px dashed #EDEAE4;font-size:12px}
@@ -186,9 +192,11 @@ function renderDetail(){
         <div class="blk">
           <div class="blk-t">${T.months} months, quarter by quarter</div>
           <div class="blk-s">Three functions in deliberate focus at a time. The order is chosen for risk — safe work first, the unfamiliar second, ownership last.</div>
-          ${T.quarters.map(q=>`<div class="q">
-            <div class="q-h"><div class="q-tag">Q${q.n}</div>
-              <div><div class="q-g">${x(q.goal)}</div><div class="q-p">${x(q.period)}</div></div></div>
+          ${T.quarters.map(q=>`<div class="q" id="q${q.n}">
+            <div class="q-h" onclick="document.getElementById('q${q.n}').classList.toggle('open')">
+              <div class="q-tag">Q${q.n}</div>
+              <div><div class="q-g">${x(q.goal)}</div><div class="q-p">${x(q.period)}</div></div>
+              <span class="q-chev">▾</span></div>
             <div class="q-b">
               ${q.fns.length?`<div class="q-chips">${q.fns.map(f=>`<span class="q-chip">${x(f)}</span>`).join('')}</div>`:''}
               ${q.why?`<div class="blk-s" style="margin:-4px 0 10px;font-style:italic">${x(q.why)}</div>`:''}
