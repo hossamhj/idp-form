@@ -21,14 +21,14 @@ body{font-family:'Inter',sans-serif;background:#2A2724;color:var(--ink);overflow
 .dark .kicker,.deep .kicker{color:rgba(237,233,226,.5)}
 h1{font-family:'Playfair Display',serif;font-size:52px;font-weight:500;line-height:1.12}
 h2{font-family:'Playfair Display',serif;font-size:32px;font-weight:500;line-height:1.24;margin-bottom:6px}
-.sub{font-size:15px;color:var(--gray);line-height:1.65;margin-top:10px;max-width:820px}
+.sub{font-size:15px;color:var(--gray);line-height:1.65;margin-top:10px;max-width:830px}
 .dark .sub,.deep .sub{color:rgba(237,233,226,.6)}
-p.body{font-size:14.5px;line-height:1.72;max-width:830px}
+p.body{font-size:14.5px;line-height:1.72;max-width:840px}
 .mid{margin:auto 0}
 .hr{height:1px;background:var(--line);margin:18px 0}
 .dark .hr,.deep .hr{background:rgba(237,233,226,.14)}
-table{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:6px}
-th{text-align:left;font-size:9.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--gray);font-weight:600;padding:0 11px 8px 0;border-bottom:1px solid var(--line)}
+table{width:100%;border-collapse:collapse;font-size:13px;margin-top:6px}
+th{text-align:left;font-size:9px;letter-spacing:.11em;text-transform:uppercase;color:var(--gray);font-weight:600;padding:0 11px 8px 0;border-bottom:1px solid var(--line)}
 td{padding:10px 11px 10px 0;border-bottom:1px solid #EAE6DE;vertical-align:top}
 .dark th{border-color:rgba(237,233,226,.2);color:rgba(237,233,226,.5)}
 .dark td{border-color:rgba(237,233,226,.1)}
@@ -43,24 +43,22 @@ tr.hl td{background:rgba(29,158,117,.1)}
 .card-t{font-size:17px;font-weight:600;margin-bottom:6px;line-height:1.35}
 .card-b{font-size:12.5px;line-height:1.7;color:#5A5750}
 .dark .card-b,.deep .card-b{color:rgba(237,233,226,.68)}
-.flow{display:flex;align-items:center;justify-content:center;gap:14px;margin:26px 0}
-.node{background:#fff;border:2px solid var(--line);border-radius:12px;padding:16px 22px;text-align:center;min-width:170px}
+.flow{display:flex;align-items:center;justify-content:center;gap:14px;margin:24px 0}
+.node{background:#fff;border:2px solid var(--line);border-radius:12px;padding:15px 20px;text-align:center;min-width:165px}
 .dark .node{background:rgba(255,255,255,.07);border-color:rgba(237,233,226,.2)}
 .node-n{font-size:16px;font-weight:600}
-.node-r{font-size:11px;color:var(--gray);margin-top:4px}
+.node-r{font-size:11px;color:var(--gray);margin-top:4px;line-height:1.5}
 .dark .node-r{color:rgba(237,233,226,.55)}
-.arw{font-size:12px;color:var(--gray);text-align:center;line-height:1.5}
-ul.tight{list-style:none;margin-top:2px}
-ul.tight li{font-size:13.5px;line-height:1.9;padding-left:19px;position:relative}
-ul.tight li:before{content:'';position:absolute;left:2px;top:12px;width:5px;height:5px;border-radius:50%;background:var(--gray)}
-.dark ul.tight li:before{background:rgba(237,233,226,.4)}
-ul.yes li:before,ul.no li:before{content:none}
-ul.yes li,ul.no li{padding-left:22px}
-ul.yes li:after{content:'✓';position:absolute;left:0;top:0;color:var(--green);font-weight:700}
-ul.no li:after{content:'✕';position:absolute;left:0;top:0;color:var(--red);font-weight:700}
-.rule{display:grid;grid-template-columns:26px 1fr;gap:12px;padding:9px 0;border-bottom:1px solid #EAE6DE;font-size:13.5px;line-height:1.6}
-.rule:last-child{border:none}
-.rule-n{font-family:'Playfair Display',serif;font-weight:600;color:var(--navy);font-size:15px}
+.arw{font-size:11px;color:var(--gray);text-align:center;line-height:1.5}
+.pillar{border-radius:12px;padding:18px 20px;height:100%}
+.p1{background:#EEEDFE;border:1px solid #D8D2F5}
+.p2{background:#FEF6E7;border:1px solid #F0C674}
+.p3{background:#F2FAF7;border:1px solid #CCE9DF}
+.pillar-n{font-family:'Playfair Display',serif;font-size:13px;font-weight:600;margin-bottom:8px}
+.pillar-t{font-size:18px;font-weight:600;margin-bottom:9px;line-height:1.3}
+.pillar-b{font-size:12.5px;line-height:1.7}
+.rule{display:grid;grid-template-columns:22px 1fr;gap:11px;padding:7px 0;font-size:13px;line-height:1.6}
+.rn{font-family:'Playfair Display',serif;font-weight:600;font-size:14px}
 .foot{position:absolute;bottom:18px;left:56px;right:56px;display:flex;justify-content:space-between;font-size:10px;color:var(--gray);letter-spacing:.05em}
 .dark .foot,.deep .foot{color:rgba(237,233,226,.32)}
 .nav{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);display:flex;gap:8px;align-items:center;z-index:50}
@@ -79,179 +77,197 @@ ul.no li:after{content:'✕';position:absolute;left:0;top:0;color:var(--red);fon
   <div class="mid">
     <div class="kicker">Flow · Resident Experience</div>
     <h1>Programme<br>Governance</h1>
-    <div class="sub">Who assesses, who decides, who audits — and what each of them is deliberately not allowed to see.</div>
+    <div class="sub">Who assesses, who decides, who audits — and why full visibility is safe once decision rights are separated.</div>
   </div>
   <div class="foot"><span>Career Development Programme</span><span>September 2026</span></div>
 </div>
 
 <!-- 2 -->
-<div class="slide">
-  <div class="kicker">The governing principle</div>
-  <h2>Separation of powers</h2>
-  <div class="sub">Any development system that combines assessment, decision and oversight in one pair of hands becomes either favouritism or fear.</div>
-  <div class="flow">
-    <div class="node" style="border-color:var(--teal)"><div class="node-n">Coach</div><div class="node-r">observes · assesses<br><b>recommends</b></div></div>
-    <div class="arw">recommends<br>→</div>
-    <div class="node" style="border-color:var(--purple)"><div class="node-n">Sponsor</div><div class="node-r">grants the level<br><b>decides</b></div></div>
-    <div class="arw">audited by<br>←</div>
-    <div class="node" style="border-color:#4A3A20"><div class="node-n">HR</div><div class="node-r">guards the process<br><b>never decides</b></div></div>
+<div class="slide dark">
+  <div class="mid">
+    <div class="kicker">The idea the whole model rests on</div>
+    <h2 style="font-size:42px">Sight without vote.</h2>
+    <div class="sub" style="max-width:840px;font-size:16px">HR sees every record in the programme and decides none of them. That combination is what makes total transparency safe — <b>and it is the reason nothing has to be hidden.</b></div>
+    <div class="hr"></div>
+    <div class="cols c2">
+      <div class="card">
+        <div class="card-k">If HR could decide promotions</div>
+        <div class="card-b">Full visibility would be dangerous. People would manage what they write, and the record would stop being true.</div></div>
+      <div class="card" style="border-color:rgba(29,158,117,.5)">
+        <div class="card-k" style="color:#7FD9BC">Because HR only audits</div>
+        <div class="card-b">Full visibility is an asset. Talent planning works, bias becomes detectable, and appeals can be reviewed on substance.</div></div>
+    </div>
   </div>
-  <div class="hr"></div>
-  <p class="body"><b>No one holds two of the three.</b> The coach who works with someone every day cannot also be the one who promotes them. The person who promotes cannot also be the one who audits whether the process was fair.</p>
   <div class="foot"><span>01 · The principle</span><span>Flow</span></div>
 </div>
 
 <!-- 3 -->
 <div class="slide">
-  <div class="kicker">The five roles</div>
-  <h2>Each sees what the role requires — and no more</h2>
-  <table style="margin-top:12px">
-    <tr><th style="width:15%">Role</th><th style="width:26%">Sees</th><th style="width:29%">Does</th><th>Cannot</th></tr>
-    <tr><td><b>Employee</b></td><td style="color:var(--gray)">Own plan · own gate criteria in advance</td><td>Writes the practice log · self-assesses</td><td>See the manager's rating before their own is locked</td></tr>
-    <tr><td><b>Coach</b><br><span style="color:var(--gray);font-size:11.5px">AGM</span></td><td style="color:var(--gray)">The people they coach · their own tasks</td><td>Assesses conduct · holds sessions · <b>recommends</b></td><td><b>Grant the level</b> · hide a missed session</td></tr>
-    <tr><td><b>Sponsor</b><br><span style="color:var(--gray);font-size:11.5px">GM</span></td><td style="color:var(--gray)">Their property · coach compliance</td><td><b>Grants the level</b> · approves real scope</td><td>Promote without a complete gate record</td></tr>
-    <tr class="hl"><td><b>HR</b></td><td style="color:var(--gray)">Every property · process compliance</td><td>Monitors · calibrates · reports</td><td><b>Assess anyone · grant a level · recommend a promotion</b></td></tr>
-    <tr><td><b>Admin</b></td><td style="color:var(--gray)">Configuration only</td><td>Templates · role assignment · cycles</td><td>Read any individual's assessments or log</td></tr>
-  </table>
-  <div class="foot"><span>02 · The roles</span><span>Flow</span></div>
+  <div class="kicker">The structure</div>
+  <h2>Three pillars — no access restrictions among them</h2>
+  <div class="cols c3" style="margin-top:22px;align-items:stretch">
+    <div class="pillar p1">
+      <div class="pillar-n">PILLAR ONE</div>
+      <div class="pillar-t">Separated decision rights</div>
+      <div class="pillar-b" style="color:#3A3160">The coach recommends. The sponsor decides. HR audits.<br><br><b>Nobody holds two of the three.</b></div></div>
+    <div class="pillar p2">
+      <div class="pillar-n">PILLAR TWO</div>
+      <div class="pillar-t">Governed use</div>
+      <div class="pillar-b" style="color:#6B4A15">Every field has a stated purpose and a stated prohibition.<br><br><b>What is controlled is use, not access</b> — and use is auditable.</div></div>
+    <div class="pillar p3">
+      <div class="pillar-n">PILLAR THREE</div>
+      <div class="pillar-t">Full transparency</div>
+      <div class="pillar-b" style="color:#2C4E42">Everyone sees their own record, the criteria in advance, and who has access.<br><br><b>The harm comes from surprise, not from access.</b></div></div>
+  </div>
+  <div class="hr"></div>
+  <p class="body">An earlier draft protected the reflective parts of the record by hiding them from HR. That was the wrong instrument — <b>it would have blinded talent planning and made bias impossible to detect</b>, while solving a problem that use-governance solves better.</p>
+  <div class="foot"><span>02 · The structure</span><span>Flow</span></div>
 </div>
 
 <!-- 4 -->
 <div class="slide">
-  <div class="kicker">The employee</div>
-  <h2>Two rights that are not negotiable</h2>
-  <div class="cols c2" style="margin-top:24px">
-    <div class="card" style="border-top:3px solid var(--green)">
-      <div class="card-k">Right one</div>
-      <div class="card-t">No hidden file</div>
-      <div class="card-b">Every assessment and every note written about someone is visible to them.<br><br><b>If they are not entitled to read it, it is not fit to be written.</b></div></div>
-    <div class="card" style="border-top:3px solid var(--green)">
-      <div class="card-k">Right two</div>
-      <div class="card-t">Criteria published before they apply</div>
-      <div class="card-b">Nobody is assessed against a standard they have not seen.<br><br>A criterion changed mid-programme does not apply to anyone already in it.</div></div>
+  <div class="kicker">Pillar one · separated rights</div>
+  <h2>The coach recommends. The sponsor decides. HR audits.</h2>
+  <div class="flow">
+    <div class="node" style="border-color:var(--teal)"><div class="node-n">Coach</div><div class="node-r">observes · assesses<br><b>recommends</b></div></div>
+    <div class="arw">reasoned<br>recommendation →</div>
+    <div class="node" style="border-color:var(--purple)"><div class="node-n">Sponsor</div><div class="node-r">grants the level<br><b>decides</b></div></div>
+    <div class="arw">← audited<br>on process</div>
+    <div class="node" style="border-color:#4A3A20"><div class="node-n">HR</div><div class="node-r">sees everything<br><b>decides nothing</b></div></div>
   </div>
-  <div class="hr"></div>
-  <div class="card" style="background:#F3F0FE;border-color:#D8D2F5">
-    <div class="card-b" style="color:#3A3160"><b>One sequencing rule enforced by the system, not by good intentions:</b> the self-assessment locks before the manager's rating becomes visible. The gap between the two is the substance of the conversation — and it only means anything if neither was written with sight of the other.</div></div>
-  <div class="foot"><span>03 · The employee</span><span>Flow</span></div>
+  <div class="cols c2">
+    <div class="card">
+      <div class="card-k">Why the coach cannot decide</div>
+      <div class="card-b">Daily closeness is what makes their observation valuable — and exactly why it should not be final. The recommendation is written, reasoned, and carries real weight.</div></div>
+    <div class="card">
+      <div class="card-k">Why the sponsor cannot ignore it</div>
+      <div class="card-b">A sponsor may overrule the coach — <b>with a written reason recorded against the decision</b>. And a promotion with no gate record is not something the system accepts.</div></div>
+  </div>
+  <div class="foot"><span>03 · Decision rights</span><span>Flow</span></div>
 </div>
 
 <!-- 5 -->
-<div class="slide dark">
-  <div class="kicker">The coach and the sponsor</div>
-  <div class="mid">
-    <h2 style="font-size:30px">The coach recommends. The sponsor decides.</h2>
-    <div class="cols c2" style="margin-top:26px">
-      <div class="card">
-        <div class="card-k">Why the coach cannot decide</div>
-        <div class="card-b">They work with the person daily. That closeness is exactly what makes their observation valuable — and exactly why it should not be the final word.<br><br>The recommendation is <b>written and reasoned</b>, and it carries weight.</div></div>
-      <div class="card">
-        <div class="card-k">Why the sponsor cannot ignore it</div>
-        <div class="card-b">The sponsor may overrule the coach — <b>with a written reason recorded against the decision</b>.<br><br>And a promotion without a complete gate record is not something the system will accept.</div></div>
-    </div>
-    <p class="body" style="margin-top:24px;color:rgba(237,233,226,.78)">Neither constraint is administrative. Both exist because a promotion decision made by one person, with no record, is indistinguishable from a favour.</p>
-  </div>
-  <div class="foot"><span>04 · Coach and sponsor</span><span>Flow</span></div>
+<div class="slide">
+  <div class="kicker">The five roles</div>
+  <h2>Everyone sees what they need. Only the rights differ.</h2>
+  <table style="margin-top:12px">
+    <tr><th style="width:14%">Role</th><th style="width:27%">Sees</th><th style="width:30%">Does</th><th>Cannot</th></tr>
+    <tr><td><b>Employee</b></td><td style="color:var(--gray)">Own full record · criteria in advance · who has access</td><td>Writes the practice log · self-assesses</td><td>See the manager's rating before their own is locked</td></tr>
+    <tr><td><b>Coach</b><br><span style="color:var(--gray);font-size:11px">AGM</span></td><td style="color:var(--gray)">Full records of the people they coach</td><td>Assesses · holds sessions · <b>recommends</b></td><td><b>Grant the level</b> · hide a missed session</td></tr>
+    <tr><td><b>Sponsor</b><br><span style="color:var(--gray);font-size:11px">GM</span></td><td style="color:var(--gray)">Their whole property · coach compliance</td><td><b>Grants the level</b> · approves real scope</td><td>Promote without a complete gate record</td></tr>
+    <tr class="hl"><td><b>HR</b></td><td style="color:var(--gray)"><b>Everything, every property</b></td><td>Audits · calibrates · plans talent · detects bias</td><td><b>Assess anyone · grant a level · recommend a promotion</b></td></tr>
+    <tr><td><b>Admin</b></td><td style="color:var(--gray)">Configuration</td><td>Templates · role assignment · cycles</td><td>Alter a recorded assessment</td></tr>
+  </table>
+  <div class="foot"><span>04 · The roles</span><span>Flow</span></div>
 </div>
 
 <!-- 6 -->
 <div class="slide deep">
-  <div class="kicker">HR — the distinction that matters most</div>
-  <div class="mid">
-    <h2 style="font-size:34px">HR measures the process,<br>never the person.</h2>
-    <div class="cols c2" style="margin-top:26px">
-      <div class="card" style="border-color:rgba(29,158,117,.5)">
-        <div class="card-k" style="color:#7FD9BC">HR asks</div>
-        <ul class="tight yes" style="color:rgba(237,233,226,.85)">
-          <li>Was the monthly session held?</li>
-          <li>Were the criteria published in advance?</li>
-          <li>Did calibration happen this quarter?</li>
-          <li>Is one coach's outcome pattern unusual?</li>
-        </ul></div>
-      <div class="card" style="border-color:rgba(224,112,80,.45)">
-        <div class="card-k" style="color:#F0A88E">HR does not ask</div>
-        <ul class="tight no" style="color:rgba(237,233,226,.85)">
-          <li>Is this person ready?</li>
-          <li>Was that rating fair?</li>
-          <li>Which of the two is better?</li>
-        </ul></div>
-    </div>
-    <p class="body" style="margin-top:24px;color:rgba(237,233,226,.8)">The moment HR becomes a party to assessing individuals, it stops being the guardian of the process and becomes an opponent — <b>and people stop being honest in front of it</b>.</p>
-  </div>
-  <div class="foot"><span>05 · HR</span><span>Flow</span></div>
+  <div class="kicker">Pillar two · governed use</div>
+  <h2 style="font-size:30px">Every field has a purpose and a prohibition</h2>
+  <table style="margin-top:16px">
+    <tr><th style="width:22%">Data</th><th style="width:37%">May be used for</th><th>Never used for</th></tr>
+    <tr class="hl" style="background:rgba(255,255,255,.07)"><td><b>Practice log</b></td>
+      <td>Understanding patterns · reviewing an appeal · detecting bias</td>
+      <td><b>Quoted in a performance review, a report, or a promotion decision</b></td></tr>
+    <tr><td><b>Self / manager gap</b></td>
+      <td>Coaching context · spotting a coach who rates systematically high or low</td>
+      <td><b>Reported as a metric on an individual</b> — it would be gamed within a quarter</td></tr>
+    <tr><td><b>Assessments &amp; gates</b></td>
+      <td>Talent planning · calibration · succession · appeals</td>
+      <td style="color:rgba(237,233,226,.45)">no restriction</td></tr>
+    <tr><td><b>Coach compliance</b></td>
+      <td>Process oversight · workload balancing</td>
+      <td style="color:rgba(237,233,226,.45)">no restriction</td></tr>
+  </table>
+  <p class="body" style="margin-top:22px;color:rgba(237,233,226,.8)"><b>Use is auditable in a way access never was.</b> A report either cites the practice log or it does not — that can be checked. Whether someone read it cannot.</p>
+  <div class="foot"><span>05 · Governed use</span><span>Flow</span></div>
 </div>
 
 <!-- 7 -->
-<div class="slide">
-  <div class="kicker">Visibility</div>
-  <h2>Who can see what</h2>
-  <table style="margin-top:12px">
-    <tr><th style="width:34%">Data</th><th class="c">Employee</th><th class="c">Coach</th><th class="c">Sponsor</th><th class="c">HR</th><th class="c">Admin</th></tr>
-    <tr><td>Plan and goals</td><td class="c">●</td><td class="c">●</td><td class="c">●</td><td class="c" style="color:var(--gray)">aggregate</td><td class="c" style="color:var(--gray)">—</td></tr>
-    <tr class="hl"><td><b>Practice log</b></td><td class="c">●</td><td class="c">●</td><td class="c" style="color:var(--gray)">summary</td><td class="c" style="color:var(--gray)"><b>count only</b></td><td class="c" style="color:var(--gray)">—</td></tr>
-    <tr><td>Self-assessment</td><td class="c">●</td><td class="c" style="color:var(--gray)">after lock</td><td class="c" style="color:var(--gray)">—</td><td class="c" style="color:var(--gray)">aggregate</td><td class="c" style="color:var(--gray)">—</td></tr>
-    <tr><td>Coach assessment</td><td class="c">●</td><td class="c">●</td><td class="c">●</td><td class="c" style="color:var(--gray)">aggregate</td><td class="c" style="color:var(--gray)">—</td></tr>
-    <tr class="hl"><td><b>Self / manager gap</b></td><td class="c">●</td><td class="c">●</td><td class="c" style="color:var(--gray)">summary</td><td class="c" style="color:var(--gray)"><b>—</b></td><td class="c" style="color:var(--gray)">—</td></tr>
-    <tr><td>Coach task compliance</td><td class="c" style="color:var(--gray)">—</td><td class="c">●</td><td class="c">●</td><td class="c">●</td><td class="c" style="color:var(--gray)">—</td></tr>
-    <tr><td>Gate decision and reasoning</td><td class="c">●</td><td class="c">●</td><td class="c">●</td><td class="c">●</td><td class="c" style="color:var(--gray)">—</td></tr>
-    <tr><td>Company-wide metrics</td><td class="c" style="color:var(--gray)">—</td><td class="c" style="color:var(--gray)">—</td><td class="c" style="color:var(--gray)">—</td><td class="c">●</td><td class="c" style="color:var(--gray)">—</td></tr>
-  </table>
-  <div class="foot"><span>06 · Visibility</span><span>Flow</span></div>
-</div>
-
-<!-- 8 -->
 <div class="slide dark">
-  <div class="kicker">The one protection people question</div>
+  <div class="kicker">Why the reflective record needs protecting at all</div>
   <div class="mid">
-    <h2 style="font-size:30px">Why the practice log is not open to everyone</h2>
-    <div class="card" style="margin-top:22px;max-width:820px">
+    <div class="card" style="max-width:840px">
       <div class="card-k">A real entry</div>
       <div class="card-b" style="font-size:14px;line-height:1.8">
         <i>"Ran the evening handover on my own for the first time.<br>
         Forgot to flag the third-floor AC report — a colleague picked it up two hours later.<br>
-        <b style="color:#7FD9BC">Next time: review open reports before the handover, not during it.</b>"</i></div></div>
-    <p class="body" style="margin-top:22px;color:rgba(237,233,226,.82);font-size:16px">That is an admission of error. <b>If everyone can read it, it gets written for the audience</b> — and stops being useful within a month.</p>
+        <b style="color:#7FD9BC">Next time: review open reports before the handover, not during it."</b></i></div></div>
+    <h2 style="font-size:28px;margin-top:24px">That is an admission of error — and it is the most valuable line in the system.</h2>
+    <p class="body" style="margin-top:16px;color:rgba(237,233,226,.8)">The risk was never that someone <b>reads</b> it. The risk is that it gets <b>quoted in a promotion decision</b> — at which point people write for the audience and the log dies within a month.</p>
     <div class="hr"></div>
-    <p class="body" style="color:rgba(237,233,226,.75)">The employee and their coach see it. The sponsor sees a summary. <b>HR sees that it was written, not what it says.</b><br><br>The same reasoning protects the self-assessment: make the gap a metric on individuals and people will rate themselves strategically rather than honestly.</p>
+    <p class="body" style="color:rgba(237,233,226,.75)">So the protection sits on use, not access. <b>Everyone can read it. Nobody may cite it against you.</b></p>
   </div>
-  <div class="foot"><span>07 · Protection</span><span>Flow</span></div>
+  <div class="foot"><span>06 · Protection</span><span>Flow</span></div>
+</div>
+
+<!-- 8 -->
+<div class="slide">
+  <div class="kicker">Pillar three · transparency</div>
+  <h2>Three guarantees to the person being developed</h2>
+  <div class="cols c3" style="margin-top:24px">
+    <div class="card" style="border-top:3px solid var(--green)">
+      <div class="card-k">One</div><div class="card-t">No hidden file</div>
+      <div class="card-b">Every assessment and note written about someone is visible to them.<br><br><b>If they are not entitled to read it, it is not fit to be written.</b></div></div>
+    <div class="card" style="border-top:3px solid var(--green)">
+      <div class="card-k">Two</div><div class="card-t">Criteria before assessment</div>
+      <div class="card-b">Nobody is measured against a standard they have not seen. A criterion changed mid-programme does not apply to anyone already in it.</div></div>
+    <div class="card" style="border-top:3px solid var(--green)">
+      <div class="card-k">Three</div><div class="card-t">Access is visible</div>
+      <div class="card-b">Everyone can see who has sight of their record.<br><br><b>The harm comes from surprise, not from access.</b></div></div>
+  </div>
+  <div class="hr"></div>
+  <div class="card" style="background:#F3F0FE;border-color:#D8D2F5">
+    <div class="card-b" style="color:#3A3160"><b>One sequencing rule enforced by the system rather than by good intentions:</b> the self-assessment locks before the manager's rating becomes visible. The gap between them is the substance of the monthly conversation — and it means nothing if either was written with sight of the other.</div></div>
+  <div class="foot"><span>07 · Transparency</span><span>Flow</span></div>
 </div>
 
 <!-- 9 -->
 <div class="slide">
   <div class="kicker">The rules</div>
-  <h2>Eight, and they are short on purpose</h2>
-  <div style="margin-top:14px">
-    <div class="rule"><span class="rule-n">1</span><div>The level is granted <b>two levels above</b>. The line manager recommends only.</div></div>
-    <div class="rule"><span class="rule-n">2</span><div>No assessment against a criterion that was not <b>published beforehand</b>.</div></div>
-    <div class="rule"><span class="rule-n">3</span><div>Assessments are <b>never deleted, only superseded</b> — the record keeps both, and who changed it.</div></div>
-    <div class="rule"><span class="rule-n">4</span><div>The <b>self-assessment locks</b> before the manager's rating is visible.</div></div>
-    <div class="rule"><span class="rule-n">5</span><div><b>HR measures the process, not people.</b></div></div>
-    <div class="rule"><span class="rule-n">6</span><div>No promotion without a <b>complete gate record</b>.</div></div>
-    <div class="rule"><span class="rule-n">7</span><div><b>Quarterly calibration is mandatory</b> — every coach rates the same case, and the spread is discussed.</div></div>
-    <div class="rule"><span class="rule-n">8</span><div>The employee <b>sees everything written about them</b>.</div></div>
+  <h2>Eight, grouped by the pillar they serve</h2>
+  <div class="cols c3" style="margin-top:18px;align-items:start">
+    <div>
+      <div class="pillar-n" style="color:var(--purple);margin-bottom:10px">SEPARATED RIGHTS</div>
+      <div class="rule"><span class="rn" style="color:var(--purple)">1</span><div>The level is granted <b>two levels above</b>. The line manager recommends only.</div></div>
+      <div class="rule"><span class="rn" style="color:var(--purple)">2</span><div><b>HR sees everything and decides nothing.</b></div></div>
+      <div class="rule"><span class="rn" style="color:var(--purple)">3</span><div>No promotion without a <b>complete gate record</b>.</div></div>
+    </div>
+    <div>
+      <div class="pillar-n" style="color:#7A4A05;margin-bottom:10px">GOVERNED USE</div>
+      <div class="rule"><span class="rn" style="color:var(--amber)">4</span><div>The practice log and the self/manager gap are <b>never cited in an evaluative decision</b>.</div></div>
+      <div class="rule"><span class="rn" style="color:var(--amber)">5</span><div>Assessments are <b>superseded, never deleted</b> — the record keeps both, and who changed it.</div></div>
+    </div>
+    <div>
+      <div class="pillar-n" style="color:#0A5540;margin-bottom:10px">TRANSPARENCY</div>
+      <div class="rule"><span class="rn" style="color:var(--green)">6</span><div>The employee <b>sees everything written about them</b>.</div></div>
+      <div class="rule"><span class="rn" style="color:var(--green)">7</span><div>No assessment against a criterion <b>published after the fact</b>.</div></div>
+      <div class="rule"><span class="rn" style="color:var(--green)">8</span><div><b>Quarterly calibration is mandatory</b> — every coach rates the same case, and the spread is discussed.</div></div>
+    </div>
   </div>
+  <div class="hr"></div>
+  <p class="body">Rule eight is the one most often skipped and the one that fails most quietly. <b>Without it, "Consistent" means something different in each property within a year</b> — and a level stops being comparable across the company.</p>
   <div class="foot"><span>08 · The rules</span><span>Flow</span></div>
 </div>
 
 <!-- 10 -->
 <div class="slide">
   <div class="kicker">When someone disagrees</div>
-  <h2>The appeal reviews the process, not the judgement</h2>
-  <div class="cols c2" style="margin-top:22px">
+  <h2>HR now reviews the substance as well as the process</h2>
+  <div class="sub" style="margin-bottom:20px">With full visibility, an appeal is no longer a paperwork check.</div>
+  <div class="cols c2">
     <div class="card">
       <div class="card-k">On an assessment</div>
-      <div class="card-b">Raised with the <b>sponsor</b>, who reviews the substance.</div></div>
+      <div class="card-b">Raised with the <b>sponsor</b>, who reviews the substance and may ask the coach to reconsider.</div></div>
     <div class="card" style="border-color:var(--navy);border-width:2px">
       <div class="card-k">On a gate decision</div>
-      <div class="card-b"><b>HR reviews four things only:</b><br>
-        · Were the criteria published in advance?<br>
-        · Were the sessions actually held?<br>
-        · Was the recommendation reasoned?<br>
-        · Was the same standard applied to others?</div></div>
+      <div class="card-b"><b>HR reviews both:</b><br>
+        <b>Process</b> — were criteria published in advance, were sessions held, was the recommendation reasoned?<br>
+        <b>Substance</b> — was the same standard applied to others at this level, in other properties?</div></div>
   </div>
   <div class="hr"></div>
-  <p class="body"><b>If a flaw is found, the decision returns to the sponsor.</b> HR does not substitute its own judgement — doing so would make it a decision-maker, which is precisely what rule five prevents.</p>
+  <p class="body"><b>If a flaw is found, the decision returns to the sponsor.</b> HR does not substitute its own judgement — doing so would make it a decision-maker, which is exactly what rule two prevents. Full sight, no vote.</p>
   <div class="foot"><span>09 · Appeal</span><span>Flow</span></div>
 </div>
 
@@ -260,18 +276,18 @@ ul.no li:after{content:'✕';position:absolute;left:0;top:0;color:var(--red);fon
   <div class="kicker">The governance risk specific to us</div>
   <div class="mid">
     <h2 style="font-size:31px">Growth, not favouritism, is what will bend the standard</h2>
-    <div class="sub" style="max-width:840px">Promotion here means taking a new building, not replacing the person who trained you. That removes the usual conflict of interest — a coach whose people get promoted has expanded the company, and their incentive is aligned.</div>
-    <div class="card" style="margin-top:24px;border-color:rgba(224,112,80,.5)">
+    <div class="sub" style="max-width:850px">Promotion here means taking a new building, not replacing the person who trained you. That removes the usual conflict of interest — <b>a coach whose people get promoted has expanded the company</b>, and their incentive points the right way.</div>
+    <div class="card" style="margin-top:22px;border-color:rgba(224,112,80,.5)">
       <div class="card-k" style="color:#F0A88E">The real risk</div>
       <div class="card-b" style="font-size:14.5px;line-height:1.8">A building opens in four months and no AGM is ready.<br>
       <b>Pressure to fill the seat → the bar moves → the promotion fails.</b></div></div>
-    <div class="cols c4" style="margin-top:22px">
+    <div class="cols c4" style="margin-top:20px">
       <div class="card"><div class="card-b">The gate is <b>not negotiable</b> for expansion</div></div>
       <div class="card"><div class="card-b">Programme length sits <b>inside</b> the expansion plan</div></div>
       <div class="card"><div class="card-b">HR watches for the <b>standard slipping</b></div></div>
-      <div class="card"><div class="card-b">12-month retention <b>catches it after the fact</b></div></div>
+      <div class="card"><div class="card-b">12-month retention <b>catches it afterwards</b></div></div>
     </div>
-    <p class="body" style="margin-top:20px;color:rgba(237,233,226,.8)"><b>A gate pass rate that rises during rapid expansion is a warning, not good news.</b></p>
+    <p class="body" style="margin-top:18px;color:rgba(237,233,226,.8)"><b>A gate pass rate that rises during rapid expansion is a warning, not good news.</b> This is exactly the kind of pattern full visibility lets HR see early.</p>
   </div>
   <div class="foot"><span>10 · The real risk</span><span>Flow</span></div>
 </div>
@@ -280,9 +296,9 @@ ul.no li:after{content:'✕';position:absolute;left:0;top:0;color:var(--red);fon
 <div class="slide deep">
   <div class="mid" style="text-align:center">
     <div class="kicker" style="text-align:center">In one line</div>
-    <h2 style="font-size:36px;max-width:900px;margin:0 auto 26px">The coach observes. The sponsor decides.<br>HR makes sure it was done properly.<br>And the person sees all of it.</h2>
-    <div class="hr" style="max-width:380px;margin:0 auto 26px"></div>
-    <p class="body" style="max-width:760px;margin:0 auto;color:rgba(237,233,226,.75)">None of these constraints slow the programme down. They are what make a promotion decision defensible a year later — to the person who received it, and to the person who did not.</p>
+    <h2 style="font-size:35px;max-width:920px;margin:0 auto 24px">The coach observes. The sponsor decides.<br>HR sees everything and decides nothing.<br>And the person sees all of it.</h2>
+    <div class="hr" style="max-width:380px;margin:0 auto 24px"></div>
+    <p class="body" style="max-width:780px;margin:0 auto;color:rgba(237,233,226,.75)">Nothing here slows the programme down. These are what make a promotion decision defensible a year later — <b>to the person who received it, and to the person who did not.</b></p>
   </div>
   <div class="foot"><span>Flow · Resident Experience</span><span>September 2026</span></div>
 </div>
