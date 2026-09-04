@@ -167,6 +167,24 @@ document.getElementById('wrap').innerHTML=`
     <div class="cards">${agms.map(cc).join('')}</div>
   </div>
 
+  <!-- THE LADDER -->
+  <div class="lvl">
+    <div class="lvl-h"><span class="lvl-n" style="background:#1A3660">↑</span>
+      <span class="lvl-t">The four transitions</span>
+      <span class="lvl-c">Fixed and repeatable · click through each one</span></div>
+    <div class="lvl-s">Everything a person must change to move up a rung — derived from the operating model, not written by hand. The same four templates apply to everyone.</div>
+    <div class="cards">
+      ${["coord-assoc","assoc-sr","sr-agm","agm-gm"].map(t=>{const T=TEMPLATES[t];
+        const n=ROSTER.filter(r=>r.target===t).length;
+        return `<a class="c" href="templates.html?t=${t}">
+          <div class="c-h"><span class="c-av sq" style="background:#1A3660">${T.code}</span>
+            <div><div class="c-n">${x(T.from)}</div>
+              <div class="c-r">→ ${x(T.to)}</div></div>
+            <span class="tag" style="background:#F2EFE9;color:#5A5750">${T.changed} fns</span></div>
+          <div class="c-b">${x(T.kind)} · ${T.months} months${n?` · <b>${n} on this path</b>`:""}</div></a>`;}).join("")}
+    </div>
+  </div>
+
   <!-- 5 · THE FOUR LEVELS -->
   ${[5,4,3,2].map(l=>{
     const ppl=byLvl(l);

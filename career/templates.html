@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Four Transitions</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+.ladder{display:flex;align-items:stretch;gap:0;margin-bottom:26px;flex-wrap:wrap}
+.rung{background:#fff;border:1px solid var(--line);border-radius:12px;padding:15px 17px;min-width:132px;flex:1}
+.rung-l{font-family:'Playfair Display',serif;font-size:13px;font-weight:600;color:var(--gray)}
+.rung-n{font-size:14px;font-weight:600;margin-top:4px;line-height:1.3}
+.rung-c{font-size:10.5px;color:var(--gray);margin-top:5px}
+.tr{flex:0 0 118px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  cursor:pointer;padding:6px;border-radius:11px;transition:.16s;text-decoration:none;color:inherit}
+.tr:hover{background:#fff}
+.tr.on{background:var(--navy);color:#fff}
+.tr-a{font-size:17px;color:var(--gray);line-height:1}
+.tr.on .tr-a{color:rgba(255,255,255,.6)}
+.tr-c{font-family:'Playfair Display',serif;font-size:20px;font-weight:600;margin:5px 0 2px}
+.tr-f{font-size:9.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--gray);text-align:center;line-height:1.4}
+.tr.on .tr-f{color:rgba(255,255,255,.65)}
+.tr-k{font-size:9px;margin-top:5px;padding:2px 7px;border-radius:6px;font-weight:600;white-space:nowrap}
+
+.big{background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden;margin-bottom:16px}
+.big-h{padding:24px 28px;background:var(--navy);color:#EDE9E2}
+.big-c{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:rgba(237,233,226,.5)}
+.big-t{font-family:'Playfair Display',serif;font-size:29px;font-weight:500;margin:7px 0 5px}
+.big-k{font-size:13px;color:rgba(237,233,226,.68)}
+.big-m{display:flex;gap:28px;margin-top:18px;padding-top:16px;border-top:1px solid rgba(237,233,226,.16);flex-wrap:wrap}
+.bm-v{font-family:'Playfair Display',serif;font-size:21px;font-weight:600}
+.bm-l{font-size:9px;color:rgba(237,233,226,.5);letter-spacing:.07em;text-transform:uppercase;margin-top:3px}
+.big-b{padding:24px 28px}
+
+.blk{margin-bottom:26px}
+.blk-t{font-family:'Playfair Display',serif;font-size:17px;font-weight:500;margin-bottom:4px}
+.blk-s{font-size:11.5px;color:var(--gray);line-height:1.7;margin-bottom:13px}
+.shift{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.shift-x{background:#F7F5F1;border:1px solid var(--line);border-radius:9px;padding:9px 14px;font-size:12.5px;font-style:italic}
+
+.fgrp{border:1px solid var(--line);border-radius:12px;margin-bottom:10px;overflow:hidden}
+.fgrp-h{padding:12px 15px;background:#FCFBF9;display:flex;align-items:center;gap:10px;cursor:pointer}
+.fdot{width:10px;height:10px;border-radius:3px;flex-shrink:0}
+.fgrp-n{font-size:13.5px;font-weight:600}
+.fgrp-c{margin-left:auto;font-family:'Playfair Display',serif;font-size:19px;font-weight:600}
+.fgrp-b{padding:0 15px 13px;display:none}
+.fgrp.open .fgrp-b{display:block}
+.fgrp-d{font-size:11.5px;color:var(--gray);line-height:1.7;padding:11px 0;border-top:1px solid #F0EDE7;margin-bottom:8px}
+.fn{display:flex;align-items:center;gap:10px;padding:7px 11px;border:1px solid #EDEAE4;border-radius:8px;margin-bottom:4px;background:#FCFBF9;font-size:12px}
+.fn-t{margin-left:auto;font-size:9.5px;font-family:ui-monospace,monospace;color:var(--gray);background:#F2EFE9;padding:2px 7px;border-radius:5px;white-space:nowrap}
+.fn-w{font-size:10px;color:#7A4A05;background:#FEF6E7;padding:2px 7px;border-radius:5px;white-space:nowrap}
+
+.q{border:1px solid var(--line);border-radius:12px;margin-bottom:11px;overflow:hidden}
+.q-h{padding:13px 16px;background:#FCFBF9;display:flex;align-items:flex-start;gap:12px}
+.q-tag{width:36px;height:36px;border-radius:10px;background:#F2EFE9;color:#5A5750;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:14px;font-weight:600;flex-shrink:0}
+.q-g{font-size:14px;font-weight:600;line-height:1.4}
+.q-p{font-size:10.5px;color:var(--gray);margin-top:3px}
+.q-b{padding:13px 16px;border-top:1px solid #F0EDE7}
+.q-chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.q-chip{font-size:11px;background:#F2EFE9;border-radius:7px;padding:4px 10px}
+.mo{display:grid;grid-template-columns:44px 1fr;gap:11px;padding:7px 0;border-top:1px dashed #EDEAE4;font-size:12px}
+.mo-m{font-weight:600;color:#6A6760;font-size:11px}
+.mo-t{line-height:1.65}
+.mile{margin-top:11px;padding:9px 12px;background:#E1F5EE;border-radius:8px;font-size:11.5px;color:#085041;line-height:1.6}
+
+table.t{width:100%;border-collapse:collapse;font-size:12.5px}
+table.t th{text-align:left;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--gray);font-weight:600;padding:0 11px 8px 0;border-bottom:1px solid var(--line)}
+table.t td{padding:10px 11px 10px 0;border-bottom:1px solid #EAE6DE;vertical-align:top;line-height:1.65}
+table.t tr:last-child td{border:none}
+ul.tight{list-style:none}
+ul.tight li{font-size:12.5px;line-height:1.9;padding-left:18px;position:relative}
+ul.tight li:before{content:'';position:absolute;left:2px;top:11px;width:5px;height:5px;border-radius:50%;background:var(--gray)}
+.warn{background:#FDEEEA;border:1px solid #EFB5A2;border-radius:11px;padding:15px 17px;font-size:12.5px;line-height:1.75;color:#5A3128}
+.cols2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:760px){.cols2{grid-template-columns:1fr}.ladder{flex-direction:column}.tr{flex:auto;flex-direction:row;gap:10px;padding:10px}}
+</style>
+</head>
+<body>
+
+<div class="topnav">
+  <div class="nav-icon">T</div>
+  <div>
+    <div class="nav-name">The Four Transitions</div>
+    <div class="nav-sub">Templates</div>
+  </div>
+  <a href="hub.html" class="right">☰ All views</a>
+</div>
+
+<div class="wrap">
+  <div class="sec" style="margin-bottom:18px">
+    <div class="sec-t">One ladder, four transitions</div>
+    <div class="sec-s">The level is span of responsibility — not title, tenure or pay grade. Click a transition to open its full template: what changes, quarter by quarter, who teaches what, and what the gate asks.</div>
+    <div class="ladder" id="ladder"></div>
+  </div>
+  <div id="detail"></div>
+</div>
+
+<script src="data.js"></script>
+<script src="roster.js"></script>
+<script src="templates_detail.js"></script>
+<script>
+const x=s=>String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const ORDER=['coord-assoc','assoc-sr','sr-agm','agm-gm'];
+const RUNGS=[
+ {l:'L2',n:'RX Coordinator',c:'Specialist · owns execution'},
+ {l:'L2',n:'RX Associate',  c:'Specialist · full breadth'},
+ {l:'L3',n:'Senior RX Associate',c:'Lead · directs others'},
+ {l:'L4',n:'AGM',           c:'Function Owner · across scope'},
+ {l:'L5',n:'GM',            c:'Scope Owner · the result'}];
+const KIND={'coord-assoc':['Breadth','background:#EEEDFE;color:#26215C'],
+  'assoc-sr':['Level jump','background:#E1F5EE;color:#085041'],
+  'sr-agm':['Letting go','background:#FDEEEA;color:#8A2E12'],
+  'agm-gm':['Scope','background:#E8EEF6;color:#1A3660']};
+
+let CUR=new URLSearchParams(location.search).get('t');
+if(!ORDER.includes(CUR))CUR=ORDER[0];
+
+function renderLadder(){
+  let h='';
+  RUNGS.forEach((r,i)=>{
+    h+=`<div class="rung"><div class="rung-l">${r.l}</div><div class="rung-n">${x(r.n)}</div><div class="rung-c">${x(r.c)}</div></div>`;
+    if(i<ORDER.length){
+      const t=TEMPLATES[ORDER[i]],k=KIND[ORDER[i]];
+      h+=`<a class="tr ${CUR===ORDER[i]?'on':''}" href="?t=${ORDER[i]}">
+        <span class="tr-a">→</span><span class="tr-c">${t.changed}</span>
+        <span class="tr-f">functions<br>change</span>
+        <span class="tr-k" style="${k[1]}">${k[0]}</span></a>`;
+    }
+  });
+  document.getElementById('ladder').innerHTML=h;
+}
+
+function renderDetail(){
+  const T=TEMPLATES[CUR], L=FN_LISTS[CUR], A=ANCHORS[CUR], NR=NOT_READY[CUR];
+  const inProg=ROSTER.filter(r=>r.target===CUR);
+  document.getElementById('detail').innerHTML=`
+    <div class="big">
+      <div class="big-h">
+        <div class="big-c">Template ${T.code}</div>
+        <div class="big-t">${x(T.from)} → ${x(T.to)}</div>
+        <div class="big-k">${x(T.kind)}</div>
+        <div class="big-m">
+          <div><div class="bm-v">${T.changed}</div><div class="bm-l">Functions change</div></div>
+          <div><div class="bm-v">${T.months} mo</div><div class="bm-l">Duration</div></div>
+          <div><div class="bm-v">${T.quarters.length}</div><div class="bm-l">Quarters</div></div>
+          <div><div class="bm-v">${T.agm.hours} + ${T.gm.hours} h</div><div class="bm-l">Coach + sponsor / month</div></div>
+          <div><div class="bm-v">${inProg.length}</div><div class="bm-l">People on this path</div></div>
+        </div>
+      </div>
+      <div class="big-b">
+
+        <div class="blk">
+          <div class="blk-t">What this transition actually is</div>
+          <div class="blk-s">${x(T.essence)} — ${x(T.startState)}</div>
+          <div class="shift">
+            <span class="shift-x">"${x(T.valueShift[0])}"</span>
+            <span style="color:var(--purple);font-size:16px">→</span>
+            <span class="shift-x" style="border-color:var(--purple);font-weight:500;font-style:normal">"${x(T.valueShift[1])}"</span>
+          </div>
+          ${T.blocker?`<div class="warn" style="margin-top:14px"><b>Structural dependency.</b> ${T.blocker}</div>`:''}
+        </div>
+
+        <div class="blk">
+          <div class="blk-t">To enter</div>
+          <div class="blk-s">All four must be true. Six months in the current role is a settling period — the full operating cycle is completed inside the programme, since the first quarter is observation.</div>
+          <ul class="tight">${T.eligibility.map(e=>`<li>${e}</li>`).join('')}</ul>
+        </div>
+
+        <div class="blk">
+          <div class="blk-t">The ${T.changed} functions</div>
+          <div class="blk-s">Grouped by what kind of change each one is. Click a group to open it.</div>
+          ${L.map((g,i)=>`<div class="fgrp ${i===0?'open':''}" id="g${i}">
+            <div class="fgrp-h" onclick="document.getElementById('g${i}').classList.toggle('open')">
+              <span class="fdot" style="background:${g.c}"></span>
+              <span class="fgrp-n">${x(g.n)}</span>
+              <span class="fgrp-c" style="color:${g.c}">${g.f.length}</span></div>
+            <div class="fgrp-b">
+              <div class="fgrp-d">${x(g.d)}</div>
+              ${g.f.map(f=>`<div class="fn"><span>${x(f[0])}</span>
+                ${f[2]?`<span class="fn-w">${x(f[2])}</span>`:''}
+                <span class="fn-t">${x(f[1])}</span></div>`).join('')}
+            </div></div>`).join('')}
+        </div>
+
+        <div class="blk">
+          <div class="blk-t">${T.months} months, quarter by quarter</div>
+          <div class="blk-s">Three functions in deliberate focus at a time. The order is chosen for risk — safe work first, the unfamiliar second, ownership last.</div>
+          ${T.quarters.map(q=>`<div class="q">
+            <div class="q-h"><div class="q-tag">Q${q.n}</div>
+              <div><div class="q-g">${x(q.goal)}</div><div class="q-p">${x(q.period)}</div></div></div>
+            <div class="q-b">
+              ${q.fns.length?`<div class="q-chips">${q.fns.map(f=>`<span class="q-chip">${x(f)}</span>`).join('')}</div>`:''}
+              ${q.why?`<div class="blk-s" style="margin:-4px 0 10px;font-style:italic">${x(q.why)}</div>`:''}
+              ${q.months.map((m,i)=>`<div class="mo"><span class="mo-m">M${i+1}</span><span class="mo-t">${m}</span></div>`).join('')}
+              <div class="mile">${x(q.milestone)}</div>
+            </div></div>`).join('')}
+        </div>
+
+        <div class="blk">
+          <div class="blk-t">The stretch assignment</div>
+          <div class="blk-s">Real scope with real stakes. Without genuine risk this gate is paperwork — people protect rather than stretch.</div>
+          <div class="fn" style="background:#FEF6E7;border-color:#F0C674;padding:12px 14px"><b>${x(T.stretch.what)}</b></div>
+          <div class="cols2" style="margin-top:12px">
+            <div><div class="blk-s" style="margin:0 0 5px;color:#0A5540;font-weight:600">Acceptable</div>
+              <div style="font-size:12px;line-height:1.7;color:#5A5750">${x(T.stretch.ok)}</div></div>
+            <div><div class="blk-s" style="margin:0 0 5px;color:#8A2E12;font-weight:600">Intervene</div>
+              <div style="font-size:12px;line-height:1.7;color:#5A5750">${x(T.stretch.stop)}</div></div>
+          </div>
+        </div>
+
+        <div class="blk">
+          <div class="blk-t">Who does what</div>
+          <div class="cols2">
+            <div><div class="blk-s" style="margin-bottom:8px"><b>${x(T.agm.label||'Coach · AGM')}</b> — ${T.agm.hours} h / month</div>
+              <ul class="tight">${T.agm.acts.map(a=>`<li>${a}</li>`).join('')}</ul></div>
+            <div><div class="blk-s" style="margin-bottom:8px"><b>${x(T.gm.label||'Sponsor · GM')}</b> — ${T.gm.hours} h / month</div>
+              <ul class="tight">${T.gm.acts.map(a=>`<li>${a}</li>`).join('')}</ul></div>
+          </div>
+          <div class="blk-s" style="margin-top:14px"><b>The employee</b> — keeps the practice log and answers four questions each month:</div>
+          <ul class="tight">${T.questions.map(q=>`<li>${q}</li>`).join('')}</ul>
+        </div>
+
+        <div class="blk">
+          <div class="blk-t">Behaviour — from, to</div>
+          <div class="blk-s">Rated <b>Not yet · Emerging · Consistent · Teaches</b>. Consistent is the gate standard, and the real test is always under pressure.</div>
+          <table class="t"><thead><tr><th style="width:22%">Dimension</th><th style="width:33%">At the current level</th><th>Required at the next</th></tr></thead>
+            <tbody>${A.map(a=>`<tr><td><b>${x(a[0])}</b></td><td style="color:var(--gray)">${x(a[1])}</td><td>${x(a[2])}</td></tr>`).join('')}</tbody></table>
+        </div>
+
+        <div class="blk">
+          <div class="blk-t">External training</div>
+          <div class="blk-s">Bought only where the capability does not exist internally. <b>No course without a planned application within thirty days</b> — unapplied knowledge evaporates.</div>
+          ${T.external.map(e=>`<div class="fn" style="padding:11px 13px"><b>${x(e.c)}</b>
+            <span class="fn-w">Q${e.q}</span><span class="fn-t">${x(e.why)}</span></div>`).join('')}
+        </div>
+
+        <div class="blk">
+          <div class="blk-t">The gate — all five, no averaging</div>
+          <div class="blk-s">Strong on one and weak on another is a specific finding. An average erases exactly what the decision turns on.</div>
+          <table class="t"><thead><tr><th style="width:22%">Check</th><th>What it asks</th></tr></thead>
+            <tbody>${T.gates.map(g=>`<tr><td><b>${x(g[0])}</b></td><td>${g[1]}</td></tr>`).join('')}</tbody></table>
+          <div class="warn" style="margin-top:14px"><b>Fail rule.</b> ${x(T.failRule)}</div>
+        </div>
+
+        <div class="blk" style="margin-bottom:0">
+          <div class="blk-t">Signs it has not happened</div>
+          <div class="blk-s">Worth watching for during the programme, not only at the gate.</div>
+          <ul class="tight">${NR.map(n=>`<li>${x(n)}</li>`).join('')}</ul>
+        </div>
+
+      </div>
+    </div>
+
+    ${inProg.length?`<div class="sec">
+      <div class="sec-t">On this path</div>
+      <div class="sec-s">Everyone whose target transition is ${T.code}.</div>
+      ${inProg.map(r=>{const s=PSTATE[r.state]||PSTATE.practising;
+        const prop=PROPERTIES.find(p=>p.id===r.prop);
+        return `<div class="row"><div style="flex:1"><b>${x(r.name)}</b>
+          <div style="font-size:11.5px;color:var(--gray);margin-top:2px">${x(r.role)} · ${x(prop.name)}</div></div>
+          <span class="chip" style="${s.s}">${s.n}</span>
+          <a href="plan.html?emp=${r.id}" style="font-size:11.5px;color:var(--navy);margin-left:12px">open plan →</a></div>`;}).join('')}
+    </div>`:''}`;
+}
+
+renderLadder();renderDetail();
+</script>
+</body>
+</html>
