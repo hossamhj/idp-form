@@ -63,6 +63,7 @@
 .q.open .q-chev{transform:rotate(180deg)}
 .q-b{padding:13px 16px;display:none}
 .q.open .q-b{display:block}
+.q-lbl{font-size:9px;color:var(--gray);letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px}
 .q-chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
 .q-chip{font-size:11px;background:#F2EFE9;border-radius:7px;padding:4px 10px}
 .mo{display:grid;grid-template-columns:44px 1fr;gap:11px;padding:7px 0;border-top:1px dashed #EDEAE4;font-size:12px}
@@ -198,7 +199,8 @@ function renderDetail(){
               <div><div class="q-g">${x(q.goal)}</div><div class="q-p">${x(q.period)}</div></div>
               <span class="q-chev">▾</span></div>
             <div class="q-b">
-              ${q.fns.length?`<div class="q-chips">${q.fns.map(f=>`<span class="q-chip">${x(f)}</span>`).join('')}</div>`:''}
+              ${q.fns.length?`<div class="q-lbl">In focus this quarter</div>
+              <div class="q-chips">${q.fns.map(f=>`<span class="q-chip">${x(f)}</span>`).join('')}</div>`:''}
               ${q.why?`<div class="blk-s" style="margin:-4px 0 10px;font-style:italic">${x(q.why)}</div>`:''}
               ${q.months.map((m,i)=>`<div class="mo"><span class="mo-m">M${i+1}</span><span class="mo-t">${m}</span></div>`).join('')}
               <div class="mile">${x(q.milestone)}</div>
