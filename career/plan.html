@@ -165,7 +165,7 @@ document.getElementById('journey').innerHTML=`
           <span class="q-badge" style="${bd[1]}">${bd[0]}</span>
           <span class="q-chev">▾</span></div>
         <div class="q-b">
-          ${q.fns.length?`<div class="q-lbl">Functions in focus</div>
+          ${q.fns.length?`<div class="q-lbl">In focus this quarter</div>
             <div class="q-fn">${q.fns.map(f=>`<span class="q-chip">${x(f)}</span>`).join('')}</div>`:''}
           ${q.why?`<div class="q-why">${x(q.why)}</div>`:''}
           <div class="q-lbl">Month by month</div>

@@ -90,7 +90,7 @@ const TEMPLATES = {
 'assoc-sr':{
   code:'T2', from:'RX Associate', to:'Senior RX Associate',
   kind:'Level jump L2 → L3 — first responsibility for someone else’s work', months:12, level:3,
-  changed:36, counts:{deliberate:12,natural:22,conversation:2},
+  changed:36, counts:{deliberate:12,natural:22,oversight:2},
   essence:'From doing the task to owning the outcome — it has to hold whether they are there or not',
   startState:'Twenty-four functions move from execute to own. A Senior ends up holding 43 functions with 28 of them owned — 65% ownership, the heaviest load on the team. They still perform the work; what changes is that the result is now theirs.',
   valueShift:['I did my work well','The outcome is mine — present or not'],
@@ -102,7 +102,7 @@ const TEMPLATES = {
     '<b>An L3 position exists or is created</b> — a level jump needs real scope'],
   quarters:[
     {n:1,goal:'I own it, not just do it',period:'Ownership foundation',
-     fns:['Move-ins','Issues & Complaints','Maintenance coordination','Shift handover'],
+     fns:['Move-ins','Issues, Complaints & Feedback Management','Maintenance coordination','Shift handover'],
      why:'Four representative functions — ownership is one capability, learned once then extended.',
      months:['Ownership announced to the team. <b>Conversation: what separates execute from own.</b>',
              '<b>Write a procedure for each</b> that someone else could follow.',

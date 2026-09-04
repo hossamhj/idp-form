@@ -7,7 +7,7 @@
 const FN_LISTS = {
 
 'coord-assoc':[
-  {k:'new',   n:'Entirely new work',     c:'#7C5CBF', d:'Never touched before. Five of the seven are firsts in a career — which is the real weight of this transition, not the fourteen that deepen.',
+  {k:'new',   n:'Entirely new work',     c:'#7C5CBF', d:'Never touched before — and every one of the seven is a first of its kind in the career: the first contractor, the first vendor, the first crisis, the first contract, the first ledger. That is the real weight of this transition, not the fourteen that deepen.',
    f:[['Shift handover','— → execute','first continuity duty'],
       ['Maintenance coordination','— → execute','first dealings with contractors'],
       ['Housekeeping coordination','— → execute','first vendor management'],
@@ -26,7 +26,7 @@ const FN_LISTS = {
       ['Property Walkthrough','assist → execute',''],['Daily briefing','assist → execute',''],
       ['Consumables Inventory Management','assist → execute',''],['Hosting Community Events','assist → execute',''],
       ['Events & Experiences Community Marketing','assist → execute',''],['Notices','assist → execute','']]},
-  {k:'step',  n:'Handed over',           c:'#EF9F27', d:'The only two functions they own today. Read as a loss unless it is explained — ownership moves because they are freed for something heavier.',
+  {k:'step',  n:'Handed over',           c:'#EF9F27', d:'Three go: the only two functions they own today drop to execute, and one stops entirely. Read as a loss unless it is explained — the ownership moves because they are freed for something heavier.',
    f:[['Classes — Attendance Check-ins','own → execute',''],
       ['Meetups — Attendance Check-ins','own → execute',''],
       ['Preparing Community Events','stops','']]}
@@ -96,7 +96,7 @@ const FN_LISTS = {
 ],
 
 'agm-gm':[
-  {k:'oversee',n:'Moves to oversight',   c:'#1A3660', d:'Seventeen functions held at scope level. Ten were owned before; seven come back from an earlier release — in a different capacity, ensuring they work rather than doing them.',
+  {k:'oversee',n:'Moves to oversight',   c:'#1A3660', d:'Seventeen functions held at scope level. Eight were owned before; nine come back from the release made as an AGM — in a different capacity, ensuring they work rather than performing them.',
    f:[['Accounts Receivable','own → oversee',''],['Deposit Accounting','own → oversee',''],
       ['Vendor Reconciliation','own → oversee',''],['Procurement','own → oversee',''],
       ['Notices','own → oversee',''],['Incident Management','own → oversee',''],
