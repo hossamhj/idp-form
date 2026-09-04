@@ -363,3 +363,94 @@ const ACTIONS = [
   {id:'a6',who:'Beesan',  t:'Monthly development session — October',           m:'45 minutes · last Thursday',due:'31 Oct',lvl:''},
   {id:'a7',who:'Beesan',  t:'Budget for Safety & First Aid certification',     m:'Scheduled inside Q2',due:'31 Oct',lvl:''}
 ];
+
+/* ─────────────────── COACH TASKS ───────────────────
+   The template defines the pattern; the coach page
+   expands it into concrete, dated tasks per person.
+   perFn:true → one task per active function that quarter.
+   ─────────────────────────────────────────────────── */
+
+const COACH_TASKS = {
+'coord-assoc':{
+  agm:{1:[{t:'Introduce the building and walk it together'},
+          {t:'Assign the buddy from the Associate team'},
+          {t:'Write down what Q1 success means — in writing, not verbally'}],
+       2:[{t:'Assign a teacher for',perFn:true},
+          {t:'Hold the value conversation — "I helped" → "I delivered"',key:true},
+          {t:'Decide who takes over Classes & Meetups check-ins'},
+          {t:'Approve the Safety & First Aid booking'}],
+       3:[{t:'Supervise the first full incident, start to finish',key:true},
+          {t:'Hand over Package oversight in front of the team'},
+          {t:'Observe a contractor visit together'}],
+       4:[{t:'Step back from daily review of the stretch assignment',key:true},
+          {t:'Assess the coordinator they taught'},
+          {t:'Prepare the gate summary for the GM'}]},
+  gm:{1:[{t:'Put all four quarterly gates in your calendar — do not delegate'}],
+      2:[{t:'Approve the Safety certificate budget'},
+         {t:'Ask the AGM: which function do they now run unaided?'}],
+      3:[{t:'Ask: what situation did they handle themselves? A vague answer means it is not working',key:true}],
+      4:[{t:'Approve the stretch assignment and its limits in writing',key:true},
+         {t:'Rate all dimensions independently'},
+         {t:'Sign the gate decision and tell them in writing within 48 hours'}]}},
+
+'assoc-sr':{
+  agm:{1:[{t:'Define the four owned functions in writing and announce them to the team',key:true},
+          {t:'Review the written procedure for'},
+          {t:'Check the root-cause analysis of the three most repeated problems'}],
+       2:[{t:'Announce the directing role formally — do not let them assert it',key:true},
+          {t:'Sit in on their first feedback conversation'},
+          {t:'Approve the performance management course'}],
+       3:[{t:'Shadow them through a full vendor reconciliation'},
+          {t:'Review the first report — on quality of observation, not format',key:true},
+          {t:'Approve the accounting course'}],
+       4:[{t:'Take two planned weeks away',key:true},
+          {t:'Assess those they directed, independently'},
+          {t:'Prepare the gate summary'}]},
+  gm:{1:[{t:'Confirm ownership was assigned in writing, not verbally'}],
+      2:[{t:'Ask: have they decided anything in four weeks without consulting? "No" means ownership has not landed',key:true}],
+      3:[{t:'Approve both course budgets'},{t:'Review the quarterly report they produced'}],
+      4:[{t:'Approve the two-week absence'},{t:'Rate independently and sign the gate'}]}},
+
+'sr-agm':{
+  agm:{1:[{t:'Review the handover map line by line — a named recipient per function',key:true},
+          {t:'Assess successor readiness together'}],
+       2:[{t:'Weekly coaching on relapse — diagnose each incident, do not blame',key:true},
+          {t:'Hand over Schedule Management for real'},
+          {t:'Verify zero tasks completed in their name across the first 12'}],
+       3:[{t:'Watch the oversight: did they hold the standard without executing?',key:true},
+          {t:'Accompany the first eviction'}],
+       4:[{t:'Step away from scheduling entirely',key:true},
+          {t:'Assess the successor independently'},
+          {t:'Prepare the gate summary'}]},
+  gm:{1:[{t:'Decide the successor — Ali or Rawan',key:true},
+         {t:'Decide the two orphaned functions'},
+         {t:'Hold the value conversation yourself: "if you no longer execute, what makes you valuable?"',key:true}],
+      2:[{t:'Ask monthly: what have they stopped doing?'},
+         {t:'Approve all three course budgets'}],
+      3:[{t:'Supervise the first eviction — a legal responsibility',key:true},
+         {t:'Review the financial deepening'}],
+      4:[{t:'Approve the stretch and its limits in writing'},
+         {t:'Read the quarterly report'},{t:'Sign the gate'}]}},
+
+'agm-gm':{
+  agm:{1:[{t:'Open the full books — including the numbers they have not seen',key:true}],
+       2:[{t:'Watch: are they overseeing or intervening?',key:true},
+          {t:'Hand scheduling and reporting to the incoming AGM'}],
+       3:[{t:'Accompany the first report to senior leadership'},
+          {t:'Supervise the first eviction under their responsibility'}],
+       4:[{t:'Introduce them to the other team leads as their overseer',key:true}],
+       5:[{t:'Step away from the scope — review outcome, not process',key:true}],
+       6:[{t:'Take two weeks away'},{t:'Assess the successor AGM'},{t:'Gate summary for the sponsor'}]},
+  gm:{1:[{t:'Hold the value conversation'},{t:'Approve the target scope'}],
+      3:[{t:'Attend the quarterly presentation — judge it as leadership, not as a coach'}],
+      5:[{t:'Approve the stretch and its limits in writing'},{t:'Approve the external coaching'}],
+      6:[{t:'Rate independently and grant the level',key:true}]}}
+};
+
+/* who coaches whom */
+const COACHES = {
+  raghdah:{name:'Raghdah Safar',ini:'RS',role:'AGM',color:'#0D6E5C',property:'Narjs East',
+    as:'agm', people:['beesan','rakan']},
+  saad:{name:'Saad Alajmi',ini:'SA',role:'GM',color:'#1D3A8A',property:'Narjs East',
+    as:'gm', people:['beesan','rakan','ali','rawan']}
+};

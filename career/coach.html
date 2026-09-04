@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Coach View</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+.tk{background:#fff;border:1px solid var(--line);border-radius:11px;padding:13px 15px;margin-bottom:8px;display:flex;align-items:flex-start;gap:12px}
+.tk.key{border-left:4px solid var(--purple)}
+.tk.due{border-left:4px solid var(--amber)}
+.tk.late{border-left:4px solid var(--red)}
+.tk.done{opacity:.55}
+.tk-x{width:19px;height:19px;border-radius:6px;border:1.5px solid #D5D0C8;flex-shrink:0;cursor:pointer;background:#fff;margin-top:1px;display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff}
+.tk.done .tk-x{background:var(--green);border-color:var(--green)}
+.tk.done .tk-t{text-decoration:line-through}
+.tk-t{font-size:13px;font-weight:500;line-height:1.5}
+.tk-m{font-size:10.5px;color:var(--gray);margin-top:4px}
+.tk-who{display:inline-flex;align-items:center;gap:5px;font-weight:600;color:var(--ink)}
+.tk-av{width:16px;height:16px;border-radius:50%;font-size:7px;font-weight:700;color:#fff;display:inline-flex;align-items:center;justify-content:center}
+.tk-tag{margin-left:auto;font-size:9.5px;font-weight:600;padding:3px 9px;border-radius:8px;white-space:nowrap}
+.wk{background:#fff;border:1px solid var(--line);border-radius:11px;padding:14px 16px;margin-bottom:9px;display:flex;align-items:center;gap:12px}
+.wk-n{font-size:13px;font-weight:600}
+.wk-m{font-size:11px;color:var(--gray);margin-top:3px}
+.wk-t{margin-left:auto;font-size:11px;font-weight:600;background:#E1F5EE;color:#085041;padding:5px 11px;border-radius:8px;white-space:nowrap}
+.load{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px}
+.pgroup{margin-bottom:22px}
+.pgh{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.pgh a{font-size:11px;color:var(--gray);text-decoration:none;margin-left:auto}
+.pgh a:hover{color:var(--ink)}
+</style>
+</head>
+<body>
+
+<div class="topnav">
+  <div class="av" id="navAv" style="width:32px;height:32px;font-size:10px"></div>
+  <div>
+    <div class="nav-name" id="navName">—</div>
+    <div class="nav-sub" id="navSub">Coach View</div>
+  </div>
+  <div class="tabs">
+    <button class="tab on" onclick="go('now',this)">This Week <span class="b" id="badge">0</span></button>
+    <button class="tab" onclick="go('all',this)">All My Tasks</button>
+    <button class="tab" onclick="go('people',this)">My People</button>
+    <button class="tab" onclick="go('load',this)">My Time</button>
+  </div>
+  <a href="index.html" class="right">← Team</a>
+</div>
+
+<div class="wrap">
+  <div class="view on" id="v-now"><div id="now"></div></div>
+  <div class="view" id="v-all"><div id="all"></div></div>
+  <div class="view" id="v-people"><div id="people"></div></div>
+  <div class="view" id="v-load"><div id="load"></div></div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script src="data.js"></script>
+<script>
+const x=s=>String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const CID=new URLSearchParams(location.search).get('id')||'raghdah';
+const C=COACHES[CID];
+const K='cd_coach_'+CID;
+const ST={d:JSON.parse(localStorage.getItem(K)||'{}'),save(){localStorage.setItem(K,JSON.stringify(ST.d))}};
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('on');clearTimeout(t._);t._=setTimeout(()=>t.classList.remove('on'),1700)}
+function go(v,btn){document.querySelectorAll('.view').forEach(e=>e.classList.remove('on'));
+  document.getElementById('v-'+v).classList.add('on');
+  document.querySelectorAll('button.tab').forEach(t=>t.classList.remove('on'));if(btn)btn.classList.add('on');window.scrollTo(0,0)}
+
+/* build concrete task list for this coach */
+function buildTasks(){
+  const out=[];
+  C.people.forEach(pk=>{
+    const p=TEAM[pk], T=TEMPLATES[p.template], set=COACH_TASKS[p.template][C.as]||{};
+    const active=p.state==='active';
+    Object.keys(set).forEach(qn=>{
+      const q=+qn, cq=T.quarters.find(z=>z.n===q);
+      set[qn].forEach((task,i)=>{
+        const expand = task.perFn && cq && cq.fns.length ? cq.fns : [null];
+        expand.forEach((fn,j)=>{
+          const id=`${pk}_${C.as}_${q}_${i}_${j}`;
+          const teacher = fn && p.teachers && p.teachers[fn];
+          out.push({
+            id, person:pk, q,
+            t: fn ? `${task.t} <b>${x(fn)}</b>` : task.t,
+            sub: fn ? (teacher?`Suggested: ${x(teacher)}`:'No teacher assigned yet') : '',
+            key: !!task.key,
+            status: !active ? 'later' : q<p.quarter ? 'late' : q===p.quarter ? 'due' : 'later'
+          });
+        });
+      });
+    });
+  });
+  return out;
+}
+const TASKS=buildTasks();
+const openLate = TASKS.filter(t=>t.status==='late'&&!ST.d[t.id]).length;
+const openDue  = TASKS.filter(t=>t.status==='due' &&!ST.d[t.id]).length;
+
+if(!C){document.getElementById('now').innerHTML='<div class="sec"><div class="sec-t">Not found</div></div>';}
+else{
+document.getElementById('navAv').textContent=C.ini;
+document.getElementById('navAv').style.background=C.color;
+document.getElementById('navName').textContent=C.name;
+document.getElementById('navSub').textContent=C.role+' · Coach View';
+const b=document.getElementById('badge'); b.textContent=openLate+openDue; b.style.display=(openLate+openDue)?'':'none';
+
+function taskHTML(t){
+  const p=TEAM[t.person], done=ST.d[t.id];
+  const tag = t.status==='late'?['Overdue','background:#FDEEEA;color:#8A2E12']
+            : t.status==='due'?['Q'+t.q+' — now','background:#FEF6E7;color:#7A4A05']
+            : ['Q'+t.q,'background:#F2EFE9;color:#5A5750'];
+  return `<div class="tk ${done?'done':t.status==='late'?'late':t.status==='due'?'due':t.key?'key':''}">
+    <span class="tk-x" onclick="tg('${t.id}')">${done?'✓':''}</span>
+    <div style="flex:1"><div class="tk-t">${t.t}</div>
+      <div class="tk-m"><span class="tk-who"><span class="tk-av" style="background:${p.color}">${p.ini}</span>${x(p.name)}</span>${t.sub?' · '+x(t.sub):''}${t.key?' · <b>pivotal</b>':''}</div></div>
+    <span class="tk-tag" style="${tag[1]}">${tag[0]}</span></div>`;
+}
+
+/* THIS WEEK */
+const weekly=[];
+C.people.forEach(pk=>{const p=TEAM[pk];if(p.state!=='active')return;
+  const T=TEMPLATES[p.template], cq=T.quarters.find(z=>z.n===p.quarter);
+  if(cq) cq.fns.forEach(f=>weekly.push({p,f,teacher:(p.teachers&&p.teachers[f])||'Function owner'}));});
+
+document.getElementById('now').innerHTML=`
+  ${openLate?`<div class="alert crit"><div class="alert-i">■</div><div>
+    <div class="alert-t">${openLate} task${openLate>1?'s':''} from an earlier quarter still open</div>
+    <div class="alert-b">The development session is the first thing dropped under pressure. These are the ones that slipped.</div></div></div>`:''}
+  <div class="sec">
+    <div class="sec-t">The weekly 15 minutes</div>
+    <div class="sec-s">One function, one observation, one correction. Not run by you — run by whoever owns the function. Your job is to make sure it happens.</div>
+    ${weekly.length?weekly.map(w=>`<div class="wk">
+      <div class="av" style="background:${w.p.color};width:32px;height:32px;font-size:10px">${w.p.ini}</div>
+      <div><div class="wk-n">${x(w.f)}</div><div class="wk-m">${x(w.p.name)} · taught by ${x(w.teacher)}</div></div>
+      <span class="wk-t">15 min</span></div>`).join('')
+      :'<div style="font-size:12px;color:var(--gray);font-style:italic;padding:8px 0">Nobody is in an active quarter right now.</div>'}
+  </div>
+  <div class="sec">
+    <div class="sec-t">Due now — Q${C.people.map(p=>TEAM[p].quarter).filter(Boolean)[0]||'—'}</div>
+    <div class="sec-s">Your tasks for the quarter each person is currently in.</div>
+    ${TASKS.filter(t=>t.status==='due'||t.status==='late').length
+      ? TASKS.filter(t=>t.status==='late').map(taskHTML).join('')
+        + TASKS.filter(t=>t.status==='due').map(taskHTML).join('')
+      : '<div style="font-size:12px;color:var(--gray);font-style:italic;padding:8px 0">Nothing due — nobody in an active quarter.</div>'}
+  </div>`;
+
+/* ALL TASKS grouped by person */
+document.getElementById('all').innerHTML=`
+  <div class="sec">
+    <div class="sec-t">Everything I owe, across the programme</div>
+    <div class="sec-s">Grouped by person, in quarter order. Purple = pivotal — the ones that decide whether the transition works.</div>
+  </div>
+  ${C.people.map(pk=>{
+    const p=TEAM[pk],T=TEMPLATES[p.template],ts=TASKS.filter(t=>t.person===pk);
+    const done=ts.filter(t=>ST.d[t.id]).length;
+    return `<div class="pgroup">
+      <div class="pgh"><div class="av" style="background:${p.color};width:30px;height:30px;font-size:10px">${p.ini}</div>
+        <div><div style="font-size:14px;font-weight:600">${x(p.name)}</div>
+          <div style="font-size:11px;color:var(--gray)">${x(T.from)} → ${x(T.to)} · ${done}/${ts.length} done</div></div>
+        <a href="plan.html?emp=${pk}">Open plan →</a></div>
+      ${ts.map(taskHTML).join('')}</div>`;
+  }).join('')}`;
+
+/* PEOPLE */
+document.getElementById('people').innerHTML=`
+  <div class="sec"><div class="sec-t">The people I coach</div>
+    <div class="sec-s">Craft is taught by whoever owns the function — usually a peer. You carry conduct and scope.</div></div>
+  <div class="grid">${C.people.map(pk=>{
+    const p=TEAM[pk],T=TEMPLATES[p.template],s=STATE[p.state];
+    const ts=TASKS.filter(t=>t.person===pk),done=ts.filter(t=>ST.d[t.id]).length;
+    return `<a class="pc" href="plan.html?emp=${pk}">
+      <div class="pc-h"><div class="av" style="background:${p.color}">${p.ini}</div>
+        <div><div class="pc-n">${x(p.name)}</div><div class="pc-r">${x(p.role)}</div></div>
+        <span class="chip" style="${s.s}">${s.n}</span></div>
+      <div class="pc-b">
+        <div class="gate"><div class="gate-h"><span class="gate-l">My tasks</span><span class="gate-v">${done}/${ts.length}</span></div>
+          <div class="bar"><span style="width:${ts.length?done/ts.length*100:0}%;background:${C.color}"></span></div></div>
+        <div class="pc-f"><span>→ ${x(T.to)}</span><span>${p.quarter?'Q'+p.quarter+' of '+T.quarters.length:x(p.gate)}</span></div>
+      </div></a>`;}).join('')}</div>`;
+
+/* LOAD */
+const active=C.people.filter(p=>TEAM[p].state==='active');
+const hrs=active.reduce((a,p)=>a+parseFloat(TEMPLATES[TEAM[p].template][C.as].hours),0);
+document.getElementById('load').innerHTML=`
+  <div class="sec">
+    <div class="sec-t">My commitment</div>
+    <div class="sec-s">Only people in an active quarter consume time. Eligible and blocked people cost nothing until they start.</div>
+    <div class="load">
+      <div class="sc"><div class="sc-v" style="color:${C.color}">${hrs||0}</div><div class="sc-l">Hours / month</div></div>
+      <div class="sc"><div class="sc-v">${active.length}</div><div class="sc-l">Active now</div></div>
+      <div class="sc"><div class="sc-v">${C.people.length}</div><div class="sc-l">People assigned</div></div>
+      <div class="sc"><div class="sc-v" style="color:${openLate?'var(--red)':'var(--gray)'}">${openLate}</div><div class="sc-l">Overdue</div></div>
+    </div>
+  </div>
+  <div class="sec">
+    <div class="sec-t">Where the time goes</div>
+    ${active.length?active.map(pk=>{const p=TEAM[pk],T=TEMPLATES[p.template];
+      return `<div class="row"><span class="av" style="background:${p.color};width:26px;height:26px;font-size:9px">${p.ini}</span>
+        <div style="flex:1"><b>${x(p.name)}</b><div style="font-size:11px;color:var(--gray);margin-top:2px">${x(T.from)} → ${x(T.to)} · Q${p.quarter}</div></div>
+        <b>${T[C.as].hours} h</b></div>`;}).join('')
+      :'<div style="font-size:12px;color:var(--gray);font-style:italic;padding:6px 0">Nobody active.</div>'}
+    <div class="card" style="margin-top:14px">
+      <div class="card-k">Why it stays low</div>
+      <div class="card-b">Around 70% of the teaching is craft, and craft is taught laterally by the function owner. You carry conduct and scope — the two things nobody else can do.</div></div>
+  </div>
+  <div class="sec">
+    <div class="sec-t">The rhythm you own</div>
+    <div class="row"><span class="row-k">Weekly</span><div style="flex:1">15 min — happens between the person and the function owner. You verify it happened.</div></div>
+    <div class="row"><span class="row-k">Monthly</span><div style="flex:1"><b>45 min with each person.</b> Read the practice log first. Ends with one commitment.</div></div>
+    <div class="row"><span class="row-k">Quarterly</span><div style="flex:1">90 min with the sponsor — close the goal, choose the next three functions.</div></div>
+    <div class="row"><span class="row-k">Ad hoc</span><div style="flex:1">After any incident — how did they handle it?</div></div>
+  </div>`;
+}
+function tg(id){ST.d[id]=!ST.d[id];ST.save();location.reload()}
+</script>
+</body>
+</html>

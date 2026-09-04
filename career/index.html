@@ -19,7 +19,7 @@
     <button class="tab on" onclick="go('team',this)">Team</button>
     <button class="tab" onclick="go('actions',this)">My Actions <span class="b" id="badge">0</span></button>
     <button class="tab" onclick="go('succession',this)">Succession</button>
-    <a class="tab" href="templates.html">Templates</a>
+    <button class="tab" onclick="go('coaches',this)">Coaches</button>
   </div>
   <a href="../index.html" class="right">← Hub</a>
 </div>
@@ -47,6 +47,14 @@
   </div>
   <div id="succession"></div>
 </div>
+
+  <div class="view" id="v-coaches">
+    <div class="sec">
+      <div class="sec-t">Coach views</div>
+      <div class="sec-s">Each coach has their own page — what they owe, to whom, and when. Craft is taught laterally by function owners; the coach carries conduct and scope.</div>
+    </div>
+    <div class="grid" id="coaches"></div>
+  </div>
 
 </div>
 <div class="toast" id="toast"></div>
@@ -142,7 +150,21 @@ function renderSuccession(){
   document.getElementById('succession').innerHTML=h;
 }
 
-renderTeam();renderActions();renderSuccession();
+function renderCoaches(){
+  document.getElementById("coaches").innerHTML=Object.keys(COACHES).map(k=>{
+    const c=COACHES[k];
+    const active=c.people.filter(p=>TEAM[p].state==="active");
+    const hrs=active.reduce((a,p)=>a+parseFloat(TEMPLATES[TEAM[p].template][c.as].hours),0);
+    return `<a class="pc" href="coach.html?id=${k}">
+      <div class="pc-h"><div class="av" style="background:${c.color}">${c.ini}</div>
+        <div><div class="pc-n">${x(c.name)}</div><div class="pc-r">${x(c.role)} · ${x(c.property)}</div></div>
+        <span class="chip" style="background:#F2EFE9;color:#5A5750">${c.people.length} people</span></div>
+      <div class="pc-b">
+        <div class="pc-f" style="margin-top:0"><span><b>${hrs||0} h</b> / month committed</span><span>${active.length} active now</span></div>
+      </div></a>`;
+  }).join("");
+}
+renderTeam();renderActions();renderSuccession();renderCoaches();
 </script>
 </body>
 </html>
