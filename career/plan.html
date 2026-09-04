@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Development Plan</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+.shift{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:10px}
+.shift-x{background:#fff;border:1px solid #D8D2F5;border-radius:8px;padding:7px 13px;font-size:12px;font-style:italic}
+.ff{border:1px solid var(--line);border-radius:12px;margin-bottom:12px;overflow:hidden}
+.ff-h{padding:12px 15px;background:#FCFBF9;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.ff-n{font-size:13.5px;font-weight:600}
+.ff-m{font-size:10.5px;color:var(--gray);margin-top:2px}
+.steps{margin-left:auto;display:flex;gap:3px}
+.st{font-size:9px;font-weight:600;padding:4px 8px;border-radius:6px;border:1px solid var(--line);background:#fff;color:var(--gray);cursor:pointer;font-family:inherit}
+.st.on{background:#E1F5EE;border-color:var(--green);color:#085041}
+.ff-b{padding:13px 15px;border-top:1px solid #F0EDE7}
+.lg{border:1px solid #EDEAE4;border-radius:9px;padding:11px 13px;background:#FCFBF9;margin-bottom:7px}
+.lg-d{font-size:9.5px;color:var(--gray);margin-bottom:6px}
+.lg-r{display:grid;grid-template-columns:112px 1fr;gap:9px;margin-bottom:5px;font-size:12px;line-height:1.6}
+.lg-r:last-child{margin:0}
+.lg-k{color:var(--gray);font-size:10.5px}
+.lg-r.key .lg-v{color:#085041;font-weight:600}
+.form{border:1px dashed #D5D0C8;border-radius:10px;padding:12px 14px;background:#fff}
+.form-t{font-size:10.5px;font-weight:600;color:#6A6760;margin-bottom:9px;letter-spacing:.04em;text-transform:uppercase}
+.fld{margin-bottom:8px}
+.fld label{display:block;font-size:10.5px;color:var(--gray);margin-bottom:4px}
+.fld.key label{color:#085041;font-weight:600}
+.fld textarea{width:100%;font-family:inherit;font-size:12.5px;border:1px solid var(--line);border-radius:8px;padding:8px 10px;resize:vertical;min-height:36px;background:#FCFBF9;line-height:1.5}
+.fld textarea:focus{outline:none;border-color:var(--green);background:#fff}
+.btn{background:var(--green);color:#fff;border:none;font-family:inherit;font-size:12.5px;font-weight:600;padding:8px 18px;border-radius:8px;cursor:pointer}
+.as{padding:11px 0;border-bottom:1px solid #F2EFE9}
+.as:last-child{border:none}
+.as-n{font-size:12.5px;font-weight:500}
+.as-row{display:flex;gap:20px;margin-top:8px;align-items:flex-end;flex-wrap:wrap}
+.as-c{flex:1;min-width:200px}
+.as-l{font-size:9.5px;color:var(--gray);margin-bottom:4px}
+.rate{display:flex;gap:3px}
+.rb{flex:1;min-width:48px;height:25px;border:1px solid var(--line);background:#fff;border-radius:6px;cursor:pointer;font-size:9.5px;font-family:inherit;font-weight:500;color:#6A6760}
+.rb.on{border-width:2px;font-weight:600}
+.rb.on[data-v="1"]{background:#F5F3F0;border-color:#B5B0A8}
+.rb.on[data-v="2"]{background:#FEF6E7;border-color:var(--amber);color:#7A4A05}
+.rb.on[data-v="3"]{background:#E1F5EE;border-color:var(--green);color:#085041}
+.rb.on[data-v="4"]{background:#EEEDFE;border-color:var(--purple);color:#26215C}
+.gap{font-size:10px;font-weight:600;padding:3px 9px;border-radius:8px;align-self:center;white-space:nowrap}
+.gt{display:flex;align-items:center;gap:11px;padding:11px 0;border-bottom:1px solid #F2EFE9}
+.gt:last-child{border:none}
+.gt-n{font-size:12.5px;font-weight:600;min-width:120px}
+.gt-d{font-size:11.5px;color:var(--gray);line-height:1.6;flex:1}
+</style>
+</head>
+<body>
+
+<div class="topnav">
+  <div class="av" id="navAv" style="width:32px;height:32px;font-size:10px"></div>
+  <div>
+    <div class="nav-name" id="navName">—</div>
+    <div class="nav-sub" id="navSub">Development Plan</div>
+  </div>
+  <div class="tabs">
+    <button class="tab on" onclick="go('journey',this)">Journey</button>
+    <button class="tab" onclick="go('now',this)">This Quarter</button>
+    <button class="tab" onclick="go('assess',this)">Assessment</button>
+    <button class="tab" onclick="go('gate',this)">The Gate</button>
+    <button class="tab" onclick="go('coach',this)">Coaches</button>
+  </div>
+  <a href="index.html" class="right">← Team</a>
+</div>
+
+<div class="wrap">
+  <div id="hero"></div>
+  <div class="view on" id="v-journey"><div id="journey"></div></div>
+  <div class="view" id="v-now"><div id="now"></div></div>
+  <div class="view" id="v-assess"><div id="assess"></div></div>
+  <div class="view" id="v-gate"><div id="gate"></div></div>
+  <div class="view" id="v-coach"><div id="coach"></div></div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script src="data.js"></script>
+<script>
+const x=s=>String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const EMP=new URLSearchParams(location.search).get('emp')||'beesan';
+const P=TEAM[EMP], T=P?TEMPLATES[P.template]:null;
+const K='cd_'+EMP+'_';
+const ST={logs:JSON.parse(localStorage.getItem(K+'logs')||'{}'),step:JSON.parse(localStorage.getItem(K+'step')||'{}'),
+  self:JSON.parse(localStorage.getItem(K+'self')||'{}'),mgr:JSON.parse(localStorage.getItem(K+'mgr')||'{}'),
+  save(){['logs','step','self','mgr'].forEach(k=>localStorage.setItem(K+k,JSON.stringify(ST[k])))}};
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('on');clearTimeout(t._);t._=setTimeout(()=>t.classList.remove('on'),1700)}
+const STEPS=['observe','assisted','solo','owned'],STEPL={observe:'Observe',assisted:'With support',solo:'Alone',owned:'Owned'};
+
+function go(v,btn){document.querySelectorAll('.view').forEach(e=>e.classList.remove('on'));
+  document.getElementById('v-'+v).classList.add('on');
+  document.querySelectorAll('button.tab').forEach(t=>t.classList.remove('on'));if(btn)btn.classList.add('on');window.scrollTo(0,0)}
+
+if(!P){document.getElementById('hero').innerHTML='<div class="sec"><div class="sec-t">Not found</div><div class="sec-s">No team member matches that link.</div></div>';}
+else{
+document.getElementById('navAv').textContent=P.ini;
+document.getElementById('navAv').style.background=P.color;
+document.getElementById('navName').textContent=P.name;
+document.getElementById('navSub').textContent=T.code+' · '+P.role;
+
+const s=STATE[P.state];
+document.getElementById('hero').innerHTML=`
+  <div class="hero">
+    <div class="av" style="background:${P.color};width:48px;height:48px;font-size:14px">${P.ini}</div>
+    <div><div class="hero-t">${x(T.from)} → ${x(T.to)}</div>
+      <div class="hero-s">${x(T.kind)} · ${x(P.property)}</div></div>
+    <div class="hero-m">
+      <div><div class="hm-v">${T.changed}</div><div class="hm-l">Functions change</div></div>
+      <div><div class="hm-v">${T.months} mo</div><div class="hm-l">Duration</div></div>
+      <div><div class="hm-v">${P.quarter?'Q'+P.quarter:'—'}</div><div class="hm-l">Quarter</div></div>
+      <div><div class="hm-v" style="font-size:13px">${x(P.gate)}</div><div class="hm-l">Gate</div></div>
+    </div>
+  </div>
+  ${P.state==='blocked'?`<div class="alert crit"><div class="alert-i">■</div><div>
+    <div class="alert-t">Blocked</div><div class="alert-b">${T.blocker||x(P.blockedBy)}</div></div></div>`:''}
+  ${P.note?`<div class="alert info"><div class="alert-i">●</div><div><div class="alert-b">${x(P.note)}</div></div></div>`:''}`;
+
+/* JOURNEY */
+document.getElementById('journey').innerHTML=`
+  <div class="sec">
+    <div class="sec-t">The shift this transition is about</div>
+    <div class="sec-s">${x(T.essence)} — ${x(T.startState)}</div>
+    <div class="shift">
+      <span class="shift-x">"${x(T.valueShift[0])}"</span>
+      <span style="color:var(--purple);font-size:15px">→</span>
+      <span class="shift-x" style="border-color:var(--purple);font-weight:500">"${x(T.valueShift[1])}"</span>
+    </div>
+    <div class="card" style="margin-top:12px"><div class="card-b">A skill is built by practice. A value only changes through a deliberate conversation — someone whose value has not changed reverts under the first real pressure.</div></div>
+  </div>
+  <div class="sec">
+    <div class="sec-t">The ${T.months}-month journey</div>
+    <div class="sec-s">One goal per quarter. Three functions at a time — the rest progress naturally and are verified at the gate.</div>
+    ${T.quarters.map(q=>{
+      const st=q.n<P.quarter?'done':q.n===P.quarter?'now':'next';
+      const col=st==='done'?'background:#EAF7F2;color:#0A5540':st==='now'?'background:var(--green);color:#fff':'background:#F2EFE9;color:#8A8780';
+      const bd={done:['Complete','background:#EAF7F2;color:#0A5540'],now:['In progress','background:#FEF6E7;color:#7A4A05'],next:['Ahead','background:#F2EFE9;color:#5A5750']}[st];
+      return `<div class="q ${st}">
+        <div class="q-h"><div class="q-tag" style="${col}">Q${q.n}</div>
+          <div><div class="q-goal">${x(q.goal)}</div><div class="q-when">${x(q.period)}</div></div>
+          <span class="q-badge" style="${bd[1]}">${bd[0]}</span></div>
+        <div class="q-b">
+          ${q.fns.length?`<div class="q-lbl">Functions in focus</div>
+            <div class="q-fn">${q.fns.map(f=>`<span class="q-chip">${x(f)}</span>`).join('')}</div>`:''}
+          ${q.why?`<div class="q-why">${x(q.why)}</div>`:''}
+          <div class="q-lbl">Month by month</div>
+          ${q.months.map((m,i)=>`<div class="mo"><span class="mo-m">M${i+1}</span><span class="mo-t">${m}</span></div>`).join('')}
+          <div class="mile">${x(q.milestone)}</div>
+        </div></div>`;}).join('')}
+  </div>`;
+
+/* THIS QUARTER */
+const cq=T.quarters.find(q=>q.n===P.quarter);
+document.getElementById('now').innerHTML=cq&&cq.fns.length?`
+  <div class="sec">
+    <div class="sec-t">Q${cq.n} — "${x(cq.goal)}"</div>
+    <div class="sec-s">${x(cq.why||cq.period)}</div>
+    ${cq.fns.map((f,i)=>{
+      const id='f'+i, cur=ST.step[id]||'observe', logs=ST.logs[id]||[];
+      const teach=(P.teachers&&P.teachers[f])||'Function owner';
+      return `<div class="ff">
+        <div class="ff-h"><div><div class="ff-n">${x(f)}</div><div class="ff-m">taught by ${x(teach)}</div></div>
+          <div class="steps">${STEPS.map(s=>`<button class="st ${cur===s?'on':''}" onclick="setStep('${id}','${s}')">${STEPL[s]}</button>`).join('')}</div></div>
+        <div class="ff-b">
+          ${logs.length?logs.map(l=>`<div class="lg"><div class="lg-d">${x(l.d)}</div>
+            <div class="lg-r"><span class="lg-k">I tried</span><span class="lg-v">${x(l.a)}</span></div>
+            ${l.o?`<div class="lg-r"><span class="lg-k">What happened</span><span class="lg-v">${x(l.o)}</span></div>`:''}
+            ${l.w?`<div class="lg-r key"><span class="lg-k">Next time</span><span class="lg-v">${x(l.w)}</span></div>`:''}
+            ${l.nd?`<div class="lg-r"><span class="lg-k">I need</span><span class="lg-v">${x(l.nd)}</span></div>`:''}</div>`).join('')
+            :'<div style="font-size:11.5px;color:var(--gray);font-style:italic;padding:8px 0">No practice entries yet. The log is what makes this development rather than a checklist.</div>'}
+          <div class="form"><div class="form-t">Add a practice entry — in your own words</div>
+            <div class="fld"><label>What did I try?</label><textarea id="a-${id}"></textarea></div>
+            <div class="fld"><label>What happened?</label><textarea id="o-${id}"></textarea></div>
+            <div class="fld key"><label>What would I do differently?</label><textarea id="w-${id}"></textarea></div>
+            <div class="fld"><label>What do I need?</label><textarea id="n-${id}"></textarea></div>
+            <button class="btn" onclick="addLog('${id}')">Save entry</button></div>
+        </div></div>`;}).join('')}
+  </div>
+  <div class="sec">
+    <div class="sec-t">Stretch assignment</div>
+    <div class="sec-s">Real scope with real stakes. Without genuine risk this gate is paperwork.</div>
+    <div class="card" style="background:#FEF6E7;border-color:#F0C674">
+      <div class="card-b"><b>${x(T.stretch.what)}</b></div></div>
+    <div class="cols c2" style="margin-top:12px">
+      <div class="card"><div class="card-k" style="color:#0A5540">Acceptable</div><div class="card-b">${x(T.stretch.ok)}</div></div>
+      <div class="card"><div class="card-k" style="color:#8A2E12">Intervene</div><div class="card-b">${x(T.stretch.stop)}</div></div>
+    </div>
+    <div class="card" style="margin-top:12px;background:#EEEDFE;border-color:#D8D2F5">
+      <div class="card-b" style="color:#3A3160"><b>Failure with clear reflection does not fail the gate.</b> Repeated failure without learning does.</div></div>
+  </div>`
+  :`<div class="sec"><div class="sec-t">Not in an active quarter</div>
+    <div class="sec-s">${P.state==='blocked'?'This programme is blocked — see the note above.':P.state==='eligible'?'Eligible to start. Eligibility must be confirmed first.':'No deliberate functions in this quarter.'}</div>
+    <div class="q-lbl" style="margin-top:14px">Eligibility — all must be true</div>
+    <ul class="tight">${T.eligibility.map(e=>`<li>${e}</li>`).join('')}</ul></div>`;
+
+/* ASSESSMENT */
+const dims=BEHAVIOURS.filter(b=>!b.fromLevel||T.level>=b.fromLevel);
+function renderAssess(){
+  document.getElementById('assess').innerHTML=`
+    <div class="sec">
+      <div class="sec-t">Self first, then manager</div>
+      <div class="sec-s">Rate yourself <b>before</b> seeing the manager's rating. The conversation starts from the gap. <b>Consistent</b> is the gate standard — and the real test is always under pressure.</div>
+      ${dims.map(b=>{
+        const sv=ST.self[b.id]||0,mv=ST.mgr[b.id]||0;
+        let g='';
+        if(sv&&mv){const d=sv-mv;
+          g=d===0?`<span class="gap" style="background:#EAF7F2;color:#085041">Aligned</span>`
+           :`<span class="gap" style="background:${Math.abs(d)>1?'#FDEEEA':'#FEF6E7'};color:${Math.abs(d)>1?'#8A2E12':'#7A4A05'}">${d>0?'Self higher':'Self lower'} · ${Math.abs(d)}</span>`;}
+        const r=(who,v)=>`<div class="rate">${SCALE.map(o=>`<button class="rb ${v===o.v?'on':''}" data-v="${o.v}" onclick="setR('${who}','${b.id}',${o.v})">${o.l}</button>`).join('')}</div>`;
+        return `<div class="as"><div class="as-n">${x(b.n)}</div>
+          <div class="as-row"><div class="as-c"><div class="as-l">${x(P.name.split(' ')[0])} — self</div>${r('self',sv)}</div>
+          <div class="as-c"><div class="as-l">${x(P.manager.split(' ')[0])} — manager</div>${r('mgr',mv)}</div>${g}</div></div>`;
+      }).join('')}
+    </div>
+    <div class="sec">
+      <div class="sec-t">Monthly conversation</div>
+      <div class="sec-s">45 minutes with ${x(P.manager)}. Does not begin with "how are things going?"</div>
+      <ul class="tight">${T.questions.map(q=>`<li>${q}</li>`).join('')}</ul>
+      <div class="card" style="margin-top:12px"><div class="card-b">Ends with <b>one specific commitment</b> for the coming month — not a list.</div></div>
+    </div>`;
+}
+renderAssess();
+
+/* GATE */
+document.getElementById('gate').innerHTML=`
+  <div class="sec">
+    <div class="sec-t">Five gates — all of them, no averaging</div>
+    <div class="sec-s">Strong on one and weak on another is a specific, actionable finding. An average erases it.</div>
+    ${T.gates.map(g=>`<div class="gt"><span class="gt-n">${x(g[0])}</span><span class="gt-d">${g[1]}</span>
+      <span class="chip" style="background:#F2EFE9;color:#5A5750">Not yet</span></div>`).join('')}
+  </div>
+  <div class="sec">
+    <div class="sec-t">Fail rule</div>
+    <div class="card" style="background:#FDEEEA;border-color:#EFB5A2">
+      <div class="card-b" style="color:#5A3128">${x(T.failRule)}</div></div>
+  </div>
+  <div class="sec">
+    <div class="sec-t">External training</div>
+    <div class="sec-s">Bought only where the capability does not exist internally. <b>No course without a planned application within 30 days.</b></div>
+    ${T.external.map(e=>`<div class="row"><span class="row-k">Q${e.q}</span>
+      <div style="flex:1"><b>${x(e.c)}</b><div style="font-size:11.5px;color:var(--gray);margin-top:2px">${x(e.why)}</div></div></div>`).join('')}
+  </div>`;
+
+/* COACHES */
+document.getElementById('coach').innerHTML=`
+  <div class="sec">
+    <div class="sec-t">${x(T.agm.label||'AGM — direct coach')} · ${x(P.manager)}</div>
+    <div class="sec-s">Commitment: roughly <b>${T.agm.hours} hours a month</b>. Reads the practice log before each session.</div>
+    <ul class="tight">${T.agm.acts.map(a=>`<li>${a}</li>`).join('')}</ul>
+    <div class="card" style="margin-top:12px;background:#FEF6E7;border-color:#F0C674">
+      <div class="card-b" style="color:#6B4A15"><b>The coach asks and challenges — never fills in the log.</b> A plan its owner does not write is not their plan.</div></div>
+  </div>
+  <div class="sec">
+    <div class="sec-t">${x(T.gm.label||'GM — sponsor')} · ${x(P.sponsor)}</div>
+    <div class="sec-s">Commitment: roughly <b>${T.gm.hours} hours a month</b>. Grants the level at the gate.</div>
+    <ul class="tight">${T.gm.acts.map(a=>`<li>${a}</li>`).join('')}</ul>
+  </div>
+  <div class="sec">
+    <div class="sec-t">Who teaches what</div>
+    <div class="sec-s">Development is distributed by dimension — not all loaded onto the manager.</div>
+    <div class="row"><span class="dot" style="background:var(--green)"></span><div style="flex:1"><b>Craft</b> — the function owner, usually a peer. Around 70% of the volume.</div></div>
+    <div class="row"><span class="dot" style="background:var(--teal)"></span><div style="flex:1"><b>Conduct</b> — the line manager, who sees them daily under pressure.</div></div>
+    <div class="row"><span class="dot" style="background:var(--purple)"></span><div style="flex:1"><b>Scope</b> — the sponsor, who has the authority to grant real scope.</div></div>
+  </div>`;
+}
+
+function setStep(id,s){ST.step[id]=s;ST.save();location.reload()}
+function setR(who,id,v){ST[who][id]=v;ST.save();renderAssess();toast('Saved')}
+function addLog(id){
+  const g=p=>{const e=document.getElementById(p+'-'+id);return e?e.value.trim():''};
+  const a=g('a'); if(!a){toast('Start with what you tried');return}
+  if(!ST.logs[id])ST.logs[id]=[];
+  ST.logs[id].unshift({d:new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}),a,o:g('o'),w:g('w'),nd:g('n')});
+  ST.save();location.reload();
+}
+</script>
+</body>
+</html>

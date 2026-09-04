@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Career Development — Narjs East</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="topnav">
+  <div class="nav-icon">NE</div>
+  <div>
+    <div class="nav-name">Narjs East</div>
+    <div class="nav-sub">Career Development</div>
+  </div>
+  <div class="tabs">
+    <button class="tab on" onclick="go('team',this)">Team</button>
+    <button class="tab" onclick="go('actions',this)">My Actions <span class="b" id="badge">0</span></button>
+    <button class="tab" onclick="go('succession',this)">Succession</button>
+    <a class="tab" href="templates.html">Templates</a>
+  </div>
+  <a href="../index.html" class="right">← Hub</a>
+</div>
+
+<div class="wrap">
+
+<div class="view on" id="v-team">
+  <div class="strip" id="strip"></div>
+  <div id="alerts"></div>
+  <div class="grid" id="cards"></div>
+</div>
+
+<div class="view" id="v-actions">
+  <div class="sec">
+    <div class="sec-t">What I owe this month</div>
+    <div class="sec-s">Manager actions that are due. The development session is the first thing dropped under pressure — which is why the weekly check is 15 minutes.</div>
+  </div>
+  <div id="actions"></div>
+</div>
+
+<div class="view" id="v-succession">
+  <div class="sec">
+    <div class="sec-t">Succession</div>
+    <div class="sec-s">Who backfills whom on promotion. Promote without a successor and functions lose their owner — someone still performs them, but nobody guarantees they work.</div>
+  </div>
+  <div id="succession"></div>
+</div>
+
+</div>
+<div class="toast" id="toast"></div>
+
+<script src="data.js"></script>
+<script>
+const x=s=>String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const ST={a:JSON.parse(localStorage.getItem('cd_a')||'{}'),save(){localStorage.setItem('cd_a',JSON.stringify(ST.a))}};
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('on');clearTimeout(t._);t._=setTimeout(()=>t.classList.remove('on'),1700)}
+
+function go(v,btn){
+  document.querySelectorAll('.view').forEach(e=>e.classList.remove('on'));
+  document.getElementById('v-'+v).classList.add('on');
+  document.querySelectorAll('button.tab').forEach(t=>t.classList.remove('on'));
+  if(btn)btn.classList.add('on');
+  window.scrollTo(0,0);
+}
+
+function renderTeam(){
+  const ks=Object.keys(TEAM);
+  const n=s=>ks.filter(k=>TEAM[k].state===s).length;
+  const over=ACTIONS.filter(a=>a.lvl==='over'&&!ST.a[a.id]).length;
+  document.getElementById('strip').innerHTML=`
+    <div class="sc"><div class="sc-v">${ks.length}</div><div class="sc-l">Team</div></div>
+    <div class="sc"><div class="sc-v" style="color:var(--green)">${n('active')}</div><div class="sc-l">In development</div></div>
+    <div class="sc"><div class="sc-v" style="color:var(--purple)">${n('eligible')}</div><div class="sc-l">Eligible</div></div>
+    <div class="sc"><div class="sc-v" style="color:${n('blocked')?'var(--red)':'var(--gray)'}">${n('blocked')}</div><div class="sc-l">Blocked</div></div>
+    <div class="sc"><div class="sc-v" style="color:${over?'var(--red)':'var(--gray)'}">${over}</div><div class="sc-l">Overdue</div></div>`;
+
+  const nb=ACTIONS.filter(a=>!ST.a[a.id]).length;
+  const b=document.getElementById('badge'); b.textContent=nb; b.style.display=nb?'':'none';
+
+  let al='';
+  const blk=ks.filter(k=>TEAM[k].state==='blocked');
+  blk.forEach(k=>{const p=TEAM[k],t=TEMPLATES[p.template];
+    al+=`<div class="alert crit"><div class="alert-i">■</div><div>
+      <div class="alert-t">${x(p.name)}'s promotion is blocked</div>
+      <div class="alert-b">${t.blocker||x(p.blockedBy)}</div></div></div>`;});
+  if(over) al+=`<div class="alert"><div class="alert-i">▲</div><div>
+    <div class="alert-t">${over} overdue action${over>1?'s':''}</div>
+    <div class="alert-b">Open <b>My Actions</b> to clear them.</div></div></div>`;
+  document.getElementById('alerts').innerHTML=al;
+
+  document.getElementById('cards').innerHTML=ks.map(k=>{
+    const p=TEAM[k],t=TEMPLATES[p.template],s=STATE[p.state];
+    const bar=(l,v,pc,c)=>`<div class="gate"><div class="gate-h"><span class="gate-l">${l}</span><span class="gate-v">${v}</span></div>
+      <div class="bar"><span style="width:${pc}%;background:${c}"></span></div></div>`;
+    const active=p.state==='active';
+    return `<a class="pc" href="plan.html?emp=${k}">
+      <div class="pc-h"><div class="av" style="background:${p.color}">${p.ini}</div>
+        <div><div class="pc-n">${x(p.name)}</div><div class="pc-r">${x(p.role)}</div></div>
+        <span class="chip" style="${s.s}">${s.n}</span></div>
+      <div class="pc-b">
+        ${bar('Craft', active?'Q'+p.quarter+' of 4':'—', active?p.quarter/4*100:0,'var(--green)')}
+        ${bar('Conduct','—',0,'var(--teal)')}
+        ${bar('Scope','Not started',0,'var(--purple)')}
+        <div class="pc-f"><span>→ ${x(t.to)}</span><span>${x(p.gate)}</span></div>
+      </div></a>`;
+  }).join('');
+}
+
+function renderActions(){
+  document.getElementById('actions').innerHTML=ACTIONS.map(a=>{
+    const d=ST.a[a.id];
+    const due=a.lvl==='over'?'background:#FDEEEA;color:#8A2E12':a.lvl==='soon'?'background:#FEF6E7;color:#7A4A05':'background:#F2EFE9;color:#5A5750';
+    return `<div class="act ${a.lvl} ${d?'done':''}">
+      <span class="act-x" onclick="tgA('${a.id}')">${d?'✓':''}</span>
+      <div style="flex:1"><div class="act-t">${x(a.t)}</div><div class="act-m">${x(a.who)} · ${x(a.m)}</div></div>
+      <span class="act-due" style="${due}">${x(a.due)}</span></div>`;
+  }).join('');
+}
+function tgA(id){ST.a[id]=!ST.a[id];ST.save();renderActions();renderTeam();toast(ST.a[id]?'Done':'Reopened')}
+
+function renderSuccession(){
+  let h='';
+  Object.keys(TEAM).forEach(k=>{
+    const p=TEAM[k],t=TEMPLATES[p.template];
+    if(p.state!=='blocked'&&p.state!=='active')return;
+    const blocked=p.state==='blocked';
+    h+=`<div class="sec">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:11px">
+        <span class="sec-t" style="font-size:15px">${x(p.name)} → ${x(t.to)}</span>
+        <span class="chip" style="${blocked?'background:#FDEEEA;color:#8A2E12':'background:#EAF7F2;color:#0A5540'}">${blocked?'Blocked':'Clear'}</span></div>
+      <div class="card"><div class="card-b">${blocked?(t.blocker||x(p.blockedBy)):
+        'A breadth move within the same level — no material ownership is released, so no successor is required.'}</div></div>
+    </div>`;
+  });
+  h+=`<div class="sec"><div class="sec-t" style="font-size:15px">The rule</div>
+    <div class="card" style="margin-top:10px;background:#EEEDFE;border-color:#D8D2F5"><div class="card-b" style="color:#3A3160">
+    <b>A level jump needs a successor. A breadth move does not.</b><br>
+    A level jump means releasing ownership; a breadth move means adding it.
+    Which is why promotion chains are planned bottom-up — promote the successor first, then whoever backfills them.</div></div></div>`;
+  document.getElementById('succession').innerHTML=h;
+}
+
+renderTeam();renderActions();renderSuccession();
+</script>
+</body>
+</html>

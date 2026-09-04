@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Development Plan — Beesan Harb</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--cream:#F5F0E8;--black:#1C1C1C;--gray:#8A8780;--border:#DDD8CF;
+--ec:#1D9E75;--el:#E1F5EE;--ed:#085041;
+--amber:#EF9F27;--red:#E07050;--purple:#7C5CBF;--teal:#0D6E5C}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--black);font-size:14px;line-height:1.5}
+
+.topnav{position:sticky;top:0;z-index:100;background:#fff;display:flex;align-items:center;padding:0 20px;height:56px;border-bottom:1px solid var(--border);overflow-x:auto}
+.nav-brand{display:flex;align-items:center;gap:11px;flex-shrink:0}
+.nav-av{width:34px;height:34px;border-radius:50%;background:var(--ec);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff}
+.nav-name{font-family:'Playfair Display',serif;font-size:16px;font-weight:500;white-space:nowrap}
+.nav-sub{font-size:9px;color:var(--gray);letter-spacing:.05em;text-transform:uppercase}
+.tabs{display:flex;gap:2px;margin-left:24px}
+.tab{background:none;border:none;font-family:inherit;font-size:12.5px;font-weight:500;color:var(--gray);padding:8px 13px;border-radius:8px;cursor:pointer;white-space:nowrap}
+.tab:hover{background:#F3F0EA;color:var(--black)}
+.tab.on{background:var(--el);color:var(--ed);font-weight:600}
+.hub{margin-left:auto;font-size:10px;font-weight:500;color:#888780;text-decoration:none;letter-spacing:.05em;text-transform:uppercase;white-space:nowrap;padding-left:14px}
+.hub:hover{color:var(--black)}
+
+.wrap{max-width:980px;margin:0 auto;padding:24px 20px 70px}
+.view{display:none}.view.on{display:block}
+
+/* now bar */
+.nowbar{background:var(--ed);color:#EAF7F2;border-radius:14px;padding:18px 21px;margin-bottom:16px}
+.nb-l{font-size:9px;letter-spacing:.11em;text-transform:uppercase;opacity:.62}
+.nb-m{font-family:'Playfair Display',serif;font-size:21px;font-weight:500;margin:4px 0 7px}
+.nb-s{font-size:12.5px;line-height:1.7;opacity:.92}
+
+/* quarter cards */
+.q{border:1px solid var(--border);border-radius:13px;margin-bottom:13px;overflow:hidden;background:#fff}
+.q.done{opacity:.6}
+.q.now{border-color:var(--ec);border-width:2px}
+.q-h{padding:14px 17px;display:flex;align-items:flex-start;gap:13px;background:#FCFBF9}
+.q-tag{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:15px;font-weight:600;flex-shrink:0}
+.q-goal{font-size:14.5px;font-weight:600;line-height:1.45}
+.q-when{font-size:10.5px;color:var(--gray);margin-top:3px}
+.q-badge{margin-left:auto;font-size:9.5px;font-weight:600;padding:3px 9px;border-radius:8px;white-space:nowrap}
+.q-b{padding:14px 17px;border-top:1px solid #F0EDE7}
+.q-lbl{font-size:9px;color:var(--gray);letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px}
+.q-fn{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px}
+.q-chip{font-size:11px;background:#F2EFE9;border-radius:7px;padding:4px 10px}
+.mo{display:grid;grid-template-columns:60px 1fr;gap:11px;padding:9px 0;border-top:1px dashed #EDEAE4;font-size:12px}
+.mo-m{font-weight:600;color:#6A6760;font-size:11.5px}
+.mo-t{line-height:1.65}
+.mile{margin-top:13px;padding:10px 13px;background:var(--el);border-radius:9px;font-size:11.5px;color:var(--ed);line-height:1.6}
+
+.hero{background:#fff;border:1px solid var(--border);border-radius:14px;padding:22px;margin-bottom:16px}
+.hero-t{font-family:'Playfair Display',serif;font-size:25px;font-weight:500}
+.hero-s{font-size:12.5px;color:var(--gray);margin-top:4px}
+.hero-m{display:flex;gap:26px;margin-top:16px;padding-top:16px;border-top:1px solid #F0EDE7;flex-wrap:wrap}
+.hm-v{font-size:18px;font-weight:600;font-variant-numeric:tabular-nums}
+.hm-l{font-size:9px;color:var(--gray);letter-spacing:.04em;text-transform:uppercase;margin-top:3px}
+
+.call{border-radius:12px;padding:16px 18px;margin-bottom:16px;display:flex;gap:13px}
+.call.value{background:#F3F0FE;border:1px solid #D8D2F5;border-left:4px solid var(--purple)}
+.call.warn{background:#FEF6E7;border:1px solid #F0C674;border-left:4px solid var(--amber)}
+.call-i{font-size:16px;line-height:1.4}
+.call-t{font-weight:600;font-size:13px;margin-bottom:5px}
+.call-b{font-size:12px;color:#5A5750;line-height:1.7}
+.shift{display:flex;align-items:center;gap:12px;margin-top:10px;flex-wrap:wrap}
+.shift-x{background:#fff;border:1px solid #D8D2F5;border-radius:8px;padding:7px 13px;font-size:12px;font-style:italic}
+
+.sec{background:#fff;border:1px solid var(--border);border-radius:14px;padding:19px 21px;margin-bottom:14px}
+.sec-t{font-family:'Playfair Display',serif;font-size:17px;font-weight:500}
+.sec-s{font-size:11.5px;color:var(--gray);margin:4px 0 16px;line-height:1.65}
+
+.ff{border:1px solid var(--border);border-radius:12px;margin-bottom:13px;overflow:hidden}
+.ff-h{padding:13px 16px;background:#FCFBF9;display:flex;align-items:center;gap:11px;flex-wrap:wrap}
+.ff-n{font-size:14px;font-weight:600}
+.ff-meta{font-size:10.5px;color:var(--gray);margin-top:3px}
+.ff-step{margin-left:auto;display:flex;gap:3px}
+.st{font-size:9.5px;font-weight:600;padding:4px 9px;border-radius:7px;border:1px solid var(--border);background:#fff;color:var(--gray);cursor:pointer;font-family:inherit}
+.st.on{background:var(--el);border-color:var(--ec);color:var(--ed)}
+.ff-b{padding:14px 16px;border-top:1px solid #F0EDE7}
+
+.log{border:1px solid #EDEAE4;border-radius:10px;padding:12px 14px;margin-bottom:9px;background:#FCFBF9}
+.log-d{font-size:10px;color:var(--gray);margin-bottom:8px;font-variant-numeric:tabular-nums}
+.log-r{display:grid;grid-template-columns:120px 1fr;gap:9px;font-size:12px;margin-bottom:7px}
+.log-r:last-child{margin-bottom:0}
+.log-k{color:var(--gray);font-size:11px}
+.log-v{line-height:1.6}
+.log-r.key .log-v{color:var(--ed);font-weight:500}
+.empty{font-size:11.5px;color:var(--gray);padding:10px 0;font-style:italic}
+
+.form{border:1px dashed #D5D0C8;border-radius:10px;padding:13px 14px;background:#fff}
+.form-t{font-size:11px;font-weight:600;color:#6A6760;margin-bottom:10px;letter-spacing:.03em;text-transform:uppercase}
+.fld{margin-bottom:9px}
+.fld label{display:block;font-size:11px;color:var(--gray);margin-bottom:4px}
+.fld textarea{width:100%;font-family:inherit;font-size:12.5px;border:1px solid var(--border);border-radius:8px;padding:8px 10px;resize:vertical;min-height:38px;background:#FCFBF9;line-height:1.5}
+.fld textarea:focus{outline:none;border-color:var(--ec);background:#fff}
+.fld.key label{color:var(--ed);font-weight:600}
+.btn{background:var(--ec);color:#fff;border:none;font-family:inherit;font-size:12.5px;font-weight:600;padding:8px 18px;border-radius:8px;cursor:pointer}
+.btn:hover{filter:brightness(.94)}
+
+.mrow{display:flex;align-items:center;gap:11px;padding:11px 0;border-bottom:1px solid #F2EFE9}
+.mrow:last-child{border:none}
+.mdot{width:10px;height:10px;border-radius:3px;flex-shrink:0}
+.mn{font-size:13px;font-weight:500}
+.md{font-size:11px;color:var(--gray);margin-top:2px;line-height:1.5}
+.mc{margin-left:auto;font-family:'Playfair Display',serif;font-size:20px;font-weight:500}
+details.map{margin-top:12px}
+details.map summary{font-size:11.5px;color:var(--gray);cursor:pointer;padding:7px 0}
+.fn{display:flex;align-items:center;gap:9px;padding:6px 10px;border:1px solid #EDEAE4;border-radius:8px;margin-bottom:4px;background:#FCFBF9;font-size:11.5px}
+.fn-t{margin-left:auto;font-size:9.5px;font-family:ui-monospace,monospace;color:var(--gray);background:#F2EFE9;padding:2px 7px;border-radius:5px;white-space:nowrap}
+
+.as{padding:12px 0;border-bottom:1px solid #F2EFE9}
+.as:last-child{border:none}
+.as-n{font-size:12.5px;font-weight:500}
+.as-d{font-size:10.5px;color:var(--gray);margin-top:3px;line-height:1.55}
+.as-row{display:flex;gap:22px;margin-top:9px;align-items:flex-start;flex-wrap:wrap}
+.as-c{flex:1;min-width:210px}
+.as-lbl{font-size:9.5px;color:var(--gray);letter-spacing:.04em;text-transform:uppercase;margin-bottom:5px}
+.rate{display:flex;gap:3px}
+.rb{flex:1;min-width:50px;height:26px;border:1px solid var(--border);background:#fff;border-radius:6px;cursor:pointer;font-size:9.5px;font-family:inherit;font-weight:500;color:#6A6760;transition:.15s}
+.rb.on{border-width:2px;font-weight:600}
+.rb.on[data-v="1"]{background:#F5F3F0;border-color:#B5B0A8}
+.rb.on[data-v="2"]{background:#FEF6E7;border-color:var(--amber);color:#7A4A05}
+.rb.on[data-v="3"]{background:#EAF7F2;border-color:var(--ec);color:var(--ed)}
+.rb.on[data-v="4"]{background:#EEEDFE;border-color:var(--purple);color:#26215C}
+.gap{font-size:10.5px;font-weight:600;padding:3px 9px;border-radius:8px;white-space:nowrap;align-self:center}
+
+.gate{display:flex;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid #F2EFE9}
+.gate:last-child{border:none}
+.gi{width:30px;height:30px;border-radius:9px;background:#F5F3EF;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+.gn{font-size:13px;font-weight:600}
+.gd{font-size:11px;color:var(--gray);margin-top:2px;line-height:1.55}
+.gs{margin-left:auto;font-size:10px;font-weight:600;padding:3px 10px;border-radius:8px;white-space:nowrap}
+.bnd{display:grid;grid-template-columns:auto 1fr;gap:9px 13px;font-size:12px;margin-top:11px}
+.bnd-k{font-weight:600;white-space:nowrap}
+
+.toast{position:fixed;bottom:22px;right:22px;background:var(--black);color:var(--cream);padding:11px 18px;border-radius:10px;font-size:12.5px;opacity:0;transform:translateY(8px);transition:.25s;pointer-events:none;z-index:200}
+.toast.on{opacity:1;transform:translateY(0)}
+@media(max-width:620px){.log-r{grid-template-columns:1fr;gap:3px}.hero-m{gap:18px}.mo{grid-template-columns:48px 1fr}}
+</style>
+</head>
+<body>
+
+<div class="topnav">
+  <div class="nav-brand">
+    <div class="nav-av">BH</div>
+    <div>
+      <div class="nav-name">Beesan Harb</div>
+      <div class="nav-sub">Coordinator → Associate</div>
+    </div>
+  </div>
+  <div class="tabs">
+    <button class="tab on" onclick="go('journey',this)">Journey</button>
+    <button class="tab" onclick="go('now',this)">This Quarter</button>
+    <button class="tab" onclick="go('map',this)">The Map</button>
+    <button class="tab" onclick="go('assess',this)">Assessment</button>
+    <button class="tab" onclick="go('gate',this)">The Gate</button>
+  </div>
+  <a href="career_manager.html" class="hub">← Manager view</a>
+</div>
+
+<div class="wrap">
+
+<!-- JOURNEY -->
+<div class="view on" id="v-journey">
+  <div class="nowbar">
+    <div class="nb-l">Right now</div>
+    <div class="nb-m">October 2026 — Quarter 2, Month 1</div>
+    <div class="nb-s">Observe all three functions. Begin Shift handover with support. Have the value conversation with Raghdah.</div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-t">How this works</div>
+    <div class="sec-s">Three layers, nothing more. Each answers a different question, and the short one is short so it survives a busy week.</div>
+    <div class="mrow"><span class="mdot" style="background:var(--ec)"></span>
+      <div style="flex:1"><div class="mn">Every week · 15 minutes · with the function owner</div>
+      <div class="md">One function, one observation, one correction. Short enough that it does not get cancelled.</div></div></div>
+    <div class="mrow"><span class="mdot" style="background:var(--teal)"></span>
+      <div style="flex:1"><div class="mn">Every month · 45 minutes · with Raghdah</div>
+      <div class="md">Review the practice log, look at the self/manager gap, name one obstacle. Ends with one commitment — not a list.</div></div></div>
+    <div class="mrow"><span class="mdot" style="background:var(--purple)"></span>
+      <div style="flex:1"><div class="mn">Every quarter · 90 minutes · with Raghdah and Saad</div>
+      <div class="md">Close the quarter against its goal, then choose the next three functions.</div></div></div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-t">The full journey — 12 months</div>
+    <div class="sec-s">One goal per quarter, three functions each — nine deliberate in total. The other seventeen progress naturally and are verified at the gate.</div>
+    <div id="journey"></div>
+  </div>
+</div>
+
+<!-- THIS QUARTER -->
+<div class="view" id="v-now">
+  <div class="hero">
+    <div class="hero-t">Quarter 2 — "I can deliver on my own"</div>
+    <div class="hero-s">Oct – Dec 2026 · a breadth move within L2, not a level jump</div>
+    <div class="hero-m">
+      <div><div class="hm-v">3</div><div class="hm-l">Active now</div></div>
+      <div><div class="hm-v">9</div><div class="hm-l">Deliberate total</div></div>
+      <div><div class="hm-v">Jun 2027</div><div class="hm-l">Gate</div></div>
+      <div><div class="hm-v">Raghdah</div><div class="hm-l">Coach</div></div>
+    </div>
+  </div>
+
+  <div class="call value">
+    <div class="call-i">◆</div>
+    <div style="flex:1">
+      <div class="call-t">The shift this transition is really about</div>
+      <div class="call-b">59% of your work today is assisting others. The move to Associate is not mainly a skills change — it is a change in how you measure yourself.</div>
+      <div class="shift">
+        <span class="shift-x">"I succeeded because I helped"</span>
+        <span style="color:var(--purple);font-size:15px">→</span>
+        <span class="shift-x" style="border-color:var(--purple);font-weight:500">"I succeeded because I delivered"</span>
+      </div>
+      <div class="call-b" style="margin-top:10px">A skill is built by practice. A value only changes through a deliberate conversation — and someone whose value has not changed reverts under the first real pressure.</div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-t">Three functions in focus</div>
+    <div class="sec-s">Deliberate development runs 2–4 functions at a time. Presenting all 26 as active work is what turns a development plan into a form.</div>
+    <div id="focus"></div>
+  </div>
+</div>
+
+<!-- MAP -->
+<div class="view" id="v-map">
+  <div class="sec">
+    <div class="sec-t">26 functions change — but they are not treated alike</div>
+    <div class="sec-s">Split by what actually needs deliberate practice.</div>
+    <div id="map"></div>
+  </div>
+</div>
+
+<!-- ASSESSMENT -->
+<div class="view" id="v-assess">
+  <div class="sec">
+    <div class="sec-t">Self first, then manager</div>
+    <div class="sec-s">Rate yourself <b>before</b> seeing Raghdah's rating. The conversation starts from the gap, not the score — and the gap itself is the development material. <b>Consistent</b> is the gate standard; the real test is always under pressure.</div>
+    <div id="assess"></div>
+  </div>
+  <div class="sec">
+    <div class="sec-t">Learning agility</div>
+    <div class="sec-s">The strongest predictor of success at the next level is not how well you do today's job — it is how fast you learn a new one. Recorded once, on <b>Shift handover</b>, your first entirely new function.</div>
+    <div id="agility"></div>
+  </div>
+</div>
+
+<!-- GATE -->
+<div class="view" id="v-gate">
+  <div class="sec">
+    <div class="sec-t">Five gates — all of them, no averaging</div>
+    <div class="sec-s">Strong on one and weak on another is a specific, actionable finding. An averaged score hides exactly what the promotion decision turns on.</div>
+    <div id="gates"></div>
+  </div>
+  <div class="sec">
+    <div class="sec-t">Stretch assignment · Apr – Jun 2027</div>
+    <div class="sec-s">Full ownership of <b>Package oversight</b> and <b>Vacant Unit Inspections</b> — no daily review from Raghdah.</div>
+    <div class="call warn" style="margin:0">
+      <div class="call-i">▲</div>
+      <div style="flex:1">
+        <div class="call-t">Safety boundaries — written, never left implicit</div>
+        <div class="bnd">
+          <span class="bnd-k" style="color:var(--ec)">Acceptable</span>
+          <span>A non-critical delay · a call Raghdah would have made differently · rework</span>
+          <span class="bnd-k" style="color:var(--red)">Intervene</span>
+          <span>Safety risk · financial commitment above the agreed limit · an escalating resident complaint</span>
+          <span class="bnd-k" style="color:var(--purple)">Rule</span>
+          <span><b>Failure with clear reflection does not fail the gate.</b> Repeated failure without learning does.</span>
+        </div>
+        <div class="call-b" style="margin-top:11px">Without written psychological safety people do not stretch — they protect. And the assignment becomes performance, not learning.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const JOURNEY=[
+ {q:1,when:'Jun – Sep 2026',state:'done',goal:'Understand the whole picture',
+  fns:['No deliberate functions — an observation quarter'],
+  months:[['Jun','Onboarding. Shadow every major resident interaction.'],
+          ['Jul','Learn every touchpoint: check-in, requests, issue logging, checkout.'],
+          ['Sep','Daily rhythm established. First evidence entries recorded.']],
+  mile:'Completed — she can describe how the building runs end to end.'},
+ {q:2,when:'Oct – Dec 2026',state:'now',goal:'I can deliver on my own',
+  fns:['Shift handover','Consumables Inventory Management','Move-ins'],
+  months:[['Oct','Observe all three. Start Shift handover with support. <b>Value conversation with Raghdah.</b>'],
+          ['Nov','Shift handover alone. Move-ins with support. First inventory cycle. Safety certificate.'],
+          ['Dec','Move-ins alone. Second inventory cycle alone. Quarter review picks the next three.']],
+  mile:'Milestone — two consecutive weeks with no unjustified escalation.'},
+ {q:3,when:'Jan – Mar 2027',state:'next',goal:'I can handle what I have never seen',
+  fns:['Maintenance coordination','Incident Management','★ Package oversight'],
+  months:[['Jan','Observe a contractor visit. Shadow maintenance coordination end to end.'],
+          ['Feb','Coordinate maintenance alone. <b>First incident — fully supervised.</b>'],
+          ['Mar','Two further incidents. Package oversight ownership formally handed over.']],
+  mile:'Milestone — one incident handled alone, start to finish.'},
+ {q:4,when:'Apr – Jun 2027',state:'next',goal:'It works because I own it',
+  fns:['Renewal Coordination','Deposit Accounting','★ Vacant Unit Inspections'],
+  months:[['Apr','<b>Stretch assignment starts</b> — Package oversight + Vacant Unit Inspections, no daily review. Renewal Coordination begins.'],
+          ['May','Deposit Accounting (assist). A full renewal cycle. Teach one thing to a new coordinator.'],
+          ['Jun','A full month with no intervention. <b>The gate.</b>']],
+  mile:'Gate — all five gates, no averaging.'}
+];
+
+const FOCUS=[
+  {id:'shift', n:'Shift handover',                   t:'— → execute',      teach:'Senior',         why:'First continuity duty. Structured and low-risk — the right first "first". Happens daily, so reps accumulate fast.'},
+  {id:'cons',  n:'Consumables Inventory Management', t:'assist → execute', teach:'Senior',         why:'Monthly cycle, so only three reps this quarter. Slow by nature — it teaches owning a recurring outcome.'},
+  {id:'movein',n:'Move-ins',                         t:'assist → execute', teach:'Function owner', why:'Highest volume and direct resident impact. The most practice available in a single quarter.'}
+];
+
+const MAP=[
+  {n:'Deliberate development',c:'var(--ec)',cnt:9,d:'7 entirely new + 2 first real ownerships. Three per quarter, each with a practice log.',
+   fns:[{n:'Shift handover',c:'— → execute'},{n:'Maintenance coordination',c:'— → execute'},
+    {n:'Housekeeping coordination',c:'— → execute'},{n:'Security & Watch coordination',c:'— → execute'},
+    {n:'Incident Management',c:'— → execute'},{n:'Renewal Coordination',c:'— → execute'},
+    {n:'Deposit Accounting',c:'— → assist'},{n:'★ Package oversight',c:'execute → own'},
+    {n:'★ Vacant Unit Inspections',c:'execute → own'}]},
+  {n:'Natural progression',c:'var(--teal)',cnt:14,d:'Already assisting on these today. They convert through exposure — verified at the gate, no dedicated coaching.',
+   fns:[{n:'Move-ins',c:'assist → execute'},{n:'Move-in Inspections',c:'assist → execute'},
+    {n:'Move-out & Move-out Inspection',c:'assist → execute'},{n:'Pre-Move-in Coordination',c:'assist → execute'},
+    {n:'Neighbor Support',c:'assist → execute'},{n:'Issues, Complaints & Feedback',c:'assist → execute'},
+    {n:'Neighbor Check-in / Coffee Chat',c:'assist → execute'},{n:'Renewal Support',c:'assist → execute'},
+    {n:'Property Walkthrough',c:'assist → execute'},{n:'Daily briefing',c:'assist → execute'},
+    {n:'Consumables Inventory Mgmt',c:'assist → execute'},{n:'Hosting Community Events',c:'assist → execute'},
+    {n:'Events & Experiences Marketing',c:'assist → execute'},{n:'Notices',c:'assist → execute'}]},
+  {n:'Handover conversation',c:'var(--amber)',cnt:3,d:'Not practice — a conversation. The only two functions she owns today, she hands over.',
+   fns:[{n:'Classes — Attendance Check-ins',c:'own → execute'},{n:'Meetups — Attendance Check-ins',c:'own → execute'},
+    {n:'Preparing Community Events',c:'stops'}]}
+];
+
+const BEH=[
+  {id:'host',n:'Hospitality presence',  d:'Proactive — does not wait to be approached. Remembers preferences and records them.'},
+  {id:'loop',n:'Closing the loop',      d:'Follows up until the resident confirms resolution. Does not close before that.'},
+  {id:'judg',n:'Judgement & escalation',d:'Resolves tier-1 independently. Escalates with a brief and options, not a problem.'},
+  {id:'comm',n:'Communication clarity', d:'Adapts tone to the situation. Written work needs no editing.'},
+  {id:'std', n:'Standards discipline',  d:'Zero incomplete records. Does not cut a step under pressure.'}
+];
+const SCALE=[{v:1,l:'Not yet'},{v:2,l:'Emerging'},{v:3,l:'Consistent'},{v:4,l:'Teaches'}];
+
+const AGILITY=[
+  {id:'days',n:'Days from observing to working alone',            d:'How quickly capability is acquired'},
+  {id:'unex',n:'The first unexpected situation — what did you do?',d:'The single most revealing question here'},
+  {id:'help',n:'What did you ask for, and when?',                  d:'Does she seek help or wait for it'},
+  {id:'fb',  n:'What did you do with the first piece of feedback?',d:'Adaptability'}
+];
+
+const GATES=[
+  {i:'🔧',n:'Craft',            d:'9 deliberate functions complete · 14 natural verified · 3 conversations held'},
+  {i:'🧠',n:'Learning agility', d:'Shift handover record read and accepted'},
+  {i:'🤝',n:'Conduct',          d:'Consistent across all five · from three sources · self/manager gap narrowed'},
+  {i:'🌱',n:'Developing others',d:'Taught one thing to a coordinator — the seed of a skill that grows with level'},
+  {i:'🎯',n:'Scope',            d:'Stretch assignment held within its written boundaries'}
+];
+
+const K='bp_';
+const ST={
+  logs:JSON.parse(localStorage.getItem(K+'logs')||'{}'),
+  step:JSON.parse(localStorage.getItem(K+'step')||'{}'),
+  self:JSON.parse(localStorage.getItem(K+'self')||'{}'),
+  mgr: JSON.parse(localStorage.getItem(K+'mgr') ||'{}'),
+  ag:  JSON.parse(localStorage.getItem(K+'ag')  ||'{}'),
+  save(){['logs','step','self','mgr','ag'].forEach(k=>localStorage.setItem(K+k,JSON.stringify(ST[k])))}
+};
+const x=s=>String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('on');clearTimeout(t._);t._=setTimeout(()=>t.classList.remove('on'),1800)}
+const STEPS=['observe','assisted','solo','owned'];
+const STEPL={observe:'Observe',assisted:'With support',solo:'Alone',owned:'Owned'};
+
+function go(v,btn){
+  document.querySelectorAll('.view').forEach(e=>e.classList.remove('on'));
+  document.getElementById('v-'+v).classList.add('on');
+  if(btn){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));btn.classList.add('on')}
+  window.scrollTo(0,0);
+}
+
+function renderJourney(){
+  const S={done:['Complete','background:#EAF7F2;color:#0A5540'],
+           now:['In progress','background:#FEF6E7;color:#7A4A05'],
+           next:['Ahead','background:#F2EFE9;color:#5A5750']};
+  document.getElementById('journey').innerHTML=JOURNEY.map(j=>{
+    const s=S[j.state];
+    const col=j.state==='done'?'background:#EAF7F2;color:#0A5540'
+      :j.state==='now'?'background:var(--ec);color:#fff':'background:#F2EFE9;color:#8A8780';
+    return `<div class="q ${j.state}">
+      <div class="q-h"><div class="q-tag" style="${col}">Q${j.q}</div>
+        <div><div class="q-goal">${x(j.goal)}</div><div class="q-when">${x(j.when)}</div></div>
+        <span class="q-badge" style="${s[1]}">${s[0]}</span></div>
+      <div class="q-b">
+        <div class="q-lbl">Functions in focus</div>
+        <div class="q-fn">${j.fns.map(f=>`<span class="q-chip">${x(f)}</span>`).join('')}</div>
+        <div class="q-lbl">Month by month</div>
+        ${j.months.map(m=>`<div class="mo"><span class="mo-m">${x(m[0])}</span><span class="mo-t">${m[1]}</span></div>`).join('')}
+        <div class="mile">${x(j.mile)}</div>
+      </div></div>`;
+  }).join('');
+}
+
+function renderFocus(){
+  document.getElementById('focus').innerHTML=FOCUS.map(f=>{
+    const cur=ST.step[f.id]||'observe';
+    const logs=ST.logs[f.id]||[];
+    return `<div class="ff">
+      <div class="ff-h">
+        <div><div class="ff-n">${x(f.n)}</div>
+          <div class="ff-meta">${x(f.t)} · taught by ${x(f.teach)}</div></div>
+        <div class="ff-step">${STEPS.map(s=>`<button class="st ${cur===s?'on':''}" onclick="setStep('${f.id}','${s}')">${STEPL[s]}</button>`).join('')}</div>
+      </div>
+      <div class="ff-b">
+        <div style="font-size:11.5px;color:var(--gray);margin-bottom:12px;line-height:1.65">${x(f.why)}</div>
+        ${logs.length?logs.map(l=>`<div class="log">
+          <div class="log-d">${x(l.d)}</div>
+          <div class="log-r"><span class="log-k">I tried</span><span class="log-v">${x(l.a)}</span></div>
+          ${l.o?`<div class="log-r"><span class="log-k">What happened</span><span class="log-v">${x(l.o)}</span></div>`:''}
+          ${l.w?`<div class="log-r key"><span class="log-k">Next time</span><span class="log-v">${x(l.w)}</span></div>`:''}
+          ${l.nd?`<div class="log-r"><span class="log-k">I need</span><span class="log-v">${x(l.nd)}</span></div>`:''}
+        </div>`).join(''):'<div class="empty">No practice entries yet. The log is what makes this development rather than a checklist.</div>'}
+        <div class="form">
+          <div class="form-t">Add a practice entry — in your own words</div>
+          <div class="fld"><label>What did I try?</label><textarea id="a-${f.id}"></textarea></div>
+          <div class="fld"><label>What happened?</label><textarea id="o-${f.id}"></textarea></div>
+          <div class="fld key"><label>What would I do differently?</label><textarea id="w-${f.id}"></textarea></div>
+          <div class="fld"><label>What do I need?</label><textarea id="n-${f.id}"></textarea></div>
+          <button class="btn" onclick="addLog('${f.id}')">Save entry</button>
+        </div>
+      </div></div>`;
+  }).join('');
+}
+function setStep(id,s){ ST.step[id]=s; ST.save(); renderFocus(); toast('Step updated'); }
+function addLog(id){
+  const g=p=>{const e=document.getElementById(p+'-'+id);return e?e.value.trim():''};
+  const a=g('a'); if(!a){toast('Start with what you tried');return}
+  if(!ST.logs[id])ST.logs[id]=[];
+  ST.logs[id].unshift({d:new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}),
+    a:a,o:g('o'),w:g('w'),nd:g('n')});
+  ST.save(); renderFocus(); toast('Entry saved');
+}
+
+function renderMap(){
+  document.getElementById('map').innerHTML=MAP.map(m=>`
+    <div class="mrow">
+      <span class="mdot" style="background:${m.c}"></span>
+      <div style="flex:1"><div class="mn">${x(m.n)}</div><div class="md">${x(m.d)}</div></div>
+      <span class="mc" style="color:${m.c}">${m.cnt}</span>
+    </div>
+    <details class="map"><summary>Show the ${m.cnt}</summary>
+      ${m.fns.map(f=>`<div class="fn"><span>${x(f.n)}</span><span class="fn-t">${x(f.c)}</span></div>`).join('')}
+    </details>`).join('');
+}
+
+function renderAssess(){
+  document.getElementById('assess').innerHTML=BEH.map(b=>{
+    const s=ST.self[b.id]||0, m=ST.mgr[b.id]||0;
+    let gap='';
+    if(s&&m){const d=s-m;
+      gap=d===0?`<span class="gap" style="background:#EAF7F2;color:var(--ed)">Aligned</span>`
+        :`<span class="gap" style="background:${Math.abs(d)>1?'#FDEEEA':'#FEF6E7'};color:${Math.abs(d)>1?'#8A2E12':'#7A4A05'}">${d>0?'Self higher':'Self lower'} · ${Math.abs(d)}</span>`;}
+    const rate=(who,val)=>`<div class="rate">${SCALE.map(o=>`<button class="rb ${val===o.v?'on':''}" data-v="${o.v}"
+      onclick="setR('${who}','${b.id}',${o.v})">${o.l}</button>`).join('')}</div>`;
+    return `<div class="as">
+      <div class="as-n">${x(b.n)}</div><div class="as-d">${x(b.d)}</div>
+      <div class="as-row">
+        <div class="as-c"><div class="as-lbl">Beesan — self</div>${rate('self',s)}</div>
+        <div class="as-c"><div class="as-lbl">Raghdah — manager</div>${rate('mgr',m)}</div>
+        ${gap}
+      </div></div>`;
+  }).join('');
+}
+function setR(who,id,v){ ST[who][id]=v; ST.save(); renderAssess(); toast('Saved'); }
+
+function renderAgility(){
+  document.getElementById('agility').innerHTML=`<div class="form" style="border-style:solid;border-color:var(--border)">
+    <div class="form-t">Shift handover — recorded once, read at the gate</div>
+    ${AGILITY.map(a=>`<div class="fld ${a.id==='unex'?'key':''}">
+      <label>${x(a.n)}</label>
+      <textarea onchange="ST.ag['${a.id}']=this.value;ST.save();toast('Saved')">${x(ST.ag[a.id]||'')}</textarea>
+      <div style="font-size:10px;color:var(--gray);margin-top:3px">${x(a.d)}</div>
+    </div>`).join('')}
+  </div>`;
+}
+
+function renderGates(){
+  document.getElementById('gates').innerHTML=GATES.map(g=>`
+    <div class="gate">
+      <div class="gi">${g.i}</div>
+      <div style="flex:1"><div class="gn">${x(g.n)}</div><div class="gd">${x(g.d)}</div></div>
+      <span class="gs" style="background:#F2EFE9;color:#5A5750">Not yet</span>
+    </div>`).join('');
+}
+
+renderJourney(); renderFocus(); renderMap(); renderAssess(); renderAgility(); renderGates();
+</script>
+</body>
+</html>

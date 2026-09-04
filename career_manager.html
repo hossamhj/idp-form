@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Career Development — Narjs East</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#F5F0E8; --black:#1C1C1C; --gray:#8A8780; --border:#DDD8CF;
+  --prop:#1A3660; --propL:#E8EEF6;
+  --green:#1D9E75; --amber:#EF9F27; --red:#E07050; --purple:#7C5CBF; --teal:#0D6E5C;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--black);min-height:100vh;font-size:14px}
+
+.topnav{position:sticky;top:0;z-index:100;background:#fff;display:flex;align-items:center;padding:0 20px;height:56px;border-bottom:1px solid var(--border)}
+.nav-brand{display:flex;align-items:center;gap:10px;padding-right:20px;border-right:1px solid var(--border);margin-right:16px;flex-shrink:0}
+.nav-icon{width:32px;height:32px;border-radius:8px;background:var(--prop);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;flex-shrink:0;letter-spacing:-.3px}
+.nav-name{font-family:'Playfair Display',serif;font-size:16px;font-weight:500;letter-spacing:.01em}
+.nav-sub{font-size:9px;color:var(--gray);letter-spacing:.05em;text-transform:uppercase}
+.tabs{display:flex;gap:2px}
+.tab{background:none;border:none;font-family:inherit;font-size:12.5px;font-weight:500;color:var(--gray);padding:8px 15px;border-radius:8px;cursor:pointer;transition:.15s}
+.tab:hover{background:#F3F0EA;color:var(--black)}
+.tab.on{background:var(--propL);color:var(--prop);font-weight:600}
+.tab .b{display:inline-block;background:var(--red);color:#fff;font-size:9px;font-weight:700;border-radius:9px;padding:1px 6px;margin-left:5px}
+.hub{margin-left:auto;font-size:10px;font-weight:500;color:#888780;text-decoration:none;letter-spacing:.05em;text-transform:uppercase;padding:0 4px}
+.hub:hover{color:var(--black)}
+
+.wrap{max-width:1240px;margin:0 auto;padding:24px 20px 60px}
+.view{display:none}.view.on{display:block}
+
+.strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:12px;margin-bottom:20px}
+.sc{background:#fff;border:1px solid var(--border);border-radius:12px;padding:14px 16px}
+.sc-v{font-family:'Playfair Display',serif;font-size:27px;font-weight:500;line-height:1}
+.sc-l{font-size:10px;color:var(--gray);margin-top:6px;letter-spacing:.04em;text-transform:uppercase}
+
+.alert{background:#FEF6E7;border:1px solid #F0C674;border-left:4px solid var(--amber);border-radius:10px;padding:14px 16px;margin-bottom:20px;display:flex;gap:12px}
+.alert.crit{background:#FDEEEA;border-color:#EFB5A2;border-left-color:var(--red)}
+.alert.info{background:#F2FAF7;border-color:#CCE9DF;border-left-color:var(--green)}
+.alert-i{font-size:17px;line-height:1.3}
+.alert-t{font-weight:600;font-size:13px;margin-bottom:4px}
+.alert-b{font-size:12px;color:#5A5750;line-height:1.65}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:14px}
+.pc{background:#fff;border:1px solid var(--border);border-radius:14px;overflow:hidden;cursor:pointer;transition:.18s}
+.pc:hover{box-shadow:0 8px 24px rgba(0,0,0,.07);transform:translateY(-2px)}
+.pc-h{padding:14px 16px;display:flex;align-items:center;gap:11px}
+.av{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;flex-shrink:0}
+.pc-n{font-size:14.5px;font-weight:600}
+.pc-r{font-size:11px;color:var(--gray);margin-top:2px}
+.chip{margin-left:auto;font-size:9.5px;font-weight:600;padding:3px 9px;border-radius:9px;white-space:nowrap;letter-spacing:.02em}
+.pc-b{padding:12px 16px 15px;border-top:1px solid #F0EDE7}
+
+.gate{margin-bottom:9px}.gate:last-child{margin-bottom:0}
+.gate-h{display:flex;justify-content:space-between;font-size:10.5px;margin-bottom:4px}
+.gate-l{color:#6A6760;font-weight:500}
+.gate-v{color:var(--gray);font-variant-numeric:tabular-nums}
+.bar{height:5px;background:#EFECE6;border-radius:4px;overflow:hidden}
+.bar span{display:block;height:100%;border-radius:4px;transition:width .5s}
+.pc-f{margin-top:11px;padding-top:10px;border-top:1px solid #F0EDE7;font-size:10.5px;color:var(--gray);display:flex;justify-content:space-between}
+
+.back{background:none;border:1px solid var(--border);font-family:inherit;font-size:12px;color:#6A6760;padding:6px 13px;border-radius:8px;cursor:pointer;margin-bottom:16px}
+.back:hover{background:#fff}
+.dh{background:#fff;border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:16px;display:flex;align-items:center;gap:15px;flex-wrap:wrap}
+.dh-n{font-family:'Playfair Display',serif;font-size:23px;font-weight:500}
+.dh-p{font-size:12px;color:var(--gray);margin-top:3px}
+.dh-m{margin-left:auto;display:flex;gap:24px;flex-wrap:wrap}
+.dh-mi{text-align:center}
+.dh-mv{font-size:17px;font-weight:600;font-variant-numeric:tabular-nums}
+.dh-ml{font-size:9px;color:var(--gray);margin-top:3px;letter-spacing:.04em;text-transform:uppercase}
+
+.sec{background:#fff;border:1px solid var(--border);border-radius:14px;padding:18px 20px;margin-bottom:14px}
+.sec-t{font-family:'Playfair Display',serif;font-size:16px;font-weight:500;margin-bottom:3px}
+.sec-s{font-size:11.5px;color:var(--gray);margin-bottom:15px;line-height:1.65}
+
+.cls{margin-bottom:16px}.cls:last-child{margin-bottom:0}
+.cls-h{display:flex;align-items:center;gap:8px;margin-bottom:9px}
+.cls-d{width:9px;height:9px;border-radius:3px;flex-shrink:0}
+.cls-n{font-size:12.5px;font-weight:600}
+.cls-c{font-size:10.5px;color:var(--gray);margin-left:auto;font-variant-numeric:tabular-nums}
+
+.fn{display:flex;align-items:center;gap:10px;padding:8px 11px;border:1px solid #EDEAE4;border-radius:9px;margin-bottom:5px;background:#FCFBF9}
+.fn.done{background:#F2FAF7;border-color:#CCE9DF}
+.fn-x{width:17px;height:17px;border-radius:5px;border:1.5px solid #D5D0C8;flex-shrink:0;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff;background:#fff;transition:.15s}
+.fn.done .fn-x{background:var(--green);border-color:var(--green)}
+.fn-n{font-size:12px;flex:1}
+.fn.done .fn-n{color:#4A6B5E}
+.fn-t{font-size:9.5px;font-family:ui-monospace,SFMono-Regular,monospace;color:var(--gray);background:#F2EFE9;padding:2px 7px;border-radius:5px;white-space:nowrap}
+
+.beh{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid #F2EFE9}
+.beh:last-child{border:none}
+.beh-n{font-size:12.5px;font-weight:500}
+.beh-d{font-size:10.5px;color:var(--gray);margin-top:3px;line-height:1.55}
+.rate{display:flex;gap:4px}
+.rb{min-width:64px;height:27px;border:1px solid var(--border);background:#fff;border-radius:6px;cursor:pointer;font-size:9.5px;font-family:inherit;font-weight:500;color:#6A6760;display:flex;align-items:center;justify-content:center;transition:.15s;padding:0 7px}
+.rb:hover{border-color:var(--gray)}
+.rb.on{border-width:2px;font-weight:600}
+.rb.on[data-v="1"]{background:#F5F3F0;border-color:#B5B0A8;color:#5A5750}
+.rb.on[data-v="2"]{background:#FEF6E7;border-color:var(--amber);color:#7A4A05}
+.rb.on[data-v="3"]{background:#EAF7F2;border-color:var(--green);color:#0A5540}
+.rb.on[data-v="4"]{background:#EEEDFE;border-color:var(--purple);color:#26215C}
+
+.act{background:#fff;border:1px solid var(--border);border-radius:11px;padding:13px 16px;margin-bottom:9px;display:flex;align-items:flex-start;gap:12px}
+.act.over{border-left:4px solid var(--red)}
+.act.soon{border-left:4px solid var(--amber)}
+.act-x{width:19px;height:19px;border-radius:6px;border:1.5px solid #D5D0C8;flex-shrink:0;cursor:pointer;background:#fff;margin-top:1px;display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff}
+.act.done .act-x{background:var(--green);border-color:var(--green)}
+.act.done .act-t{text-decoration:line-through;color:var(--gray)}
+.act-t{font-size:13px;font-weight:500;line-height:1.5}
+.act-m{font-size:10.5px;color:var(--gray);margin-top:4px;line-height:1.5}
+.act-due{margin-left:auto;font-size:10px;font-weight:600;padding:3px 9px;border-radius:8px;white-space:nowrap}
+
+.suc{background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin-bottom:12px}
+.suc-h{display:flex;align-items:center;gap:10px;margin-bottom:13px}
+.suc-t{font-size:14px;font-weight:600}
+.suc-badge{margin-left:auto;font-size:10px;font-weight:600;padding:3px 10px;border-radius:9px}
+.flow{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.node{background:#F7F5F1;border:1px solid var(--border);border-radius:9px;padding:8px 13px;text-align:center;min-width:120px}
+.node.warn{background:#FDEEEA;border-color:#EFB5A2}
+.node.ok{background:#F2FAF7;border-color:#CCE9DF}
+.node-n{font-weight:600;font-size:12px}
+.node-r{font-size:10px;color:var(--gray);margin-top:2px}
+.arrow{color:var(--gray);font-size:15px}
+.suc-note{font-size:11.5px;color:#5A5750;line-height:1.75;margin-top:13px;padding-top:12px;border-top:1px solid #F2EFE9}
+
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:10.5px;color:var(--gray);margin-top:14px}
+.lg{display:flex;align-items:center;gap:5px}
+.lg-d{width:9px;height:9px;border-radius:3px}
+.toast{position:fixed;bottom:22px;right:22px;background:var(--black);color:var(--cream);padding:11px 18px;border-radius:10px;font-size:12.5px;opacity:0;transform:translateY(8px);transition:.25s;pointer-events:none;z-index:200}
+.toast.on{opacity:1;transform:translateY(0)}
+@media(max-width:640px){.grid{grid-template-columns:1fr}.dh-m{width:100%;margin-top:10px;gap:18px}}
+</style>
+</head>
+<body>
+
+<div class="topnav">
+  <div class="nav-brand">
+    <div class="nav-icon">NE</div>
+    <div>
+      <div class="nav-name">Narjs East</div>
+      <div class="nav-sub">Career Development</div>
+    </div>
+  </div>
+  <div class="tabs">
+    <button class="tab on" onclick="go('team',this)">Team</button>
+    <button class="tab" onclick="go('actions',this)">My Actions <span class="b" id="actBadge">0</span></button>
+    <button class="tab" onclick="go('succession',this)">Succession</button>
+  </div>
+  <a href="index.html" class="hub">← Hub</a>
+</div>
+
+<div class="wrap">
+
+<div class="view on" id="v-team">
+  <div class="strip" id="strip"></div>
+  <div id="alerts"></div>
+  <div class="grid" id="cards"></div>
+  <div class="legend">
+    <div class="lg"><span class="lg-d" style="background:var(--green)"></span> Deepen</div>
+    <div class="lg"><span class="lg-d" style="background:var(--purple)"></span> New work</div>
+    <div class="lg"><span class="lg-d" style="background:var(--amber)"></span> Step back</div>
+    <div class="lg"><span class="lg-d" style="background:var(--red)"></span> Release</div>
+  </div>
+</div>
+
+<div class="view" id="v-person"><div id="personBody"></div></div>
+
+<div class="view" id="v-actions">
+  <div class="sec" style="margin-bottom:14px">
+    <div class="sec-t">What I owe this month</div>
+    <div class="sec-s">Manager actions that are due. Overdue in red — the development session is the first thing that gets dropped under pressure.</div>
+  </div>
+  <div id="actions"></div>
+</div>
+
+<div class="view" id="v-succession">
+  <div class="sec" style="margin-bottom:14px">
+    <div class="sec-t">Succession chain</div>
+    <div class="sec-s">Who backfills whom on promotion. Promote without a successor and the functions lose their owner — someone still performs them, but nobody guarantees they work.</div>
+  </div>
+  <div id="succession"></div>
+</div>
+
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ══════════════════════════════════════════════════════════
+   Involvement data derived from the live operating model
+   (flow-community-os · MENA · 48 functions · ops_function_operating.codes)
+   ══════════════════════════════════════════════════════════ */
+
+const CLS = {
+  deepen:  {n:'Deepen',     c:'var(--green)'},
+  newwork: {n:'New work',   c:'var(--purple)'},
+  lighter: {n:'Step back',  c:'var(--amber)'},
+  release: {n:'Release',    c:'var(--red)'}
+};
+
+const BEH = [
+  {id:'host', n:'Hospitality presence', d:'Proactive — does not wait to be approached. Remembers preferences and records them.'},
+  {id:'loop', n:'Closing the loop',     d:'Follows up until the resident confirms resolution. Does not close before that.'},
+  {id:'judg', n:'Judgement & escalation',d:'Resolves tier-1 independently. Escalates with a brief and options, not with a problem.'},
+  {id:'comm', n:'Communication clarity', d:'Adapts tone to the situation (complaint ≠ request). Written work needs no editing.'},
+  {id:'std',  n:'Standards discipline',  d:'Zero incomplete records. Does not cut a step under pressure.'},
+  {id:'dev',  n:'Developing others',     d:'Trains and corrects. Feedback is specific and immediate.', from:'sr'}
+];
+
+const TEAM = {
+  beesan:{
+    name:'Beesan Harb', ini:'BH', color:'#1D9E75',
+    role:'RX Coordinator', target:'RX Associate', level:'L2 → L2 · breadth',
+    state:'active', quarter:2, gateOn:'Jun 2027',
+    scope:{ t:'Own Package oversight + Vacant Unit Inspections for a full quarter, no daily review', s:'pending' },
+    fns:[
+      {n:'Move-ins',                                 c:'deepen',  t:'assist → execute'},
+      {n:'Move-in Inspections',                      c:'deepen',  t:'assist → execute'},
+      {n:'Move-out & Move-out Inspection',           c:'deepen',  t:'assist → execute'},
+      {n:'Pre-Move-in Coordination & Preparation',   c:'deepen',  t:'assist → execute'},
+      {n:'Neighbor Support',                         c:'deepen',  t:'assist → execute'},
+      {n:'Issues, Complaints & Feedback Management', c:'deepen',  t:'assist → execute'},
+      {n:'Neighbor Check-in / Coffee Chat',          c:'deepen',  t:'assist → execute'},
+      {n:'Renewal Support',                          c:'deepen',  t:'assist → execute'},
+      {n:'Property Walkthrough',                     c:'deepen',  t:'assist → execute'},
+      {n:'Daily briefing',                           c:'deepen',  t:'assist → execute'},
+      {n:'Consumables Inventory Management',         c:'deepen',  t:'assist → execute'},
+      {n:'Hosting Community Events',                 c:'deepen',  t:'assist → execute'},
+      {n:'Events & Experiences Community Marketing', c:'deepen',  t:'assist → execute'},
+      {n:'Notices',                                  c:'deepen',  t:'assist → execute'},
+      {n:'★ Package oversight',                      c:'deepen',  t:'execute → own'},
+      {n:'★ Vacant Unit Inspections',                c:'deepen',  t:'execute → own'},
+      {n:'Maintenance coordination',                 c:'newwork', t:'new · first contractors'},
+      {n:'Housekeeping coordination',                c:'newwork', t:'new · first vendor'},
+      {n:'Security & Watch coordination',            c:'newwork', t:'new · first security duty'},
+      {n:'Shift handover',                           c:'newwork', t:'new · first continuity'},
+      {n:'Incident Management',                      c:'newwork', t:'new · FIRST CRISIS'},
+      {n:'Renewal Coordination',                     c:'newwork', t:'new · first contractual'},
+      {n:'Deposit Accounting',                       c:'newwork', t:'new · first financial'},
+      {n:'Classes — Attendance Check-ins',           c:'lighter', t:'own → execute'},
+      {n:'Meetups — Attendance Check-ins',           c:'lighter', t:'own → execute'},
+      {n:'Preparing Community Events',               c:'release', t:'stops'}
+    ],
+    note:'The only two functions she owns today, she hands over. Needs an explicit conversation — ownership moves because she is freed for bigger ownership (Package oversight, Vacant Unit Inspections). Left unsaid, this reads as loss and creates silent resistance.'
+  },
+  rakan:{
+    name:'Rakan Shisha', ini:'RK', color:'#7C5CBF',
+    role:'Senior RX Associate', target:'AGM', level:'L3 → L4 · level jump',
+    state:'blocked', quarter:0, gateOn:'Sep 2027',
+    scope:{ t:'Own Narjs East team scheduling for 6 months, no intervention from the AGM', s:'pending' },
+    fns:[
+      {n:'11 Community Experience functions',        c:'release', t:'own → stops'},
+      {n:'5 Building Operations coordination',       c:'release', t:'own → stops'},
+      {n:'8 Neighbor Experience functions',          c:'release', t:'own → stops'},
+      {n:'Daily briefing',                           c:'lighter', t:'own → oversee'},
+      {n:'Shift handover',                           c:'lighter', t:'own → oversee'},
+      {n:'Package oversight',                        c:'lighter', t:'own → oversee'},
+      {n:'Issues, Complaints & Feedback Management', c:'lighter', t:'own → oversee'},
+      {n:'Move-out & Move-out Inspection',           c:'lighter', t:'own → oversee'},
+      {n:'Billing & Payment Support',                c:'lighter', t:'own → oversee'},
+      {n:'GM Check-in / Coffee Chat',                c:'lighter', t:'new · oversee'},
+      {n:'Schedule Management',                      c:'newwork', t:'new · own'},
+      {n:'Accounts Receivable',                      c:'newwork', t:'new · own'},
+      {n:'Evictions',                                c:'newwork', t:'new · execute'},
+      {n:'Early Terminations',                       c:'newwork', t:'new · execute'},
+      {n:'Deposit Accounting',                       c:'deepen',  t:'execute → own'},
+      {n:'Vendor Reconciliation',                    c:'deepen',  t:'execute → own'},
+      {n:'Procurement',                              c:'deepen',  t:'execute → own'},
+      {n:'Reporting',                                c:'deepen',  t:'execute → own'},
+      {n:'Notices',                                  c:'deepen',  t:'execute → own'},
+      {n:'Incident Management',                      c:'deepen',  t:'execute → own'},
+      {n:'Team Meetings & Coordination',             c:'deepen',  t:'execute → own'},
+      {n:'Weekly Neighbor Experience Review',        c:'deepen',  t:'execute → own'},
+      {n:'Accounts Payable',                         c:'deepen',  t:'assist → execute'},
+      {n:'Quarterly Management Reporting',           c:'deepen',  t:'assist → execute'}
+    ],
+    note:'BLOCKED — promotion requires an L2→L3 promotion running in parallel. Successor decision (Ali or Rawan) is due before 1 October.'
+  },
+  ali:{ name:'Ali Nour', ini:'AL', color:'#C8853A', role:'RX Associate', target:'Senior RX Associate',
+    level:'L2 → L3 · level jump', state:'eligible', quarter:0, gateOn:'—',
+    scope:{t:'—',s:'na'}, fns:[],
+    note:'Candidate to succeed Rakan. Eligibility needs verification: mastery of 35 functions + a full operating cycle.' },
+  rawan:{ name:'Rawan Alattas', ini:'RA', color:'#C8853A', role:'RX Associate', target:'Senior RX Associate',
+    level:'L2 → L3 · level jump', state:'eligible', quarter:0, gateOn:'—',
+    scope:{t:'—',s:'na'}, fns:[],
+    note:'Candidate to succeed Rakan. Eligibility needs verification by the AGM.' },
+  raghdah:{ name:'Raghdah Safar', ini:'RS', color:'#0D6E5C', role:'AGM', target:'GM',
+    level:'L4 → L5', state:'practising', quarter:0, gateOn:'—',
+    scope:{t:'—',s:'na'}, fns:[],
+    note:'Practising at level. Coach for Beesan and Rakan — roughly 11 hours per month committed.' }
+};
+
+const ACTIONS = [
+  {id:'a1', who:'Rakan',      t:'Choose the successor — Ali or Rawan?',           m:'The actual blocker. Rakan’s programme cannot start without it.', due:'20 Sep', lvl:'over'},
+  {id:'a7', who:'Ali / Rawan',t:'Verify eligibility for the L2→L3 programme',     m:'Mastery of 35 functions + a full operating cycle', due:'25 Sep', lvl:'over'},
+  {id:'a2', who:'Rakan',      t:'Decide the two orphaned functions',              m:'Community Engagement Lead Coordination · Ambassador & Community Leadership — no holder below L3', due:'15 Oct', lvl:'soon'},
+  {id:'a3', who:'Beesan',     t:'Assign a teacher for each of the 7 new functions',m:'Craft is taught laterally by the function owner, not by the manager', due:'31 Oct', lvl:'soon'},
+  {id:'a4', who:'Beesan',     t:'Ownership conversation — why she hands over Classes & Meetups', m:'Skipping it creates silent resistance', due:'30 Nov', lvl:'soon'},
+  {id:'a5', who:'Beesan',     t:'Monthly development session — October',          m:'45 minutes · last Thursday', due:'31 Oct', lvl:''},
+  {id:'a6', who:'Beesan',     t:'Budget for Safety & First Aid certification',    m:'Scheduled inside Q2', due:'31 Oct', lvl:''}
+];
+
+const K='cm_ne_';
+const ST={
+  f: JSON.parse(localStorage.getItem(K+'f')||'{}'),
+  b: JSON.parse(localStorage.getItem(K+'b')||'{}'),
+  a: JSON.parse(localStorage.getItem(K+'a')||'{}'),
+  save(){['f','b','a'].forEach(k=>localStorage.setItem(K+k,JSON.stringify(ST[k])))}
+};
+
+const x=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('on');clearTimeout(t._);t._=setTimeout(()=>t.classList.remove('on'),1800)}
+
+const STATE={
+  active:    {n:'In development', s:'background:#EAF7F2;color:#0A5540'},
+  blocked:   {n:'Blocked',        s:'background:#FDEEEA;color:#8A2E12'},
+  eligible:  {n:'Eligible',       s:'background:#EEEDFE;color:#26215C'},
+  practising:{n:'Practising',     s:'background:#F2EFE9;color:#5A5750'}
+};
+const SCALE=[{v:1,l:'Not yet'},{v:2,l:'Emerging'},{v:3,l:'Consistent'},{v:4,l:'Teaches'}];
+
+function craft(k){
+  const p=TEAM[k]; if(!p.fns.length) return null;
+  const done=p.fns.filter((_,i)=>ST.f[k+'_'+i]).length;
+  return {done, total:p.fns.length, pct:Math.round(done/p.fns.length*100)};
+}
+function behDims(p){ return BEH.filter(b=>!b.from||p.role.indexOf('Senior')>-1||p.role==='AGM'); }
+function conduct(k){
+  const p=TEAM[k], dims=behDims(p);
+  const ok=dims.filter(b=>(ST.b[k+'_'+b.id]||0)>=3).length;
+  return {done:ok, total:dims.length, pct:Math.round(ok/dims.length*100)};
+}
+
+function go(v,btn){
+  document.querySelectorAll('.view').forEach(e=>e.classList.remove('on'));
+  document.getElementById('v-'+v).classList.add('on');
+  if(btn){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));btn.classList.add('on')}
+  if(v==='team')renderTeam(); if(v==='actions')renderActions(); if(v==='succession')renderSuccession();
+  window.scrollTo(0,0);
+}
+
+function renderTeam(){
+  const ks=Object.keys(TEAM);
+  const inDev=ks.filter(k=>TEAM[k].state==='active').length;
+  const elig =ks.filter(k=>TEAM[k].state==='eligible').length;
+  const blk  =ks.filter(k=>TEAM[k].state==='blocked').length;
+  const over =ACTIONS.filter(a=>a.lvl==='over'&&!ST.a[a.id]).length;
+
+  document.getElementById('strip').innerHTML=`
+    <div class="sc"><div class="sc-v">${ks.length}</div><div class="sc-l">Team</div></div>
+    <div class="sc"><div class="sc-v" style="color:var(--green)">${inDev}</div><div class="sc-l">In development</div></div>
+    <div class="sc"><div class="sc-v" style="color:var(--purple)">${elig}</div><div class="sc-l">Eligible</div></div>
+    <div class="sc"><div class="sc-v" style="color:${blk?'var(--red)':'var(--gray)'}">${blk}</div><div class="sc-l">Blocked</div></div>
+    <div class="sc"><div class="sc-v" style="color:${over?'var(--red)':'var(--gray)'}">${over}</div><div class="sc-l">Overdue</div></div>`;
+
+  const nb=ACTIONS.filter(a=>!ST.a[a.id]).length;
+  const badge=document.getElementById('actBadge');
+  badge.textContent=nb; badge.style.display=nb?'':'none';
+
+  let al='';
+  if(blk) al+=`<div class="alert crit"><div class="alert-i">■</div><div>
+    <div class="alert-t">Rakan's promotion is structurally blocked</div>
+    <div class="alert-b">He releases 24 functions. <b>22 of them drop to Associate at <i>execute</i>, not <i>own</i></b> — so they lose their owner: someone still performs them, but nobody guarantees they work. Two have no holder at all below L3.
+    <b>An L3→L4 promotion cannot complete without an L2→L3 promotion running alongside it.</b></div></div></div>`;
+  if(over) al+=`<div class="alert"><div class="alert-i">▲</div><div>
+    <div class="alert-t">${over} overdue action${over>1?'s':''}</div>
+    <div class="alert-b">The development session is the first thing dropped under pressure — which is why the weekly check is 15 minutes, short enough that it survives.</div></div></div>`;
+  document.getElementById('alerts').innerHTML=al;
+
+  document.getElementById('cards').innerHTML=ks.map(k=>{
+    const p=TEAM[k], c=craft(k), b=conduct(k), s=STATE[p.state];
+    const gate=(l,v,pc,col)=>`<div class="gate"><div class="gate-h"><span class="gate-l">${l}</span><span class="gate-v">${v}</span></div>
+      <div class="bar"><span style="width:${pc}%;background:${col}"></span></div></div>`;
+    return `<div class="pc" onclick="openPerson('${k}')">
+      <div class="pc-h">
+        <div class="av" style="background:${p.color}">${p.ini}</div>
+        <div><div class="pc-n">${x(p.name)}</div><div class="pc-r">${x(p.role)}</div></div>
+        <span class="chip" style="${s.s}">${s.n}</span>
+      </div>
+      <div class="pc-b">
+        ${gate('Craft',    c?`${c.done}/${c.total}`:'—', c?c.pct:0, 'var(--green)')}
+        ${gate('Conduct',  `${b.done}/${b.total}`,       b.pct,     'var(--teal)')}
+        ${gate('Scope',    p.scope.s==='pending'?'Not started':'—', 0, 'var(--purple)')}
+        <div class="pc-f"><span>${x(p.level)}</span><span>${p.quarter?'Q'+p.quarter:''}</span></div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function openPerson(k){
+  const p=TEAM[k], c=craft(k), b=conduct(k);
+  const groups={};
+  p.fns.forEach((f,i)=>{(groups[f.c]=groups[f.c]||[]).push(Object.assign({},f,{i:i}))});
+
+  document.getElementById('personBody').innerHTML=`
+    <button class="back" onclick="go('team',document.querySelector('.tab'))">← Team</button>
+    <div class="dh">
+      <div class="av" style="background:${p.color};width:52px;height:52px;font-size:15px">${p.ini}</div>
+      <div><div class="dh-n">${x(p.name)}</div><div class="dh-p">${x(p.role)} → ${x(p.target)} · ${x(p.level)}</div></div>
+      <div class="dh-m">
+        <div class="dh-mi"><div class="dh-mv">${c?c.pct+'%':'—'}</div><div class="dh-ml">Craft</div></div>
+        <div class="dh-mi"><div class="dh-mv">${b.done}/${b.total}</div><div class="dh-ml">Conduct</div></div>
+        <div class="dh-mi"><div class="dh-mv">${p.quarter||'—'}</div><div class="dh-ml">Quarter</div></div>
+        <div class="dh-mi"><div class="dh-mv" style="font-size:13px">${x(p.gateOn)}</div><div class="dh-ml">Gate</div></div>
+      </div>
+    </div>
+
+    ${p.note?`<div class="alert ${p.state==='blocked'?'crit':'info'}"><div class="alert-i">${p.state==='blocked'?'■':'●'}</div>
+      <div><div class="alert-b">${x(p.note)}</div></div></div>`:''}
+
+    ${p.fns.length?`<div class="sec">
+      <div class="sec-t">Craft</div>
+      <div class="sec-s">The functions whose involvement changes — derived from the operating model, not hand-written.
+      Tick each one that has reached the target level.</div>
+      ${Object.keys(CLS).filter(cc=>groups[cc]).map(cc=>{
+        const g=groups[cc], done=g.filter(f=>ST.f[k+'_'+f.i]).length;
+        return `<div class="cls">
+          <div class="cls-h"><span class="cls-d" style="background:${CLS[cc].c}"></span>
+            <span class="cls-n">${CLS[cc].n}</span><span class="cls-c">${done}/${g.length}</span></div>
+          ${g.map(f=>`<div class="fn ${ST.f[k+'_'+f.i]?'done':''}">
+            <span class="fn-x" onclick="tgF('${k}',${f.i})">${ST.f[k+'_'+f.i]?'✓':''}</span>
+            <span class="fn-n">${x(f.n)}</span><span class="fn-t">${x(f.t)}</span></div>`).join('')}
+        </div>`;
+      }).join('')}
+    </div>`:''}
+
+    <div class="sec">
+      <div class="sec-t">Conduct</div>
+      <div class="sec-s"><b>Consistent</b> is the standard for the gate — and the real test is always under pressure.
+      <i>Teaches</i> is what the next level requires.</div>
+      ${behDims(p).map(d=>`
+        <div class="beh">
+          <div><div class="beh-n">${x(d.n)}</div><div class="beh-d">${x(d.d)}</div></div>
+          <div class="rate">${SCALE.map(s=>`<button class="rb ${(ST.b[k+'_'+d.id]||0)===s.v?'on':''}"
+            data-v="${s.v}" onclick="setB('${k}','${d.id}',${s.v},this)">${s.l}</button>`).join('')}</div>
+        </div>`).join('')}
+    </div>
+
+    <div class="sec">
+      <div class="sec-t">Scope</div>
+      <div class="sec-s">The stretch assignment — real scope with real stakes.
+      <b>Without genuine risk this gate is just paperwork.</b></div>
+      <div class="fn" style="background:${p.scope.s==='na'?'#FCFBF9':'#FEF6E7'};border-color:${p.scope.s==='na'?'#EDEAE4':'#F0C674'}">
+        <span class="fn-n">${x(p.scope.t)}</span>
+        <span class="fn-t">${p.scope.s==='pending'?'Not started':'—'}</span>
+      </div>
+    </div>`;
+  go('person');
+}
+
+function tgF(k,i){
+  const key=k+'_'+i;
+  ST.f[key]=!ST.f[key]; ST.save();
+  openPerson(k);
+  toast(ST.f[key]?'Recorded':'Cleared');
+}
+function setB(k,d,v,btn){
+  ST.b[k+'_'+d]=v; ST.save();
+  btn.parentElement.querySelectorAll('.rb').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  toast('Saved');
+}
+
+function renderActions(){
+  document.getElementById('actions').innerHTML=ACTIONS.map(a=>{
+    const done=ST.a[a.id];
+    const due=a.lvl==='over'?'background:#FDEEEA;color:#8A2E12':a.lvl==='soon'?'background:#FEF6E7;color:#7A4A05':'background:#F2EFE9;color:#5A5750';
+    return `<div class="act ${a.lvl} ${done?'done':''}">
+      <span class="act-x" onclick="tgA('${a.id}')">${done?'✓':''}</span>
+      <div style="flex:1"><div class="act-t">${x(a.t)}</div>
+        <div class="act-m">${x(a.who)} · ${x(a.m)}</div></div>
+      <span class="act-due" style="${due}">${x(a.due)}</span>
+    </div>`;
+  }).join('');
+}
+function tgA(id){ ST.a[id]=!ST.a[id]; ST.save(); renderActions(); toast(ST.a[id]?'Done':'Reopened'); }
+
+function renderSuccession(){
+  document.getElementById('succession').innerHTML=`
+    <div class="suc">
+      <div class="suc-h"><span class="suc-t">Rakan Shisha → AGM</span>
+        <span class="suc-badge" style="background:#FDEEEA;color:#8A2E12">Blocked</span></div>
+      <div class="flow">
+        <div class="node warn"><div class="node-n">Rakan</div><div class="node-r">Senior → AGM</div></div>
+        <span class="arrow">→</span>
+        <div class="node warn"><div class="node-n">?</div><div class="node-r">No successor</div></div>
+        <span class="arrow">←</span>
+        <div class="node"><div class="node-n">Ali / Rawan</div><div class="node-r">Associate</div></div>
+      </div>
+      <div class="suc-note">Rakan releases 24 functions. Traced against the operating model:
+      <b>22 drop to Associate at <i>execute</i>, not <i>own</i></b> — someone still performs them, nobody guarantees they work.
+      <b>Two have no holder at all below L3</b>: Community Engagement Lead Coordination · Ambassador &amp; Community Leadership Management.
+      <br><br><b>Action:</b> promote Ali or Rawan to Senior in parallel — two programmes, one shared gate.
+      The two orphaned functions must be assigned explicitly or formally retired.</div>
+    </div>
+
+    <div class="suc">
+      <div class="suc-h"><span class="suc-t">Beesan Harb → RX Associate</span>
+        <span class="suc-badge" style="background:#EAF7F2;color:#0A5540">Clear</span></div>
+      <div class="flow">
+        <div class="node ok"><div class="node-n">Beesan</div><div class="node-r">Coordinator → Associate</div></div>
+        <span class="arrow">→</span>
+        <div class="node ok"><div class="node-n">Not required</div><div class="node-r">Breadth, not a jump</div></div>
+      </div>
+      <div class="suc-note">A <b>breadth move within the same level</b> — she gives up no material operational ownership, so no successor is required.
+      The two functions she hands over (attendance check-ins) go to any executor.
+      <br><br><b>But she needs seven teachers</b> — one per new function. Craft is taught laterally by the function owner, not by the manager.</div>
+    </div>
+
+    <div class="suc">
+      <div class="suc-h"><span class="suc-t">The general rule</span>
+        <span class="suc-badge" style="background:#EEEDFE;color:#26215C">Principle</span></div>
+      <div class="suc-note" style="border:none;margin:0;padding:0">
+      <b>A level jump needs a successor. A breadth move does not.</b><br>
+      A level jump means releasing ownership; a breadth move means adding it.
+      Which is why a promotion chain is planned from the bottom up, never the top down — promote the successor first, then whoever backfills them.</div>
+    </div>`;
+}
+
+renderTeam();
+</script>
+</body>
+</html>
