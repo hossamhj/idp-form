@@ -7,35 +7,43 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <style>
+table.t{width:100%;border-collapse:collapse;font-size:13px}
+table.t th{text-align:left;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--gray);font-weight:600;padding:0 10px 9px 0;border-bottom:1px solid var(--line);white-space:nowrap}
+table.t td{padding:10px 10px 10px 0;border-bottom:1px solid #EAE6DE;vertical-align:middle}
+table.t tr:last-child td{border:none}
+table.t td.c{text-align:center}
+table.t tbody tr:hover{background:#FCFBF9}
+.pill{font-size:9.5px;font-weight:600;padding:3px 9px;border-radius:8px;white-space:nowrap;display:inline-block}
+.miss{color:var(--amber);font-weight:600}
+.pa{display:flex;align-items:center;gap:8px}
+.pav{width:26px;height:26px;border-radius:50%;font-size:8.5px;font-weight:700;color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.fb{background:#fff;border:1px solid var(--line);font-family:inherit;font-size:11.5px;font-weight:500;color:#6A6760;padding:6px 13px;border-radius:8px;cursor:pointer}
+.fb.on{background:var(--navy);border-color:var(--navy);color:#fff}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+.pcard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:15px 17px}
+.pcard.warn{border-color:#EFB5A2}
+.pc-n{font-size:15px;font-weight:600}
+.pc-u{font-size:11px;color:var(--gray);margin-top:2px}
+.lvls{display:flex;gap:4px;margin-top:12px}
+.lv{flex:1;text-align:center;background:#F7F5F1;border-radius:7px;padding:7px 3px}
+.lv-v{font-family:'Playfair Display',serif;font-size:17px;font-weight:600}
+.lv-l{font-size:8.5px;color:var(--gray);margin-top:2px}
+.lv.zero .lv-v{color:var(--red)}
 .cmp{background:#fff;border:1px solid var(--line);border-radius:12px;padding:15px 17px;margin-bottom:10px}
-.cmp-h{display:flex;align-items:center;gap:11px;margin-bottom:12px}
-.cmp-n{font-size:14px;font-weight:600}
-.cmp-m{font-size:11px;color:var(--gray);margin-top:2px}
-.cmp-s{margin-left:auto;font-size:10px;font-weight:600;padding:3px 10px;border-radius:9px;white-space:nowrap}
-.mrow{display:grid;grid-template-columns:150px 1fr 60px;gap:12px;align-items:center;padding:7px 0;font-size:12px}
-.mrow-l{color:#6A6760}
+.cmp-h{display:flex;align-items:center;gap:11px;margin-bottom:11px}
+.mrow{display:grid;grid-template-columns:145px 1fr 62px;gap:12px;align-items:center;padding:6px 0;font-size:12px}
 .mbar{height:6px;background:#EFECE6;border-radius:4px;overflow:hidden}
 .mbar span{display:block;height:100%;border-radius:4px}
 .mval{text-align:right;font-weight:600;font-variant-numeric:tabular-nums}
-table.cap{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:8px}
-table.cap th{text-align:left;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--gray);font-weight:600;padding:0 10px 9px 0;border-bottom:1px solid var(--line)}
-table.cap td{padding:11px 10px 11px 0;border-bottom:1px solid #EAE6DE}
-table.cap td.n{text-align:center;font-weight:600;font-variant-numeric:tabular-nums}
-.pill{font-size:10px;font-weight:600;padding:3px 9px;border-radius:8px;white-space:nowrap}
-.bnd{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.bnd-c{border-radius:11px;padding:16px 18px}
-.bnd-y{background:#F2FAF7;border:1px solid #CCE9DF}
-.bnd-n{background:#FDEEEA;border:1px solid #EFB5A2}
-.bnd-t{font-size:12px;font-weight:600;margin-bottom:10px;letter-spacing:.03em;text-transform:uppercase}
-.bnd-c ul{list-style:none}
-.bnd-c li{font-size:12.5px;line-height:1.7;padding-left:18px;position:relative;margin-bottom:5px}
-.bnd-c li:before{position:absolute;left:0;top:0}
-.bnd-y li:before{content:'✓';color:var(--green);font-weight:700}
-.bnd-n li:before{content:'✕';color:var(--red);font-weight:700}
-.nodata{font-size:12px;color:var(--gray);font-style:italic;padding:8px 0}
-.mt{display:flex;align-items:flex-start;gap:13px;padding:13px 0;border-bottom:1px solid #F2EFE9}
+.use{display:grid;grid-template-columns:150px 1fr 1fr;gap:12px;padding:11px 0;border-bottom:1px solid #F2EFE9;font-size:12.5px;line-height:1.65}
+.use:last-child{border:none}
+.use-d{font-weight:600}
+.use-y{color:#2C4E42}
+.use-n{color:#8A2E12}
+.mt{display:flex;align-items:flex-start;gap:13px;padding:12px 0;border-bottom:1px solid #F2EFE9}
 .mt:last-child{border:none}
-.mt-v{font-family:'Playfair Display',serif;font-size:26px;font-weight:600;min-width:74px;color:var(--gray)}
+.mt-v{font-family:'Playfair Display',serif;font-size:24px;font-weight:600;min-width:70px;color:var(--gray)}
 .mt-k{font-size:13px;font-weight:600}
 .mt-r{font-size:11.5px;color:var(--gray);margin-top:3px;line-height:1.6}
 .mt-w{font-size:11px;color:#7A4A05;background:#FEF6E7;border-radius:7px;padding:6px 10px;margin-top:7px;line-height:1.55}
@@ -47,206 +55,291 @@ table.cap td.n{text-align:center;font-weight:600;font-variant-numeric:tabular-nu
   <div class="nav-icon" style="background:#4A3A20">HR</div>
   <div>
     <div class="nav-name">Programme Oversight</div>
-    <div class="nav-sub">People &amp; Culture</div>
+    <div class="nav-sub">Flow RX · all properties</div>
   </div>
   <div class="tabs">
-    <button class="tab on" onclick="go('compliance',this)">Compliance</button>
+    <button class="tab on" onclick="go('overview',this)">Overview</button>
+    <button class="tab" onclick="go('people',this)">People <span class="b" id="pb">22</span></button>
+    <button class="tab" onclick="go('coaches',this)">Coaches</button>
     <button class="tab" onclick="go('capacity',this)">Capacity</button>
-    <button class="tab" onclick="go('calibration',this)">Calibration</button>
-    <button class="tab" onclick="go('metrics',this)">Programme Health</button>
-    <button class="tab" onclick="go('scope',this)">What HR Sees</button>
+    <button class="tab" onclick="go('quality',this)">Quality</button>
+    <button class="tab" onclick="go('policy',this)">Data Use</button>
   </div>
   <a href="index.html" class="right">← Team</a>
 </div>
 
 <div class="wrap">
-  <div class="view on" id="v-compliance"><div id="compliance"></div></div>
+  <div class="view on" id="v-overview"><div id="overview"></div></div>
+  <div class="view" id="v-people"><div id="people"></div></div>
+  <div class="view" id="v-coaches"><div id="coaches"></div></div>
   <div class="view" id="v-capacity"><div id="capacity"></div></div>
-  <div class="view" id="v-calibration"><div id="calibration"></div></div>
-  <div class="view" id="v-metrics"><div id="metrics"></div></div>
-  <div class="view" id="v-scope"><div id="scope"></div></div>
+  <div class="view" id="v-quality"><div id="quality"></div></div>
+  <div class="view" id="v-policy"><div id="policy"></div></div>
 </div>
 
 <script src="data.js"></script>
+<script src="roster.js"></script>
 <script>
 const x=s=>String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const PROP=Object.fromEntries(PROPERTIES.map(p=>[p.id,p]));
+const AV=n=>n.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+const COL={2:'#C8853A',3:'#7C5CBF',4:'#0D6E5C',5:'#1D3A8A'};
 function go(v,btn){document.querySelectorAll('.view').forEach(e=>e.classList.remove('on'));
   document.getElementById('v-'+v).classList.add('on');
   document.querySelectorAll('button.tab').forEach(t=>t.classList.remove('on'));if(btn)btn.classList.add('on');window.scrollTo(0,0)}
 
-/* coach compliance is derived from the coach task state each coach keeps */
-function coachStats(cid){
-  const C=COACHES[cid], done=JSON.parse(localStorage.getItem('cd_coach_'+cid)||'{}');
-  let total=0,complete=0,late=0,activePeople=0;
-  C.people.forEach(pk=>{
-    const p=TEAM[pk],T=TEMPLATES[p.template],set=COACH_TASKS[p.template][C.as]||{};
-    const active=p.state==='active'; if(active)activePeople++;
-    Object.keys(set).forEach(qn=>{const q=+qn,cq=T.quarters.find(z=>z.n===q);
-      set[qn].forEach((task,i)=>{
-        const ex=task.perFn&&cq&&cq.fns.length?cq.fns:[null];
-        ex.forEach((fn,j)=>{
-          const id=`${pk}_${C.as}_${q}_${i}_${j}`;
-          const due = active && q<=p.quarter;
-          if(due){ total++; if(done[id])complete++; else if(q<p.quarter)late++; }
-        });});});
-  });
-  const hrs=C.people.filter(p=>TEAM[p].state==='active')
-    .reduce((a,p)=>a+parseFloat(TEMPLATES[TEAM[p].template][C.as].hours),0);
-  return {total,complete,late,activePeople,hrs,pct:total?Math.round(complete/total*100):null};
-}
+const cnt=s=>ROSTER.filter(r=>r.state===s).length;
+const byLvl=(l,p)=>ROSTER.filter(r=>r.lvl===l&&(!p||r.prop===p)).length;
+const missing=ROSTER.filter(r=>r.months===null||r.mastery===null).length;
 
-/* ── COMPLIANCE ── */
+/* ══ OVERVIEW ══ */
 (function(){
-  const rows=Object.keys(COACHES).map(k=>({k,C:COACHES[k],s:coachStats(k)}));
-  const anyLate=rows.some(r=>r.s.late>0);
   const noAgm=PROPERTIES.filter(p=>!p.agm);
-  document.getElementById('compliance').innerHTML=`
-    ${anyLate?`<div class="alert crit"><div class="alert-i">■</div><div>
-      <div class="alert-t">Coach tasks from an earlier quarter are still open</div>
-      <div class="alert-b">The development session is the first thing dropped under pressure. Overdue coach tasks are the earliest signal a programme is stalling — well before anyone misses a gate.</div></div></div>`:''}
+  const l3=byLvl(3), l4=byLvl(4);
+  document.getElementById('overview').innerHTML=`
+    <div class="strip">
+      <div class="sc"><div class="sc-v">${ROSTER.length}</div><div class="sc-l">People</div></div>
+      <div class="sc"><div class="sc-v">${PROPERTIES.length}</div><div class="sc-l">Properties</div></div>
+      <div class="sc"><div class="sc-v" style="color:var(--green)">${cnt('active')}</div><div class="sc-l">In development</div></div>
+      <div class="sc"><div class="sc-v" style="color:var(--purple)">${cnt('eligible')}</div><div class="sc-l">Eligible</div></div>
+      <div class="sc"><div class="sc-v" style="color:var(--amber)">${cnt('pending')}</div><div class="sc-l">Needs plan</div></div>
+      <div class="sc"><div class="sc-v" style="color:var(--red)">${missing}</div><div class="sc-l">Missing data</div></div>
+    </div>
+
+    <div class="alert crit"><div class="alert-i">■</div><div>
+      <div class="alert-t">Eligibility cannot be confirmed for ${missing} of ${ROSTER.length} people</div>
+      <div class="alert-b">Time in role and mastery level are not recorded. <b>Every eligibility decision is currently a judgement call rather than a check</b> — and that is the single thing blocking the programme from running properly.</div></div></div>
+
     ${noAgm.length?`<div class="alert"><div class="alert-i">▲</div><div>
-      <div class="alert-t">${noAgm.length} propert${noAgm.length>1?'ies have':'y has'} no AGM</div>
-      <div class="alert-b">${noAgm.map(p=>x(p.name)).join(' · ')} — the GM there carries two coaching layers. A structural constraint on how many people can develop at once, not a coach performance issue.</div></div></div>`:''}
+      <div class="alert-t">${noAgm.length} properties have no AGM — ${noAgm.map(p=>x(p.name)).join(' and ')}</div>
+      <div class="alert-b">The GM there carries two coaching layers. This caps how many people can develop at those properties and is a structural constraint, not a performance issue.</div></div></div>`:''}
+
+    <div class="alert"><div class="alert-i">▲</div><div>
+      <div class="alert-t">Only ${l4} AGMs across ${ROSTER.length} people</div>
+      <div class="alert-b">${l3} Seniors sit below them. The L4 layer is the narrowest point in the ladder — it constrains both operations and the rate at which people can be developed.</div></div></div>
 
     <div class="sec">
-      <div class="sec-t">Coach compliance</div>
-      <div class="sec-s">Whether the process is being applied — measured on actions with a yes/no answer. <b>Not a judgement on coaching quality.</b></div>
-      ${rows.map(({k,C,s})=>{
-        const st = s.pct===null?['No active programme','background:#F2EFE9;color:#5A5750']
-                 : s.late>2?['Slipping','background:#FDEEEA;color:#8A2E12']
-                 : s.late>0?['Behind','background:#FEF6E7;color:#7A4A05']
-                 : ['On track','background:#EAF7F2;color:#0A5540'];
-        const col=s.pct===null?'#B5B0A8':s.late>2?'var(--red)':s.late>0?'var(--amber)':'var(--green)';
-        return `<div class="cmp">
-          <div class="cmp-h"><div class="av" style="background:${C.color};width:34px;height:34px;font-size:11px">${C.ini}</div>
-            <div><div class="cmp-n">${x(C.name)}</div><div class="cmp-m">${x(C.role)} · ${x(C.property)} · coaching ${s.activePeople} active of ${C.people.length}</div></div>
-            <span class="cmp-s" style="${st[1]}">${st[0]}</span></div>
-          <div class="mrow"><span class="mrow-l">Tasks due to date</span>
-            <div class="mbar"><span style="width:${s.pct||0}%;background:${col}"></span></div>
-            <span class="mval">${s.pct===null?'—':s.complete+'/'+s.total}</span></div>
-          <div class="mrow"><span class="mrow-l">Overdue</span>
-            <div class="mbar"><span style="width:${s.total?s.late/s.total*100:0}%;background:var(--red)"></span></div>
-            <span class="mval" style="color:${s.late?'var(--red)':'var(--gray)'}">${s.late}</span></div>
-          <div class="mrow"><span class="mrow-l">Committed hours / month</span>
-            <div class="mbar"><span style="width:${Math.min(s.hrs/12*100,100)}%;background:${C.color}"></span></div>
-            <span class="mval">${s.hrs||0} h</span></div>
-        </div>`;}).join('')}
-      <div class="card" style="margin-top:12px">
-        <div class="card-k">Why these three</div>
-        <div class="card-b">Each has an unambiguous answer. "Did the session happen" can be verified; "is this person coaching well" cannot — and asking it turns HR into a judge of individuals, which is not the role.</div></div>
+      <div class="sec-t">Properties</div>
+      <div class="sec-s">Headcount by level. A property with no L4 has a gap in both its operating structure and its coaching capacity.</div>
+      <div class="pgrid">
+        ${PROPERTIES.map(p=>{
+          const n=ROSTER.filter(r=>r.prop===p.id).length;
+          return `<div class="pcard ${p.agm?'':'warn'}">
+            <div class="pc-n">${x(p.name)}</div>
+            <div class="pc-u">${p.units} homes · ${n} people</div>
+            <div class="lvls">${[2,3,4,5].map(l=>{const c=byLvl(l,p.id);
+              return `<div class="lv ${c?'':'zero'}"><div class="lv-v">${c}</div><div class="lv-l">L${l}</div></div>`;}).join('')}</div>
+            <div class="pc-u" style="margin-top:10px">GM ${x(p.gm)}${p.agm?' · AGM '+x(p.agm):' · <b style="color:var(--red)">no AGM</b>'}</div>
+          </div>`;}).join('')}
+      </div>
     </div>`;
 })();
 
-/* ── CAPACITY ── */
+/* ══ PEOPLE ══ */
+let filt='all';
+function renderPeople(){
+  const rows=ROSTER.filter(r=>filt==='all'||r.prop===filt||r.state===filt);
+  document.getElementById('people').innerHTML=`
+    <div class="sec">
+      <div class="sec-t">Everyone in the programme scope</div>
+      <div class="sec-s">Full visibility. <b>Amber</b> marks data that has never been recorded — not a concern about the person, but a gap that makes their eligibility unverifiable.</div>
+      <div class="filters">
+        <button class="fb ${filt==='all'?'on':''}" onclick="setF('all')">All ${ROSTER.length}</button>
+        ${PROPERTIES.map(p=>`<button class="fb ${filt===p.id?'on':''}" onclick="setF('${p.id}')">${x(p.name)}</button>`).join('')}
+        <span style="width:12px"></span>
+        ${['active','eligible','pending','practising'].map(s=>`<button class="fb ${filt===s?'on':''}" onclick="setF('${s}')">${PSTATE[s].n}</button>`).join('')}
+      </div>
+      <table class="t">
+        <thead><tr><th>Person</th><th>Property</th><th>Role</th><th class="c">Level</th><th class="c">Months in role</th><th class="c">Mastery</th><th>Coach</th><th>State</th><th class="c">Plan</th></tr></thead>
+        <tbody>
+        ${rows.map(r=>{
+          const st=PSTATE[r.state], co=r.coach?ALL_COACHES[r.coach]:null;
+          const inTeam=typeof TEAM!=='undefined'&&TEAM[r.id];
+          return `<tr>
+            <td><div class="pa"><span class="pav" style="background:${COL[r.lvl]}">${AV(r.name)}</span><b>${x(r.name)}</b></div></td>
+            <td style="color:var(--gray)">${x(PROP[r.prop].name)}</td>
+            <td style="color:var(--gray)">${x(r.role)}</td>
+            <td class="c">L${r.lvl}</td>
+            <td class="c">${r.months===null?'<span class="miss">not recorded</span>':r.months}</td>
+            <td class="c">${r.mastery===null?'<span class="miss">not assessed</span>':r.mastery+'%'}</td>
+            <td style="color:var(--gray)">${co?x(co.name):'—'}</td>
+            <td><span class="pill" style="${st.s}">${st.n}</span></td>
+            <td class="c">${inTeam?`<a href="plan.html?emp=${r.id}" style="font-size:11px;color:var(--navy)">open</a>`:'<span style="color:var(--gray);font-size:11px">—</span>'}</td>
+          </tr>`;}).join('')}
+        </tbody>
+      </table>
+    </div>`;
+  document.getElementById('pb').textContent=rows.length;
+}
+function setF(f){filt=f;renderPeople()}
+renderPeople();
+
+/* ══ COACHES ══ */
+(function(){
+  const load=cid=>{
+    const ppl=ROSTER.filter(r=>r.coach===cid);
+    const act=ppl.filter(r=>r.state==='active');
+    const hrs=act.reduce((a,r)=>{const t=r.target&&TEMPLATES[r.target];
+      const role=ALL_COACHES[cid].role==='AGM'?'agm':'gm';
+      return a+(t?parseFloat(t[role].hours):0);},0);
+    return {ppl,act,hrs};
+  };
+  document.getElementById('coaches').innerHTML=`
+    <div class="sec">
+      <div class="sec-t">Coaching load and compliance</div>
+      <div class="sec-s">Compliance is measured on actions with a yes/no answer — was the session held, was the task done. <b>Not on coaching quality</b>, which cannot be verified and would make HR a judge of individuals.</div>
+      ${Object.keys(ALL_COACHES).map(cid=>{
+        const C=ALL_COACHES[cid], {ppl,act,hrs}=load(cid);
+        const p=PROP[C.prop];
+        const twoLayer=C.role==='GM'&&!p.agm;
+        return `<div class="cmp">
+          <div class="cmp-h"><div class="pav" style="background:${C.color};width:34px;height:34px;font-size:11px">${C.ini}</div>
+            <div><div style="font-size:14px;font-weight:600">${x(C.name)}</div>
+              <div style="font-size:11px;color:var(--gray);margin-top:2px">${x(C.role)} · ${x(p.name)} · ${ppl.length} assigned, ${act.length} active</div></div>
+            ${twoLayer?'<span class="pill" style="margin-left:auto;background:#FDEEEA;color:#8A2E12">Two layers</span>'
+              :`<span class="pill" style="margin-left:auto;${act.length?'background:#EAF7F2;color:#0A5540':'background:#F2EFE9;color:#5A5750'}">${act.length?'Coaching':'No active programme'}</span>`}</div>
+          <div class="mrow"><span style="color:#6A6760">Committed hours / month</span>
+            <div class="mbar"><span style="width:${Math.min(hrs/12*100,100)}%;background:${C.color}"></span></div>
+            <span class="mval">${hrs||0} h</span></div>
+          <div class="mrow"><span style="color:#6A6760">People assigned</span>
+            <div class="mbar"><span style="width:${Math.min(ppl.length/6*100,100)}%;background:#B5B0A8"></span></div>
+            <span class="mval">${ppl.length}</span></div>
+          <div class="mrow"><span style="color:#6A6760">Task compliance</span>
+            <div class="mbar"><span style="width:0%;background:var(--green)"></span></div>
+            <span class="mval" style="color:var(--gray)">${act.length?'—':'n/a'}</span></div>
+          ${twoLayer?`<div class="card" style="margin-top:10px;background:#FDEEEA;border-color:#EFB5A2">
+            <div class="card-b" style="color:#5A3128">No AGM at ${x(p.name)} — this GM coaches both the L2→L3 and L3→L4 layers. Realistic capacity here is one or two people, not four.</div></div>`:''}
+        </div>`;}).join('')}
+      <div class="card" style="margin-top:12px">
+        <div class="card-k">Attention, not hours, is the real limit</div>
+        <div class="card-b">A coach can develop two or three people well. Past that the hours may still exist but the quality does not — which is why the cap is set on people, not on time.</div></div>
+    </div>`;
+})();
+
+/* ══ CAPACITY ══ */
 (function(){
   const nb=EXPANSION.newBuildings;
-  const need=l=>nb===null?null:(PER_BUILDING[l]||0)*nb;
   document.getElementById('capacity').innerHTML=`
     <div class="sec">
       <div class="sec-t">Leadership capacity, company-wide</div>
-      <div class="sec-s">Not succession per building — <b>net production against consumption</b>. Every promotion consumes the level below it, and every new building consumes one of each.</div>
-      <table class="cap">
-        <tr><th>Level</th><th class="n">Held</th><th class="n">In development</th><th class="n">Needed for expansion</th><th class="n">Net</th><th>Note</th></tr>
-        ${CAPACITY.map(c=>{
-          const key=c.lvl.split(' ')[0];
-          const nd=need(key);
-          const net=nd===null?null:c.inDev-nd;
-          const netTxt=net===null?'—':(net>0?'+'+net:net);
-          const col=net===null?'var(--gray)':net<0?'var(--red)':'var(--green)';
-          return `<tr><td><b>${x(c.lvl)}</b></td>
-            <td class="n">${c.held}</td>
-            <td class="n" style="color:${c.inDev?'var(--green)':'var(--gray)'}">${c.inDev}</td>
-            <td class="n" style="color:var(--gray)">${nd===null?'—':'+'+nd}</td>
-            <td class="n" style="color:${col}">${netTxt}</td>
-            <td style="color:var(--gray);font-size:12px">${x(c.note)}</td></tr>`;}).join('')}
+      <div class="sec-s">Not succession per building — <b>net production against consumption</b>. Every promotion consumes the level below it; every new building consumes one GM, one AGM and two Seniors.</div>
+      <table class="t" style="margin-top:6px">
+        <thead><tr><th>Level</th><th>Role</th><th class="c">Held</th><th class="c">In development</th><th class="c">Needed</th><th class="c">Net</th><th>Note</th></tr></thead>
+        <tbody>${LEVELS.map(L=>{
+          const held=byLvl(L.n);
+          const dev=ROSTER.filter(r=>r.state==='active'&&r.target&&TEMPLATES[r.target].level===L.n).length;
+          const need=nb===null?null:(PER_BUILDING['L'+L.n]||0)*nb;
+          const net=need===null?null:dev-need;
+          return `<tr>
+            <td><b>${x(L.label)}</b></td>
+            <td style="color:var(--gray)">${x(L.role)}</td>
+            <td class="c" style="font-weight:600">${held}</td>
+            <td class="c" style="color:${dev?'var(--green)':'var(--gray)'};font-weight:600">${dev}</td>
+            <td class="c" style="color:var(--gray)">${need===null?'—':'+'+need}</td>
+            <td class="c" style="color:${net===null?'var(--gray)':net<0?'var(--red)':'var(--green)'};font-weight:600">${net===null?'—':(net>0?'+'+net:net)}</td>
+            <td style="color:var(--gray);font-size:12px">${x(L.note)}</td></tr>`;}).join('')}
+        </tbody>
       </table>
       ${nb===null?`<div class="alert" style="margin:16px 0 0"><div class="alert-i">▲</div><div>
-        <div class="alert-t">Expansion plan not set</div>
-        <div class="alert-b">The whole table depends on one number: <b>how many buildings open in the next ${EXPANSION.horizonMonths} months</b>. Each one consumes 1 GM, 1 AGM and 2 Seniors. Until leadership sets it, capacity cannot be planned — only observed.</div></div></div>`:''}
+        <div class="alert-t">The expansion number is not set</div>
+        <div class="alert-b">This entire table turns on one figure: <b>how many buildings open in the next ${EXPANSION.horizonMonths} months</b>. Until leadership sets it, capacity can be observed but not planned — and the programme cannot be worked backwards from an opening date.</div></div></div>`:''}
     </div>
 
     <div class="sec">
       <div class="sec-t">Where a receiving owner comes from</div>
-      <div class="sec-s">A promotion does not leave work unowned — but the receiver has to come from somewhere, and only one of the three sources adds capacity.</div>
-      <div class="row"><span class="dot" style="background:var(--green)"></span>
-        <div style="flex:1"><b>Internal promotion</b> — closes the gap and opens a smaller one below. <b>Adds net capacity.</b></div></div>
-      <div class="row"><span class="dot" style="background:var(--amber)"></span>
-        <div style="flex:1"><b>Transfer between buildings</b> — <b>moves the gap, does not close it.</b> Only helps when the system is net-producing.</div></div>
-      <div class="row"><span class="dot" style="background:var(--purple)"></span>
-        <div style="flex:1"><b>External hire</b> — closes it after 3–6 months. Ownership is thin until then, which is a planning fact, not a surprise.</div></div>
+      <div class="sec-s">A promotion does not leave work unowned. But the receiver has to come from somewhere — and only one of the three sources adds capacity.</div>
+      <div class="row"><span class="dot" style="background:var(--green)"></span><div style="flex:1">
+        <b>Internal promotion</b> — closes the gap, opens a smaller one below. <b>Adds net capacity.</b></div></div>
+      <div class="row"><span class="dot" style="background:var(--amber)"></span><div style="flex:1">
+        <b>Transfer between properties</b> — <b>moves the gap rather than closing it.</b> Only helps when the system is net-producing.</div></div>
+      <div class="row"><span class="dot" style="background:var(--purple)"></span><div style="flex:1">
+        <b>External hire</b> — closes it after three to six months. Ownership is thin until then; a planning fact, not a surprise.</div></div>
       <div class="card" style="margin-top:14px">
         <div class="card-k">The constraint</div>
-        <div class="card-b"><b>How fast buildings can open is bounded by how fast leadership is produced.</b> When the net is negative, expansion is being funded by external hiring — a legitimate choice, but it should be a decision rather than a discovery.</div></div>
+        <div class="card-b"><b>How fast buildings can open is bounded by how fast leadership is produced.</b> When the net is negative, expansion is funded by external hiring — a legitimate choice, but it should be a decision rather than a discovery.</div></div>
     </div>
 
     <div class="sec">
-      <div class="sec-t">Properties</div>
-      ${PROPERTIES.map(p=>`<div class="row">
-        <div style="flex:1"><b>${x(p.name)}</b> <span style="color:var(--gray);font-size:11.5px">· ${p.units} homes</span>
-          <div style="font-size:11.5px;color:var(--gray);margin-top:2px">GM ${x(p.gm)} · AGM ${p.agm?x(p.agm):'<b style="color:var(--red)">vacant</b>'}</div></div>
-        ${p.agm?'':'<span class="pill" style="background:#FDEEEA;color:#8A2E12">No AGM</span>'}</div>`).join('')}
+      <div class="sec-t">The narrowest point</div>
+      <div class="sec-s">Counting the ladder as it stands today.</div>
+      <div class="pgrid">${LEVELS.map(L=>{const held=byLvl(L.n);
+        const warn=L.n===4;
+        return `<div class="pcard ${warn?'warn':''}">
+          <div style="font-family:'Playfair Display',serif;font-size:32px;font-weight:600;color:${warn?'var(--red)':COL[L.n]}">${held}</div>
+          <div class="pc-n" style="font-size:13px;margin-top:6px">${x(L.label)}</div>
+          <div class="pc-u">${x(L.role)}</div></div>`;}).join('')}</div>
+      <div class="card" style="margin-top:14px;background:#FDEEEA;border-color:#EFB5A2">
+        <div class="card-b" style="color:#5A3128"><b>Two AGMs across four properties is the bottleneck</b> — operationally and for development. Every AGM produced relieves both at once, which is why the L3→L4 transition carries more weight than its headcount suggests.</div></div>
     </div>`;
 })();
 
-/* ── CALIBRATION ── */
-document.getElementById('calibration').innerHTML=`
-  <div class="sec">
-    <div class="sec-t">Quarterly calibration</div>
-    <div class="sec-s">"One standard across every property" is a statement of intent until there is a mechanism. This is the mechanism.</div>
-    <div class="card" style="background:#F2FAF7;border-color:#CCE9DF">
-      <div class="card-k" style="color:#0A5540">How it runs</div>
-      <div class="card-b" style="color:#2C4E42">Every coach rates <b>the same anonymised case</b>, then the differences are discussed. Two hours a quarter. HR convenes it and records the spread — it does not adjudicate who was right.</div></div>
-    <div class="row" style="margin-top:14px"><span class="row-k">Q3 2026</span><div style="flex:1">Not yet held</div>
-      <span class="pill" style="background:#FEF6E7;color:#7A4A05">Due</span></div>
-    <div class="card" style="margin-top:14px">
-      <div class="card-k">Why it is not optional</div>
-      <div class="card-b">Without it, "Consistent" means something different in each building within a year — and a level stops being comparable across the company. It is also the only real protection against bias in a system that relies on judgement.</div></div>
-  </div>
-  <div class="sec">
-    <div class="sec-t">Outcome distribution by coach</div>
-    <div class="sec-s">A coach whose people always pass, or always fail, is a question worth asking — not an accusation.</div>
-    <div class="nodata">No completed gates yet. This becomes meaningful after the first full cycle.</div>
-  </div>`;
-
-/* ── METRICS ── */
-document.getElementById('metrics').innerHTML=`
+/* ══ QUALITY ══ */
+document.getElementById('quality').innerHTML=`
   <div class="sec">
     <div class="sec-t">Is the programme working?</div>
-    <div class="sec-s">We measure people constantly and rarely measure the programme. These four are the ones that matter.</div>
+    <div class="sec-s">We measure people constantly and rarely measure the programme itself. These four are the ones that matter.</div>
     ${PROGRAMME_METRICS.map(m=>`<div class="mt">
       <span class="mt-v">${m.v===null?'—':m.v+m.unit}</span>
       <div style="flex:1"><div class="mt-k">${x(m.k)}</div>
         <div class="mt-r">${x(m.reveals)}</div>
         <div class="mt-w">${x(m.warn)}</div></div></div>`).join('')}
     <div class="card" style="margin-top:14px">
-      <div class="card-k">Reviewed</div>
-      <div class="card-b">At the end of the first pilot quarter, before widening to a second building. <b>Retention twelve months after promotion is the slowest signal and the most honest one</b> — it will not be available for two years, and that is not a reason to leave it out.</div></div>
+      <div class="card-k">First review</div>
+      <div class="card-b">At the end of the first pilot quarter, before widening to a second property. <b>Retention twelve months after promotion is the slowest signal and the most honest</b> — it will not exist for two years, which is not a reason to leave it out.</div></div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-t">Quarterly calibration</div>
+    <div class="sec-s">"One standard across every property" is intent until there is a mechanism. This is the mechanism.</div>
+    <div class="card" style="background:#F2FAF7;border-color:#CCE9DF">
+      <div class="card-k" style="color:#0A5540">How it runs</div>
+      <div class="card-b" style="color:#2C4E42">All six coaches rate <b>the same anonymised case</b>, then the spread is discussed. Two hours a quarter. HR convenes and records the spread — it does not adjudicate who was right.</div></div>
+    <div class="row" style="margin-top:14px"><span class="row-k">Q3 2026</span>
+      <div style="flex:1">Not yet held — six coaches across four properties</div>
+      <span class="pill" style="background:#FEF6E7;color:#7A4A05">Due</span></div>
+    <div class="card" style="margin-top:12px">
+      <div class="card-b">Without it, <b>"Consistent" means something different in each property within a year</b> and a level stops being comparable across the company. It is also the only real protection against bias in a system that rests on judgement.</div></div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-t">Outcome distribution by coach</div>
+    <div class="sec-s">A coach whose people always pass, or always fail, is a question worth asking — not an accusation.</div>
+    <div style="font-size:12px;color:var(--gray);font-style:italic;padding:8px 0">No completed gates yet. Meaningful after the first full cycle.</div>
   </div>`;
 
-/* ── SCOPE ── */
-document.getElementById('scope').innerHTML=`
+/* ══ POLICY ══ */
+document.getElementById('policy').innerHTML=`
   <div class="sec">
-    <div class="sec-t">The boundary of this role</div>
-    <div class="sec-s">HR guards the process. It does not assess individuals, does not grant levels, and does not recommend promotions. That separation is what makes the rest of the system trustworthy.</div>
-    <div class="bnd">
-      <div class="bnd-c bnd-y"><div class="bnd-t" style="color:#0A5540">HR sees</div>
-        <ul>${HR_BOUNDARY.sees.map(s=>`<li>${x(s)}</li>`).join('')}</ul></div>
-      <div class="bnd-c bnd-n"><div class="bnd-t" style="color:#8A2E12">HR does not see</div>
-        <ul>${HR_BOUNDARY.doesNot.map(s=>`<li>${x(s)}</li>`).join('')}</ul></div>
+    <div class="sec-t">HR sees everything — use is what is governed</div>
+    <div class="sec-s">${x(DATA_USE.principle)}</div>
+    <div class="use" style="border-bottom:1px solid var(--line);padding-bottom:8px">
+      <span style="font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--gray);font-weight:600">Data</span>
+      <span style="font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--gray);font-weight:600">May be used for</span>
+      <span style="font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--gray);font-weight:600">Never used for</span>
     </div>
-    <div class="card" style="margin-top:16px;background:#FEF6E7;border-color:#F0C674">
-      <div class="card-k" style="color:#7A4A05">Why the practice log is protected</div>
-      <div class="card-b" style="color:#6B4A15">${x(HR_BOUNDARY.why)}</div></div>
+    ${DATA_USE.rules.map(r=>`<div class="use">
+      <span class="use-d">${x(r.d)}</span>
+      <span class="use-y">${x(r.use)}</span>
+      <span class="use-n">${r.never==='—'?'<span style="color:var(--gray)">no restriction</span>':x(r.never)}</span></div>`).join('')}
+    <div class="card" style="margin-top:14px;background:#F2FAF7;border-color:#CCE9DF">
+      <div class="card-k" style="color:#0A5540">Transparency</div>
+      <div class="card-b" style="color:#2C4E42">${x(DATA_USE.transparency)}</div></div>
   </div>
+
+  <div class="sec">
+    <div class="sec-t">Why use rather than access</div>
+    <div class="card">
+      <div class="card-b">The practice log contains admissions of error — <i>"forgot to flag the third-floor AC report"</i>. The risk is not that HR reads it; the risk is that it is <b>quoted in a promotion decision</b>, at which point people start writing for the audience.<br><br>
+      Restricting access would have blinded talent planning and made bias undetectable. Restricting <b>use</b> protects honesty without either cost — and it is auditable, because a report either cites the log or it does not.</div></div>
+  </div>
+
   <div class="sec">
     <div class="sec-t">Separation of powers</div>
+    <div class="sec-s">HR has full sight of the record and no vote on the outcome. That is what keeps full visibility safe.</div>
     <div class="row"><span class="row-k">Coach</span><div style="flex:1">Observes and assesses. <b>Recommends</b> — does not decide.</div></div>
     <div class="row"><span class="row-k">Sponsor</span><div style="flex:1"><b>Grants the level.</b> May overrule the coach, with a written reason.</div></div>
-    <div class="row"><span class="row-k">HR</span><div style="flex:1"><b>Audits the process.</b> Never assesses a person.</div></div>
-    <div class="row"><span class="row-k">Employee</span><div style="flex:1">Sees everything written about them. Sees the criteria before they are applied.</div></div>
-    <div class="card" style="margin-top:14px">
-      <div class="card-k">On appeal</div>
-      <div class="card-b">HR reviews whether the process was followed — were criteria published in advance, were sessions held, was the recommendation reasoned, was the same standard applied to others. <b>If a flaw is found the decision returns to the sponsor; HR does not substitute its own judgement.</b></div></div>
+    <div class="row"><span class="row-k">HR</span><div style="flex:1"><b>Sees everything, decides nothing.</b> Audits the process, convenes calibration, detects bias.</div></div>
+    <div class="row"><span class="row-k">Employee</span><div style="flex:1">Sees everything written about them, and the criteria before they are applied.</div></div>
   </div>`;
 </script>
 </body>
