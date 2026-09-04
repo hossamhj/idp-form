@@ -59,8 +59,91 @@ const PSTATE = {
   pending:   {n:'Needs plan',     s:'background:#FEF6E7;color:#7A4A05'},
   eligible:  {n:'Eligible',       s:'background:#EEEDFE;color:#26215C'},
   practising:{n:'Practising',     s:'background:#F2EFE9;color:#5A5750'},
-  support:   {n:'Needs support',  s:'background:#FDEEEA;color:#8A2E12'}
+  ready:     {n:'Ready · awaiting scope', s:'background:#E8EEF6;color:#1A3660'},
+  remediation:{n:'In remediation',s:'background:#FDEEEA;color:#8A2E12'}
 };
+
+/* ─────────────────── MASTERY CHECK ───────────────────
+   One judgement plus named exceptions — not thirty ratings.
+   A manager already knows the two or three things someone
+   is not good at; the model uses that rather than fighting it.
+   ─────────────────────────────────────────────────────── */
+
+const MASTERY_RULE = {
+  maxExceptions: 3,
+  ownedExceptionsAllowed: 0,
+  maxAgeMonths: 3,
+  prompt: 'Is this person at the standard of their current role? Yes — except:',
+  sources: [
+    {s:'Observed activity', shows:'Whether it has been practised enough at all', from:'automatic · task system'},
+    {s:'Manager judgement', shows:'Whether it is performed to standard',         from:'the confirmation'},
+    {s:'Incident record',   shows:'Whether failures repeat in that function',     from:'automatic'}
+  ],
+  cadence: [
+    ['Once at setup',       'Baseline for everyone'],
+    ['Annually',            'Refresh per person'],
+    ['On eligibility request','A confirmation no older than three months'],
+    ['By exception',        'A new function, an incident, a demonstrated improvement']
+  ],
+  conflictNote:'A function the manager calls at standard that carries repeated incidents is worth a look — which is why all three sources are read together rather than any one alone.'
+};
+
+/* null = never assessed · otherwise {confirmed, exceptions:[], ownedExceptions:n, asOf} */
+const MASTERY = {};
+
+const REMEDIATION = {
+  principle:'Someone below the standard of their current role needs remediation, not development. Building on soft ground collapses under the first real pressure.',
+  differsFrom: [
+    ['Purpose',  'Growth toward the next level',    'Restoring the current level'],
+    ['Duration', '12 months',                       '60–90 days'],
+    ['Scope',    '3 functions, deliberate practice','1–2 specific gaps'],
+    ['Nature',   'Aspirational, optional',          'Required'],
+    ['Owner',    'Coach and sponsor',               'Direct manager alone'],
+    ['Outcome',  'Promotion or mastery',            'Resolved, or a role-fit conversation']
+  ],
+  triggers: [
+    'More than three exceptions in the mastery check — automatic',
+    'Any exception on an owned function — automatic',
+    'Repeated incidents in the same function — automatic',
+    'Direct observation by the manager — manual'
+  ],
+  plan: ['The gap — precisely what is below standard',
+         'What resolved looks like — an observable behaviour, not a feeling',
+         'The support offered — a teacher, time, a tool, training',
+         'Review every two weeks, thirty minutes',
+         'Sixty days · extended by thirty once only'],
+  outcomes: [
+    {r:'Resolved',   d:'Returns to Practising — and leaves no mark on the eligibility record'},
+    {r:'Extended',   d:'Thirty further days on a revised plan. Once, not repeatedly'},
+    {r:'Unresolved', d:'A role-fit conversation with the sponsor — is this the right role, a different scope, another team?'}
+  ],
+  rules: [
+    'Remediation pauses eligibility; it does not cancel it. Once resolved the person is eligible again, with nothing held against them.',
+    'It is not a route to exit. HR watches for the pattern — a manager whose remediations always end in a departure.',
+    'The person sees the whole plan. There is no confidential remediation.'
+  ]
+};
+
+/* Template versioning — a change never applies to someone already enrolled */
+const CHANGE_CONTROL = {
+  rules: [
+    'Every template carries a version number and a date',
+    'A person’s programme is stamped with the template version at enrolment',
+    'A template change does not apply to anyone already in a programme — they finish on their version',
+    'A change requires HR plus one sponsor, recorded with the reason and date',
+    'Templates are reviewed annually, after a full cycle has completed'
+  ],
+  basis:'A direct extension of the transparency rule: no assessment against a criterion published after the fact.'
+};
+
+const EXCEPTIONS = [
+  {c:'Coach leaves or transfers',   r:'A replacement coach within two weeks. Prior assessments stand. The new coach re-baselines conduct only, not craft — they have not observed it yet.'},
+  {c:'Employee transfers property', r:'The programme continues; it does not restart. The receiving property’s coach takes over, and the quarter’s functions may be re-selected if that building operates differently.'},
+  {c:'External hire at L3 or above',r:'The six-month settling period runs from the join date. External experience does not count toward it — the point is knowing this building. The mastery check can be run earlier.'},
+  {c:'Paused — leave, illness, crisis', r:'The programme pauses rather than resets. Six months maximum, after which it is re-baselined.'},
+  {c:'Withdrawal',                  r:'A right at any time, without penalty. Returns to Practising. Re-entry needs a fresh eligibility check.'},
+  {c:'No seat available at completion', r:'The programme completes and readiness is recorded — the state is Ready, awaiting scope. Promoting without real scope would be title inflation; calling it a failure would be false.'}
+];
 
 /* HR sees everything. Governance applies to USE, not access. */
 const DATA_USE = {

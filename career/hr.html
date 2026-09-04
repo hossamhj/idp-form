@@ -62,8 +62,9 @@ table.t tbody tr:hover{background:#FCFBF9}
     <button class="tab" onclick="go('people',this)">People <span class="b" id="pb">22</span></button>
     <button class="tab" onclick="go('coaches',this)">Coaches</button>
     <button class="tab" onclick="go('capacity',this)">Capacity</button>
+    <button class="tab" onclick="go('mastery',this)">Mastery &amp; Remediation</button>
     <button class="tab" onclick="go('quality',this)">Quality</button>
-    <button class="tab" onclick="go('policy',this)">Data Use</button>
+    <button class="tab" onclick="go('policy',this)">Rules</button>
   </div>
   <a href="index.html" class="right">← Team</a>
 </div>
@@ -73,6 +74,7 @@ table.t tbody tr:hover{background:#FCFBF9}
   <div class="view" id="v-people"><div id="people"></div></div>
   <div class="view" id="v-coaches"><div id="coaches"></div></div>
   <div class="view" id="v-capacity"><div id="capacity"></div></div>
+  <div class="view" id="v-mastery"><div id="mastery"></div></div>
   <div class="view" id="v-quality"><div id="quality"></div></div>
   <div class="view" id="v-policy"><div id="policy"></div></div>
 </div>
@@ -273,6 +275,61 @@ renderPeople();
     </div>`;
 })();
 
+/* ══ MASTERY & REMEDIATION ══ */
+document.getElementById('mastery').innerHTML=`
+  <div class="alert crit"><div class="alert-i">■</div><div>
+    <div class="alert-t">The baseline has not been run — 0 of ${ROSTER.length} confirmed</div>
+    <div class="alert-b">Eligibility depends entirely on this check, and it has never been done. <b>Five minutes per person</b> — a single confirmation with named exceptions, not thirty ratings.</div></div></div>
+
+  <div class="sec">
+    <div class="sec-t">The mastery check</div>
+    <div class="sec-s">A manager already knows the two or three things someone is not good at. The check uses that rather than asking for thirty ratings nobody would give honestly.</div>
+    <div class="card" style="background:#FCFBF9;border-style:dashed">
+      <div style="font-size:13.5px;font-weight:600;margin-bottom:12px">${x(MASTERY_RULE.prompt)}</div>
+      <div style="font-size:12.5px;line-height:2;color:#5A5750;padding-left:14px">
+        ▸ <i>Incident Management</i> — never handled one<br>
+        ▸ <i>Deposit Accounting</i> — repeated reconciliation errors</div>
+      <div style="font-size:11.5px;color:var(--gray);margin-top:12px;padding-top:11px;border-top:1px solid #EDEAE4">
+        Exceptions: <b style="color:var(--ink)">2</b> · and the exceptions themselves become the development focus</div>
+    </div>
+    <div class="cols" style="grid-template-columns:1fr 1fr;margin-top:14px">
+      <div class="card"><div class="card-k">Eligible when</div>
+        <div class="card-b">Exceptions <b>≤ ${MASTERY_RULE.maxExceptions}</b><br>
+        Exceptions on an owned function: <b>${MASTERY_RULE.ownedExceptionsAllowed}</b><br>
+        Confirmation no older than <b>${MASTERY_RULE.maxAgeMonths} months</b></div></div>
+      <div class="card" style="background:#FDEEEA;border-color:#EFB5A2"><div class="card-k" style="color:#8A2E12">The absolute rule</div>
+        <div class="card-b" style="color:#5A3128">An exception on a function they <b>own</b> disqualifies regardless of everything else. Someone who has not mastered what they are accountable for is not developed for the next level.</div></div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-t">Three sources, read together</div>
+    <div class="sec-s">${x(MASTERY_RULE.conflictNote)}</div>
+    <table class="t"><thead><tr><th>Source</th><th>Shows</th><th>Comes from</th></tr></thead><tbody>
+      ${MASTERY_RULE.sources.map(s=>`<tr><td><b>${x(s.s)}</b></td><td style="color:var(--gray)">${x(s.shows)}</td><td style="color:var(--gray)">${x(s.from)}</td></tr>`).join('')}
+    </tbody></table>
+    <div style="margin-top:16px"><div class="card-k">Cadence</div>
+      ${MASTERY_RULE.cadence.map(c=>`<div class="row"><span class="row-k" style="min-width:170px">${x(c[0])}</span><div style="flex:1">${x(c[1])}</div></div>`).join('')}</div>
+    <div class="card" style="margin-top:12px"><div class="card-b">Not a continuous process — one judgement, updated when something changes. Anything heavier gets skipped.</div></div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-t">Remediation is not development</div>
+    <div class="sec-s">${x(REMEDIATION.principle)}</div>
+    <table class="t" style="margin-top:6px"><thead><tr><th></th><th>Development</th><th>Remediation</th></tr></thead><tbody>
+      ${REMEDIATION.differsFrom.map(r=>`<tr><td style="color:var(--gray)">${x(r[0])}</td><td>${x(r[1])}</td><td><b>${x(r[2])}</b></td></tr>`).join('')}
+    </tbody></table>
+    <div class="cols" style="grid-template-columns:1fr 1fr;margin-top:16px">
+      <div><div class="card-k">Triggers</div><ul class="tight" style="font-size:12.5px">${REMEDIATION.triggers.map(t=>`<li>${x(t)}</li>`).join('')}</ul></div>
+      <div><div class="card-k">The plan — one page</div><ul class="tight" style="font-size:12.5px">${REMEDIATION.plan.map(t=>`<li>${x(t)}</li>`).join('')}</ul></div>
+    </div>
+    <div style="margin-top:16px"><div class="card-k">Outcomes</div>
+      ${REMEDIATION.outcomes.map(o=>`<div class="row"><span class="row-k" style="min-width:96px"><b>${x(o.r)}</b></span><div style="flex:1">${x(o.d)}</div></div>`).join('')}</div>
+    <div class="card" style="margin-top:14px;background:#FEF6E7;border-color:#F0C674">
+      <div class="card-k" style="color:#7A4A05">Three governing rules</div>
+      <div class="card-b" style="color:#6B4A15">${REMEDIATION.rules.map(r=>'· '+x(r)).join('<br>')}</div></div>
+  </div>`;
+
 /* ══ QUALITY ══ */
 document.getElementById('quality').innerHTML=`
   <div class="sec">
@@ -331,6 +388,25 @@ document.getElementById('policy').innerHTML=`
     <div class="card">
       <div class="card-b">The practice log contains admissions of error — <i>"forgot to flag the third-floor AC report"</i>. The risk is not that HR reads it; the risk is that it is <b>quoted in a promotion decision</b>, at which point people start writing for the audience.<br><br>
       Restricting access would have blinded talent planning and made bias undetectable. Restricting <b>use</b> protects honesty without either cost — and it is auditable, because a report either cites the log or it does not.</div></div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-t">Template change control</div>
+    <div class="sec-s">${x(CHANGE_CONTROL.basis)}</div>
+    <ul class="tight" style="font-size:13px">${CHANGE_CONTROL.rules.map(r=>`<li>${x(r)}</li>`).join('')}</ul>
+    <div class="card" style="margin-top:12px;background:#FDEEEA;border-color:#EFB5A2">
+      <div class="card-b" style="color:#5A3128"><b>The rule that matters:</b> a template change never applies to anyone already enrolled. Whoever edits a criterion would otherwise be editing the eligibility of everyone mid-programme.</div></div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-t">Exception cases</div>
+    <div class="sec-s">The situations a programme meets in practice, decided in advance rather than improvised.</div>
+    <table class="t"><thead><tr><th style="width:26%">Case</th><th>Rule</th></tr></thead><tbody>
+      ${EXCEPTIONS.map(e=>`<tr><td><b>${x(e.c)}</b></td><td style="color:#5A5750">${x(e.r)}</td></tr>`).join('')}
+    </tbody></table>
+    <div class="card" style="margin-top:12px;background:#E8EEF6;border-color:#C3D2E5">
+      <div class="card-k" style="color:#1A3660">Why "Ready, awaiting scope" is a necessary state</div>
+      <div class="card-b" style="color:#2A3F5C">Without it one of two bad things happens: someone is promoted with no real scope, which is title inflation — or they are told they did not succeed, when they did and the seat is what is missing.<br><br><b>It is also the number that tells leadership how many buildings they could open today.</b></div></div>
   </div>
 
   <div class="sec">
