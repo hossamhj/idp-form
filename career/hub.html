@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Career Programme — All Views</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+.hero{background:var(--navy);color:#EDE9E2;border-radius:16px;padding:28px 32px;margin-bottom:22px}
+.hero-t{font-family:'Playfair Display',serif;font-size:30px;font-weight:500;line-height:1.2}
+.hero-s{font-size:14px;color:rgba(237,233,226,.68);margin-top:10px;line-height:1.7;max-width:680px}
+.hero-m{display:flex;gap:30px;margin-top:20px;padding-top:18px;border-top:1px solid rgba(237,233,226,.16);flex-wrap:wrap}
+.hm-v{font-family:'Playfair Display',serif;font-size:24px;font-weight:600}
+.hm-l{font-size:9.5px;color:rgba(237,233,226,.5);letter-spacing:.08em;text-transform:uppercase;margin-top:4px}
+
+.lvl{margin-bottom:26px}
+.lvl-h{display:flex;align-items:baseline;gap:12px;margin-bottom:4px}
+.lvl-n{width:26px;height:26px;border-radius:8px;color:#fff;display:flex;align-items:center;justify-content:center;
+  font-family:'Playfair Display',serif;font-size:12px;font-weight:600;flex-shrink:0}
+.lvl-t{font-family:'Playfair Display',serif;font-size:19px;font-weight:500}
+.lvl-c{margin-left:auto;font-size:11px;color:var(--gray)}
+.lvl-s{font-size:12px;color:var(--gray);margin:0 0 13px 38px;line-height:1.65}
+
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(238px,1fr));gap:11px;margin-left:38px}
+.c{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px;
+  display:block;text-decoration:none;color:inherit;transition:.16s}
+.c:hover{box-shadow:0 7px 20px rgba(0,0,0,.07);transform:translateY(-2px)}
+.c.wide{grid-column:1/-1}
+.c-h{display:flex;align-items:center;gap:10px}
+.c-av{width:32px;height:32px;border-radius:50%;color:#fff;font-size:10px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.c-av.sq{border-radius:9px;font-size:9px;letter-spacing:.02em}
+.c-n{font-size:13.5px;font-weight:600}
+.c-r{font-size:11px;color:var(--gray);margin-top:2px}
+.c-b{font-size:11.5px;color:var(--gray);line-height:1.6;margin-top:10px;padding-top:9px;border-top:1px solid #F0EDE7}
+.tag{margin-left:auto;font-size:9px;font-weight:600;padding:3px 8px;border-radius:7px;white-space:nowrap}
+
+.docs{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:11px}
+.d{background:#FCFBF9;border:1px solid #EDEAE4;border-radius:11px;padding:14px 16px;display:block;text-decoration:none;color:inherit;transition:.16s}
+.d:hover{background:#fff;border-color:var(--line)}
+.d-n{font-size:13px;font-weight:600}
+.d-b{font-size:11px;color:var(--gray);margin-top:4px;line-height:1.55}
+.legend{font-size:11px;color:var(--gray);margin-top:6px;display:flex;gap:14px;flex-wrap:wrap}
+.lg{display:flex;align-items:center;gap:5px}
+.lg-d{width:9px;height:9px;border-radius:3px}
+</style>
+</head>
+<body>
+
+<div class="topnav">
+  <div class="nav-icon">RX</div>
+  <div>
+    <div class="nav-name">Career Programme</div>
+    <div class="nav-sub">All views</div>
+  </div>
+  <a href="../index.html" class="right">← Flow Hub</a>
+</div>
+
+<div class="wrap" id="wrap"></div>
+
+<script src="data.js"></script>
+<script src="roster.js"></script>
+<script>
+const x=s=>String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const PROP=Object.fromEntries(PROPERTIES.map(p=>[p.id,p]));
+const AV=n=>n.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+const COL={2:'#C8853A',3:'#7C5CBF',4:'#0D6E5C',5:'#1D3A8A'};
+const LT={2:'L2 · Specialist',3:'L3 · Lead',4:'L4 · Function Owner',5:'L5 · Scope Owner'};
+const LD={
+ 2:'Owns the execution of functions within their scope. Coordinators and Associates both sit here — the move between them is breadth, not a level jump.',
+ 3:'Owns execution and directs others doing the same work. The first responsibility for someone else’s output, and the heaviest function load on the team.',
+ 4:'Accountable for a function across the whole scope without executing it. The transition into this level is made by letting go, not by mastering more.',
+ 5:'Owns the entire scope across every function and team, and carries the commercial result.'};
+
+const byLvl=l=>ROSTER.filter(r=>r.lvl===l);
+const st=s=>PSTATE[s]||PSTATE.practising;
+
+/* a person card */
+function pc(r,extra){
+  const s=st(r.state);
+  return `<a class="c" href="plan.html?emp=${r.id}">
+    <div class="c-h"><span class="c-av" style="background:${COL[r.lvl]}">${AV(r.name)}</span>
+      <div><div class="c-n">${x(r.name)}</div><div class="c-r">${x(PROP[r.prop].name)}</div></div>
+      <span class="tag" style="${s.s}">${s.n}</span></div>
+    <div class="c-b">${extra||x(r.role)}</div></a>`;
+}
+
+/* a coach card */
+function cc(id){
+  const C=ALL_COACHES[id], p=PROP[C.prop];
+  const ppl=ROSTER.filter(r=>r.coach===id);
+  const act=ppl.filter(r=>r.state==='active').length;
+  const twoLayer=C.role==='GM'&&!p.agm;
+  return `<a class="c" href="coach.html?id=${id}">
+    <div class="c-h"><span class="c-av" style="background:${C.color}">${C.ini}</span>
+      <div><div class="c-n">${x(C.name)}</div><div class="c-r">${x(p.name)}</div></div>
+      ${twoLayer?'<span class="tag" style="background:#FDEEEA;color:#8A2E12">Two layers</span>'
+        :`<span class="tag" style="background:#F2EFE9;color:#5A5750">${ppl.length} people</span>`}</div>
+    <div class="c-b">Coach view — this week, all tasks, my people, my time${act?` · <b style="color:#0A5540">${act} active</b>`:''}</div></a>`;
+}
+
+const gms=Object.keys(ALL_COACHES).filter(k=>ALL_COACHES[k].role==='GM');
+const agms=Object.keys(ALL_COACHES).filter(k=>ALL_COACHES[k].role==='AGM');
+const inDev=ROSTER.filter(r=>r.state==='active').length;
+const noData=ROSTER.filter(r=>r.months===null||r.mastery===null).length;
+
+document.getElementById('wrap').innerHTML=`
+  <div class="hero">
+    <div class="hero-t">Every view in one place</div>
+    <div class="hero-s">Ordered the way the programme is governed — configuration first, then oversight, then the people who decide, coach, and are developed.</div>
+    <div class="hero-m">
+      <div><div class="hm-v">${ROSTER.length}</div><div class="hm-l">People</div></div>
+      <div><div class="hm-v">${PROPERTIES.length}</div><div class="hm-l">Properties</div></div>
+      <div><div class="hm-v">${Object.keys(ALL_COACHES).length}</div><div class="hm-l">Coaches</div></div>
+      <div><div class="hm-v" style="color:#7FD9BC">${inDev}</div><div class="hm-l">In development</div></div>
+      <div><div class="hm-v" style="color:#F0A88E">${noData}</div><div class="hm-l">Missing data</div></div>
+    </div>
+  </div>
+
+  <!-- 1 · ADMIN -->
+  <div class="lvl">
+    <div class="lvl-h"><span class="lvl-n" style="background:#5A5750">1</span>
+      <span class="lvl-t">Administration</span>
+      <span class="lvl-c">Configuration and data entry</span></div>
+    <div class="lvl-s">Where the programme is set up: join dates, role start dates, the mastery check, programme activation, and the expansion number.</div>
+    <div class="cards">
+      <a class="c wide" href="admin.html">
+        <div class="c-h"><span class="c-av sq" style="background:#5A5750">CFG</span>
+          <div><div class="c-n">Admin — Programme Configuration</div>
+            <div class="c-r">People · Programmes · Settings · Data</div></div>
+          ${noData?`<span class="tag" style="background:#FDEEEA;color:#8A2E12">${noData} missing</span>`:''}</div>
+        <div class="c-b">Record the dates and run the mastery check here. Until that is done, eligibility is a judgement call rather than a check — for ${noData} of ${ROSTER.length} people.</div></a>
+    </div>
+  </div>
+
+  <!-- 2 · HR -->
+  <div class="lvl">
+    <div class="lvl-h"><span class="lvl-n" style="background:#4A3A20">2</span>
+      <span class="lvl-t">HR Oversight</span>
+      <span class="lvl-c">Sees everything, decides nothing</span></div>
+    <div class="lvl-s">Company-wide view of compliance, capacity and quality. Full visibility of every record — and no vote on any outcome, which is what makes that safe.</div>
+    <div class="cards">
+      <a class="c wide" href="hr.html">
+        <div class="c-h"><span class="c-av sq" style="background:#4A3A20">HR</span>
+          <div><div class="c-n">HR — Programme Oversight</div>
+            <div class="c-r">Overview · People · Coaches · Capacity · Mastery &amp; Remediation · Quality · Rules</div></div></div>
+        <div class="c-b">Coach compliance, net leadership capacity against expansion, quarterly calibration, and the four measures of whether the programme itself is working.</div></a>
+    </div>
+  </div>
+
+  <!-- 3 · SPONSORS -->
+  <div class="lvl">
+    <div class="lvl-h"><span class="lvl-n" style="background:#1D3A8A">3</span>
+      <span class="lvl-t">Sponsors · GM</span>
+      <span class="lvl-c">Grant the level</span></div>
+    <div class="lvl-s">The only role that decides. Approves real scope, signs the gate, and may overrule a coach with a written reason.</div>
+    <div class="cards">${gms.map(cc).join('')}</div>
+  </div>
+
+  <!-- 4 · COACHES -->
+  <div class="lvl">
+    <div class="lvl-h"><span class="lvl-n" style="background:#0D6E5C">4</span>
+      <span class="lvl-t">Coaches · AGM</span>
+      <span class="lvl-c">Observe and recommend</span></div>
+    <div class="lvl-s">Assess conduct, hold the monthly session, and write a reasoned recommendation at the gate. Two properties have no AGM, so their GM carries both layers.</div>
+    <div class="cards">${agms.map(cc).join('')}</div>
+  </div>
+
+  <!-- 5 · THE FOUR LEVELS -->
+  ${[5,4,3,2].map(l=>{
+    const ppl=byLvl(l);
+    return `<div class="lvl">
+      <div class="lvl-h"><span class="lvl-n" style="background:${COL[l]}">L${l}</span>
+        <span class="lvl-t">${x(LT[l].split(' · ')[1])}</span>
+        <span class="lvl-c">${ppl.length} ${ppl.length===1?'person':'people'}</span></div>
+      <div class="lvl-s">${x(LD[l])}</div>
+      <div class="cards">${ppl.map(r=>pc(r)).join('')}</div>
+    </div>`;}).join('')}
+
+  <!-- DOCUMENTS -->
+  <div class="lvl">
+    <div class="lvl-h"><span class="lvl-n" style="background:#8A8780">✦</span>
+      <span class="lvl-t">Presentations</span>
+      <span class="lvl-c">Arrow keys to navigate · Ctrl+P to export a PDF</span></div>
+    <div class="lvl-s">For the conversations rather than the running of the programme.</div>
+    <div class="cards" style="margin-left:38px">
+      <a class="d" href="../governance.html"><div class="d-n">Governance · 3 slides</div>
+        <div class="d-b">Everyone sees everything, one person decides. The short version.</div></a>
+      <a class="d" href="../governance_deck.html"><div class="d-n">Governance · 12 slides</div>
+        <div class="d-b">Three pillars, eight rules, the appeal path, the expansion risk.</div></a>
+      <a class="d" href="../career_deck.html"><div class="d-n">The programme · 15 slides</div>
+        <div class="d-b">What it is, what it produces, and the four decisions we need.</div></a>
+      <a class="d" href="../career_deck_ar.html"><div class="d-n">البرنامج · 21 شريحة</div>
+        <div class="d-b">Arabic edition, earlier structure.</div></a>
+    </div>
+  </div>
+
+  <div class="sec" style="margin-top:8px">
+    <div class="sec-t" style="font-size:15px">How the levels work</div>
+    <div class="sec-s">The level is span of responsibility — not title, tenure, or pay grade. A Housekeeping Supervisor and an AGM can sit at the same level.</div>
+    <div class="legend">
+      ${[2,3,4,5].map(l=>`<span class="lg"><span class="lg-d" style="background:${COL[l]}"></span>${x(LT[l])} · ${byLvl(l).length}</span>`).join('')}
+    </div>
+  </div>`;
+</script>
+</body>
+</html>

@@ -66,7 +66,7 @@
     <button class="tab" onclick="go('gate',this)">The Gate</button>
     <button class="tab" onclick="go('coach',this)">Coaches</button>
   </div>
-  <a href="index.html" class="right">← Team</a>
+  <a href="hub.html" class="right">☰ All views</a>
 </div>
 
 <div class="wrap">
@@ -80,10 +80,30 @@
 <div class="toast" id="toast"></div>
 
 <script src="data.js"></script>
+<script src="roster.js"></script>
 <script>
 const x=s=>String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 const EMP=new URLSearchParams(location.search).get('emp')||'beesan';
-const P=TEAM[EMP], T=P?TEMPLATES[P.template]:null;
+
+/* TEAM holds the richly-detailed people; ROSTER holds everyone.
+   Anyone not in TEAM still gets a full page, derived from the roster. */
+const COLBY={2:'#C8853A',3:'#7C5CBF',4:'#0D6E5C',5:'#1D3A8A'};
+function resolve(id){
+  if(TEAM[id]) return TEAM[id];
+  const r=typeof ROSTER!=='undefined' && ROSTER.find(z=>z.id===id);
+  if(!r) return null;
+  const prop=PROPERTIES.find(p=>p.id===r.prop)||{};
+  const coach=r.coach&&typeof ALL_COACHES!=='undefined'?ALL_COACHES[r.coach]:null;
+  return {
+    name:r.name, ini:r.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase(),
+    color:COLBY[r.lvl]||'#8A8780', property:prop.name||'',
+    role:r.role, template:r.target, state:r.state, quarter:r.quarter||0,
+    manager:coach?coach.name:(prop.agm||prop.gm||'—'),
+    sponsor:prop.gm||'—', gate:'—', teachers:null,
+    note:'No programme has been activated yet. Record the join and role dates and run the mastery check in Admin — eligibility cannot be confirmed without them.'
+  };
+}
+const P=resolve(EMP), T=P&&P.template?TEMPLATES[P.template]:null;
 const K='cd_'+EMP+'_';
 const ST={logs:JSON.parse(localStorage.getItem(K+'logs')||'{}'),step:JSON.parse(localStorage.getItem(K+'step')||'{}'),
   self:JSON.parse(localStorage.getItem(K+'self')||'{}'),mgr:JSON.parse(localStorage.getItem(K+'mgr')||'{}'),
@@ -95,7 +115,7 @@ function go(v,btn){document.querySelectorAll('.view').forEach(e=>e.classList.rem
   document.getElementById('v-'+v).classList.add('on');
   document.querySelectorAll('button.tab').forEach(t=>t.classList.remove('on'));if(btn)btn.classList.add('on');window.scrollTo(0,0)}
 
-if(!P){document.getElementById('hero').innerHTML='<div class="sec"><div class="sec-t">Not found</div><div class="sec-s">No team member matches that link.</div></div>';}
+if(!P||!T){document.getElementById('hero').innerHTML='<div class="sec"><div class="sec-t">Not found</div><div class="sec-s">No team member matches that link.</div></div>';}
 else{
 document.getElementById('navAv').textContent=P.ini;
 document.getElementById('navAv').style.background=P.color;
