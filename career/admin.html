@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Admin — Programme Configuration</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+table.t{width:100%;border-collapse:collapse;font-size:13px}
+table.t th{text-align:left;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--gray);font-weight:600;padding:0 10px 9px 0;border-bottom:1px solid var(--line);white-space:nowrap}
+table.t td{padding:9px 10px 9px 0;border-bottom:1px solid #EAE6DE;vertical-align:middle}
+table.t tr:last-child td{border:none}
+table.t tbody tr{cursor:pointer}
+table.t tbody tr:hover{background:#FCFBF9}
+table.t td.c{text-align:center}
+.pa{display:flex;align-items:center;gap:8px}
+.pav{width:26px;height:26px;border-radius:50%;font-size:8.5px;font-weight:700;color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.pill{font-size:9.5px;font-weight:600;padding:3px 9px;border-radius:8px;white-space:nowrap;display:inline-block}
+.miss{color:var(--amber);font-weight:600;font-size:11.5px}
+.ok{color:var(--green);font-weight:600}
+
+/* drawer */
+.scrim{position:fixed;inset:0;background:rgba(28,28,28,.42);opacity:0;pointer-events:none;transition:.2s;z-index:150}
+.scrim.on{opacity:1;pointer-events:auto}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:520px;max-width:94vw;background:var(--cream);
+  box-shadow:-14px 0 40px rgba(0,0,0,.18);transform:translateX(100%);transition:.25s;z-index:160;overflow-y:auto}
+.drawer.on{transform:translateX(0)}
+.dh{position:sticky;top:0;background:#fff;border-bottom:1px solid var(--line);padding:16px 22px;display:flex;align-items:center;gap:12px;z-index:2}
+.dh-n{font-family:'Playfair Display',serif;font-size:19px;font-weight:500}
+.dh-r{font-size:11.5px;color:var(--gray);margin-top:2px}
+.dx{margin-left:auto;background:none;border:1px solid var(--line);width:30px;height:30px;border-radius:8px;cursor:pointer;font-size:15px;color:var(--gray)}
+.dx:hover{background:#F3F0EA}
+.db{padding:20px 22px 40px}
+.fs{margin-bottom:22px}
+.fs-t{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--gray);font-weight:600;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--line)}
+.f{margin-bottom:13px}
+.f label{display:block;font-size:11.5px;color:#6A6760;margin-bottom:5px;font-weight:500}
+.f input,.f select,.f textarea{width:100%;font-family:inherit;font-size:13px;border:1px solid var(--line);
+  border-radius:8px;padding:9px 11px;background:#fff;color:var(--ink)}
+.f input:focus,.f select:focus,.f textarea:focus{outline:none;border-color:var(--navy)}
+.f .hint{font-size:10.5px;color:var(--gray);margin-top:4px;line-height:1.5}
+.f2{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.exc{display:flex;gap:8px;margin-bottom:7px}
+.exc input{flex:1}
+.exc button{background:none;border:1px solid var(--line);width:34px;border-radius:8px;cursor:pointer;color:var(--gray);font-size:14px}
+.exc button:hover{background:#FDEEEA;border-color:#EFB5A2;color:#8A2E12}
+.btn{background:var(--navy);color:#fff;border:none;font-family:inherit;font-size:13px;font-weight:600;padding:10px 20px;border-radius:8px;cursor:pointer}
+.btn:hover{filter:brightness(1.12)}
+.btn.gh{background:none;color:#6A6760;border:1px solid var(--line)}
+.btn.gh:hover{background:#fff}
+.btn.sm{font-size:11.5px;padding:7px 14px}
+.bar{position:sticky;bottom:0;background:var(--cream);border-top:1px solid var(--line);padding:14px 22px;display:flex;gap:10px;margin:0 -22px -40px}
+.verdict{border-radius:10px;padding:13px 15px;margin-bottom:16px;font-size:12.5px;line-height:1.7}
+.v-ok{background:#F2FAF7;border:1px solid #CCE9DF;color:#2C4E42}
+.v-no{background:#FDEEEA;border:1px solid #EFB5A2;color:#5A3128}
+.v-wait{background:#FEF6E7;border:1px solid #F0C674;color:#6B4A15}
+.io{font-family:ui-monospace,SFMono-Regular,monospace;font-size:11px;width:100%;height:190px;
+  border:1px solid var(--line);border-radius:9px;padding:11px;background:#fff;resize:vertical;line-height:1.5}
+</style>
+</head>
+<body>
+
+<div class="topnav">
+  <div class="nav-icon" style="background:#5A5750">CFG</div>
+  <div>
+    <div class="nav-name">Programme Configuration</div>
+    <div class="nav-sub">Admin</div>
+  </div>
+  <div class="tabs">
+    <button class="tab on" onclick="go('people',this)">People</button>
+    <button class="tab" onclick="go('programmes',this)">Programmes</button>
+    <button class="tab" onclick="go('settings',this)">Settings</button>
+    <button class="tab" onclick="go('data',this)">Data</button>
+  </div>
+  <a href="hr.html" class="right">HR →</a>
+</div>
+
+<div class="wrap">
+  <div class="view on" id="v-people"><div id="people"></div></div>
+  <div class="view" id="v-programmes"><div id="programmes"></div></div>
+  <div class="view" id="v-settings"><div id="settings"></div></div>
+  <div class="view" id="v-data"><div id="data"></div></div>
+</div>
+
+<div class="scrim" id="scrim" onclick="closeD()"></div>
+<div class="drawer" id="drawer"><div id="dbody"></div></div>
+<div class="toast" id="toast"></div>
+
+<script src="data.js"></script>
+<script src="roster.js"></script>
+<script>
+const x=s=>String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const PROP=Object.fromEntries(PROPERTIES.map(p=>[p.id,p]));
+const AV=n=>n.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+const COL={2:'#C8853A',3:'#7C5CBF',4:'#0D6E5C',5:'#1D3A8A'};
+const K='cd_admin';
+
+/* overrides merge on top of the roster seed */
+let DB=JSON.parse(localStorage.getItem(K)||'{}');
+if(!DB.people)DB.people={};
+if(!DB.settings)DB.settings={newBuildings:'',horizonMonths:18};
+const save=()=>{localStorage.setItem(K,JSON.stringify(DB));};
+const P=id=>Object.assign({},ROSTER.find(r=>r.id===id),DB.people[id]||{});
+const ALL=()=>ROSTER.map(r=>P(r.id));
+
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('on');clearTimeout(t._);t._=setTimeout(()=>t.classList.remove('on'),1700)}
+function go(v,btn){document.querySelectorAll('.view').forEach(e=>e.classList.remove('on'));
+  document.getElementById('v-'+v).classList.add('on');
+  document.querySelectorAll('button.tab').forEach(t=>t.classList.remove('on'));if(btn)btn.classList.add('on');
+  render();window.scrollTo(0,0)}
+
+const monthsSince=d=>{if(!d)return null;const a=new Date(d),b=new Date();
+  return Math.max(0,(b.getFullYear()-a.getFullYear())*12+(b.getMonth()-a.getMonth()));};
+const addMonths=(d,n)=>{const r=new Date(d);r.setMonth(r.getMonth()+n);return r.toISOString().slice(0,10);};
+const fmt=d=>d?new Date(d).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}):'—';
+
+/* eligibility verdict */
+function verdict(p){
+  const mos=p.roleStart?monthsSince(p.roleStart):p.months;
+  const m=p.masteryDone;
+  const exc=(p.exceptions||[]).filter(Boolean);
+  const ownedExc=p.ownedExceptions|0;
+  const miss=[];
+  if(mos===null||mos===undefined)miss.push('time in role not recorded');
+  else if(mos<6)miss.push(`only ${mos} months in role — six required`);
+  if(!m)miss.push('mastery check never run');
+  else{
+    if(exc.length>MASTERY_RULE.maxExceptions)miss.push(`${exc.length} exceptions — maximum is ${MASTERY_RULE.maxExceptions}`);
+    if(ownedExc>0)miss.push(`${ownedExc} exception${ownedExc>1?'s':''} on an owned function — none permitted`);
+    if(p.masteryDate&&monthsSince(p.masteryDate)>MASTERY_RULE.maxAgeMonths)miss.push('mastery confirmation older than three months');
+  }
+  if(p.concern)miss.push('an open performance concern');
+  return {ok:miss.length===0, miss, mos, exc};
+}
+
+/* ══ PEOPLE ══ */
+function renderPeople(){
+  const rows=ALL();
+  const done=rows.filter(p=>p.masteryDone).length;
+  const dated=rows.filter(p=>p.roleStart||p.months!=null).length;
+  document.getElementById('people').innerHTML=`
+    <div class="strip">
+      <div class="sc"><div class="sc-v">${rows.length}</div><div class="sc-l">People</div></div>
+      <div class="sc"><div class="sc-v" style="color:${dated===rows.length?'var(--green)':'var(--amber)'}">${dated}/${rows.length}</div><div class="sc-l">Dates recorded</div></div>
+      <div class="sc"><div class="sc-v" style="color:${done===rows.length?'var(--green)':'var(--amber)'}">${done}/${rows.length}</div><div class="sc-l">Mastery checked</div></div>
+      <div class="sc"><div class="sc-v" style="color:var(--green)">${rows.filter(p=>verdict(p).ok).length}</div><div class="sc-l">Eligible now</div></div>
+    </div>
+    <div class="sec">
+      <div class="sec-t">Roster</div>
+      <div class="sec-s">Click any row to record join and role dates, run the mastery check, or activate a programme. Everything saves locally — use <b>Data</b> to export.</div>
+      <table class="t">
+        <thead><tr><th>Person</th><th>Property</th><th>Role</th><th class="c">Joined</th><th class="c">In role</th><th class="c">Mastery</th><th>State</th><th class="c">Eligible</th></tr></thead>
+        <tbody>${rows.map(p=>{
+          const v=verdict(p), st=PSTATE[p.state]||PSTATE.practising;
+          return `<tr onclick="openP('${p.id}')">
+            <td><div class="pa"><span class="pav" style="background:${COL[p.lvl]}">${AV(p.name)}</span><b>${x(p.name)}</b></div></td>
+            <td style="color:var(--gray)">${x(PROP[p.prop].name)}</td>
+            <td style="color:var(--gray)">${x(p.role)}</td>
+            <td class="c">${p.joinDate?fmt(p.joinDate):'<span class="miss">—</span>'}</td>
+            <td class="c">${v.mos==null?'<span class="miss">—</span>':v.mos+' mo'}</td>
+            <td class="c">${p.masteryDone?`<span class="ok">${v.exc.length} exc</span>`:'<span class="miss">not run</span>'}</td>
+            <td><span class="pill" style="${st.s}">${st.n}</span></td>
+            <td class="c">${v.ok?'<span class="ok">✓</span>':'<span style="color:var(--gray)">—</span>'}</td>
+          </tr>`;}).join('')}
+        </tbody>
+      </table>
+    </div>`;
+}
+
+/* ══ DRAWER ══ */
+let CUR=null;
+function openP(id){
+  CUR=id; const p=P(id), v=verdict(p);
+  const tpl=p.target?TEMPLATES[p.target]:null;
+  const exc=(p.exceptions&&p.exceptions.length?p.exceptions:['']);
+  document.getElementById('dbody').innerHTML=`
+    <div class="dh">
+      <span class="pav" style="background:${COL[p.lvl]};width:34px;height:34px;font-size:11px">${AV(p.name)}</span>
+      <div><div class="dh-n">${x(p.name)}</div><div class="dh-r">${x(p.role)} · ${x(PROP[p.prop].name)}</div></div>
+      <button class="dx" onclick="closeD()">×</button>
+    </div>
+    <div class="db">
+      <div class="verdict ${v.ok?'v-ok':(p.masteryDone||p.roleStart)?'v-no':'v-wait'}">
+        ${v.ok?'<b>Eligible to enter a programme.</b> All four conditions are met.'
+          :`<b>Not yet eligible.</b><br>${v.miss.map(m=>'· '+x(m)).join('<br>')}`}
+      </div>
+
+      <div class="fs">
+        <div class="fs-t">Dates</div>
+        <div class="f2">
+          <div class="f"><label>Joined Flow</label>
+            <input type="date" id="joinDate" value="${p.joinDate||''}"></div>
+          <div class="f"><label>Started current role</label>
+            <input type="date" id="roleStart" value="${p.roleStart||''}"></div>
+        </div>
+        <div class="f"><div class="hint">Time in role drives the six-month settling rule. It runs from the role start date, not the join date — the point is knowing <i>this</i> role.</div></div>
+      </div>
+
+      <div class="fs">
+        <div class="fs-t">Mastery check</div>
+        <div class="f">
+          <label>${x(MASTERY_RULE.prompt)}</label>
+          <select id="masteryDone">
+            <option value="">Not run yet</option>
+            <option value="1" ${p.masteryDone?'selected':''}>Confirmed at standard — with the exceptions below</option>
+          </select>
+        </div>
+        <div class="f"><label>Exceptions — functions below standard</label>
+          <div id="excList">${exc.map((e,i)=>`<div class="exc">
+            <input type="text" value="${x(e)}" placeholder="e.g. Incident Management — never handled one">
+            <button onclick="this.parentElement.remove()">−</button></div>`).join('')}</div>
+          <button class="btn gh sm" style="margin-top:4px" onclick="addExc()">+ Add exception</button>
+          <div class="hint">Maximum ${MASTERY_RULE.maxExceptions}. A manager already knows the two or three weak spots — this is that, not thirty ratings.</div>
+        </div>
+        <div class="f2">
+          <div class="f"><label>Of those, on an owned function</label>
+            <input type="number" id="ownedExceptions" min="0" value="${p.ownedExceptions||0}">
+            <div class="hint" style="color:#8A2E12">Any number above zero disqualifies, whatever else is true.</div></div>
+          <div class="f"><label>Confirmed on</label>
+            <input type="date" id="masteryDate" value="${p.masteryDate||''}">
+            <div class="hint">Must be under ${MASTERY_RULE.maxAgeMonths} months old.</div></div>
+        </div>
+        <div class="f"><label><input type="checkbox" id="concern" ${p.concern?'checked':''} style="width:auto;margin-right:7px">Open performance concern</label></div>
+      </div>
+
+      <div class="fs">
+        <div class="fs-t">Programme</div>
+        <div class="f"><label>State</label>
+          <select id="state">${Object.keys(PSTATE).map(s=>`<option value="${s}" ${p.state===s?'selected':''}>${PSTATE[s].n}</option>`).join('')}</select></div>
+        <div class="f"><label>Target transition</label>
+          <select id="target"><option value="">None</option>
+            ${Object.keys(TEMPLATES).map(t=>`<option value="${t}" ${p.target===t?'selected':''}>${TEMPLATES[t].code} · ${TEMPLATES[t].from} → ${TEMPLATES[t].to}</option>`).join('')}</select></div>
+        <div class="f2">
+          <div class="f"><label>Programme start</label>
+            <input type="date" id="startDate" value="${p.startDate||''}" onchange="calcGate()"></div>
+          <div class="f"><label>Gate — calculated</label>
+            <input type="text" id="gateDate" value="${p.startDate&&tpl?fmt(addMonths(p.startDate,tpl.months)):''}" readonly style="background:#F7F5F1;color:var(--gray)"></div>
+        </div>
+        <div class="f2">
+          <div class="f"><label>Current quarter</label>
+            <input type="number" id="quarter" min="0" max="6" value="${p.quarter||0}"></div>
+          <div class="f"><label>Coach</label>
+            <select id="coach"><option value="">None</option>
+              ${Object.keys(ALL_COACHES).map(c=>`<option value="${c}" ${p.coach===c?'selected':''}>${ALL_COACHES[c].name} · ${ALL_COACHES[c].role}</option>`).join('')}</select></div>
+        </div>
+        ${tpl?`<div class="hint">${x(tpl.kind)} · ${tpl.changed} functions change · ${tpl.months} months</div>`:''}
+      </div>
+
+      <div class="bar">
+        <button class="btn" onclick="saveP()">Save</button>
+        <button class="btn gh" onclick="closeD()">Cancel</button>
+      </div>
+    </div>`;
+  document.getElementById('drawer').classList.add('on');
+  document.getElementById('scrim').classList.add('on');
+}
+function addExc(){
+  const d=document.createElement('div');d.className='exc';
+  d.innerHTML='<input type="text" placeholder="Function — what is below standard"><button onclick="this.parentElement.remove()">−</button>';
+  document.getElementById('excList').appendChild(d);
+}
+function calcGate(){
+  const p=P(CUR), t=document.getElementById('target').value, tpl=TEMPLATES[t];
+  const s=document.getElementById('startDate').value;
+  document.getElementById('gateDate').value=(s&&tpl)?fmt(addMonths(s,tpl.months)):'';
+}
+function saveP(){
+  const g=id=>document.getElementById(id);
+  const exc=[...document.querySelectorAll('#excList input')].map(i=>i.value.trim()).filter(Boolean);
+  DB.people[CUR]=Object.assign(DB.people[CUR]||{},{
+    joinDate:g('joinDate').value, roleStart:g('roleStart').value,
+    masteryDone:!!g('masteryDone').value, exceptions:exc,
+    ownedExceptions:+g('ownedExceptions').value||0, masteryDate:g('masteryDate').value,
+    concern:g('concern').checked, state:g('state').value, target:g('target').value||null,
+    startDate:g('startDate').value, quarter:+g('quarter').value||0, coach:g('coach').value||null
+  });
+  save(); closeD(); render(); toast('Saved');
+}
+function closeD(){document.getElementById('drawer').classList.remove('on');document.getElementById('scrim').classList.remove('on')}
+
+/* ══ PROGRAMMES ══ */
+function renderProg(){
+  const act=ALL().filter(p=>p.state==='active'||p.state==='ready'||p.state==='remediation');
+  const elig=ALL().filter(p=>verdict(p).ok&&p.state!=='active');
+  document.getElementById('programmes').innerHTML=`
+    <div class="sec">
+      <div class="sec-t">Running programmes</div>
+      <div class="sec-s">Anyone in development, ready and awaiting scope, or in remediation.</div>
+      ${act.length?`<table class="t">
+        <thead><tr><th>Person</th><th>Transition</th><th class="c">Started</th><th class="c">Quarter</th><th class="c">Gate</th><th>Coach</th><th>State</th></tr></thead>
+        <tbody>${act.map(p=>{const t=p.target?TEMPLATES[p.target]:null,st=PSTATE[p.state];
+          return `<tr onclick="openP('${p.id}')">
+            <td><div class="pa"><span class="pav" style="background:${COL[p.lvl]}">${AV(p.name)}</span><b>${x(p.name)}</b></div></td>
+            <td style="color:var(--gray)">${t?x(t.from)+' → '+x(t.to):'—'}</td>
+            <td class="c">${fmt(p.startDate)}</td>
+            <td class="c">${p.quarter?'Q'+p.quarter+(t?' of '+t.quarters.length:''):'—'}</td>
+            <td class="c">${p.startDate&&t?fmt(addMonths(p.startDate,t.months)):'—'}</td>
+            <td style="color:var(--gray)">${p.coach?x(ALL_COACHES[p.coach].name):'—'}</td>
+            <td><span class="pill" style="${st.s}">${st.n}</span></td></tr>`;}).join('')}
+        </tbody></table>`:'<div style="font-size:12px;color:var(--gray);font-style:italic;padding:8px 0">No programmes running.</div>'}
+    </div>
+    <div class="sec">
+      <div class="sec-t">Eligible to start</div>
+      <div class="sec-s">All four conditions met. Starting one still needs a coach with capacity — four to six people in active development across the company is the practical ceiling.</div>
+      ${elig.length?elig.map(p=>`<div class="row">
+        <span class="pav" style="background:${COL[p.lvl]}">${AV(p.name)}</span>
+        <div style="flex:1"><b>${x(p.name)}</b><div style="font-size:11.5px;color:var(--gray);margin-top:2px">${x(p.role)} · ${x(PROP[p.prop].name)}</div></div>
+        <button class="btn sm" onclick="openP('${p.id}')">Activate</button></div>`).join('')
+        :'<div style="font-size:12px;color:var(--gray);font-style:italic;padding:8px 0">Nobody is eligible yet — dates and mastery checks are missing.</div>'}
+    </div>`;
+}
+
+/* ══ SETTINGS ══ */
+function renderSettings(){
+  const s=DB.settings;
+  document.getElementById('settings').innerHTML=`
+    <div class="sec">
+      <div class="sec-t">Expansion plan</div>
+      <div class="sec-s">One number the whole capacity calculation turns on. Each new building consumes <b>1 GM, 1 AGM and 2 Seniors</b>.</div>
+      <div class="f2" style="max-width:440px">
+        <div class="f"><label>New buildings planned</label>
+          <input type="number" id="nb" min="0" value="${s.newBuildings}"></div>
+        <div class="f"><label>Over how many months</label>
+          <input type="number" id="hm" min="6" value="${s.horizonMonths}"></div>
+      </div>
+      <button class="btn" onclick="saveSet()">Save</button>
+      ${s.newBuildings!==''?`<div class="card" style="margin-top:16px">
+        <div class="card-k">That implies</div>
+        <div class="card-b">${s.newBuildings} buildings need <b>${s.newBuildings} GMs · ${s.newBuildings} AGMs · ${s.newBuildings*2} Seniors</b> within ${s.horizonMonths} months.<br><br>
+        A Senior programme runs 12 months and an AGM programme 12 — so anyone filling those seats <b>must start now, not when the building is announced</b>.</div></div>`:''}
+    </div>
+    <div class="sec">
+      <div class="sec-t">Properties and coaches</div>
+      <div class="sec-s">Read from the roster. Editing these belongs in the operating system, not here.</div>
+      <table class="t"><thead><tr><th>Property</th><th class="c">Homes</th><th>GM</th><th>AGM</th><th class="c">People</th></tr></thead>
+      <tbody>${PROPERTIES.map(p=>`<tr style="cursor:default"><td><b>${x(p.name)}</b></td><td class="c">${p.units}</td>
+        <td style="color:var(--gray)">${x(p.gm)}</td>
+        <td>${p.agm?`<span style="color:var(--gray)">${x(p.agm)}</span>`:'<span class="pill" style="background:#FDEEEA;color:#8A2E12">vacant</span>'}</td>
+        <td class="c">${ROSTER.filter(r=>r.prop===p.id).length}</td></tr>`).join('')}
+      </tbody></table>
+    </div>`;
+}
+function saveSet(){
+  DB.settings.newBuildings=document.getElementById('nb').value;
+  DB.settings.horizonMonths=+document.getElementById('hm').value||18;
+  save();render();toast('Saved');
+}
+
+/* ══ DATA ══ */
+function renderData(){
+  document.getElementById('data').innerHTML=`
+    <div class="alert"><div class="alert-i">▲</div><div>
+      <div class="alert-t">Everything here is stored in this browser only</div>
+      <div class="alert-b">It does not reach anyone else's screen. Export after a data-entry session and keep the file — this is a prototype, not a system of record.</div></div></div>
+    <div class="sec">
+      <div class="sec-t">Export</div>
+      <div class="sec-s">Copy this and save it. Paste it back on any device to restore.</div>
+      <textarea class="io" id="out" readonly>${x(JSON.stringify(DB,null,2))}</textarea>
+      <div style="margin-top:10px"><button class="btn" onclick="copyOut()">Copy</button></div>
+    </div>
+    <div class="sec">
+      <div class="sec-t">Import</div>
+      <div class="sec-s">Paste a previous export. This replaces everything currently stored.</div>
+      <textarea class="io" id="in" placeholder="Paste the exported JSON here"></textarea>
+      <div style="margin-top:10px"><button class="btn" onclick="doImport()">Import</button>
+        <button class="btn gh" onclick="wipe()">Clear all local data</button></div>
+    </div>`;
+}
+function copyOut(){const t=document.getElementById('out');t.select();document.execCommand('copy');toast('Copied')}
+function doImport(){
+  try{const o=JSON.parse(document.getElementById('in').value);
+    if(!o.people)throw new Error('not a valid export');
+    DB=o;save();render();toast('Imported');
+  }catch(e){toast('Could not read that — '+e.message)}
+}
+function wipe(){DB={people:{},settings:{newBuildings:'',horizonMonths:18}};save();render();toast('Cleared')}
+
+function render(){renderPeople();renderProg();renderSettings();renderData();}
+render();
+</script>
+</body>
+</html>
