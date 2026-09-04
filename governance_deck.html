@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Programme Governance — Flow RX</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--cream:#F5F0E8;--ink:#1C1C1C;--gray:#8A8780;--line:#DDD8CF;
+--navy:#1A3660;--green:#1D9E75;--amber:#EF9F27;--red:#E07050;--purple:#7C5CBF;--teal:#0D6E5C}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:'Inter',sans-serif;background:#2A2724;color:var(--ink);overflow:hidden}
+.stage{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
+.slide{position:absolute;width:1120px;height:630px;background:var(--cream);border-radius:6px;
+  padding:46px 56px;display:none;flex-direction:column;box-shadow:0 24px 70px rgba(0,0,0,.4);overflow:hidden}
+.slide.on{display:flex}
+.slide.dark{background:#141C28;color:#EDE9E2}
+.slide.deep{background:var(--navy);color:#EDE9E2}
+.kicker{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--gray);margin-bottom:12px}
+.dark .kicker,.deep .kicker{color:rgba(237,233,226,.5)}
+h1{font-family:'Playfair Display',serif;font-size:52px;font-weight:500;line-height:1.12}
+h2{font-family:'Playfair Display',serif;font-size:32px;font-weight:500;line-height:1.24;margin-bottom:6px}
+.sub{font-size:15px;color:var(--gray);line-height:1.65;margin-top:10px;max-width:820px}
+.dark .sub,.deep .sub{color:rgba(237,233,226,.6)}
+p.body{font-size:14.5px;line-height:1.72;max-width:830px}
+.mid{margin:auto 0}
+.hr{height:1px;background:var(--line);margin:18px 0}
+.dark .hr,.deep .hr{background:rgba(237,233,226,.14)}
+table{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:6px}
+th{text-align:left;font-size:9.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--gray);font-weight:600;padding:0 11px 8px 0;border-bottom:1px solid var(--line)}
+td{padding:10px 11px 10px 0;border-bottom:1px solid #EAE6DE;vertical-align:top}
+.dark th{border-color:rgba(237,233,226,.2);color:rgba(237,233,226,.5)}
+.dark td{border-color:rgba(237,233,226,.1)}
+.c{text-align:center}
+tr.hl td{background:rgba(29,158,117,.1)}
+.cols{display:grid;gap:16px;margin-top:4px}
+.c2{grid-template-columns:1fr 1fr}.c3{grid-template-columns:repeat(3,1fr)}.c4{grid-template-columns:repeat(4,1fr)}
+.card{background:#fff;border:1px solid var(--line);border-radius:11px;padding:15px 17px}
+.dark .card,.deep .card{background:rgba(255,255,255,.055);border-color:rgba(237,233,226,.14)}
+.card-k{font-size:9.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--gray);margin-bottom:7px}
+.dark .card-k{color:rgba(237,233,226,.5)}
+.card-t{font-size:17px;font-weight:600;margin-bottom:6px;line-height:1.35}
+.card-b{font-size:12.5px;line-height:1.7;color:#5A5750}
+.dark .card-b,.deep .card-b{color:rgba(237,233,226,.68)}
+.flow{display:flex;align-items:center;justify-content:center;gap:14px;margin:26px 0}
+.node{background:#fff;border:2px solid var(--line);border-radius:12px;padding:16px 22px;text-align:center;min-width:170px}
+.dark .node{background:rgba(255,255,255,.07);border-color:rgba(237,233,226,.2)}
+.node-n{font-size:16px;font-weight:600}
+.node-r{font-size:11px;color:var(--gray);margin-top:4px}
+.dark .node-r{color:rgba(237,233,226,.55)}
+.arw{font-size:12px;color:var(--gray);text-align:center;line-height:1.5}
+ul.tight{list-style:none;margin-top:2px}
+ul.tight li{font-size:13.5px;line-height:1.9;padding-left:19px;position:relative}
+ul.tight li:before{content:'';position:absolute;left:2px;top:12px;width:5px;height:5px;border-radius:50%;background:var(--gray)}
+.dark ul.tight li:before{background:rgba(237,233,226,.4)}
+ul.yes li:before,ul.no li:before{content:none}
+ul.yes li,ul.no li{padding-left:22px}
+ul.yes li:after{content:'✓';position:absolute;left:0;top:0;color:var(--green);font-weight:700}
+ul.no li:after{content:'✕';position:absolute;left:0;top:0;color:var(--red);font-weight:700}
+.rule{display:grid;grid-template-columns:26px 1fr;gap:12px;padding:9px 0;border-bottom:1px solid #EAE6DE;font-size:13.5px;line-height:1.6}
+.rule:last-child{border:none}
+.rule-n{font-family:'Playfair Display',serif;font-weight:600;color:var(--navy);font-size:15px}
+.foot{position:absolute;bottom:18px;left:56px;right:56px;display:flex;justify-content:space-between;font-size:10px;color:var(--gray);letter-spacing:.05em}
+.dark .foot,.deep .foot{color:rgba(237,233,226,.32)}
+.nav{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);display:flex;gap:8px;align-items:center;z-index:50}
+.nb{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);color:#EDE9E2;width:32px;height:32px;border-radius:8px;cursor:pointer;font-size:13px}
+.nb:hover{background:rgba(255,255,255,.2)}
+.cnt{color:rgba(237,233,226,.55);font-size:11px;min-width:52px;text-align:center}
+@media print{body{background:#fff;overflow:visible}.stage{position:static}.nav{display:none}
+ .slide{display:flex!important;position:relative;page-break-after:always;box-shadow:none;width:100%;height:100vh;border-radius:0;transform:none!important}}
+</style>
+</head>
+<body>
+<div class="stage" id="stage">
+
+<!-- 1 -->
+<div class="slide deep on">
+  <div class="mid">
+    <div class="kicker">Flow · Resident Experience</div>
+    <h1>Programme<br>Governance</h1>
+    <div class="sub">Who assesses, who decides, who audits — and what each of them is deliberately not allowed to see.</div>
+  </div>
+  <div class="foot"><span>Career Development Programme</span><span>September 2026</span></div>
+</div>
+
+<!-- 2 -->
+<div class="slide">
+  <div class="kicker">The governing principle</div>
+  <h2>Separation of powers</h2>
+  <div class="sub">Any development system that combines assessment, decision and oversight in one pair of hands becomes either favouritism or fear.</div>
+  <div class="flow">
+    <div class="node" style="border-color:var(--teal)"><div class="node-n">Coach</div><div class="node-r">observes · assesses<br><b>recommends</b></div></div>
+    <div class="arw">recommends<br>→</div>
+    <div class="node" style="border-color:var(--purple)"><div class="node-n">Sponsor</div><div class="node-r">grants the level<br><b>decides</b></div></div>
+    <div class="arw">audited by<br>←</div>
+    <div class="node" style="border-color:#4A3A20"><div class="node-n">HR</div><div class="node-r">guards the process<br><b>never decides</b></div></div>
+  </div>
+  <div class="hr"></div>
+  <p class="body"><b>No one holds two of the three.</b> The coach who works with someone every day cannot also be the one who promotes them. The person who promotes cannot also be the one who audits whether the process was fair.</p>
+  <div class="foot"><span>01 · The principle</span><span>Flow</span></div>
+</div>
+
+<!-- 3 -->
+<div class="slide">
+  <div class="kicker">The five roles</div>
+  <h2>Each sees what the role requires — and no more</h2>
+  <table style="margin-top:12px">
+    <tr><th style="width:15%">Role</th><th style="width:26%">Sees</th><th style="width:29%">Does</th><th>Cannot</th></tr>
+    <tr><td><b>Employee</b></td><td style="color:var(--gray)">Own plan · own gate criteria in advance</td><td>Writes the practice log · self-assesses</td><td>See the manager's rating before their own is locked</td></tr>
+    <tr><td><b>Coach</b><br><span style="color:var(--gray);font-size:11.5px">AGM</span></td><td style="color:var(--gray)">The people they coach · their own tasks</td><td>Assesses conduct · holds sessions · <b>recommends</b></td><td><b>Grant the level</b> · hide a missed session</td></tr>
+    <tr><td><b>Sponsor</b><br><span style="color:var(--gray);font-size:11.5px">GM</span></td><td style="color:var(--gray)">Their property · coach compliance</td><td><b>Grants the level</b> · approves real scope</td><td>Promote without a complete gate record</td></tr>
+    <tr class="hl"><td><b>HR</b></td><td style="color:var(--gray)">Every property · process compliance</td><td>Monitors · calibrates · reports</td><td><b>Assess anyone · grant a level · recommend a promotion</b></td></tr>
+    <tr><td><b>Admin</b></td><td style="color:var(--gray)">Configuration only</td><td>Templates · role assignment · cycles</td><td>Read any individual's assessments or log</td></tr>
+  </table>
+  <div class="foot"><span>02 · The roles</span><span>Flow</span></div>
+</div>
+
+<!-- 4 -->
+<div class="slide">
+  <div class="kicker">The employee</div>
+  <h2>Two rights that are not negotiable</h2>
+  <div class="cols c2" style="margin-top:24px">
+    <div class="card" style="border-top:3px solid var(--green)">
+      <div class="card-k">Right one</div>
+      <div class="card-t">No hidden file</div>
+      <div class="card-b">Every assessment and every note written about someone is visible to them.<br><br><b>If they are not entitled to read it, it is not fit to be written.</b></div></div>
+    <div class="card" style="border-top:3px solid var(--green)">
+      <div class="card-k">Right two</div>
+      <div class="card-t">Criteria published before they apply</div>
+      <div class="card-b">Nobody is assessed against a standard they have not seen.<br><br>A criterion changed mid-programme does not apply to anyone already in it.</div></div>
+  </div>
+  <div class="hr"></div>
+  <div class="card" style="background:#F3F0FE;border-color:#D8D2F5">
+    <div class="card-b" style="color:#3A3160"><b>One sequencing rule enforced by the system, not by good intentions:</b> the self-assessment locks before the manager's rating becomes visible. The gap between the two is the substance of the conversation — and it only means anything if neither was written with sight of the other.</div></div>
+  <div class="foot"><span>03 · The employee</span><span>Flow</span></div>
+</div>
+
+<!-- 5 -->
+<div class="slide dark">
+  <div class="kicker">The coach and the sponsor</div>
+  <div class="mid">
+    <h2 style="font-size:30px">The coach recommends. The sponsor decides.</h2>
+    <div class="cols c2" style="margin-top:26px">
+      <div class="card">
+        <div class="card-k">Why the coach cannot decide</div>
+        <div class="card-b">They work with the person daily. That closeness is exactly what makes their observation valuable — and exactly why it should not be the final word.<br><br>The recommendation is <b>written and reasoned</b>, and it carries weight.</div></div>
+      <div class="card">
+        <div class="card-k">Why the sponsor cannot ignore it</div>
+        <div class="card-b">The sponsor may overrule the coach — <b>with a written reason recorded against the decision</b>.<br><br>And a promotion without a complete gate record is not something the system will accept.</div></div>
+    </div>
+    <p class="body" style="margin-top:24px;color:rgba(237,233,226,.78)">Neither constraint is administrative. Both exist because a promotion decision made by one person, with no record, is indistinguishable from a favour.</p>
+  </div>
+  <div class="foot"><span>04 · Coach and sponsor</span><span>Flow</span></div>
+</div>
+
+<!-- 6 -->
+<div class="slide deep">
+  <div class="kicker">HR — the distinction that matters most</div>
+  <div class="mid">
+    <h2 style="font-size:34px">HR measures the process,<br>never the person.</h2>
+    <div class="cols c2" style="margin-top:26px">
+      <div class="card" style="border-color:rgba(29,158,117,.5)">
+        <div class="card-k" style="color:#7FD9BC">HR asks</div>
+        <ul class="tight yes" style="color:rgba(237,233,226,.85)">
+          <li>Was the monthly session held?</li>
+          <li>Were the criteria published in advance?</li>
+          <li>Did calibration happen this quarter?</li>
+          <li>Is one coach's outcome pattern unusual?</li>
+        </ul></div>
+      <div class="card" style="border-color:rgba(224,112,80,.45)">
+        <div class="card-k" style="color:#F0A88E">HR does not ask</div>
+        <ul class="tight no" style="color:rgba(237,233,226,.85)">
+          <li>Is this person ready?</li>
+          <li>Was that rating fair?</li>
+          <li>Which of the two is better?</li>
+        </ul></div>
+    </div>
+    <p class="body" style="margin-top:24px;color:rgba(237,233,226,.8)">The moment HR becomes a party to assessing individuals, it stops being the guardian of the process and becomes an opponent — <b>and people stop being honest in front of it</b>.</p>
+  </div>
+  <div class="foot"><span>05 · HR</span><span>Flow</span></div>
+</div>
+
+<!-- 7 -->
+<div class="slide">
+  <div class="kicker">Visibility</div>
+  <h2>Who can see what</h2>
+  <table style="margin-top:12px">
+    <tr><th style="width:34%">Data</th><th class="c">Employee</th><th class="c">Coach</th><th class="c">Sponsor</th><th class="c">HR</th><th class="c">Admin</th></tr>
+    <tr><td>Plan and goals</td><td class="c">●</td><td class="c">●</td><td class="c">●</td><td class="c" style="color:var(--gray)">aggregate</td><td class="c" style="color:var(--gray)">—</td></tr>
+    <tr class="hl"><td><b>Practice log</b></td><td class="c">●</td><td class="c">●</td><td class="c" style="color:var(--gray)">summary</td><td class="c" style="color:var(--gray)"><b>count only</b></td><td class="c" style="color:var(--gray)">—</td></tr>
+    <tr><td>Self-assessment</td><td class="c">●</td><td class="c" style="color:var(--gray)">after lock</td><td class="c" style="color:var(--gray)">—</td><td class="c" style="color:var(--gray)">aggregate</td><td class="c" style="color:var(--gray)">—</td></tr>
+    <tr><td>Coach assessment</td><td class="c">●</td><td class="c">●</td><td class="c">●</td><td class="c" style="color:var(--gray)">aggregate</td><td class="c" style="color:var(--gray)">—</td></tr>
+    <tr class="hl"><td><b>Self / manager gap</b></td><td class="c">●</td><td class="c">●</td><td class="c" style="color:var(--gray)">summary</td><td class="c" style="color:var(--gray)"><b>—</b></td><td class="c" style="color:var(--gray)">—</td></tr>
+    <tr><td>Coach task compliance</td><td class="c" style="color:var(--gray)">—</td><td class="c">●</td><td class="c">●</td><td class="c">●</td><td class="c" style="color:var(--gray)">—</td></tr>
+    <tr><td>Gate decision and reasoning</td><td class="c">●</td><td class="c">●</td><td class="c">●</td><td class="c">●</td><td class="c" style="color:var(--gray)">—</td></tr>
+    <tr><td>Company-wide metrics</td><td class="c" style="color:var(--gray)">—</td><td class="c" style="color:var(--gray)">—</td><td class="c" style="color:var(--gray)">—</td><td class="c">●</td><td class="c" style="color:var(--gray)">—</td></tr>
+  </table>
+  <div class="foot"><span>06 · Visibility</span><span>Flow</span></div>
+</div>
+
+<!-- 8 -->
+<div class="slide dark">
+  <div class="kicker">The one protection people question</div>
+  <div class="mid">
+    <h2 style="font-size:30px">Why the practice log is not open to everyone</h2>
+    <div class="card" style="margin-top:22px;max-width:820px">
+      <div class="card-k">A real entry</div>
+      <div class="card-b" style="font-size:14px;line-height:1.8">
+        <i>"Ran the evening handover on my own for the first time.<br>
+        Forgot to flag the third-floor AC report — a colleague picked it up two hours later.<br>
+        <b style="color:#7FD9BC">Next time: review open reports before the handover, not during it.</b>"</i></div></div>
+    <p class="body" style="margin-top:22px;color:rgba(237,233,226,.82);font-size:16px">That is an admission of error. <b>If everyone can read it, it gets written for the audience</b> — and stops being useful within a month.</p>
+    <div class="hr"></div>
+    <p class="body" style="color:rgba(237,233,226,.75)">The employee and their coach see it. The sponsor sees a summary. <b>HR sees that it was written, not what it says.</b><br><br>The same reasoning protects the self-assessment: make the gap a metric on individuals and people will rate themselves strategically rather than honestly.</p>
+  </div>
+  <div class="foot"><span>07 · Protection</span><span>Flow</span></div>
+</div>
+
+<!-- 9 -->
+<div class="slide">
+  <div class="kicker">The rules</div>
+  <h2>Eight, and they are short on purpose</h2>
+  <div style="margin-top:14px">
+    <div class="rule"><span class="rule-n">1</span><div>The level is granted <b>two levels above</b>. The line manager recommends only.</div></div>
+    <div class="rule"><span class="rule-n">2</span><div>No assessment against a criterion that was not <b>published beforehand</b>.</div></div>
+    <div class="rule"><span class="rule-n">3</span><div>Assessments are <b>never deleted, only superseded</b> — the record keeps both, and who changed it.</div></div>
+    <div class="rule"><span class="rule-n">4</span><div>The <b>self-assessment locks</b> before the manager's rating is visible.</div></div>
+    <div class="rule"><span class="rule-n">5</span><div><b>HR measures the process, not people.</b></div></div>
+    <div class="rule"><span class="rule-n">6</span><div>No promotion without a <b>complete gate record</b>.</div></div>
+    <div class="rule"><span class="rule-n">7</span><div><b>Quarterly calibration is mandatory</b> — every coach rates the same case, and the spread is discussed.</div></div>
+    <div class="rule"><span class="rule-n">8</span><div>The employee <b>sees everything written about them</b>.</div></div>
+  </div>
+  <div class="foot"><span>08 · The rules</span><span>Flow</span></div>
+</div>
+
+<!-- 10 -->
+<div class="slide">
+  <div class="kicker">When someone disagrees</div>
+  <h2>The appeal reviews the process, not the judgement</h2>
+  <div class="cols c2" style="margin-top:22px">
+    <div class="card">
+      <div class="card-k">On an assessment</div>
+      <div class="card-b">Raised with the <b>sponsor</b>, who reviews the substance.</div></div>
+    <div class="card" style="border-color:var(--navy);border-width:2px">
+      <div class="card-k">On a gate decision</div>
+      <div class="card-b"><b>HR reviews four things only:</b><br>
+        · Were the criteria published in advance?<br>
+        · Were the sessions actually held?<br>
+        · Was the recommendation reasoned?<br>
+        · Was the same standard applied to others?</div></div>
+  </div>
+  <div class="hr"></div>
+  <p class="body"><b>If a flaw is found, the decision returns to the sponsor.</b> HR does not substitute its own judgement — doing so would make it a decision-maker, which is precisely what rule five prevents.</p>
+  <div class="foot"><span>09 · Appeal</span><span>Flow</span></div>
+</div>
+
+<!-- 11 -->
+<div class="slide dark">
+  <div class="kicker">The governance risk specific to us</div>
+  <div class="mid">
+    <h2 style="font-size:31px">Growth, not favouritism, is what will bend the standard</h2>
+    <div class="sub" style="max-width:840px">Promotion here means taking a new building, not replacing the person who trained you. That removes the usual conflict of interest — a coach whose people get promoted has expanded the company, and their incentive is aligned.</div>
+    <div class="card" style="margin-top:24px;border-color:rgba(224,112,80,.5)">
+      <div class="card-k" style="color:#F0A88E">The real risk</div>
+      <div class="card-b" style="font-size:14.5px;line-height:1.8">A building opens in four months and no AGM is ready.<br>
+      <b>Pressure to fill the seat → the bar moves → the promotion fails.</b></div></div>
+    <div class="cols c4" style="margin-top:22px">
+      <div class="card"><div class="card-b">The gate is <b>not negotiable</b> for expansion</div></div>
+      <div class="card"><div class="card-b">Programme length sits <b>inside</b> the expansion plan</div></div>
+      <div class="card"><div class="card-b">HR watches for the <b>standard slipping</b></div></div>
+      <div class="card"><div class="card-b">12-month retention <b>catches it after the fact</b></div></div>
+    </div>
+    <p class="body" style="margin-top:20px;color:rgba(237,233,226,.8)"><b>A gate pass rate that rises during rapid expansion is a warning, not good news.</b></p>
+  </div>
+  <div class="foot"><span>10 · The real risk</span><span>Flow</span></div>
+</div>
+
+<!-- 12 -->
+<div class="slide deep">
+  <div class="mid" style="text-align:center">
+    <div class="kicker" style="text-align:center">In one line</div>
+    <h2 style="font-size:36px;max-width:900px;margin:0 auto 26px">The coach observes. The sponsor decides.<br>HR makes sure it was done properly.<br>And the person sees all of it.</h2>
+    <div class="hr" style="max-width:380px;margin:0 auto 26px"></div>
+    <p class="body" style="max-width:760px;margin:0 auto;color:rgba(237,233,226,.75)">None of these constraints slow the programme down. They are what make a promotion decision defensible a year later — to the person who received it, and to the person who did not.</p>
+  </div>
+  <div class="foot"><span>Flow · Resident Experience</span><span>September 2026</span></div>
+</div>
+
+</div>
+
+<div class="nav">
+  <button class="nb" onclick="mv(-1)">‹</button>
+  <span class="cnt" id="cnt"></span>
+  <button class="nb" onclick="mv(1)">›</button>
+</div>
+
+<script>
+const S=[...document.querySelectorAll('.slide')];let i=0;
+function show(n){i=Math.max(0,Math.min(S.length-1,n));
+  S.forEach((s,k)=>s.classList.toggle('on',k===i));
+  document.getElementById('cnt').textContent=(i+1)+' / '+S.length;location.hash=i+1;}
+function mv(d){show(i+d)}
+document.addEventListener('keydown',e=>{
+  if(['ArrowRight','ArrowDown',' ','PageDown'].includes(e.key)){e.preventDefault();mv(1)}
+  if(['ArrowLeft','ArrowUp','PageUp'].includes(e.key)){e.preventDefault();mv(-1)}
+  if(e.key==='Home')show(0);if(e.key==='End')show(S.length-1);});
+document.getElementById('stage').addEventListener('click',e=>{
+  if(e.target.closest('.nav'))return;mv(e.clientX<window.innerWidth/2?-1:1);});
+function fit(){const s=Math.min(window.innerWidth/1160,window.innerHeight/670,1);
+  S.forEach(el=>el.style.transform='scale('+s+')');}
+window.addEventListener('resize',fit);
+show(parseInt(location.hash.slice(1))-1||0);fit();
+</script>
+</body>
+</html>
