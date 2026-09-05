@@ -68,11 +68,17 @@ h1 .scope{display:inline-block;vertical-align:middle;font-family:'Inter',sans-se
 .note{margin-left:auto;font-size:9px;color:var(--gray);text-align:right;line-height:1.6}
 .note b{color:#4A4740;font-weight:600}
 
-@media print{body{background:#fff;overflow:visible}.stage{position:static}
- .slide{box-shadow:none;border-radius:0}@page{size:1120px 630px;margin:0}}
+.back{position:fixed;top:16px;left:18px;z-index:60;font-size:10px;letter-spacing:.08em;text-transform:uppercase;
+  color:rgba(237,233,226,.5);text-decoration:none;background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.14);border-radius:8px;padding:7px 12px}
+.back:hover{color:#EDE9E2;background:rgba(255,255,255,.15)}
+
+@media print{body{background:#fff;overflow:visible}.stage{position:static}.back{display:none}
+ .slide{box-shadow:none;border-radius:0;transform:none!important}@page{size:1120px 630px;margin:0}}
 </style>
 </head>
 <body>
+<a class="back" href="career/hub.html">&#9776;&nbsp; All views</a>
 <div class="stage">
 <div class="slide">
 
