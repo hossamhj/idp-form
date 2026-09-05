@@ -35,15 +35,15 @@ h1 .rr{color:#4A4740;font-weight:400;font-size:20px}
 .k-v{font-family:'Playfair Display',serif;font-size:17px;font-weight:600;color:var(--navy);line-height:1}
 .k-l{font-size:8.5px;color:var(--gray);margin-top:4px;line-height:1.4}
 
-.pil{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.pil{display:grid;grid-template-columns:84px repeat(4,1fr);column-gap:8px;row-gap:0;margin-bottom:9px}
+.lcell{display:flex;align-items:center;font-size:8.5px;color:var(--gray);font-style:italic;line-height:1.4}
+.lcell.head{align-items:flex-end;padding-bottom:5px}
 .ph{border-radius:7px 7px 0 0;color:#fff;padding:7px 11px}
 .ph-t{font-family:'Playfair Display',serif;font-size:16px;font-weight:600;line-height:1.1}
 .ph-s{font-size:8px;margin-top:3px;color:rgba(255,255,255,.72);letter-spacing:.03em}
 .pcell{background:#fff;border:1px solid var(--line);border-top:none;padding:7px 11px;font-size:10.5px;line-height:1.5;color:#4A4740}
 .pcell b{color:var(--ink);font-weight:600}
-.pcol{display:flex;flex-direction:column}
-.pcol .pcell{flex:1}
-.pcol .pcell:last-child{border-radius:0 0 7px 7px}
+.pcell.last{border-radius:0 0 7px 7px}
 .num{font-weight:600;color:var(--navy)}
 
 .strip{background:#4A5A72;color:#EDE9E2;border-radius:7px;padding:8px 16px;display:flex;align-items:center;justify-content:space-between}
@@ -94,50 +94,42 @@ h1 .rr{color:#4A4740;font-weight:400;font-size:20px}
     </div>
   </div>
 
-  <div class="r" style="align-items:stretch">
-    <div class="lab">The four<br>transitions<i>each a different<br>kind of change</i>
-      <div style="margin-top:10px;font-size:8.5px;color:var(--gray);font-style:italic;line-height:2.1">
-        mandate<br>what changes<br>the gate<br>how it is taught</div>
-    </div>
-    <div class="pil">
+  <div class="pil">
 
-      <div class="pcol">
-        <div class="ph" style="background:var(--p1)"><div class="ph-t">Breadth</div>
-          <div class="ph-s">COORDINATOR &rarr; RX ASSOCIATE &middot; 18 MO</div></div>
-        <div class="pcell">Work the whole community reliably &mdash; not one corner of it.</div>
-        <div class="pcell"><span class="num">26</span> functions change &middot; <b><span class="num">7</span> taken on for the first time</b> &mdash; first contractor, first vendor, first crisis.</div>
-        <div class="pcell">Each of the 7 performed <b>solo and unassisted</b>, once.</div>
-        <div class="pcell">Taught laterally by <b>the owner of each function</b>.</div>
-      </div>
+    <div class="lcell head"><div class="lab" style="font-style:normal;color:#3A372F">The four<br>transitions<i>each a different<br>kind of change</i></div></div>
+    <div class="ph" style="background:var(--p1)"><div class="ph-t">Breadth</div>
+      <div class="ph-s">COORDINATOR &rarr; RX ASSOCIATE &middot; 18 MO</div></div>
+    <div class="ph" style="background:var(--p2)"><div class="ph-t">Ownership</div>
+      <div class="ph-s">RX ASSOCIATE &rarr; SENIOR &middot; 18 MO</div></div>
+    <div class="ph" style="background:var(--p3)"><div class="ph-t">Letting go</div>
+      <div class="ph-s">SENIOR &rarr; AGM &middot; 18 MO</div></div>
+    <div class="ph" style="background:var(--p4)"><div class="ph-t">Scope</div>
+      <div class="ph-s">AGM &rarr; GENERAL MANAGER &middot; 18 MO</div></div>
 
-      <div class="pcol">
-        <div class="ph" style="background:var(--p2)"><div class="ph-t">Ownership</div>
-          <div class="ph-s">RX ASSOCIATE &rarr; SENIOR &middot; 18 MO</div></div>
-        <div class="pcell">The outcome is mine &mdash; whether I am present or not.</div>
-        <div class="pcell"><span class="num">36</span> change &middot; <b><span class="num">24</span> become owned</b> &mdash; the first responsibility for a result, not a task.</div>
-        <div class="pcell">Owns those results through <b>one full cycle</b>.</div>
-        <div class="pcell">Owner-led practice; the <b>AGM</b> carries conduct.</div>
-      </div>
+    <div class="lcell">mandate</div>
+    <div class="pcell">Work the whole community reliably &mdash; not one corner of it.</div>
+    <div class="pcell">The outcome is mine &mdash; whether I am present or not.</div>
+    <div class="pcell">Accountable across the whole scope without executing it.</div>
+    <div class="pcell">The whole property, every team, and the commercial result.</div>
 
-      <div class="pcol">
-        <div class="ph" style="background:var(--p3)"><div class="ph-t">Letting go</div>
-          <div class="ph-s">SENIOR &rarr; AGM &middot; 18 MO</div></div>
-        <div class="pcell">Accountable across the whole scope without executing it.</div>
-        <div class="pcell"><span class="num">45</span> change &middot; <b><span class="num">24</span> released to others</b> &mdash; the only step forward made by holding less.</div>
-        <div class="pcell">Released work <b>still runs</b> &mdash; a quarter without intervention.</div>
-        <div class="pcell">Coached by the <b>GM</b>; teaching others is the method.</div>
-      </div>
+    <div class="lcell">what changes</div>
+    <div class="pcell"><span class="num">26</span> functions change &middot; <b><span class="num">7</span> taken on for the first time</b> &mdash; first contractor, first vendor, first crisis.</div>
+    <div class="pcell"><span class="num">36</span> change &middot; <b><span class="num">24</span> become owned</b> &mdash; the first responsibility for a result, not a task.</div>
+    <div class="pcell"><span class="num">45</span> change &middot; <b><span class="num">24</span> released to others</b> &mdash; the only step forward made by holding less.</div>
+    <div class="pcell"><span class="num">29</span> change &middot; <b><span class="num">17</span> become oversight</b> &mdash; answerable for work two layers away.</div>
 
-      <div class="pcol">
-        <div class="ph" style="background:var(--p4)"><div class="ph-t">Scope</div>
-          <div class="ph-s">AGM &rarr; GENERAL MANAGER &middot; 18 MO</div></div>
-        <div class="pcell">The whole property, every team, and the commercial result.</div>
-        <div class="pcell"><span class="num">29</span> change &middot; <b><span class="num">17</span> become oversight</b> &mdash; answerable for work two layers away.</div>
-        <div class="pcell">Runs the property for <b>a full cycle</b> before the title.</div>
-        <div class="pcell"><b>External training</b> &middot; GM shadowing &middot; trial in post.</div>
-      </div>
+    <div class="lcell">the gate</div>
+    <div class="pcell">Each of the 7 performed <b>solo and unassisted</b>, once.</div>
+    <div class="pcell">Owns those results through <b>one full cycle</b>.</div>
+    <div class="pcell">Released work <b>still runs</b> &mdash; a quarter without intervention.</div>
+    <div class="pcell">Runs the property for <b>a full cycle</b> before the title.</div>
 
-    </div>
+    <div class="lcell">how it is taught</div>
+    <div class="pcell last">Taught laterally by <b>the owner of each function</b>.</div>
+    <div class="pcell last">Owner-led practice; the <b>AGM</b> carries conduct.</div>
+    <div class="pcell last">Coached by the <b>GM</b>; teaching others is the method.</div>
+    <div class="pcell last"><b>External training</b> &middot; GM shadowing &middot; trial in post.</div>
+
   </div>
 
   <div class="r">
