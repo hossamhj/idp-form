@@ -161,7 +161,7 @@ const TEMPLATES = {
 'sr-agm':{
   code:'T3', from:'Senior RX Associate', to:'Assistant General Manager',
   kind:'Level jump L3 → L4 — promotion by letting go', months:12, level:4,
-  changed:45, counts:{release:24,oversee:7,newwork:4,deepen:10},
+  changed:46, counts:{release:24,oversee:7,newwork:4,deepen:10,handback:1},
   essence:'Twenty-four front-line functions are handed over, and finance, people and legal work takes their place',
   startState:'Not a move from doing to supervising — an AGM still executes six functions and owns eleven. What changes is which work: the building floor is released, and its money, its roster and its legal exposure are taken on.',
   valueShift:['I am valuable because I run the floor','I am valuable because the floor runs without me'],

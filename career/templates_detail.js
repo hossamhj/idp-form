@@ -27,8 +27,8 @@ const FN_LISTS = {
       ['Consumables Inventory Management','assist → execute',''],['Hosting Community Events','assist → execute',''],
       ['Events & Experiences Community Marketing','assist → execute',''],['Notices','assist → execute','']]},
   {k:'step',  n:'Handed over',           c:'#EF9F27', d:'Three go: the only two functions they own today drop to execute, and one stops entirely. Read as a loss unless it is explained — the ownership moves because they are freed for something heavier.',
-   f:[['Classes — Attendance Check-ins','own → execute',''],
-      ['Meetups — Attendance Check-ins','own → execute',''],
+   f:[['Classes - Attendance Check-ins','own → execute',''],
+      ['Meetups - Attendance Check-ins','own → execute',''],
       ['Preparing Community Events','stops','']]}
 ],
 
@@ -68,8 +68,8 @@ const FN_LISTS = {
       ['Community Newsletter','own → stops',''],['Ambassador & Community Leadership Management','own → stops',''],
       ['Community Engagement Lead Coordination','own → stops',''],['Marketing Events Support','own → stops',''],
       ['Events & Experiences Community Marketing','own → stops',''],['Preparing Community Events','own → stops',''],
-      ['Supporting Neighbor-led Community Events','own → stops',''],['Preparing Community Spaces','oversee → stops',''],
-      ['Classes — Attendance Check-ins','execute → stops',''],['Meetups — Attendance Check-ins','execute → stops',''],
+      ['Supporting Neighbor-led Community Events','own → stops',''],['Preparing Community Spaces for Classes & Meetups','oversee → stops',''],
+      ['Classes - Attendance Check-ins','execute → stops',''],['Meetups - Attendance Check-ins','execute → stops',''],
       ['Maintenance coordination','own → stops','daily operational coordination goes'],
       ['Housekeeping coordination','own → stops',''],['Security & Watch coordination','own → stops',''],
       ['Consumables Inventory Management','own → stops',''],['Vacant Unit Inspections','oversee → stops',''],
@@ -92,7 +92,9 @@ const FN_LISTS = {
       ['Procurement','execute → own',''],['Reporting','execute → own',''],
       ['Notices','execute → own',''],['Incident Management','execute → own',''],
       ['Team Meetings & Coordination','execute → own',''],['Weekly Neighbor Experience Review','execute → own',''],
-      ['Accounts Payable','assist → execute',''],['Quarterly Management Reporting','assist → execute','']]}
+      ['Accounts Payable','assist → execute',''],['Quarterly Management Reporting','assist → execute','']]},
+  {k:'handback',n:'Kept in hand, but no longer owned', c:'#8A8780', d:'One function alone moves this way. The AGM keeps doing it personally while ownership passes to the Senior — the relationship with the neighbour is not something a manager delegates away.',
+   f:[['Neighbor Support','own → execute','still done in person; the Senior now owns the outcome']]}
 ],
 
 'agm-gm':[
