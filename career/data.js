@@ -109,7 +109,7 @@ const TEMPLATES = {
              'Root-cause the three most repeated problems. Put a preventive step in place.'],
      milestone:'The four keep working during a week of leave.'},
     {n:2,goal:'It works when I am away',period:'First directing — hardest part',
-     fns:['Directing 1–2 people','★ Vacant Unit Inspections (oversee)','Preparing Community Spaces (oversee)'],
+     fns:['Directing 1–2 people','★ Vacant Unit Inspections (oversee)','Preparing Community Spaces for Classes & Meetups (oversee)'],
      why:'The defining L3 capability. Yesterday they were your peer.',
      months:['The directing role is announced formally. Begin guiding 1–2 people.',
              '<b>Oversee without executing.</b> Four documented feedback conversations.',
@@ -172,7 +172,7 @@ const TEMPLATES = {
     'No open performance concern',
     '<b>A successor is named and has entered the L2→L3 programme</b> — the real blocker',
     'The GM has committed 4 hours a month'],
-  blocker:'22 of the 24 released functions drop to Associate at <b>execute</b>, not <b>own</b> — they lose their owner. Two have no holder at all below L3. This promotion cannot complete without an L2→L3 promotion running alongside it.',
+  blocker:'Of the 24 released functions, 19 drop to Associate at <b>execute</b>, not <b>own</b> — they keep a doer and lose their owner. Three have no holder at Associate at all, and two of those none anywhere below L3. This promotion cannot complete without an L2→L3 promotion running alongside it.',
   quarters:[
     {n:1,goal:'The map — planning, not handover',period:'No handover this quarter',
      fns:['Handover map for all 24','Successor readiness assessment','A written procedure per function'],
@@ -234,7 +234,7 @@ const TEMPLATES = {
 'agm-gm':{
   code:'T4', from:'Assistant General Manager', to:'General Manager',
   kind:'Level jump L4 → L5 — from a function to a whole scope', months:18, level:5,
-  changed:29, counts:{oversee:17,release:6,deepen:5,lighter:1},
+  changed:29, counts:{oversee:17,release:6,newwork:5,deepen:1},
   essence:'From holding functions to holding the result',
   startState:'Seventeen functions move to oversight. A GM executes exactly one and oversees twenty of twenty-seven — the only role where watching rather than doing is the dominant mode. Fewer functions change here than in the step below it; what changes is the accountability.',
   valueShift:['I am accountable for my functions','I am accountable for the whole result'],
