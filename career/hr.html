@@ -129,7 +129,7 @@ const missing=ROSTER.filter(r=>r.months===null||r.mastery===null).length;
           const n=ROSTER.filter(r=>r.prop===p.id).length;
           return `<div class="pcard ${p.agm?'':'warn'}">
             <div class="pc-n">${x(p.name)}</div>
-            <div class="pc-u">${p.units} homes · ${n} people</div>
+            <div class="pc-u">${n} people</div>
             <div class="lvls">${[2,3,4,5].map(l=>{const c=byLvl(l,p.id);
               return `<div class="lv ${c?'':'zero'}"><div class="lv-v">${c}</div><div class="lv-l">L${l}</div></div>`;}).join('')}</div>
             <div class="pc-u" style="margin-top:10px">GM ${x(p.gm)}${p.agm?' · AGM '+x(p.agm):' · <b style="color:var(--red)">no AGM</b>'}</div>

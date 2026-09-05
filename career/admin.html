@@ -333,8 +333,8 @@ function renderSettings(){
     <div class="sec">
       <div class="sec-t">Properties and coaches</div>
       <div class="sec-s">Read from the roster. Editing these belongs in the operating system, not here.</div>
-      <table class="t"><thead><tr><th>Property</th><th class="c">Homes</th><th>GM</th><th>AGM</th><th class="c">People</th></tr></thead>
-      <tbody>${PROPERTIES.map(p=>`<tr style="cursor:default"><td><b>${x(p.name)}</b></td><td class="c">${p.units}</td>
+      <table class="t"><thead><tr><th>Property</th><th>GM</th><th>AGM</th><th class="c">People</th></tr></thead>
+      <tbody>${PROPERTIES.map(p=>`<tr style="cursor:default"><td><b>${x(p.name)}</b></td>
         <td style="color:var(--gray)">${x(p.gm)}</td>
         <td>${p.agm?`<span style="color:var(--gray)">${x(p.agm)}</span>`:'<span class="pill" style="background:#FDEEEA;color:#8A2E12">vacant</span>'}</td>
         <td class="c">${ROSTER.filter(r=>r.prop===p.id).length}</td></tr>`).join('')}

@@ -461,10 +461,10 @@ const COACHES = {
    ─────────────────────────────────────────────────────────── */
 
 const PROPERTIES = [
-  {id:'ne',name:'Narjs East', units:242, gm:'Saad Alajmi',      agm:'Raghdah Safar'},
-  {id:'gr',name:'Granada',    units:439, gm:'Weesam Khuja',     agm:'Sarah Niazi'},
-  {id:'nw',name:'Narjs West', units:238, gm:'Husni Abdulrazzaq',agm:null},
-  {id:'ol',name:'Olaya',      units:50,  gm:'Johnny Hachem',    agm:null}
+  {id:'ne',name:'Narjs East', gm:'Saad Alajmi',      agm:'Raghdah Safar'},
+  {id:'gr',name:'Granada',    gm:'Weesam Khuja',     agm:'Sarah Niazi'},
+  {id:'nw',name:'Narjs West', gm:'Husni Abdulrazzaq',agm:null},
+  {id:'ol',name:'Olaya',      gm:'Johnny Hachem',    agm:null}
 ];
 
 /* current headcount per level, company-wide */
