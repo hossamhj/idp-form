@@ -140,7 +140,20 @@ document.getElementById('hero').innerHTML=`
   ${P.note?`<div class="alert info"><div class="alert-i">●</div><div><div class="alert-b">${x(P.note)}</div></div></div>`:''}`;
 
 /* JOURNEY */
-document.getElementById('journey').innerHTML=`
+/* if the GM has held this person back, that is the first thing on the page */
+const ADM=(JSON.parse(localStorage.getItem('cd_admin')||'{}').people||{})[EMP]||{};
+const heldHTML = ADM.readiness==='not_ready' ? `
+  <div class="alert"><div class="alert-i">▲</div><div>
+    <div class="alert-t">Held back — the programme has not started</div>
+    <div class="alert-b">
+      ${(ADM.exceptions||[]).filter(Boolean).length?`<b>What is not there yet:</b><br>${(ADM.exceptions||[]).filter(Boolean).map(e=>'· '+x(e)).join('<br>')}<br><br>`:''}
+      ${ADM.recommend?`<b>The next three months:</b> ${x(ADM.recommend)}<br>`:''}
+      ${ADM.follower&&typeof ALL_COACHES!=='undefined'&&ALL_COACHES[ADM.follower]?`<b>Followed up by:</b> ${x(ALL_COACHES[ADM.follower].name)} · `:''}
+      ${ADM.recheckDate?`<b>Recheck:</b> ${new Date(ADM.recheckDate).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'})}`:''}
+      ${(ADM.deferrals|0)>=3?'<br><br><b>This is the third hold-back.</b> A fourth is not a deferral. The GM owes either a real plan or an honest conversation.':''}
+    </div></div></div>` : '';
+
+document.getElementById('journey').innerHTML=heldHTML+`
   <div class="sec">
     <div class="sec-t">The shift this transition is about</div>
     <div class="sec-s">${x(T.essence)} — ${x(T.startState)}</div>

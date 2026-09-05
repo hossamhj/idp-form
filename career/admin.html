@@ -118,39 +118,42 @@ const fmt=d=>d?new Date(d).toLocaleDateString('en-GB',{day:'2-digit',month:'shor
 /* eligibility verdict */
 function verdict(p){
   const mos=p.roleStart?monthsSince(p.roleStart):p.months;
-  const m=p.masteryDone;
+  const r=p.readiness||(p.masteryDone?'ready':'');   // '' | ready | not_ready
   const exc=(p.exceptions||[]).filter(Boolean);
-  const ownedExc=p.ownedExceptions|0;
   const miss=[];
   if(mos===null||mos===undefined)miss.push('time in role not recorded');
   else if(mos<6)miss.push(`only ${mos} months in role — six required`);
-  if(!m)miss.push('mastery check never run');
-  else{
-    if(exc.length>MASTERY_RULE.maxExceptions)miss.push(`${exc.length} exceptions — maximum is ${MASTERY_RULE.maxExceptions}`);
-    if(ownedExc>0)miss.push(`${ownedExc} exception${ownedExc>1?'s':''} on an owned function — none permitted`);
-    if(p.masteryDate&&monthsSince(p.masteryDate)>MASTERY_RULE.maxAgeMonths)miss.push('mastery confirmation older than three months');
-  }
+  if(!r)miss.push('the readiness check has not been run');
+  else if(r==='not_ready'){
+    const due=p.recheckDate||'';
+    miss.push(due?`held back by the GM — recheck due ${fmt(due)}`:'held back by the GM');
+  }else if(p.masteryDate&&monthsSince(p.masteryDate)>MASTERY_RULE.maxAgeMonths)
+    miss.push('the readiness confirmation is older than three months');
   if(p.concern)miss.push('an open performance concern');
-  return {ok:miss.length===0, miss, mos, exc};
+  return {ok:miss.length===0, miss, mos, exc, r, defer:p.deferrals|0};
 }
+/* three deferrals is the ceiling — after that it stops being a deferral */
+const DEFER_MAX=3;
 
 /* ══ PEOPLE ══ */
 function renderPeople(){
   const rows=ALL();
-  const done=rows.filter(p=>p.masteryDone).length;
+  const done=rows.filter(p=>verdict(p).r).length;
+  const held=rows.filter(p=>verdict(p).r==='not_ready').length;
   const dated=rows.filter(p=>p.roleStart||p.months!=null).length;
   document.getElementById('people').innerHTML=`
     <div class="strip">
       <div class="sc"><div class="sc-v">${rows.length}</div><div class="sc-l">People</div></div>
       <div class="sc"><div class="sc-v" style="color:${dated===rows.length?'var(--green)':'var(--amber)'}">${dated}/${rows.length}</div><div class="sc-l">Dates recorded</div></div>
-      <div class="sc"><div class="sc-v" style="color:${done===rows.length?'var(--green)':'var(--amber)'}">${done}/${rows.length}</div><div class="sc-l">Mastery checked</div></div>
+      <div class="sc"><div class="sc-v" style="color:${done===rows.length?'var(--green)':'var(--amber)'}">${done}/${rows.length}</div><div class="sc-l">Readiness asked</div></div>
       <div class="sc"><div class="sc-v" style="color:var(--green)">${rows.filter(p=>verdict(p).ok).length}</div><div class="sc-l">Eligible now</div></div>
+      <div class="sc"><div class="sc-v" style="color:${held?'var(--amber)':'var(--gray)'}">${held}</div><div class="sc-l">Held back</div></div>
     </div>
     <div class="sec">
       <div class="sec-t">Roster</div>
-      <div class="sec-s">Click any row to record join and role dates, run the mastery check, or activate a programme. Everything saves locally — use <b>Data</b> to export.</div>
+      <div class="sec-s">Click any row to record join and role dates, answer the readiness question, or activate a programme. Everything saves locally — use <b>Data</b> to export.</div>
       <table class="t">
-        <thead><tr><th>Person</th><th>Property</th><th>Role</th><th class="c">Joined</th><th class="c">In role</th><th class="c">Mastery</th><th>State</th><th class="c">Eligible</th></tr></thead>
+        <thead><tr><th>Person</th><th>Property</th><th>Role</th><th class="c">Joined</th><th class="c">In role</th><th class="c">Readiness</th><th>State</th><th class="c">Eligible</th></tr></thead>
         <tbody>${rows.map(p=>{
           const v=verdict(p), st=PSTATE[p.state]||PSTATE.practising;
           return `<tr onclick="openP('${p.id}')">
@@ -159,7 +162,7 @@ function renderPeople(){
             <td style="color:var(--gray)">${x(p.role)}</td>
             <td class="c">${p.joinDate?fmt(p.joinDate):'<span class="miss">—</span>'}</td>
             <td class="c">${v.mos==null?'<span class="miss">—</span>':v.mos+' mo'}</td>
-            <td class="c">${p.masteryDone?`<span class="ok">${v.exc.length} exc</span>`:'<span class="miss">not run</span>'}</td>
+            <td class="c">${v.r==='ready'?'<span class="ok">ready</span>':v.r==='not_ready'?`<span style="color:#7A4A05;font-weight:600">held ${v.defer}/${DEFER_MAX}</span>`:'<span class="miss">not asked</span>'}</td>
             <td><span class="pill" style="${st.s}">${st.n}</span></td>
             <td class="c">${v.ok?'<span class="ok">✓</span>':'<span style="color:var(--gray)">—</span>'}</td>
           </tr>`;}).join('')}
@@ -198,29 +201,59 @@ function openP(id){
       </div>
 
       <div class="fs">
-        <div class="fs-t">Mastery check</div>
+        <div class="fs-t">Readiness check</div>
         <div class="f">
-          <label>${x(MASTERY_RULE.prompt)}</label>
-          <select id="masteryDone">
-            <option value="">Not run yet</option>
-            <option value="1" ${p.masteryDone?'selected':''}>Confirmed at standard — with the exceptions below</option>
+          <label>Six months in the role are done. Is this person ready to start their programme?</label>
+          <select id="readiness" onchange="toggleReady()">
+            <option value="">Not asked yet</option>
+            <option value="ready"     ${v.r==='ready'?'selected':''}>Yes — start the programme</option>
+            <option value="not_ready" ${v.r==='not_ready'?'selected':''}>Not yet — hold back three months</option>
           </select>
+          <div class="hint"><b>The GM answers this, and the GM starts the programme.</b> Nobody else can — not the AGM, not the People Team. The date below records when it was answered.</div>
         </div>
-        <div class="f"><label>Exceptions — functions below standard</label>
-          <div id="excList">${exc.map((e,i)=>`<div class="exc">
-            <input type="text" value="${x(e)}" placeholder="e.g. Incident Management — never handled one">
-            <button onclick="this.parentElement.remove()">−</button></div>`).join('')}</div>
-          <button class="btn gh sm" style="margin-top:4px" onclick="addExc()">+ Add exception</button>
-          <div class="hint">Maximum ${MASTERY_RULE.maxExceptions}. A manager already knows the two or three weak spots — this is that, not thirty ratings.</div>
+
+        <div class="f"><label>Answered on</label>
+          <input type="date" id="masteryDate" value="${p.masteryDate||''}">
+          <div class="hint">A yes older than ${MASTERY_RULE.maxAgeMonths} months has to be asked again.</div></div>
+
+        <div id="heldBack" style="display:${v.r==='not_ready'?'block':'none'};
+             background:#FEF6E7;border:1px solid #F0C674;border-radius:10px;padding:13px 15px;margin-bottom:13px">
+          <div style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#7A4A05;font-weight:700;margin-bottom:10px">
+            The three months — written by the GM</div>
+
+          <div class="f"><label>What is not there yet</label>
+            <div id="excList">${exc.map(e=>`<div class="exc">
+              <input type="text" value="${x(e)}" placeholder="e.g. has never run an incident on his own">
+              <button onclick="this.parentElement.remove()">−</button></div>`).join('')}</div>
+            <button class="btn gh sm" style="margin-top:4px" onclick="addExc()">+ Add a point</button>
+            <div class="hint">Two or three points. A manager already knows them.</div>
+          </div>
+
+          <div class="f"><label>What he works on for the next three months</label>
+            <input type="text" id="recommend" value="${x(p.recommend||'')}"
+              placeholder="e.g. run three incidents start to finish, with Raghdah watching the first">
+            <div class="hint">Without this line the three months pass exactly like the last three.</div>
+          </div>
+
+          <div class="f2">
+            <div class="f"><label>Who follows it up</label>
+              <select id="follower"><option value="">—</option>
+                ${Object.keys(ALL_COACHES).map(k=>`<option value="${k}" ${p.follower===k?'selected':''}>${x(ALL_COACHES[k].name)} · ${ALL_COACHES[k].role}</option>`).join('')}</select>
+              <div class="hint">The GM stays accountable; this is who does the weekly follow-up on the ground.</div></div>
+            <div class="f"><label>Recheck on</label>
+              <input type="date" id="recheckDate" value="${p.recheckDate||''}">
+              <div class="hint">Filled automatically — three months from the answer.</div></div>
+          </div>
+
+          <div class="f"><label>Times held back</label>
+            <input type="number" id="deferrals" min="0" max="9" value="${p.deferrals||0}">
+            <div class="hint" ${(p.deferrals|0)>=DEFER_MAX?'style="color:#8A2E12;font-weight:600"':''}>
+              ${(p.deferrals|0)>=DEFER_MAX
+                ? `${p.deferrals} of ${DEFER_MAX} — the ceiling is reached. This is no longer a deferral: the GM owes a real plan or an honest conversation that this role is the ceiling.`
+                : `${p.deferrals||0} of ${DEFER_MAX}. Beyond three, a deferral has become a quiet no.`}</div>
+          </div>
         </div>
-        <div class="f2">
-          <div class="f"><label>Of those, on an owned function</label>
-            <input type="number" id="ownedExceptions" min="0" value="${p.ownedExceptions||0}">
-            <div class="hint" style="color:#8A2E12">Any number above zero disqualifies, whatever else is true.</div></div>
-          <div class="f"><label>Confirmed on</label>
-            <input type="date" id="masteryDate" value="${p.masteryDate||''}">
-            <div class="hint">Must be under ${MASTERY_RULE.maxAgeMonths} months old.</div></div>
-        </div>
+
         <div class="f"><label><input type="checkbox" id="concern" ${p.concern?'checked':''} style="width:auto;margin-right:7px">Open performance concern</label></div>
       </div>
 
@@ -265,13 +298,28 @@ function calcGate(){
   const s=document.getElementById('startDate').value;
   document.getElementById('gateDate').value=(s&&tpl)?fmt(addMonths(s,tpl.months)):'';
 }
+/* show the held-back block, and fill the recheck date from the answer date */
+function toggleReady(){
+  const g=id=>document.getElementById(id);
+  const nr=g('readiness').value==='not_ready';
+  g('heldBack').style.display=nr?'block':'none';
+  if(nr&&!g('recheckDate').value){
+    const base=g('masteryDate').value||new Date().toISOString().slice(0,10);
+    g('recheckDate').value=addMonths(base,3);
+  }
+}
 function saveP(){
   const g=id=>document.getElementById(id);
+  const r=g('readiness').value;
   const exc=[...document.querySelectorAll('#excList input')].map(i=>i.value.trim()).filter(Boolean);
   DB.people[CUR]=Object.assign(DB.people[CUR]||{},{
     joinDate:g('joinDate').value, roleStart:g('roleStart').value,
-    masteryDone:!!g('masteryDone').value, exceptions:exc,
-    ownedExceptions:+g('ownedExceptions').value||0, masteryDate:g('masteryDate').value,
+    readiness:r, masteryDone:r==='ready', masteryDate:g('masteryDate').value,
+    exceptions:r==='not_ready'?exc:[],
+    recommend:r==='not_ready'?g('recommend').value.trim():'',
+    follower:r==='not_ready'?(g('follower').value||null):null,
+    recheckDate:r==='not_ready'?g('recheckDate').value:'',
+    deferrals:r==='not_ready'?(+g('deferrals').value||0):0,
     concern:g('concern').checked, state:g('state').value, target:g('target').value||null,
     startDate:g('startDate').value, quarter:+g('quarter').value||0, coach:g('coach').value||null
   });
