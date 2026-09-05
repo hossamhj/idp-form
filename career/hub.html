@@ -86,6 +86,32 @@ function pc(r,extra){
     <div class="c-b">${extra||x(r.role)}</div></a>`;
 }
 
+/* an L5 card — a GM has no transition above them, so the card shows what they owe */
+const ADMP=(JSON.parse(localStorage.getItem('cd_admin')||'{}').people||{});
+const AP=id=>Object.assign({},ROSTER.find(r=>r.id===id)||{},ADMP[id]||{});
+const mosIn=d=>{if(!d)return null;const a=new Date(d),b=new Date();return Math.max(0,(b.getFullYear()-a.getFullYear())*12+(b.getMonth()-a.getMonth()));};
+
+function gmCard(r){
+  const p=PROP[r.prop], team=ROSTER.filter(z=>z.prop===r.prop&&z.lvl<5).map(z=>AP(z.id));
+  const waiting=team.filter(z=>{const m=z.roleStart?mosIn(z.roleStart):z.months;
+    return m!=null&&m>=6&&!(z.readiness||(z.masteryDone?'ready':''));}).length;
+  const held=team.filter(z=>z.readiness==='not_ready').length;
+  const active=team.filter(z=>z.state==='active').length;
+  const twoLayer=!p.agm;
+  const bits=[];
+  if(waiting)bits.push(`<b style="color:#7A4A05">${waiting} waiting on your answer</b>`);
+  if(held)bits.push(`${held} held back`);
+  if(active)bits.push(`<b style="color:#0A5540">${active} in development</b>`);
+  if(!bits.length)bits.push('nobody has been answered for yet');
+  return `<a class="c" href="coach.html?id=${r.id}">
+    <div class="c-h"><span class="c-av" style="background:${COL[5]}">${AV(r.name)}</span>
+      <div><div class="c-n">${x(r.name)}</div><div class="c-r">${x(p.name)} · ${team.length} in the team</div></div>
+      ${twoLayer?'<span class="tag" style="background:#FDEEEA;color:#8A2E12">Two layers</span>'
+        :'<span class="tag" style="background:#E8EEF6;color:#1A3660">Sponsor</span>'}</div>
+    <div class="c-b">Starts every programme in this community. ${bits.join(' · ')}.
+      ${twoLayer?'<br><span style="color:#8A2E12">No AGM here — the coaching hours have to come from another community.</span>':''}</div></a>`;
+}
+
 /* a coach card */
 function cc(id){
   const C=ALL_COACHES[id], p=PROP[C.prop];
@@ -192,8 +218,8 @@ document.getElementById('wrap').innerHTML=`
       <div class="lvl-h"><span class="lvl-n" style="background:${COL[l]}">L${l}</span>
         <span class="lvl-t">${x(LT[l].split(' · ')[1])}</span>
         <span class="lvl-c">${ppl.length} ${ppl.length===1?'person':'people'}</span></div>
-      <div class="lvl-s">${x(LD[l])}</div>
-      <div class="cards">${ppl.map(r=>pc(r)).join('')}</div>
+      <div class="lvl-s">${x(LD[l])}${l===5?' <b>No transition sits above this level</b> — a GM’s page is their coach view, not a development plan.':''}</div>
+      <div class="cards">${ppl.map(r=>l===5?gmCard(r):pc(r)).join('')}</div>
     </div>`;}).join('')}
 
   <!-- DOCUMENTS -->
