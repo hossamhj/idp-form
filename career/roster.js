@@ -1,9 +1,9 @@
 /* ═══════════════════════════════════════════════════════════
    Full roster · 22 people across 4 properties
 
-   HR has full visibility. What is governed is USE, not access —
+   The People Team has full visibility. What is governed is USE, not access —
    see DATA_USE. monthsInRole and mastery are null where not yet
-   verified; the HR page surfaces those gaps rather than guessing.
+   verified; the People Team page surfaces those gaps rather than guessing.
    ═══════════════════════════════════════════════════════════ */
 
 const ROSTER = [
@@ -119,7 +119,7 @@ const REMEDIATION = {
   ],
   rules: [
     'Remediation pauses eligibility; it does not cancel it. Once resolved the person is eligible again, with nothing held against them.',
-    'It is not a route to exit. HR watches for the pattern — a manager whose remediations always end in a departure.',
+    'It is not a route to exit. The People Team watches for the pattern — a manager whose remediations always end in a departure.',
     'The person sees the whole plan. There is no confidential remediation.'
   ]
 };
@@ -130,7 +130,7 @@ const CHANGE_CONTROL = {
     'Every template carries a version number and a date',
     'A person’s programme is stamped with the template version at enrolment',
     'A template change does not apply to anyone already in a programme — they finish on their version',
-    'A change requires HR plus one sponsor, recorded with the reason and date',
+    'A change requires the People Team plus one sponsor, recorded with the reason and date',
     'Templates are reviewed annually, after a full cycle has completed'
   ],
   basis:'A direct extension of the transparency rule: no assessment against a criterion published after the fact.'
@@ -145,9 +145,9 @@ const EXCEPTIONS = [
   {c:'No seat available at completion', r:'The programme completes and readiness is recorded — the state is Ready, awaiting scope. Promoting without real scope would be title inflation; calling it a failure would be false.'}
 ];
 
-/* HR sees everything. Governance applies to USE, not access. */
+/* The People Team sees everything. Governance applies to USE, not access. */
 const DATA_USE = {
-  principle:'HR has full visibility of every record. What is governed is how the data may be used — not what may be seen. Restricting access would blind talent planning and make bias impossible to detect.',
+  principle:'The People Team has full visibility of every record. What is governed is how the data may be used — not what may be seen. Restricting access would blind talent planning and make bias impossible to detect.',
   rules:[
     {d:'Practice log',      use:'Understanding patterns · reviewing an appeal · detecting bias',
      never:'Quoted in a performance review, a report, or a promotion decision'},

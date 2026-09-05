@@ -455,8 +455,8 @@ const COACHES = {
     as:'gm', people:['beesan','rakan','ali','rawan']}
 };
 
-/* ─────────────────── COMPANY / HR LAYER ───────────────────
-   HR sees coaches and the system — never an individual's
+/* ─────────────────── COMPANY / People Team LAYER ───────────────────
+   The People Team sees coaches and the system — never an individual's
    practice log, self-rating, or the gap between ratings.
    ─────────────────────────────────────────────────────────── */
 
@@ -493,7 +493,7 @@ const PROGRAMME_METRICS = [
    warn:'Everything else is meaningless if this is low'}
 ];
 
-/* what HR deliberately cannot see — displayed in the tool itself */
+/* what the People Team deliberately cannot see — displayed in the tool itself */
 const HR_BOUNDARY = {
   sees:[
     'Whether the monthly session was held',

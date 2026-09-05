@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>HR — Programme Oversight</title>
+<title>People Team — Programme Oversight</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <style>
@@ -52,7 +52,7 @@ table.t tbody tr:hover{background:#FCFBF9}
 <body>
 
 <div class="topnav">
-  <div class="nav-icon" style="background:#4A3A20">HR</div>
+  <div class="nav-icon" style="background:#4A3A20">PPL</div>
   <div>
     <div class="nav-name">Programme Oversight</div>
     <div class="nav-sub">Flow RX · all properties</div>
@@ -190,7 +190,7 @@ renderPeople();
   document.getElementById('coaches').innerHTML=`
     <div class="sec">
       <div class="sec-t">Coaching load and compliance</div>
-      <div class="sec-s">Compliance is measured on actions with a yes/no answer — was the session held, was the task done. <b>Not on coaching quality</b>, which cannot be verified and would make HR a judge of individuals.</div>
+      <div class="sec-s">Compliance is measured on actions with a yes/no answer — was the session held, was the task done. <b>Not on coaching quality</b>, which cannot be verified and would make the People Team a judge of individuals.</div>
       ${Object.keys(ALL_COACHES).map(cid=>{
         const C=ALL_COACHES[cid], {ppl,act,hrs}=load(cid);
         const p=PROP[C.prop];
@@ -351,7 +351,7 @@ document.getElementById('quality').innerHTML=`
     <div class="sec-s">"One standard across every property" is intent until there is a mechanism. This is the mechanism.</div>
     <div class="card" style="background:#F2FAF7;border-color:#CCE9DF">
       <div class="card-k" style="color:#0A5540">How it runs</div>
-      <div class="card-b" style="color:#2C4E42">All six coaches rate <b>the same anonymised case</b>, then the spread is discussed. Two hours a quarter. HR convenes and records the spread — it does not adjudicate who was right.</div></div>
+      <div class="card-b" style="color:#2C4E42">All six coaches rate <b>the same anonymised case</b>, then the spread is discussed. Two hours a quarter. The People Team convenes and records the spread — it does not adjudicate who was right.</div></div>
     <div class="row" style="margin-top:14px"><span class="row-k">Q3 2026</span>
       <div style="flex:1">Not yet held — six coaches across four properties</div>
       <span class="pill" style="background:#FEF6E7;color:#7A4A05">Due</span></div>
@@ -368,7 +368,7 @@ document.getElementById('quality').innerHTML=`
 /* ══ POLICY ══ */
 document.getElementById('policy').innerHTML=`
   <div class="sec">
-    <div class="sec-t">HR sees everything — use is what is governed</div>
+    <div class="sec-t">The People Team sees everything — use is what is governed</div>
     <div class="sec-s">${x(DATA_USE.principle)}</div>
     <div class="use" style="border-bottom:1px solid var(--line);padding-bottom:8px">
       <span style="font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--gray);font-weight:600">Data</span>
@@ -387,7 +387,7 @@ document.getElementById('policy').innerHTML=`
   <div class="sec">
     <div class="sec-t">Why use rather than access</div>
     <div class="card">
-      <div class="card-b">The practice log contains admissions of error — <i>"forgot to flag the third-floor AC report"</i>. The risk is not that HR reads it; the risk is that it is <b>quoted in a promotion decision</b>, at which point people start writing for the audience.<br><br>
+      <div class="card-b">The practice log contains admissions of error — <i>"forgot to flag the third-floor AC report"</i>. the risk is not that the People Team reads it; the risk is that it is <b>quoted in a promotion decision</b>, at which point people start writing for the audience.<br><br>
       Restricting access would have blinded talent planning and made bias undetectable. Restricting <b>use</b> protects honesty without either cost — and it is auditable, because a report either cites the log or it does not.</div></div>
   </div>
 
@@ -412,10 +412,10 @@ document.getElementById('policy').innerHTML=`
 
   <div class="sec">
     <div class="sec-t">Separation of powers</div>
-    <div class="sec-s">HR has full sight of the record and no vote on the outcome. That is what keeps full visibility safe.</div>
+    <div class="sec-s">The People Team has full sight of the record and no vote on the outcome. That is what keeps full visibility safe.</div>
     <div class="row"><span class="row-k">Coach</span><div style="flex:1">Observes and assesses. <b>Recommends</b> — does not decide.</div></div>
     <div class="row"><span class="row-k">Sponsor</span><div style="flex:1"><b>Grants the level.</b> May overrule the coach, with a written reason.</div></div>
-    <div class="row"><span class="row-k">HR</span><div style="flex:1"><b>Sees everything, decides nothing.</b> Audits the process, convenes calibration, detects bias.</div></div>
+    <div class="row"><span class="row-k">People Team</span><div style="flex:1"><b>Sees everything, decides nothing.</b> Audits the process, convenes calibration, detects bias.</div></div>
     <div class="row"><span class="row-k">Employee</span><div style="flex:1">Sees everything written about them, and the criteria before they are applied.</div></div>
   </div>`;
 </script>
