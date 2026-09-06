@@ -5,7 +5,10 @@
    ═══════════════════════════════════════════════════════════ */
 
 const SCALE = [
-  {v:1,l:'Not yet'},{v:2,l:'Emerging'},{v:3,l:'Consistent'},{v:4,l:'Teaches'}
+  {v:1,l:'Not yet',    d:'We have not seen it. No evidence — not a verdict.'},
+  {v:2,l:'Sometimes',  d:'Does it, but not reliably. Still needs reminding.'},
+  {v:3,l:'Every time', d:'Does it under pressure, not only on a good day.'},
+  {v:4,l:'Teaches',    d:'Does it, and gets someone else doing it.'}
 ];
 
 const BEHAVIOURS = [
@@ -87,7 +90,7 @@ const TEMPLATES = {
   gates:[
     ['Craft','9 deliberate complete · 14 natural verified · 3 conversations held'],
     ['Learning speed','Shift handover record read and accepted'],
-    ['Conduct','Consistent across all five, from three sources'],
+    ['Conduct','Every time across all five, from three sources'],
     ['Teaching','Taught one thing to a coordinator'],
     ['Scope','Stretch assignment held within its written limits']],
   failRule:'Someone who reaches the standard but never worked unsupervised has not made the transition.'
@@ -158,7 +161,7 @@ const TEMPLATES = {
   gates:[
     ['Craft','12 deliberate · 22 extended ownerships verified · a written procedure per owned function'],
     ['Learning speed','Record on Reporting or Vendor Reconciliation'],
-    ['Conduct','Consistent across five, and <b>Teaches</b> on developing others'],
+    ['Conduct','Every time across five, and <b>Teaches</b> on developing others'],
     ['Teaching','Those they directed perform to standard — assessed independently'],
     ['Scope','Two weeks with the AGM away, all 43 functions working']],
   failRule:'Someone holding 28 functions who has become the single point of failure has not transitioned — they have absorbed more work.'
@@ -231,7 +234,7 @@ const TEMPLATES = {
   gates:[
     ['Craft','24 released · 4 new taken on · 10 deepened · 7 overseen without executing'],
     ['Learning speed','Record on Schedule Management or Evictions'],
-    ['Conduct','Consistent across five, and <b>Teaches</b> on developing others'],
+    ['Conduct','Every time across five, and <b>Teaches</b> on developing others'],
     ['Teaching','The successor performs to standard — assessed independently'],
     ['Scope','Six months of scheduling with no intervention · a month with no relapse']],
   failRule:'Someone who has mastered the new work but not released the 24 is not an AGM — they are a Senior with extra duties.'
@@ -315,7 +318,7 @@ const TEMPLATES = {
   gates:[
     ['Craft','6 released · 17 overseen · 5 deepened to ownership'],
     ['Learning speed','Record on overseeing a non-RX team — the first scope outside their specialism'],
-    ['Conduct','Consistent across five, and <b>Teaches</b> on developing others'],
+    ['Conduct','Every time across five, and <b>Teaches</b> on developing others'],
     ['Teaching','A successor AGM is ready and independently assessed'],
     ['Scope','Two quarters carrying a full result · two weeks away · the scope keeps working']],
   failRule:'Someone who has not built a successor is not promoted, whatever their results. A GM whose success depends on their presence built dependence, not a system.'

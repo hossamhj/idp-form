@@ -87,6 +87,16 @@ ul.tight li:before{content:'';position:absolute;left:2px;top:11px;width:5px;heig
 .exmp-r.key>span{color:#0A5540;font-weight:600}
 .exmp-r.key>div{color:#0A5540;font-weight:500}
 .exmp-x{font-size:10.5px;color:#5A7A70;margin-top:11px;padding-top:9px;border-top:1px dashed #DDF0E8;line-height:1.7}
+.scdef{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:15px}
+.scd{border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:11px;line-height:1.6}
+.scd b{font-size:12px;display:inline}
+.scd i{font-size:9.5px;font-style:normal;font-weight:600}
+.scd span{display:block;color:var(--gray);margin-top:5px}
+.scd.sc1{background:#F7F5F1}
+.scd.sc2{background:#FEF6E7;border-color:#F0C674}
+.scd.sc3{background:#E1F5EE;border-color:#B7E3D3}
+.scd.sc3 i{color:#085041}
+.scd.sc4{background:#EEEDFE;border-color:#D8D2F5}
 .cd{font-family:ui-monospace,SFMono-Regular,monospace;font-size:10.5px;background:#F2EFE9;border-radius:5px;padding:2px 7px;white-space:nowrap}
 .qtabs{display:flex;align-items:center;gap:6px;margin-bottom:13px;flex-wrap:wrap}
 .qt{font-family:inherit;font-size:12px;font-weight:600;color:#6A6760;background:#fff;border:1px solid var(--line);
@@ -331,8 +341,8 @@ function renderDetail(){
               <div class="ins-n">Behaviour rating — ${DIMS.length} dimensions, <b>self first, then manager</b></div>
               <div class="ins-d">The employee rates before seeing the manager's rating; the conversation starts from the gap. Kept per quarter, so the direction of travel is visible — a dimension that never moves is the finding.</div>
               <div class="ins-f">${DIMS.map(d=>`<span>${x(d.n)}</span>`).join('')}</div>
-              <div class="ins-scale">${SCALE.map(s=>`<span class="sc${s.v}">${x(s.l)}</span>`).join('')}
-                <span class="ins-x" style="margin:0 0 0 auto;padding:0;border:none"><b>Consistent</b> is the gate standard</span></div>
+              <div class="ins-scale">${SCALE.map(s=>`<span class="sc${s.v}" title="${x(s.d||'')}">${x(s.l)}</span>`).join('')}
+                <span class="ins-x" style="margin:0 0 0 auto;padding:0;border:none"><b>Every time</b> is the gate standard</span></div>
             </div>
           </div>
 
@@ -359,7 +369,8 @@ function renderDetail(){
 
         <div class="blk" id="s-beh">
           <div class="blk-t">Behaviour — from, to</div>
-          <div class="blk-s">Rated <b>Not yet · Emerging · Consistent · Teaches</b>. Consistent is the gate standard, and the real test is always under pressure.</div>
+          <div class="blk-s">A four-point <b>consistency</b> scale — it measures how often, not how well.</div>
+          <div class="scdef">${SCALE.map(s=>`<div class="scd sc${s.v}"><b>${x(s.l)}</b>${s.v===3?' <i>← the gate standard</i>':''}<span>${x(s.d||'')}</span></div>`).join('')}</div>
           <table class="t"><thead><tr><th style="width:22%">Dimension</th><th style="width:33%">At the current level</th><th>Required at the next</th></tr></thead>
             <tbody>${A.map(a=>`<tr><td><b>${x(a[0])}</b></td><td style="color:var(--gray)">${x(a[1])}</td><td>${x(a[2])}</td></tr>`).join('')}</tbody></table>
         </div>
@@ -473,7 +484,7 @@ function renderQuarter(){
         <tbody>${DIMS.map(b=>`<tr><td class="bt-n">${x(b.n)}</td>
           <td><div class="rate">${SCALE.map(o=>`<span class="rb">${x(o.l)}</span>`).join('')}</div></td>
           <td><div class="rate">${SCALE.map(o=>`<span class="rb">${x(o.l)}</span>`).join('')}</div></td></tr>`).join('')}</tbody></table>
-      <div class="qcard-x"><b>Consistent</b> on all ${DIMS.length} is the gate standard${TQ===T.quarters.length?' — and this is the quarter it is judged.':', and every quarter is kept so the direction of travel shows.'}</div>
+      <div class="qcard-x"><b>Every time</b> on all ${DIMS.length} is the gate standard${TQ===T.quarters.length?' — and this is the quarter it is judged.':', and every quarter is kept so the direction of travel shows.'}</div>
     </div>
 
     ${TQ===T.quarters.length?`<div class="warn" style="margin-top:14px"><b>The gate closes this quarter.</b> ${x(T.failRule)}</div>`:''}`;

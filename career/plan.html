@@ -274,8 +274,8 @@ const dims=BEHAVIOURS.filter(b=>!b.fromLevel||T.level>=b.fromLevel);
 const QN=T.quarters.map(q=>q.n);
 AQ=P.quarter||1;
 const val=(who,q,id)=>ST[who][q+'_'+id]||0;
-const SL={1:['Not yet','#F5F3F0','#8A8780'],2:['Emerging','#FEF6E7','#7A4A05'],
-          3:['Consistent','#E1F5EE','#085041'],4:['Teaches','#EEEDFE','#26215C']};
+const SL={1:['Not yet','#F5F3F0','#8A8780'],2:['Sometimes','#FEF6E7','#7A4A05'],
+          3:['Every time','#E1F5EE','#085041'],4:['Teaches','#EEEDFE','#26215C']};
 
 function renderAssess(){
   const q=T.quarters.find(z=>z.n===AQ)||T.quarters[0];
@@ -284,7 +284,7 @@ function renderAssess(){
   document.getElementById('assess').innerHTML=`
     <div class="sec">
       <div class="sec-t">Behaviour — rated once each quarter</div>
-      <div class="sec-s">Five dimensions, not thirty. Rate yourself <b>before</b> seeing the manager's rating — the conversation starts from the gap. <b>Consistent</b> is the gate standard, and the real test is always under pressure.</div>
+      <div class="sec-s">Five dimensions, not thirty. Rate yourself <b>before</b> seeing the manager's rating — the conversation starts from the gap. <b>Every time</b> is the gate standard, and the real test is always under pressure.</div>
       <div class="qtabs">
         ${QN.map(n=>{const c=dims.filter(b=>val('self',n,b.id)&&val('mgr',n,b.id)).length;
           return `<button class="qt ${n===AQ?'on':''} ${n>P.quarter?'future':''}" onclick="setAQ(${n})">Q${n}
@@ -299,7 +299,7 @@ function renderAssess(){
         if(sv&&mv){const d=sv-mv;
           g=d===0?`<span class="gap" style="background:#EAF7F2;color:#085041">Aligned</span>`
            :`<span class="gap" style="background:${Math.abs(d)>1?'#FDEEEA':'#FEF6E7'};color:${Math.abs(d)>1?'#8A2E12':'#7A4A05'}">${d>0?'Self higher':'Self lower'} · ${Math.abs(d)}</span>`;}
-        const r=(who,v)=>`<div class="rate">${SCALE.map(o=>`<button class="rb ${v===o.v?'on':''}" data-v="${o.v}" onclick="setR('${who}','${b.id}',${o.v})">${o.l}</button>`).join('')}</div>`;
+        const r=(who,v)=>`<div class="rate">${SCALE.map(o=>`<button class="rb ${v===o.v?'on':''}" data-v="${o.v}" title="${x(o.d||'')}" onclick="setR('${who}','${b.id}',${o.v})">${o.l}</button>`).join('')}</div>`;
         const prev=QN.filter(n=>n<AQ&&val('mgr',n,b.id)).map(n=>`Q${n} ${SL[val('mgr',n,b.id)][0]}`).join(' → ');
         return `<div class="as"><div class="as-n">${x(b.n)}</div>
           <div class="as-row"><div class="as-c"><div class="as-l">${x(P.name.split(' ')[0])} — self</div>${r('self',sv)}</div>
@@ -323,7 +323,7 @@ function renderAssess(){
               :mv<0?`<span class="mx-c" style="background:#FDEEEA;color:#8A2E12">${mv}</span>`
               :'<span class="mx-c" style="background:#FEF6E7;color:#7A4A05">flat</span>'}</td></tr>`;
         }).join('')}</tbody></table>
-      <div class="card" style="margin-top:12px"><div class="card-b">The gate asks for <b>Consistent on all ${dims.length}</b>, from three sources. One dimension short is a specific finding, not an average.</div></div>
+      <div class="card" style="margin-top:12px"><div class="card-b">The gate asks for <b>Every time on all ${dims.length}</b>, from three sources. One dimension short is a specific finding, not an average.</div></div>
     </div>
 
     <div class="sec">
