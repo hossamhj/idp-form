@@ -97,6 +97,8 @@ ul.tight li:before{content:'';position:absolute;left:2px;top:11px;width:5px;heig
 .scd.sc3{background:#E1F5EE;border-color:#B7E3D3}
 .scd.sc3 i{color:#085041}
 .scd.sc4{background:#EEEDFE;border-color:#D8D2F5}
+.gq{font-size:11px;color:#5A5750;font-style:italic;margin-top:4px;line-height:1.55}
+.gh{font-size:9.5px;color:var(--gray);margin-top:3px}
 .cd{font-family:ui-monospace,SFMono-Regular,monospace;font-size:10.5px;background:#F2EFE9;border-radius:5px;padding:2px 7px;white-space:nowrap}
 .qtabs{display:flex;align-items:center;gap:6px;margin-bottom:13px;flex-wrap:wrap}
 .qt{font-family:inherit;font-size:12px;font-weight:600;color:#6A6760;background:#fff;border:1px solid var(--line);
@@ -386,7 +388,7 @@ function renderDetail(){
           <div class="blk-t">The gate — all five, no averaging</div>
           <div class="blk-s">Strong on one and weak on another is a specific finding. An average erases exactly what the decision turns on.</div>
           <table class="t"><thead><tr><th style="width:22%">Check</th><th>What it asks</th></tr></thead>
-            <tbody>${T.gates.map(g=>`<tr><td><b>${x(g[0])}</b></td><td>${g[1]}</td></tr>`).join('')}</tbody></table>
+            <tbody>${T.gates.map(g=>{const D=(typeof DIMENSIONS!=='undefined'&&DIMENSIONS[g[0]])||null;return `<tr><td><b>${x(g[0])}</b>${D?`<div class="gq">${x(D.q)}</div><div class="gh">${x(D.how)}</div>`:''}</td><td>${g[1]}</td></tr>`;}).join('')}</tbody></table>
           <div class="warn" style="margin-top:14px"><b>Fail rule.</b> ${x(T.failRule)}</div>
         </div>
 

@@ -4,6 +4,15 @@
    (flow-community-os · MENA · 48 functions)
    ═══════════════════════════════════════════════════════════ */
 
+/* The three dimensions of the gate — each with the question it actually asks. */
+const DIMENSIONS = {
+  Craft:  {q:'Can you do the work to standard?',                 how:'computed from the functions'},
+  Conduct:{q:'How do you show up while doing it?',                how:'observed, from three sources'},
+  Scope:  {q:'Can you carry the next kind of responsibility?',    how:'tested by the stretch assignment'},
+  'Learning speed':{q:'How fast do you turn a correction into a habit?', how:'read from the practice log'},
+  Teaching:{q:'Can you get someone else doing it?',               how:'one thing taught, and it stuck'}
+};
+
 const SCALE = [
   {v:1,l:'Not yet',    d:'We have not seen it. No evidence — not a verdict.'},
   {v:2,l:'Sometimes',  d:'Does it, but not reliably. Still needs reminding.'},

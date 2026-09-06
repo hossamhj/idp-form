@@ -53,7 +53,8 @@
 .gap{font-size:10px;font-weight:600;padding:3px 9px;border-radius:8px;align-self:center;white-space:nowrap}
 .gt{display:flex;align-items:center;gap:11px;padding:11px 0;border-bottom:1px solid #F2EFE9}
 .gt:last-child{border:none}
-.gt-n{font-size:12.5px;font-weight:600;min-width:120px}
+.gt-n{font-size:12.5px;font-weight:600;min-width:150px}
+.gt-n i{display:block;font-size:10.5px;font-weight:400;font-style:italic;color:var(--gray);margin-top:3px;line-height:1.5}
 .gt-d{font-size:11.5px;color:var(--gray);line-height:1.6;flex:1}
 .qtabs{display:flex;align-items:center;gap:6px;margin-bottom:11px;flex-wrap:wrap}
 .qt{font-family:inherit;font-size:12px;font-weight:600;color:#6A6760;background:#fff;border:1px solid var(--line);
@@ -341,8 +342,8 @@ document.getElementById('gate').innerHTML=`
   <div class="sec">
     <div class="sec-t">Five gates — all of them, no averaging</div>
     <div class="sec-s">Strong on one and weak on another is a specific, actionable finding. An average erases it.</div>
-    ${T.gates.map(g=>`<div class="gt"><span class="gt-n">${x(g[0])}</span><span class="gt-d">${g[1]}</span>
-      <span class="chip" style="background:#F2EFE9;color:#5A5750">Not yet</span></div>`).join('')}
+    ${T.gates.map(g=>{const D=(typeof DIMENSIONS!=='undefined'&&DIMENSIONS[g[0]])||null;return `<div class="gt"><span class="gt-n">${x(g[0])}${D?`<i>${x(D.q)}</i>`:''}</span><span class="gt-d">${g[1]}</span>
+      <span class="chip" style="background:#F2EFE9;color:#5A5750">Not yet</span></div>`;}).join('')}
   </div>
   <div class="sec">
     <div class="sec-t">Fail rule</div>
