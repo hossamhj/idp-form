@@ -80,6 +80,7 @@ ul.tight li{font-size:12.5px;line-height:1.9;padding-left:18px;position:relative
 ul.tight li:before{content:'';position:absolute;left:2px;top:11px;width:5px;height:5px;border-radius:50%;background:var(--gray)}
 .warn{background:#FDEEEA;border:1px solid #EFB5A2;border-radius:11px;padding:15px 17px;font-size:12.5px;line-height:1.75;color:#5A3128}
 .cols2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.cd{font-family:ui-monospace,SFMono-Regular,monospace;font-size:10.5px;background:#F2EFE9;border-radius:5px;padding:2px 7px;white-space:nowrap}
 .qtabs{display:flex;align-items:center;gap:6px;margin-bottom:13px;flex-wrap:wrap}
 .qt{font-family:inherit;font-size:12px;font-weight:600;color:#6A6760;background:#fff;border:1px solid var(--line);
   border-radius:9px;padding:7px 13px;cursor:pointer;display:flex;align-items:center;gap:8px}
@@ -212,6 +213,7 @@ function renderDetail(){
   const T=TEMPLATES[CUR], L=FN_LISTS[CUR], A=ANCHORS[CUR], NR=NOT_READY[CUR];
   const inProg=ROSTER.filter(r=>r.target===CUR);
   DIMS=BEHAVIOURS.filter(b=>!b.fromLevel||T.level>=b.fromLevel);
+  const NEWCT=L.reduce((a,g)=>a+g.f.filter(r=>String(r[1]).trim().indexOf('—')===0).length,0);
   document.getElementById('detail').innerHTML=`
     <div class="big">
       <div class="big-h">
@@ -254,8 +256,9 @@ function renderDetail(){
         </div>
 
         <div class="blk" id="s-fns">
-          <div class="blk-t">The ${T.changed} functions</div>
-          <div class="blk-s">Grouped by what kind of change each one is. Every function is named — click a group heading to fold it away.</div>
+          <div class="blk-t">The ${T.changed} functions that change</div>
+          <div class="blk-s"><b>${T.changed} of the operating model's 48 functions change level of involvement here</b>${NEWCT?` — ${NEWCT} of them touched for the first time`:''}. A function is what the Operating Playbook staffs: a standing responsibility with an owner and a standard — <i>Move-ins</i>, <i>Incident Management</i>, <i>Shift handover</i> — not a daily task. What moves is the code against each one: <span class="cd">— → assist → execute → own → oversee</span>. Nothing here was written by hand; it is read from <b>ops_function_operating</b>.</div>
+          <div class="blk-s" style="margin-top:-6px">Grouped by what kind of change each one is. Every function is named — click a group heading to fold it away.</div>
           ${L.map((g,i)=>`<div class="fgrp open" id="g${i}">
             <div class="fgrp-h" onclick="document.getElementById('g${i}').classList.toggle('open')">
               <span class="fdot" style="background:${g.c}"></span>
