@@ -129,6 +129,7 @@ const ST={logs:JSON.parse(localStorage.getItem(K+'logs')||'{}'),step:JSON.parse(
   self:JSON.parse(localStorage.getItem(K+'self')||'{}'),mgr:JSON.parse(localStorage.getItem(K+'mgr')||'{}'),
   save(){['logs','step','self','mgr'].forEach(k=>localStorage.setItem(K+k,JSON.stringify(ST[k])))}};
 function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('on');clearTimeout(t._);t._=setTimeout(()=>t.classList.remove('on'),1700)}
+var AQ=1;
 const STEPS=['observe','assisted','solo','owned'],STEPL={observe:'Observe',assisted:'With support',solo:'Alone',owned:'Owned'};
 
 function go(v,btn){document.querySelectorAll('.view').forEach(e=>e.classList.remove('on'));
@@ -255,7 +256,7 @@ document.getElementById('now').innerHTML=cq&&cq.fns.length?`
 /* ASSESSMENT — one per quarter, so progress is visible instead of overwritten */
 const dims=BEHAVIOURS.filter(b=>!b.fromLevel||T.level>=b.fromLevel);
 const QN=T.quarters.map(q=>q.n);
-let AQ=P.quarter||1;
+AQ=P.quarter||1;
 const val=(who,q,id)=>ST[who][q+'_'+id]||0;
 const SL={1:['Not yet','#F5F3F0','#8A8780'],2:['Emerging','#FEF6E7','#7A4A05'],
           3:['Consistent','#E1F5EE','#085041'],4:['Teaches','#EEEDFE','#26215C']};
