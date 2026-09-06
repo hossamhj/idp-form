@@ -80,6 +80,13 @@ ul.tight li{font-size:12.5px;line-height:1.9;padding-left:18px;position:relative
 ul.tight li:before{content:'';position:absolute;left:2px;top:11px;width:5px;height:5px;border-radius:50%;background:var(--gray)}
 .warn{background:#FDEEEA;border:1px solid #EFB5A2;border-radius:11px;padding:15px 17px;font-size:12.5px;line-height:1.75;color:#5A3128}
 .cols2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.exmp{border:1px solid #B7E3D3;background:#F5FBF9;border-radius:11px;padding:13px 15px;margin-bottom:14px}
+.exmp-t{font-size:9.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#0A5540;margin-bottom:10px}
+.exmp-r{display:grid;grid-template-columns:150px 1fr;gap:11px;padding:7px 0;border-top:1px solid #DDF0E8;font-size:12px;line-height:1.7}
+.exmp-r>span{font-size:10.5px;color:#5A7A70}
+.exmp-r.key>span{color:#0A5540;font-weight:600}
+.exmp-r.key>div{color:#0A5540;font-weight:500}
+.exmp-x{font-size:10.5px;color:#5A7A70;margin-top:11px;padding-top:9px;border-top:1px dashed #DDF0E8;line-height:1.7}
 .cd{font-family:ui-monospace,SFMono-Regular,monospace;font-size:10.5px;background:#F2EFE9;border-radius:5px;padding:2px 7px;white-space:nowrap}
 .qtabs{display:flex;align-items:center;gap:6px;margin-bottom:13px;flex-wrap:wrap}
 .qt{font-family:inherit;font-size:12px;font-weight:600;color:#6A6760;background:#fff;border:1px solid var(--line);
@@ -425,6 +432,14 @@ function renderQuarter(){
           <div class="steps">${STEPS.map(s=>`<span class="st" title="${s[1]}">${s[0]}</span>`).join('')}</div>
         </div>
         <div class="ff-b">
+          ${(q.example&&q.example.fn===nm)?`<div class="exmp">
+            <div class="exmp-t">An example of a real entry — what a good one looks like</div>
+            <div class="exmp-r"><span>What did I try?</span><div>${q.example.a}</div></div>
+            <div class="exmp-r"><span>What happened?</span><div>${q.example.o}</div></div>
+            <div class="exmp-r key"><span>What would I do differently?</span><div>${q.example.w}</div></div>
+            <div class="exmp-r"><span>What do I need?</span><div>${q.example.n}</div></div>
+            <div class="exmp-x">Nothing here is a score. The third line is the only one that changes what happens next week — and the fourth is the only one the coach can act on.</div>
+          </div>`:''}
           <div class="form-t">The practice entry — the employee writes it, after each attempt</div>
           <div class="fld"><label>What did I try?</label><div class="fake"></div></div>
           <div class="fld"><label>What happened?</label><div class="fake"></div></div>
