@@ -169,6 +169,7 @@ table.bt tr:last-child td{border:none}
 <script src="data.js"></script>
 <script src="roster.js"></script>
 <script src="templates_detail.js"></script>
+<script src="owners.js"></script>
 <script>
 const x=s=>String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 const ORDER=['coord-assoc','assoc-sr','sr-agm','agm-gm'];
@@ -393,6 +394,7 @@ function setTQ(n){TQ=n;renderQuarter();}
 
 function renderQuarter(){
   const T=TEMPLATES[CUR], q=T.quarters.find(z=>z.n===TQ)||T.quarters[0];
+  const POS=['RX Coordinator','RX Associate','Senior RX Associate','Assistant General Manager','General Manager'];
   const STEPS=[['Observe','what good looks like'],['With support','someone alongside'],
                ['Alone','nobody watching'],['Owned','the result is yours']];
 
@@ -408,13 +410,15 @@ function renderQuarter(){
     </div>
 
     ${q.fns.length?`
-    <div class="qsub">The functions in focus — each one worked through the same four steps</div>
+    <div class="qsub">The functions in focus — taught by whoever owns them, worked through the same four steps</div>
     ${q.fns.map(f=>{
-      const owner=(f.indexOf('★')===0)?'the function owner':'the owner of this function';
+      const nm=f.replace('★ ','').replace(/ (oversee)$/,'');
+      const oi=(typeof FN_OWNER!=='undefined')?FN_OWNER[nm]:undefined;
+      const teach=(oi===undefined)?null:(oi<0?'no single owner — the coach carries it':POS[oi]);
       return `<div class="ff">
         <div class="ff-h">
           <div><div class="ff-n">${x(f.replace('★ ',''))}${f.indexOf('★')===0?' <span class="star">ownership handed over</span>':''}</div>
-            <div class="ff-m">taught laterally by ${owner} · 15 minutes a week</div></div>
+            <div class="ff-m">${teach?'taught by the <b>'+x(teach)+'</b> — whoever owns it, teaches it':'a programme activity, not a function — run by the coach'} · <b>15 minutes a week</b></div></div>
           <div class="steps">${STEPS.map(s=>`<span class="st" title="${s[1]}">${s[0]}</span>`).join('')}</div>
         </div>
         <div class="ff-b">
