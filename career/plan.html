@@ -49,6 +49,26 @@
 .gt:last-child{border:none}
 .gt-n{font-size:12.5px;font-weight:600;min-width:120px}
 .gt-d{font-size:11.5px;color:var(--gray);line-height:1.6;flex:1}
+.qtabs{display:flex;align-items:center;gap:6px;margin-bottom:11px;flex-wrap:wrap}
+.qt{font-family:inherit;font-size:12px;font-weight:600;color:#6A6760;background:#fff;border:1px solid var(--line);
+  border-radius:8px;padding:6px 13px;cursor:pointer;display:flex;align-items:center;gap:7px}
+.qt:hover{background:#FCFBF9}
+.qt.on{background:var(--navy);border-color:var(--navy);color:#fff}
+.qt.future{opacity:.5}
+.qt-c{font-size:9px;font-weight:600;background:#F2EFE9;color:#5A5750;border-radius:5px;padding:1px 5px}
+.qt.on .qt-c{background:rgba(255,255,255,.2);color:#fff}
+.qt-now{margin-left:auto;font-size:10.5px;color:var(--gray)}
+.qnote{font-size:11.5px;color:#5A5750;background:#FCFBF9;border:1px solid #EDEAE4;border-radius:9px;
+  padding:9px 13px;margin-bottom:13px;line-height:1.6}
+.as-prev{font-size:10.5px;color:var(--gray);margin-top:7px;padding-top:7px;border-top:1px dashed #EDEAE4}
+table.mx{width:100%;border-collapse:collapse;font-size:12px}
+table.mx th{text-align:left;font-size:9px;letter-spacing:.09em;text-transform:uppercase;color:var(--gray);
+  font-weight:600;padding:0 8px 8px 0;border-bottom:1px solid var(--line)}
+table.mx td{padding:9px 8px 9px 0;border-bottom:1px solid #EFECE6;vertical-align:middle}
+table.mx tr:last-child td{border:none}
+.mx-n{font-weight:600;font-size:12px;white-space:nowrap}
+.mx-c{font-size:9.5px;font-weight:600;padding:3px 8px;border-radius:7px;white-space:nowrap;display:inline-block}
+.mx-e{color:#C8C2B8}
 </style>
 </head>
 <body>
@@ -194,7 +214,8 @@ document.getElementById('now').innerHTML=cq&&cq.fns.length?`
     <div class="sec-t">Q${cq.n} — "${x(cq.goal)}"</div>
     <div class="sec-s">${x(cq.why||cq.period)}</div>
     ${cq.fns.map((f,i)=>{
-      const id='f'+i, cur=ST.step[id]||'observe', logs=ST.logs[id]||[];
+      const id='q'+cq.n+'_f'+i, old='f'+i;
+      const cur=ST.step[id]||ST.step[old]||'observe', logs=ST.logs[id]||ST.logs[old]||[];
       const teach=(P.teachers&&P.teachers[f])||'Function owner';
       return `<div class="ff">
         <div class="ff-h"><div><div class="ff-n">${x(f)}</div><div class="ff-m">taught by ${x(teach)}</div></div>
@@ -231,32 +252,71 @@ document.getElementById('now').innerHTML=cq&&cq.fns.length?`
     <div class="q-lbl" style="margin-top:14px">Eligibility — all must be true</div>
     <ul class="tight">${T.eligibility.map(e=>`<li>${e}</li>`).join('')}</ul></div>`;
 
-/* ASSESSMENT */
+/* ASSESSMENT — one per quarter, so progress is visible instead of overwritten */
 const dims=BEHAVIOURS.filter(b=>!b.fromLevel||T.level>=b.fromLevel);
+const QN=T.quarters.map(q=>q.n);
+let AQ=P.quarter||1;
+const val=(who,q,id)=>ST[who][q+'_'+id]||0;
+const SL={1:['Not yet','#F5F3F0','#8A8780'],2:['Emerging','#FEF6E7','#7A4A05'],
+          3:['Consistent','#E1F5EE','#085041'],4:['Teaches','#EEEDFE','#26215C']};
+
 function renderAssess(){
+  const q=T.quarters.find(z=>z.n===AQ)||T.quarters[0];
+  const done=dims.filter(b=>val('self',AQ,b.id)&&val('mgr',AQ,b.id)).length;
+
   document.getElementById('assess').innerHTML=`
     <div class="sec">
-      <div class="sec-t">Self first, then manager</div>
-      <div class="sec-s">Rate yourself <b>before</b> seeing the manager's rating. The conversation starts from the gap. <b>Consistent</b> is the gate standard — and the real test is always under pressure.</div>
+      <div class="sec-t">Behaviour — rated once each quarter</div>
+      <div class="sec-s">Five dimensions, not thirty. Rate yourself <b>before</b> seeing the manager's rating — the conversation starts from the gap. <b>Consistent</b> is the gate standard, and the real test is always under pressure.</div>
+      <div class="qtabs">
+        ${QN.map(n=>{const c=dims.filter(b=>val('self',n,b.id)&&val('mgr',n,b.id)).length;
+          return `<button class="qt ${n===AQ?'on':''} ${n>P.quarter?'future':''}" onclick="setAQ(${n})">Q${n}
+            <span class="qt-c">${c===dims.length?'✓':c+'/'+dims.length}</span></button>`;}).join('')}
+        <span class="qt-now">Currently in <b>Q${P.quarter}</b></span>
+      </div>
+      <div class="qnote">Q${AQ} — <b>${x(q.goal)}</b> · ${x(q.period)}${AQ>P.quarter?' · <span style="color:#7A4A05">not reached yet</span>':''}${done===dims.length?' · <span style="color:#085041">complete</span>':''}</div>
+
       ${dims.map(b=>{
-        const sv=ST.self[b.id]||0,mv=ST.mgr[b.id]||0;
+        const sv=val('self',AQ,b.id), mv=val('mgr',AQ,b.id);
         let g='';
         if(sv&&mv){const d=sv-mv;
           g=d===0?`<span class="gap" style="background:#EAF7F2;color:#085041">Aligned</span>`
            :`<span class="gap" style="background:${Math.abs(d)>1?'#FDEEEA':'#FEF6E7'};color:${Math.abs(d)>1?'#8A2E12':'#7A4A05'}">${d>0?'Self higher':'Self lower'} · ${Math.abs(d)}</span>`;}
         const r=(who,v)=>`<div class="rate">${SCALE.map(o=>`<button class="rb ${v===o.v?'on':''}" data-v="${o.v}" onclick="setR('${who}','${b.id}',${o.v})">${o.l}</button>`).join('')}</div>`;
+        const prev=QN.filter(n=>n<AQ&&val('mgr',n,b.id)).map(n=>`Q${n} ${SL[val('mgr',n,b.id)][0]}`).join(' → ');
         return `<div class="as"><div class="as-n">${x(b.n)}</div>
           <div class="as-row"><div class="as-c"><div class="as-l">${x(P.name.split(' ')[0])} — self</div>${r('self',sv)}</div>
-          <div class="as-c"><div class="as-l">${x(P.manager.split(' ')[0])} — manager</div>${r('mgr',mv)}</div>${g}</div></div>`;
+          <div class="as-c"><div class="as-l">${x(P.manager.split(' ')[0])} — manager</div>${r('mgr',mv)}</div>${g}</div>
+          ${prev?`<div class="as-prev">${prev}${mv?' → <b>Q'+AQ+' '+SL[mv][0]+'</b>':''}</div>`:''}</div>`;
       }).join('')}
     </div>
+
+    <div class="sec">
+      <div class="sec-t">The whole year at a glance</div>
+      <div class="sec-s">The manager's rating each quarter. This is the only place the direction of travel shows — a dimension that never moves is the finding.</div>
+      <table class="mx"><thead><tr><th></th>${QN.map(n=>`<th>Q${n}</th>`).join('')}<th>Movement</th></tr></thead>
+        <tbody>${dims.map(b=>{
+          const vs=QN.map(n=>val('mgr',n,b.id));
+          const first=vs.find(v=>v), last=[...vs].reverse().find(v=>v);
+          const mv=(first&&last)?(last-first):null;
+          return `<tr><td class="mx-n">${x(b.n)}</td>
+            ${vs.map((v,i)=>`<td>${v?`<span class="mx-c" style="background:${SL[v][1]};color:${SL[v][2]}">${SL[v][0]}</span>`
+              :`<span class="mx-e">—</span>`}</td>`).join('')}
+            <td>${mv===null?'<span class="mx-e">—</span>':mv>0?`<span class="mx-c" style="background:#E1F5EE;color:#085041">+${mv}</span>`
+              :mv<0?`<span class="mx-c" style="background:#FDEEEA;color:#8A2E12">${mv}</span>`
+              :'<span class="mx-c" style="background:#FEF6E7;color:#7A4A05">flat</span>'}</td></tr>`;
+        }).join('')}</tbody></table>
+      <div class="card" style="margin-top:12px"><div class="card-b">The gate asks for <b>Consistent on all ${dims.length}</b>, from three sources. One dimension short is a specific finding, not an average.</div></div>
+    </div>
+
     <div class="sec">
       <div class="sec-t">Monthly conversation</div>
-      <div class="sec-s">45 minutes with ${x(P.manager)}. Does not begin with "how are things going?"</div>
+      <div class="sec-s">45 minutes with ${x(P.manager)}, every month of the programme. The same four questions each time — their power is in the repetition. Does not begin with "how are things going?"</div>
       <ul class="tight">${T.questions.map(q=>`<li>${q}</li>`).join('')}</ul>
       <div class="card" style="margin-top:12px"><div class="card-b">Ends with <b>one specific commitment</b> for the coming month — not a list.</div></div>
     </div>`;
 }
+function setAQ(n){AQ=n;renderAssess();}
 renderAssess();
 
 /* GATE */
@@ -303,7 +363,7 @@ document.getElementById('coach').innerHTML=`
 }
 
 function setStep(id,s){ST.step[id]=s;ST.save();location.reload()}
-function setR(who,id,v){ST[who][id]=v;ST.save();renderAssess();toast('Saved')}
+function setR(who,id,v){ST[who][AQ+'_'+id]=v;ST.save();renderAssess();toast('Saved to Q'+AQ)}
 function addLog(id){
   const g=p=>{const e=document.getElementById(p+'-'+id);return e?e.value.trim():''};
   const a=g('a'); if(!a){toast('Start with what you tried');return}
