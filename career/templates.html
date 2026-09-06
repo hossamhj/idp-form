@@ -80,6 +80,43 @@ ul.tight li{font-size:12.5px;line-height:1.9;padding-left:18px;position:relative
 ul.tight li:before{content:'';position:absolute;left:2px;top:11px;width:5px;height:5px;border-radius:50%;background:var(--gray)}
 .warn{background:#FDEEEA;border:1px solid #EFB5A2;border-radius:11px;padding:15px 17px;font-size:12.5px;line-height:1.75;color:#5A3128}
 .cols2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.qtabs{display:flex;align-items:center;gap:6px;margin-bottom:13px;flex-wrap:wrap}
+.qt{font-family:inherit;font-size:12px;font-weight:600;color:#6A6760;background:#fff;border:1px solid var(--line);
+  border-radius:9px;padding:7px 13px;cursor:pointer;display:flex;align-items:center;gap:8px}
+.qt:hover{background:#FCFBF9}
+.qt.on{background:var(--navy);border-color:var(--navy);color:#fff}
+.qt-c{font-size:9.5px;font-weight:400;color:var(--gray)}
+.qt.on .qt-c{color:rgba(255,255,255,.6)}
+.qt-now{margin-left:auto;font-size:10.5px;color:var(--gray)}
+.qhead{background:var(--navy);color:#EDE9E2;border-radius:12px;padding:15px 18px;margin-bottom:16px}
+.qhead-t{font-family:'Playfair Display',serif;font-size:19px;font-weight:500}
+.qhead-s{font-size:11.5px;color:rgba(237,233,226,.62);margin-top:5px;line-height:1.6}
+.qsub{font-size:9.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--gray);font-weight:600;margin:20px 0 10px}
+.qempty{background:#FCFBF9;border:1px dashed #D5D0C8;border-radius:11px;padding:14px 16px;font-size:12px;color:#5A5750;line-height:1.75}
+.ff{border:1px solid var(--line);border-radius:12px;margin-bottom:10px;overflow:hidden;background:#fff}
+.ff-h{padding:12px 15px;background:#FCFBF9;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.ff-n{font-size:13.5px;font-weight:600}
+.ff-n .star{font-size:9px;font-weight:600;background:#E1F5EE;color:#085041;border-radius:6px;padding:2px 7px;margin-left:6px;vertical-align:middle}
+.ff-m{font-size:10.5px;color:var(--gray);margin-top:3px}
+.steps{margin-left:auto;display:flex;gap:3px}
+.st{font-size:9px;font-weight:600;padding:4px 9px;border-radius:6px;border:1px solid var(--line);background:#fff;color:var(--gray)}
+.ff-b{padding:13px 15px;border-top:1px solid #F0EDE7}
+.form-t{font-size:9.5px;font-weight:600;color:#6A6760;margin-bottom:10px;letter-spacing:.06em;text-transform:uppercase}
+.fld{margin-bottom:9px}
+.fld label{display:block;font-size:10.5px;color:var(--gray);margin-bottom:4px}
+.fld.key label{color:#085041;font-weight:600}
+.fake{height:32px;border:1px solid var(--line);border-radius:8px;background:#FCFBF9}
+.fake.key{border-color:#B7E3D3;background:#F5FBF9}
+.qcard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:15px 17px}
+.qcard-t{font-size:12px;color:#5A5750;line-height:1.7;margin-bottom:9px}
+.qcard-x{font-size:11px;color:var(--gray);margin-top:11px;padding-top:9px;border-top:1px dashed #EDEAE4;line-height:1.65}
+table.bt{width:100%;border-collapse:collapse;font-size:12px}
+table.bt th{text-align:left;font-size:9px;letter-spacing:.09em;text-transform:uppercase;color:var(--gray);font-weight:600;padding:0 10px 8px 0;border-bottom:1px solid var(--line)}
+table.bt td{padding:9px 10px 9px 0;border-bottom:1px solid #EFECE6;vertical-align:middle}
+table.bt tr:last-child td{border:none}
+.bt-n{font-weight:600;white-space:nowrap}
+.rate{display:flex;gap:3px}
+.rate .rb{flex:1;min-width:44px;text-align:center;border:1px solid var(--line);background:#FCFBF9;border-radius:6px;font-size:9px;color:#8A8780;padding:5px 2px}
 .ins{display:grid;grid-template-columns:120px 1fr;gap:14px;border:1px solid var(--line);border-radius:12px;
   padding:14px 16px;margin-bottom:10px;background:#fff}
 .ins-w{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#8A6A3A;line-height:1.6}
@@ -151,9 +188,9 @@ let CUR=new URLSearchParams(location.search).get('t');
 if(!ORDER.includes(CUR))CUR=ORDER[0];
 
 function foldAll(btn){
-  const open=document.querySelectorAll('.q.open, .fgrp.open').length>0;
-  document.querySelectorAll('.q, .fgrp').forEach(e=>e.classList.toggle('open',!open));
-  btn.textContent=open?'Unfold all':'Fold all';
+  const open=document.querySelectorAll('.fgrp.open').length>0;
+  document.querySelectorAll('.fgrp').forEach(e=>e.classList.toggle('open',!open));
+  btn.textContent=open?'Unfold groups':'Fold groups';
 }
 function renderLadder(){
   let h='';
@@ -195,7 +232,7 @@ function renderDetail(){
           <a href="#s-is">What it is</a><a href="#s-enter">To enter</a><a href="#s-fns">The ${T.changed} functions</a>
           <a href="#s-q">Q1–Q${T.quarters.length}</a><a href="#s-stretch">Stretch</a><a href="#s-instr">What gets filled in</a><a href="#s-who">Who does what</a>
           <a href="#s-beh">Behaviour</a><a href="#s-ext">External training</a><a href="#s-gate">The gate</a><a href="#s-not">Warning signs</a>
-          <button class="toc-b" onclick="foldAll(this)">Fold all</button>
+          <button class="toc-b" onclick="foldAll(this)">Fold groups</button>
         </div>
 
         <div class="blk" id="s-is">
@@ -232,20 +269,10 @@ function renderDetail(){
         </div>
 
         <div class="blk" id="s-q">
-          <div class="blk-t">${T.months} months, quarter by quarter</div>
-          <div class="blk-s">Three functions in deliberate focus at a time. The order is chosen for risk — safe work first, the unfamiliar second, ownership last. Month by month, all four quarters open.</div>
-          ${T.quarters.map(q=>`<div class="q open" id="q${q.n}">
-            <div class="q-h" onclick="document.getElementById('q${q.n}').classList.toggle('open')">
-              <div class="q-tag">Q${q.n}</div>
-              <div><div class="q-g">${x(q.goal)}</div><div class="q-p">${x(q.period)}</div></div>
-              <span class="q-chev">▾</span></div>
-            <div class="q-b">
-              ${q.fns.length?`<div class="q-lbl">In focus this quarter</div>
-              <div class="q-chips">${q.fns.map(f=>`<span class="q-chip">${x(f)}</span>`).join('')}</div>`:''}
-              ${q.why?`<div class="blk-s" style="margin:-4px 0 10px;font-style:italic">${x(q.why)}</div>`:''}
-              ${q.months.map((m,i)=>`<div class="mo"><span class="mo-m">M${i+1}</span><span class="mo-t">${m}</span></div>`).join('')}
-              <div class="mile">${x(q.milestone)}</div>
-            </div></div>`).join('')}
+          <div class="blk-t">${T.months} months — exactly what the person sees, quarter by quarter</div>
+          <div class="blk-s">This is the employee's own page with nobody in it. Everything below is what they will read, fill in and be asked, in the order it happens. Three functions in deliberate focus at a time — the order is chosen for risk: safe work first, the unfamiliar second, ownership last.</div>
+          <div class="qtabs" id="qtabs"></div>
+          <div id="qpane"></div>
         </div>
 
         <div class="blk" id="s-stretch">
@@ -360,7 +387,70 @@ function renderDetail(){
     </div>`:''}`;
 }
 
-renderLadder();renderDetail();
+/* ── the quarter exactly as the employee will see it, with nobody in it ── */
+let TQ=1;
+function setTQ(n){TQ=n;renderQuarter();}
+
+function renderQuarter(){
+  const T=TEMPLATES[CUR], q=T.quarters.find(z=>z.n===TQ)||T.quarters[0];
+  const STEPS=[['Observe','what good looks like'],['With support','someone alongside'],
+               ['Alone','nobody watching'],['Owned','the result is yours']];
+
+  document.getElementById('qtabs').innerHTML=T.quarters.map(z=>
+    `<button class="qt ${z.n===TQ?'on':''}" onclick="setTQ(${z.n})">Q${z.n}
+      <span class="qt-c">${x(z.period)}</span></button>`).join('')
+    + `<span class="qt-now">Month ${(TQ-1)*3+1}–${TQ*3} of ${T.months}</span>`;
+
+  document.getElementById('qpane').innerHTML=`
+    <div class="qhead">
+      <div class="qhead-t">Q${q.n} — "${x(q.goal)}"</div>
+      <div class="qhead-s">${x(q.why||q.period)}</div>
+    </div>
+
+    ${q.fns.length?`
+    <div class="qsub">The functions in focus — each one worked through the same four steps</div>
+    ${q.fns.map(f=>{
+      const owner=(f.indexOf('★')===0)?'the function owner':'the owner of this function';
+      return `<div class="ff">
+        <div class="ff-h">
+          <div><div class="ff-n">${x(f.replace('★ ',''))}${f.indexOf('★')===0?' <span class="star">ownership handed over</span>':''}</div>
+            <div class="ff-m">taught laterally by ${owner} · 15 minutes a week</div></div>
+          <div class="steps">${STEPS.map(s=>`<span class="st" title="${s[1]}">${s[0]}</span>`).join('')}</div>
+        </div>
+        <div class="ff-b">
+          <div class="form-t">The practice entry — the employee writes it, after each attempt</div>
+          <div class="fld"><label>What did I try?</label><div class="fake"></div></div>
+          <div class="fld"><label>What happened?</label><div class="fake"></div></div>
+          <div class="fld key"><label>What would I do differently?</label><div class="fake key"></div></div>
+          <div class="fld"><label>What do I need?</label><div class="fake"></div></div>
+        </div></div>`;}).join('')}`
+    :`<div class="qempty">No function is handed over this quarter. It is spent watching the work that is coming — the first contractor, the first crisis — before carrying any of it.</div>`}
+
+    <div class="qsub">Month by month</div>
+    ${q.months.map((m,i)=>`<div class="mo"><span class="mo-m">Month ${(TQ-1)*3+i+1}</span><span class="mo-t">${m}</span></div>`).join('')}
+    <div class="mile">Milestone — ${x(q.milestone)}</div>
+
+    <div class="qsub">The monthly conversation — three times this quarter</div>
+    <div class="qcard">
+      <div class="qcard-t">45 minutes with the coach. Does not begin with "how are things going?"</div>
+      <ul class="tight">${T.questions.map(z=>`<li>${z}</li>`).join('')}</ul>
+      <div class="qcard-x">Ends with <b>one specific commitment</b> for the coming month — not a list.</div>
+    </div>
+
+    <div class="qsub">The behaviour rating — once, at the end of Q${q.n}</div>
+    <div class="qcard">
+      <div class="qcard-t">The employee rates first, then the manager. The conversation starts from the gap.</div>
+      <table class="bt"><thead><tr><th>Dimension</th><th>Employee</th><th>Manager</th></tr></thead>
+        <tbody>${DIMS.map(b=>`<tr><td class="bt-n">${x(b.n)}</td>
+          <td><div class="rate">${SCALE.map(o=>`<span class="rb">${x(o.l)}</span>`).join('')}</div></td>
+          <td><div class="rate">${SCALE.map(o=>`<span class="rb">${x(o.l)}</span>`).join('')}</div></td></tr>`).join('')}</tbody></table>
+      <div class="qcard-x"><b>Consistent</b> on all ${DIMS.length} is the gate standard${TQ===T.quarters.length?' — and this is the quarter it is judged.':', and every quarter is kept so the direction of travel shows.'}</div>
+    </div>
+
+    ${TQ===T.quarters.length?`<div class="warn" style="margin-top:14px"><b>The gate closes this quarter.</b> ${x(T.failRule)}</div>`:''}`;
+}
+
+renderLadder();renderDetail();TQ=1;renderQuarter();
 </script>
 </body>
 </html>
