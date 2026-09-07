@@ -167,7 +167,7 @@ const TEMPLATES = {
     'Q1 — Confirm ownership was assigned in writing, not verbally.',
     'Q2 — Ask: have they made a decision in the last four weeks without consulting? "No" means ownership has not landed.',
     'Q3 — Approve both course budgets. Review the quarterly report they produced.',
-    'Q4 — Approve the two-week absence. Rate independently. Sign the gate.']},
+    'Q4 — Rate independently. Sign the gate.']},
   gates:[
     ['Craft','12 deliberate · 22 extended ownerships verified'],
     ['Learning speed','Record on Reporting or Vendor Reconciliation'],
@@ -437,7 +437,7 @@ const COACH_TASKS = {
   gm:{1:[{t:'Confirm ownership was assigned in writing, not verbally'}],
       2:[{t:'Ask: have they decided anything in four weeks without consulting? "No" means ownership has not landed',key:true}],
       3:[{t:'Approve both course budgets'},{t:'Review the quarterly report they produced'}],
-      4:[{t:'Approve the two-week absence'},{t:'Rate independently and sign the gate'}]}},
+      4:[{t:'Rate independently and sign the gate'}]}},
 
 'sr-agm':{
   agm:{1:[{t:'Review the handover map line by line — a named recipient per function',key:true},
