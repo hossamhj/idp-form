@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Development Plan</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=20260907200252">
+<link rel="stylesheet" href="style.css?v=20260907201107">
 <style>
 .shift{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:10px}
 .shift-x{background:#fff;border:1px solid #D8D2F5;border-radius:8px;padding:7px 13px;font-size:12px;font-style:italic}
@@ -106,9 +106,9 @@ table.mx tr:last-child td{border:none}
 </div>
 <div class="toast" id="toast"></div>
 
-<script src="data.js?v=20260907200252"></script>
-<script src="roster.js?v=20260907200252"></script>
-<script src="owners.js?v=20260907200252"></script>
+<script src="data.js?v=20260907201107"></script>
+<script src="roster.js?v=20260907201107"></script>
+<script src="owners.js?v=20260907201107"></script>
 <script>
 const POS=['RX Coordinator','RX Associate','Senior RX Associate','Assistant General Manager','General Manager'];
 function teacherFor(f){ if(typeof FN_OWNER==='undefined')return null;
@@ -396,6 +396,7 @@ document.getElementById('gate').innerHTML=`
     <div class="sec-t">Fail rule</div>
     <div class="card" style="background:#FDEEEA;border-color:#EFB5A2">
       <div class="card-b" style="color:#5A3128">${x(T.failRule)}</div></div>
+    ${T.seatRule?`<div class="card" style="margin-top:10px"><div class="card-k">And a seat</div><div class="card-b">${T.seatRule}</div></div>`:''}
   </div>
   <div class="sec">
     <div class="sec-t">External training</div>

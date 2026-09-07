@@ -109,6 +109,7 @@ const TEMPLATES = {
 'assoc-sr':{
   code:'T2', from:'RX Associate', to:'Senior RX Associate',
   kind:'Level jump L2 → L3 — first responsibility for someone else’s work', months:12, level:3,
+  seatRule:'A level jump needs a real L3 seat. Without one they finish the programme as <b>Ready · awaiting scope</b> — the development is not held back, the title is.',
   changed:36, counts:{deliberate:12,natural:22,oversight:2},
   essence:'From doing the task to owning the outcome — it has to hold whether they are there or not',
   startState:'Twenty-four functions move from execute to own. A Senior ends up holding 43 functions with 28 of them owned — 65% ownership, the heaviest load on the team. They still perform the work; what changes is that the result is now theirs.',
@@ -117,8 +118,7 @@ const TEMPLATES = {
     'Mastered the Associate role — ≥90% of 35 functions, 100% of the owned two',
     'Practised each function often enough to be judged — not a count, the manager’s call',
     '<b>At least 6 months in the current role</b> — settling period',
-    'No open performance concern',
-    '<b>An L3 position exists or is created</b> — a level jump needs real scope'],
+    'No open performance concern'],
   quarters:[
     {n:1,goal:'I own it, not just do it',period:'Ownership foundation',
      fns:['Move-ins','Issues, Complaints & Feedback Management','Maintenance coordination','Shift handover'],
@@ -269,6 +269,7 @@ const TEMPLATES = {
 'agm-gm':{
   code:'T4', from:'Assistant General Manager', to:'General Manager',
   kind:'Level jump L4 → L5 — from a function to a whole scope', months:18, level:5,
+  seatRule:'A GM needs a building. Without one they finish as <b>Ready · awaiting scope</b> — which is the point: the five communities opening in 2027 need people who were ready before they were announced.',
   changed:29, counts:{oversee:17,release:6,newwork:5,deepen:1},
   essence:'From holding functions to holding the result',
   startState:'Seventeen functions move to oversight. A GM executes exactly one and oversees twenty of twenty-seven — the only role where watching rather than doing is the dominant mode. Fewer functions change here than in the step below it; what changes is the accountability.',
@@ -277,8 +278,7 @@ const TEMPLATES = {
     'Mastered the AGM role — ≥90% of 24 functions, 100% of the 11 owned',
     '<b>At least 6 months in the current role</b> · 12 preferred given the size of this jump',
     'Teaches on developing others — <b>and has actually built a successor</b>',
-    'No open performance concern',
-    '<b>Real scope exists</b> — a building or portfolio. No L5 without scope'],
+    'No open performance concern'],
   note:'18 months, not 12. The job descriptions place AGM at 4–7 years and GM at 8–12 — a gap wider than a single year.',
   quarters:[
     {n:1,goal:'I see the whole scope',period:'Beyond RX',
