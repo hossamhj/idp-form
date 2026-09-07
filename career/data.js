@@ -121,7 +121,7 @@ const TEMPLATES = {
      fns:['Move-ins','Issues, Complaints & Feedback Management','Maintenance coordination','Shift handover'],
      why:'Four representative functions — ownership is one capability, learned once then extended.',
      months:['Ownership announced to the team. <b>Conversation: what separates execute from own.</b>',
-             '<b>Write a procedure for each</b> that someone else could follow.',
+             '<b>Walk each one through with a coordinator</b> and watch them run it — where they get stuck is what you never made explicit.',
              'Root-cause the three most repeated problems. Put a preventive step in place.'],
      plan:[["s","s","s","s"],["s","s","s","s"],["w","w","w","w"]],
      milestone:'The four keep working during a week of leave.'},
@@ -169,7 +169,7 @@ const TEMPLATES = {
     'Q3 — Approve both course budgets. Review the quarterly report they produced.',
     'Q4 — Approve the two-week absence. Rate independently. Sign the gate.']},
   gates:[
-    ['Craft','12 deliberate · 22 extended ownerships verified · a written procedure per owned function'],
+    ['Craft','12 deliberate · 22 extended ownerships verified'],
     ['Learning speed','Record on Reporting or Vendor Reconciliation'],
     ['Conduct','Every time across five, and <b>Teaches</b> on developing others'],
     ['Teaching','Those they directed perform to standard — assessed independently'],
@@ -193,13 +193,13 @@ const TEMPLATES = {
   blocker:'Of the 24 released functions, 19 drop to Associate at <b>execute</b>, not <b>own</b> — they keep a doer and lose their owner. Three have no holder at Associate at all, and two of those none anywhere below L3. This promotion cannot complete without an L2→L3 promotion running alongside it.',
   quarters:[
     {n:1,goal:'The map — planning, not handover',period:'No handover this quarter',
-     fns:['Handover map for all 24','Successor readiness assessment','A written procedure per function'],
+     fns:['Handover map for all 24','Successor readiness assessment','A walkthrough with each recipient'],
      why:'Starting the handover before the map is complete creates chaos, then a retreat.',
      months:['<b>Handover map</b> — a named recipient per function. Decide the two orphaned functions.',
              'Assess successor readiness. <b>Value conversation with the GM.</b>',
-             'A written procedure per released function. <b>Accounting course.</b>'],
+             'A walkthrough with the person receiving each released function. <b>Accounting course.</b>'],
      noPlan:"Progress in this transition runs backwards. The four steps describe taking work up; here the measure is what has been released — and nothing is released this quarter without a named recipient.",
-     milestone:'Map approved, 24 procedures written, successor knows what is coming.'},
+     milestone:'Map approved, every recipient walked through their function, successor knows what is coming.'},
     {n:2,goal:'Hand over the first half',period:'12 functions released',
      fns:['11 Community Experience functions','Consumables Inventory Management','Schedule Management'],
      why:'Community first — visible failure, correctable, no harm to residents.',
@@ -423,7 +423,7 @@ const COACH_TASKS = {
 
 'assoc-sr':{
   agm:{1:[{t:'Define the four owned functions in writing and announce them to the team',key:true},
-          {t:'Review the written procedure for'},
+          {t:'Sit in on the walkthrough for'},
           {t:'Check the root-cause analysis of the three most repeated problems'}],
        2:[{t:'Announce the directing role formally — do not let them assert it',key:true},
           {t:'Sit in on their first feedback conversation'},
