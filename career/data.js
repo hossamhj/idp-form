@@ -115,7 +115,7 @@ const TEMPLATES = {
   valueShift:['I did my work well','The outcome is mine — present or not'],
   eligibility:[
     'Mastered the Associate role — ≥90% of 35 functions, 100% of the owned two',
-    'Enough repetitions on each function',
+    'Practised each function often enough to be judged — not a count, the manager’s call',
     '<b>At least 6 months in the current role</b> — settling period',
     'No open performance concern',
     '<b>An L3 position exists or is created</b> — a level jump needs real scope'],
