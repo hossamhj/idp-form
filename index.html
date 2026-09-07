@@ -2,470 +2,123 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Flow RX — IDP System</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Flow RX — Career Path</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root{--cream:#F5F0E8;--ink:#1C1C1C;--gray:#8A8780;--line:#DDD8CF;--navy:#1A3660;
+--p1:#C8853A;--p2:#7C5CBF;--p3:#0D6E5C;--p4:#1D3A8A}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--ink);font-size:14px;line-height:1.6}
+.wrap{max-width:1000px;margin:0 auto;padding:34px 22px 70px}
 
-:root {
-  --cream: #F5F0E8;
-  --ink: #1C1C1C;
-  --ink-soft: #5A5855;
-  --ink-faint: #9A9895;
-  --border: #D8D4CC;
-  --ne: #1A3660;
-  --nw: #7C2040;
-  --gr: #2E4020;
-  --ol: #7A560A;
-  --ts: #2C1A0E;
-}
+.hero{background:var(--navy);color:#EDE9E2;border-radius:16px;padding:34px 38px;margin-bottom:22px}
+.hero-k{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:rgba(237,233,226,.5)}
+.hero-t{font-family:'Playfair Display',serif;font-size:34px;font-weight:500;line-height:1.2;margin:9px 0 12px}
+.hero-s{font-size:14.5px;color:rgba(237,233,226,.7);line-height:1.75;max-width:660px}
+.hero-s b{color:#fff;font-weight:500}
+.hero-m{display:flex;gap:32px;margin-top:24px;padding-top:20px;border-top:1px solid rgba(237,233,226,.16);flex-wrap:wrap}
+.hm-v{font-family:'Playfair Display',serif;font-size:25px;font-weight:600}
+.hm-l{font-size:9.5px;color:rgba(237,233,226,.5);letter-spacing:.07em;text-transform:uppercase;margin-top:5px;line-height:1.5}
 
-body {
-  font-family: 'Inter', sans-serif;
-  background: var(--cream);
-  color: var(--ink);
-  min-height: 100vh;
-}
+.big{display:block;text-decoration:none;color:inherit;background:#fff;border:2px solid var(--navy);
+  border-radius:15px;padding:22px 26px;margin-bottom:14px;transition:.16s}
+.big:hover{box-shadow:0 10px 28px rgba(26,54,96,.14);transform:translateY(-2px)}
+.big-t{font-family:'Playfair Display',serif;font-size:22px;font-weight:500;color:var(--navy)}
+.big-s{font-size:13px;color:var(--gray);margin-top:6px;line-height:1.7}
+.big-a{display:inline-block;margin-top:12px;font-size:11.5px;font-weight:700;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--navy)}
 
-/* ── Header ── */
-.header {
-  padding: 64px 48px 56px;
-  border-bottom: 1px solid var(--border);
-  max-width: 1100px;
-  margin: 0 auto;
-}
-.header-tag {
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  color: var(--ink-faint);
-  margin-bottom: 16px;
-}
-.header h1 {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(32px, 5vw, 52px);
-  font-weight: 500;
-  line-height: 1.15;
-  color: var(--ink);
-  margin-bottom: 16px;
-}
-.header-sub {
-  font-size: 15px;
-  color: var(--ink-soft);
-  font-weight: 300;
-  line-height: 1.6;
-  max-width: 520px;
-}
+.lbl{font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--gray);
+  font-weight:700;margin:28px 0 11px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(228px,1fr));gap:11px}
+.c{display:block;text-decoration:none;color:inherit;background:#fff;border:1px solid var(--line);
+  border-radius:12px;padding:15px 17px;transition:.16s}
+.c:hover{box-shadow:0 7px 20px rgba(0,0,0,.07);transform:translateY(-2px)}
+.c-t{font-size:13.5px;font-weight:600}
+.c-s{font-size:11.5px;color:var(--gray);margin-top:5px;line-height:1.6}
 
-/* ── Grid ── */
-.grid-wrap {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 48px 48px 80px;
-}
-.section-label {
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  color: var(--ink-faint);
-  margin-bottom: 24px;
-}
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 20px;
-  margin-bottom: 48px;
-}
+.rungs{display:flex;gap:6px;margin-top:16px;flex-wrap:wrap}
+.rg{flex:1;min-width:112px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:11px 13px}
+.rg-l{font-family:'Playfair Display',serif;font-size:11px;font-weight:600;color:var(--gray)}
+.rg-n{font-size:12px;font-weight:600;margin-top:3px;line-height:1.3}
+.rg-c{font-size:9.5px;color:#fff;font-weight:700;border-radius:5px;padding:1px 6px;display:inline-block;margin-top:6px}
 
-/* ── Card ── */
-.card {
-  background: #fff;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  overflow: hidden;
-  text-decoration: none;
-  color: inherit;
-  display: flex;
-  flex-direction: column;
-  transition: transform .18s, box-shadow .18s;
-}
-.card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 12px 32px rgba(0,0,0,.09);
-}
-
-.card-header {
-  padding: 28px 28px 24px;
-  border-bottom: 1px solid #F0EDE8;
-}
-.card-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: .1em;
-  text-transform: uppercase;
-  padding: 4px 10px;
-  border-radius: 20px;
-  margin-bottom: 16px;
-}
-.card-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 22px;
-  font-weight: 500;
-  margin-bottom: 6px;
-  line-height: 1.25;
-}
-.card-sub {
-  font-size: 12px;
-  color: var(--ink-faint);
-  font-weight: 400;
-}
-
-.card-body {
-  padding: 20px 28px;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-.info-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.info-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  flex-shrink: 0;
-  opacity: .5;
-}
-.info-text {
-  font-size: 12.5px;
-  color: var(--ink-soft);
-  line-height: 1.4;
-}
-.info-text strong {
-  color: var(--ink);
-  font-weight: 500;
-}
-
-.card-footer {
-  padding: 16px 28px 22px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.team-pips {
-  display: flex;
-  gap: 4px;
-  flex: 1;
-}
-.pip {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  font-size: 9px;
-  font-weight: 600;
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 2px solid var(--cream);
-  margin-left: -6px;
-}
-.pip:first-child { margin-left: 0; }
-
-.open-btn {
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: .05em;
-  color: var(--ink-faint);
-  text-transform: uppercase;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-.open-btn svg { transition: transform .18s; }
-.card:hover .open-btn svg { transform: translateX(3px); }
-
-/* ── Team Structure card (special) ── */
-.card.ts-card .card-header { background: var(--ts); }
-.card.ts-card .card-title { color: #fff; }
-.card.ts-card .card-sub { color: rgba(255,255,255,.45); }
-.card.ts-card .card-badge { background: rgba(255,255,255,.1); color: rgba(255,255,255,.6); }
-
-/* ── Accent colors ── */
-.ne .card-badge { background: #EBF0F8; color: var(--ne); }
-.ne .info-dot  { background: var(--ne); }
-.ne .open-btn  { color: var(--ne); }
-.nw .card-badge { background: #F4E8ED; color: var(--nw); }
-.nw .info-dot  { background: var(--nw); }
-.nw .open-btn  { color: var(--nw); }
-.gr .card-badge { background: #E9EDE5; color: var(--gr); }
-.gr .info-dot  { background: var(--gr); }
-.gr .open-btn  { color: var(--gr); }
-.ol .card-badge { background: #F5EFE0; color: var(--ol); }
-.ol .info-dot  { background: var(--ol); }
-.ol .open-btn  { color: var(--ol); }
-
-/* ── Stat strip ── */
-.stats {
-  display: flex;
-  gap: 0;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  overflow: hidden;
-  margin-bottom: 48px;
-}
-.stat {
-  flex: 1;
-  padding: 20px 24px;
-  border-right: 1px solid var(--border);
-}
-.stat:last-child { border-right: none; }
-.stat-n {
-  font-family: 'Playfair Display', serif;
-  font-size: 28px;
-  font-weight: 500;
-  color: var(--ink);
-  line-height: 1;
-  margin-bottom: 4px;
-}
-.stat-l {
-  font-size: 11px;
-  color: var(--ink-faint);
-  text-transform: uppercase;
-  letter-spacing: .08em;
-  font-weight: 500;
-}
-
-/* ── Footer ── */
-.footer {
-  border-top: 1px solid var(--border);
-  padding: 24px 48px;
-  max-width: 1100px;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.footer-brand {
-  font-size: 12px;
-  color: var(--ink-faint);
-  font-weight: 500;
-}
-.footer-note {
-  font-size: 11px;
-  color: var(--ink-faint);
-}
-
-@media (max-width: 700px) {
-  .header, .grid-wrap, .footer { padding-left: 24px; padding-right: 24px; }
-  .header { padding-top: 40px; }
-  .stats { flex-direction: column; }
-  .stat { border-right: none; border-bottom: 1px solid var(--border); }
-  .stat:last-child { border-bottom: none; }
-}
+.arch{background:#FCFBF9;border:1px dashed #D5D0C8;border-radius:11px;padding:14px 17px;margin-top:30px;
+  font-size:11.5px;color:var(--gray);line-height:1.75}
+.arch b{color:#5A5750}
+.arch a{color:var(--gray)}
+.foot{margin-top:22px;font-size:10.5px;color:var(--gray);line-height:1.7}
 </style>
 </head>
 <body>
+<div class="wrap">
 
-<div class="header">
-  <div class="header-tag">Flow Residential Experience</div>
-  <h1>IDP Hub</h1>
-  <p class="header-sub">Individual Development Plans for the RX team — tracked quarterly across all properties.</p>
-</div>
-
-<div class="grid-wrap">
-
-  <!-- Stat strip -->
-  <div class="stats">
-    <div class="stat">
-      <div class="stat-n">4</div>
-      <div class="stat-l">Properties</div>
+  <div class="hero">
+    <div class="hero-k">Flow MENA · Resident Experience</div>
+    <div class="hero-t">RX Career Path</div>
+    <div class="hero-s">The operating system defines <b>what must be done</b>. This path builds <b>the people who do it</b> —
+      one ladder, four transitions, each taught before it is required.
+      Every figure is read from <b>ops_function_operating</b> in Flow Community OS, not written by hand.</div>
+    <div class="hero-m">
+      <div><div class="hm-v">48</div><div class="hm-l">functions in the<br>operating model</div></div>
+      <div><div class="hm-v">4</div><div class="hm-l">transitions</div></div>
+      <div><div class="hm-v">6.5</div><div class="hm-l">years from joining<br>to General Manager</div></div>
+      <div><div class="hm-v">22</div><div class="hm-l">people on the<br>path today</div></div>
     </div>
-    <div class="stat">
-      <div class="stat-n">16</div>
-      <div class="stat-l">Active IDPs</div>
-    </div>
-    <div class="stat">
-      <div class="stat-n">4</div>
-      <div class="stat-l">Quarters per IDP</div>
-    </div>
-    <div class="stat">
-      <div class="stat-n">L1–L5</div>
-      <div class="stat-l">Levels Tracked</div>
+    <div class="rungs">
+      <div class="rg"><div class="rg-l">L2</div><div class="rg-n">RX Coordinator</div>
+        <span class="rg-c" style="background:var(--p1)">Breadth · 26</span></div>
+      <div class="rg"><div class="rg-l">L2</div><div class="rg-n">RX Associate</div>
+        <span class="rg-c" style="background:var(--p2)">Ownership · 36</span></div>
+      <div class="rg"><div class="rg-l">L3</div><div class="rg-n">Senior RX Associate</div>
+        <span class="rg-c" style="background:var(--p3)">Letting go · 46</span></div>
+      <div class="rg"><div class="rg-l">L4</div><div class="rg-n">AGM</div>
+        <span class="rg-c" style="background:var(--p4)">Scope · 29</span></div>
+      <div class="rg"><div class="rg-l">L5</div><div class="rg-n">General Manager</div>
+        <span class="rg-c" style="background:#8A8780">the result</span></div>
     </div>
   </div>
 
-  <div class="section-label">Properties</div>
+  <a class="big" href="career/hub.html">
+    <div class="big-t">Every view in one place</div>
+    <div class="big-s">Administration, People Team oversight, the four transitions, and a page for every coach and every person.
+      Start here if you are not sure where to go.</div>
+    <div class="big-a">Open the hub &rarr;</div>
+  </a>
 
+  <div class="lbl">For a conversation</div>
   <div class="grid">
-
-    <!-- Narjs East -->
-    <a class="card ne" href="narjs_east_idp_hub.html">
-      <div class="card-header">
-        <div class="card-badge">Narjs East</div>
-        <div class="card-title">Narjs East</div>
-        <div class="card-sub">242 units · 21 buildings</div>
-      </div>
-      <div class="card-body">
-        <div class="info-row">
-          <div class="info-dot" style="background:var(--ne)"></div>
-          <div class="info-text"><strong>AGM</strong> — Raghdah Safar</div>
-        </div>
-        <div class="info-row">
-          <div class="info-dot" style="background:var(--ne)"></div>
-          <div class="info-text"><strong>GM</strong> — Saad Alajmi</div>
-        </div>
-        <div class="info-row">
-          <div class="info-dot" style="background:var(--ne)"></div>
-          <div class="info-text">4 active IDPs — Rakan · Beesan · Ali · Rawan</div>
-        </div>
-      </div>
-      <div class="card-footer">
-        <div class="team-pips">
-          <div class="pip" style="background:var(--ne)">RK</div>
-          <div class="pip" style="background:#5A7BAD">BS</div>
-          <div class="pip" style="background:#7C9CC0">AL</div>
-          <div class="pip" style="background:#9DB8D5">RW</div>
-        </div>
-        <div class="open-btn">Open <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      </div>
-    </a>
-
-    <!-- Narjs West -->
-    <a class="card nw" href="narjs_west_idp_hub.html">
-      <div class="card-header">
-        <div class="card-badge">Narjs West</div>
-        <div class="card-title">Narjs West</div>
-        <div class="card-sub">238 units · 21 buildings</div>
-      </div>
-      <div class="card-body">
-        <div class="info-row">
-          <div class="info-dot" style="background:var(--nw)"></div>
-          <div class="info-text"><strong>GM</strong> — Husni Abdulrazzaq</div>
-        </div>
-        <div class="info-row">
-          <div class="info-dot" style="background:var(--nw)"></div>
-          <div class="info-text">5 active IDPs — Abdulelah · Moayad · Nader · Mizanur · Muataz</div>
-        </div>
-      </div>
-      <div class="card-footer">
-        <div class="team-pips">
-          <div class="pip" style="background:var(--nw)">AB</div>
-          <div class="pip" style="background:#A04060">MO</div>
-          <div class="pip" style="background:#BC6080">NA</div>
-          <div class="pip" style="background:#CC809A">MZ</div>
-          <div class="pip" style="background:#D898B0">MT</div>
-        </div>
-        <div class="open-btn">Open <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      </div>
-    </a>
-
-    <!-- Granada -->
-    <a class="card gr" href="granada_idp_hub.html">
-      <div class="card-header">
-        <div class="card-badge">Granada</div>
-        <div class="card-title">Granada</div>
-        <div class="card-sub">439 units · 28 buildings</div>
-      </div>
-      <div class="card-body">
-        <div class="info-row">
-          <div class="info-dot" style="background:var(--gr)"></div>
-          <div class="info-text"><strong>AGM</strong> — Sarah Niazi</div>
-        </div>
-        <div class="info-row">
-          <div class="info-dot" style="background:var(--gr)"></div>
-          <div class="info-text"><strong>GM</strong> — Weesam Khuja</div>
-        </div>
-        <div class="info-row">
-          <div class="info-dot" style="background:var(--gr)"></div>
-          <div class="info-text">4 active IDPs — Alharith · Meshal · Mamdouh · Suliman</div>
-        </div>
-      </div>
-      <div class="card-footer">
-        <div class="team-pips">
-          <div class="pip" style="background:var(--gr)">AH</div>
-          <div class="pip" style="background:#4A6035">MS</div>
-          <div class="pip" style="background:#658050">MM</div>
-          <div class="pip" style="background:#82A06A">SL</div>
-        </div>
-        <div class="open-btn">Open <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      </div>
-    </a>
-
-    <!-- Olaya -->
-    <a class="card ol" href="olaya_idp_hub.html">
-      <div class="card-header">
-        <div class="card-badge">Olaya</div>
-        <div class="card-title">Olaya</div>
-        <div class="card-sub">50 units · 2 buildings</div>
-      </div>
-      <div class="card-body">
-        <div class="info-row">
-          <div class="info-dot" style="background:var(--ol)"></div>
-          <div class="info-text"><strong>GM</strong> — Johnny Hachem</div>
-        </div>
-        <div class="info-row">
-          <div class="info-dot" style="background:var(--ol)"></div>
-          <div class="info-text">3 active IDPs — Kateryna · Majed · Nour</div>
-        </div>
-      </div>
-      <div class="card-footer">
-        <div class="team-pips">
-          <div class="pip" style="background:var(--ol)">KT</div>
-          <div class="pip" style="background:#9A7020">MJ</div>
-          <div class="pip" style="background:#B88A38">NR</div>
-        </div>
-        <div class="open-btn">Open <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      </div>
-    </a>
-
+    <a class="c" href="programme_onepager.html"><div class="c-t">The whole path on one page</div>
+      <div class="c-s">One slide for leadership — purpose, outcomes, the four transitions, and who decides.</div></a>
+    <a class="c" href="career/briefing.html"><div class="c-t">Meeting brief</div>
+      <div class="c-s">Every term, question and definition, verbatim and printable.</div></a>
+    <a class="c" href="governance.html"><div class="c-t">Governance · 3 slides</div>
+      <div class="c-s">Everyone sees everything, one person decides. The short version.</div></a>
+    <a class="c" href="career_deck.html"><div class="c-t">The programme · 15 slides</div>
+      <div class="c-s">What it is, what it produces, and the four decisions we need.</div></a>
   </div>
 
-  <div class="section-label">Reference</div>
-
-  <div class="grid" style="grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));">
-
-    <!-- Team Structure -->
-    <a class="card ts-card" href="team_structure.html" style="border-color: var(--ts);">
-      <div class="card-header" style="background:var(--ts);">
-        <div class="card-badge">Org Chart</div>
-        <div class="card-title">Team Structure</div>
-        <div class="card-sub">All properties · 19 team members · L1–L5</div>
-      </div>
-      <div class="card-body">
-        <div class="info-row">
-          <div class="info-dot" style="background:var(--ts); opacity:1"></div>
-          <div class="info-text">Full organisational hierarchy across all RX properties</div>
-        </div>
-        <div class="info-row">
-          <div class="info-dot" style="background:var(--ts); opacity:1"></div>
-          <div class="info-text">Level-coded: L1 Steel · L2 Rose · L3 Amber · L4 Olive · L5 Espresso</div>
-        </div>
-      </div>
-      <div class="card-footer">
-        <div style="flex:1"></div>
-        <div class="open-btn" style="color:var(--ts);">Open <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      </div>
-    </a>
-
+  <div class="lbl">For running it</div>
+  <div class="grid">
+    <a class="c" href="career/templates.html"><div class="c-t">The four transitions</div>
+      <div class="c-s">Every function named, quarter by quarter, who teaches what, and what the gate asks.</div></a>
+    <a class="c" href="career/admin.html"><div class="c-t">Administration</div>
+      <div class="c-s">Dates, the readiness question, programme activation, the expansion number.</div></a>
+    <a class="c" href="career/hr.html"><div class="c-t">People Team oversight</div>
+      <div class="c-s">Full sight of every record — and no vote on any outcome.</div></a>
+    <a class="c" href="career/index.html"><div class="c-t">A property team</div>
+      <div class="c-s">Team, actions owed, succession, coaches.</div></a>
   </div>
 
-</div>
+  <div class="arch">
+    <b>Looking for the old pages?</b> The previous IDP programme — the property hubs, the standard, the team structure —
+    has been superseded and moved to <a href="_archive/old_index.html">the archive</a>.
+    Its ratings, figures and terminology no longer match this system, so nothing there should be used to make a decision.
+  </div>
 
-<div class="footer">
-  <div class="footer-brand">Flow Residential Experience · IDP System</div>
-  <div class="footer-note">hossam@flow.life</div>
-</div>
+  <div class="foot">Flow MENA · Resident Experience &nbsp;·&nbsp; derived from the Operating Playbook in Flow Community OS</div>
 
+</div>
 </body>
 </html>
