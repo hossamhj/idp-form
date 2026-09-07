@@ -189,7 +189,6 @@ const TEMPLATES = {
     '<b>At least 6 months in the current role</b> · 12 preferred given the complexity',
     'Teaches on developing others',
     'No open performance concern',
-    '<b>A successor is named and has entered the L2→L3 programme</b> — the real blocker',
     'The GM has committed 4 hours a month'],
   blocker:'Of the 24 released functions, 19 drop to Associate at <b>execute</b>, not <b>own</b> — they keep a doer and lose their owner. Three have no holder at Associate at all, and two of those none anywhere below L3. This promotion cannot complete without an L2→L3 promotion running alongside it.',
   quarters:[
