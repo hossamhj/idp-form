@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>The Four Transitions</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=20260907201107">
+<link rel="stylesheet" href="style.css?v=20260907201518">
 <style>
 .ladder{display:flex;align-items:stretch;gap:2px;margin-bottom:26px;flex-wrap:nowrap}
 .rung{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 13px;min-width:0;flex:1 1 0}
@@ -190,10 +190,10 @@ table.bt tr:last-child td{border:none}
   <div id="detail"></div>
 </div>
 
-<script src="data.js?v=20260907201107"></script>
-<script src="roster.js?v=20260907201107"></script>
-<script src="templates_detail.js?v=20260907201107"></script>
-<script src="owners.js?v=20260907201107"></script>
+<script src="data.js?v=20260907201518"></script>
+<script src="roster.js?v=20260907201518"></script>
+<script src="templates_detail.js?v=20260907201518"></script>
+<script src="owners.js?v=20260907201518"></script>
 <script>
 const x=s=>String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 const ORDER=['coord-assoc','assoc-sr','sr-agm','agm-gm'];
@@ -442,14 +442,6 @@ function renderQuarter(){
               ${first>=0?`<b>M${(TQ-1)*3+first+1}</b>`:''}</span>`;}).join('')}</div>
         </div>
         <div class="ff-b">
-          ${(q.example&&q.example.fn===nm)?`<div class="exmp">
-            <div class="exmp-t">An example of a real entry — what a good one looks like</div>
-            <div class="exmp-r"><span>What did I try?</span><div>${q.example.a}</div></div>
-            <div class="exmp-r"><span>What happened?</span><div>${q.example.o}</div></div>
-            <div class="exmp-r key"><span>What would I do differently?</span><div>${q.example.w}</div></div>
-            <div class="exmp-r"><span>What do I need?</span><div>${q.example.n}</div></div>
-            <div class="exmp-x">Nothing here is a score. The third line is the only one that changes what happens next week — and the fourth is the only one the coach can act on.</div>
-          </div>`:''}
           <div class="form-t">The practice entry — the employee writes it, after each attempt</div>
           <div class="fld"><label>What did I try?</label><div class="fake"></div></div>
           <div class="fld"><label>What happened?</label><div class="fake"></div></div>
@@ -462,12 +454,6 @@ function renderQuarter(){
         <div class="ff-m">the employee writes it &mdash; there is no function to stand in front of yet</div></div></div>
       <div class="ff-b">
         <div style="font-size:11.5px;color:#5A5750;line-height:1.75;margin-bottom:13px">${x(q.observation.why)}</div>
-        <div class="exmp">
-          <div class="exmp-t">An example of a real entry — what a good one looks like</div>
-          ${q.observation.fields.map(f=>`<div class="exmp-r ${f[0]==='w'?'key':''}">
-            <span>${x(f[1])}</span><div>${q.observation.example[f[0]]}</div></div>`).join('')}
-          <div class="exmp-x">${x(q.observation.note)}</div>
-        </div>
         <div class="form-t">The observation entry — the employee writes it</div>
           ${q.observation.fields.map(f=>`<div class="fld ${f[0]==='w'?'key':''}">
             <label>${x(f[1])}</label><div class="fake ${f[0]==='w'?'key':''}"></div></div>`).join('')}
