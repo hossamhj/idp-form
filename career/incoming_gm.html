@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Incoming GM — a path we do not have yet</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=202609071215">
+<style>
+.draft{background:#FEF6E7;border:1px solid #F0C674;border-radius:11px;padding:13px 16px;margin-bottom:20px;
+  font-size:12.5px;color:#6B4A15;line-height:1.75}
+.draft b{color:#4A3208}
+.hero2{background:var(--navy);color:#EDE9E2;border-radius:16px;padding:28px 32px;margin-bottom:20px}
+.hero2-k{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:rgba(237,233,226,.5)}
+.hero2-t{font-family:'Playfair Display',serif;font-size:30px;font-weight:500;line-height:1.2;margin:8px 0 11px}
+.hero2-s{font-size:14px;color:rgba(237,233,226,.7);line-height:1.75;max-width:700px}
+.hero2-s b{color:#fff;font-weight:500}
+.hero2-m{display:flex;gap:30px;margin-top:22px;padding-top:18px;border-top:1px solid rgba(237,233,226,.16);flex-wrap:wrap}
+.h2m-v{font-family:'Playfair Display',serif;font-size:24px;font-weight:600}
+.h2m-l{font-size:9.5px;color:rgba(237,233,226,.5);letter-spacing:.07em;text-transform:uppercase;margin-top:4px;line-height:1.5}
+
+table.t{width:100%;border-collapse:collapse;font-size:12.5px}
+table.t th{text-align:left;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--gray);
+  font-weight:700;padding:0 10px 8px 0;border-bottom:1px solid var(--line)}
+table.t td{padding:9px 10px 9px 0;border-bottom:1px solid #EFECE6;vertical-align:top;line-height:1.65}
+table.t tr:last-child td{border:none}
+td.n{font-weight:600;white-space:nowrap}
+td.c{text-align:center}
+.no{color:#8A2E12;font-weight:600}.yes{color:#0A5540;font-weight:600}
+
+.fa{border:1px solid var(--line);border-radius:12px;margin-bottom:11px;overflow:hidden;background:#fff}
+.fa-h{padding:13px 16px;background:#FCFBF9;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.fa-n{font-size:14px;font-weight:600}
+.fa-c{font-family:'Playfair Display',serif;font-size:19px;font-weight:600;color:var(--navy)}
+.fa-w{font-size:11px;color:var(--gray);margin-left:auto;text-align:right;line-height:1.5}
+.fa-b{padding:12px 16px;border-top:1px solid #F0EDE7}
+.fn2{display:flex;align-items:center;gap:9px;padding:6px 10px;border:1px solid #EDEAE4;border-radius:8px;
+  margin-bottom:4px;background:#FCFBF9;font-size:12px}
+.code{font-size:9px;font-family:ui-monospace,monospace;font-weight:700;border-radius:5px;padding:2px 7px;white-space:nowrap}
+.code.own{background:#E1F5EE;color:#085041}
+.code.oversee{background:#E8EEF6;color:#1A3660}
+.code.execute{background:#FEF6E7;color:#7A4A05}
+.ask{margin-left:auto;font-size:10.5px;color:var(--gray);font-style:italic;text-align:right}
+
+.opt{border:1px solid var(--line);border-radius:12px;padding:15px 18px;margin-bottom:10px;background:#fff}
+.opt.rec{border:2px solid var(--green);background:#F7FCFA}
+.opt-h{display:flex;align-items:baseline;gap:10px;margin-bottom:6px}
+.opt-n{font-family:'Playfair Display',serif;font-size:17px;font-weight:600;color:var(--navy)}
+.opt-t{font-size:14px;font-weight:600}
+.opt-r{margin-left:auto;font-size:9.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  background:var(--green);color:#fff;border-radius:6px;padding:3px 9px}
+.opt-b{font-size:12.5px;color:#5A5750;line-height:1.75}
+
+.dec{background:#2E2B27;color:#EDE9E2;border-radius:12px;padding:20px 24px;margin:16px 0;line-height:1.8}
+.dec-t{font-family:'Playfair Display',serif;font-size:19px;font-weight:500;margin-bottom:9px}
+.dec b{color:#fff}
+.dec span{color:rgba(237,233,226,.6)}
+
+.need{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.nd2{border:1px dashed #D5D0C8;border-radius:10px;padding:12px 14px;background:#FCFBF9}
+.nd2-t{font-size:12.5px;font-weight:600}
+.nd2-s{font-size:11px;color:var(--gray);margin-top:4px;line-height:1.6}
+@media print{.topnav{display:none}.wrap{max-width:none}}
+</style>
+</head>
+<body>
+
+<div class="topnav">
+  <div class="nav-icon" style="background:#8A6A3A">NEW</div>
+  <div>
+    <div class="nav-name">The Incoming GM</div>
+    <div class="nav-sub">Proposal · for discussion</div>
+  </div>
+  <a href="hub.html" class="right">☰ All views</a>
+</div>
+
+<div class="wrap">
+
+  <div class="draft"><b>This is a proposal, not part of the programme.</b> Nothing here is built or agreed.
+    It exists because a real case arrived that none of the four templates covers, and because that case is about to repeat.
+    Read it, argue with it, then decide.</div>
+
+  <div class="hero2">
+    <div class="hero2-k">A path we do not have</div>
+    <div class="hero2-t">Someone joins as GM before their community opens</div>
+    <div class="hero2-s">They are not new to work — they are new to <b>our</b> work. They hold no functions yet,
+      so there is nothing to hand over and nothing to release. <b>Template 4 does not describe them</b>, and neither does onboarding.
+      Today they shadow whoever is available, and we find out whether it worked on opening day.</div>
+    <div class="hero2-m">
+      <div><div class="h2m-v">27</div><div class="h2m-l">functions a GM<br>touches</div></div>
+      <div><div class="h2m-v">6</div><div class="h2m-l">owned<br>personally</div></div>
+      <div><div class="h2m-v">20</div><div class="h2m-l">held as<br>oversight</div></div>
+      <div><div class="h2m-v" style="color:#F0A88E">5</div><div class="h2m-l">new communities<br>planned for 2027</div></div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-t">Why the existing template does not fit</div>
+    <div class="sec-s">Template 4 takes an AGM to GM. Its first half is entirely about giving work away —
+      which assumes the person already holds it.</div>
+    <table class="t">
+      <thead><tr><th style="width:44%">What T4 assumes</th><th class="c" style="width:20%">Internal AGM</th><th class="c">Incoming GM</th></tr></thead>
+      <tbody>
+        <tr><td>Has crossed T1, T2 and T3</td><td class="c yes">yes</td><td class="c no">no</td></tr>
+        <tr><td>Owns 11 functions to release</td><td class="c yes">yes</td><td class="c no"><b>owns nothing</b></td></tr>
+        <tr><td>Has a successor to build</td><td class="c yes">yes</td><td class="c no">no team yet</td></tr>
+        <tr><td>Knows the Operating Playbook</td><td class="c yes">yes</td><td class="c no"><b>this is the gap</b></td></tr>
+        <tr><td>Is judged on what still runs without them</td><td class="c yes">yes</td><td class="c no">nothing runs yet</td></tr>
+      </tbody>
+    </table>
+    <div class="card" style="margin-top:13px;background:#FDEEEA;border-color:#EFB5A2">
+      <div class="card-b" style="color:#5A3128">Put them through T4 and the first two quarters are meaningless —
+      a handover map for functions they do not have. <b>The gap is not a few functions. It is the whole operating model.</b></div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-t">This is not an exception</div>
+    <div class="sec-s">It is the expansion pipeline.</div>
+    <div class="dec">
+      <div class="dec-t">Five communities in 2027 means five of these.</div>
+      <b>Without a method, that is five different improvisations</b> — each one depending on which GM happened to be free,
+      and on how good that GM happens to be at explaining what they do.
+      <span><br><br>The cost of not deciding is not visible until an opening goes badly, and by then it is a building, not a training issue.</span>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-t">What they actually need to understand</div>
+    <div class="sec-s">Not invented — read from <b>ops_function_operating</b>. These are the 27 functions a GM touches,
+      grouped by focus area. The shadowing is organised around <b>these four blocks</b>, not around weeks.</div>
+    <div id="map"></div>
+    <div class="card" style="margin-top:12px">
+      <div class="card-b"><b>Rotate across more than one GM.</b> Someone who shadows a single manager copies their habits —
+      including the ones we would not choose to spread. One block, one GM, chosen for strength in that block.</div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-t">How we would know it worked</div>
+    <div class="sec-s">One question, tested by real work.</div>
+    <div class="dec" style="background:#1A3660">
+      <div class="dec-t">Can they open the building without asking?</div>
+      Tested by <b>running something real in an existing community</b> — a full cycle, with the resident GM reviewing the outcome only —
+      <b>before</b> they are handed a new one.
+      <span><br><br>Not a certificate of attendance. Not a conversation. A month of a building running under them, somewhere the cost of a mistake is recoverable.</span>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-t">Three options</div>
+    <div class="sec-s">The first two are cheap. The third is a decision.</div>
+
+    <div class="opt">
+      <div class="opt-h"><span class="opt-n">1</span><span class="opt-t">Record them, and leave shadowing outside the system</span></div>
+      <div class="opt-b">They appear as <b>GM · practising</b>. The system says nothing about how they are prepared.
+        Honest, costs nothing, and repeats the improvisation five times.</div>
+    </div>
+
+    <div class="opt">
+      <div class="opt-h"><span class="opt-n">2</span><span class="opt-t">Two fields on their record</span></div>
+      <div class="opt-b"><b>Who they shadow</b> and <b>until when</b>. Enough for a manager to see it exists.
+        No content, no test, no way to tell whether it worked.</div>
+    </div>
+
+    <div class="opt rec">
+      <div class="opt-h"><span class="opt-n">3</span><span class="opt-t">An Incoming GM path</span>
+        <span class="opt-r">Recommended</span></div>
+      <div class="opt-b">The 27 functions as the map · four blocks · a named GM per block, chosen for strength ·
+        and one test at the end that a building has to pass.<br><br>
+        <b>Why this one, when I argued against building a path for ordinary onboarding:</b> onboarding is a person learning their own job,
+        and it has one owner and a natural end. <b>This is a building being handed over.</b> It happens five times next year,
+        the cost of getting it wrong is a community, and nobody currently owns the method.</div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-t">The question underneath</div>
+    <div class="sec-s">Worth settling before the method, because it changes what the method is for.</div>
+    <div class="dec" style="background:#4A3A20">
+      <div class="dec-t">Should the next GM come from outside, or be an AGM who crossed T4?</div>
+      <b>The programme is designed for the second. Today's reality is the first.</b>
+      <span><br><br>Five communities are five chances to promote from within — or five more times we hire from outside
+      and explain the operating model from zero.<br><br>
+      This is also what makes the proposed measure <b>&ldquo;≥80% of leadership vacancies filled from within&rdquo;</b> real rather than decorative:
+      an outside GM hire counts against it. If we are not willing to have it count, we should not adopt the measure.</span>
+    </div>
+  </div>
+
+  <div class="sec" style="margin-bottom:0">
+    <div class="sec-t">What is needed to go further</div>
+    <div class="sec-s">None of this can be built on assumptions.</div>
+    <div class="need">
+      <div class="nd2"><div class="nd2-t">Which community, and when</div>
+        <div class="nd2-s">The handover date sets the whole schedule backwards from it.</div></div>
+      <div class="nd2"><div class="nd2-t">Who can host each block</div>
+        <div class="nd2-s">Four GMs, or fewer — and whether they have the hours.</div></div>
+      <div class="nd2"><div class="nd2-t">Where the real test runs</div>
+        <div class="nd2-s">Which existing community absorbs a month under a new manager.</div></div>
+      <div class="nd2"><div class="nd2-t">A decision on the question above</div>
+        <div class="nd2-s">Outside hire or internal promotion — as a stated preference, not a case-by-case habit.</div></div>
+    </div>
+  </div>
+
+</div>
+
+<script src="gm_map.js?v=202609071215"></script>
+<script>
+const x=s=>String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const ASK={
+  bo:['a GM who runs a tight building','How the building is run day to day — and what it looks like when it slips'],
+  ne:['a GM strongest on residents','Where the service breaks, and what a resident notices before we do'],
+  ce:['whoever holds the community programme','What the community programme is for, and why it is not events for their own sake'],
+  af:['the GM strongest on the numbers','How the building makes money and how it loses it']
+};
+document.getElementById('map').innerHTML=GM_MAP.areas.map(a=>{
+  const fns=GM_MAP.fns[a.id]||[];
+  const own=fns.filter(f=>f.c==='own').length, ov=fns.filter(f=>f.c==='oversee').length;
+  const k=ASK[a.id]||['—','—'];
+  return `<div class="fa">
+    <div class="fa-h"><span class="fa-c">${fns.length}</span>
+      <div><div class="fa-n">${x(a.name)}</div>
+        <div style="font-size:10.5px;color:var(--gray);margin-top:2px">
+          ${own} owned · ${ov} overseen${fns.length-own-ov?' · '+(fns.length-own-ov)+' done personally':''}</div></div>
+      <div class="fa-w">shadow <b>${x(k[0])}</b></div></div>
+    <div class="fa-b">
+      <div style="font-size:11.5px;color:#5A5750;font-style:italic;margin-bottom:10px;line-height:1.7">
+        What they must come out understanding: ${x(k[1])}.</div>
+      ${fns.map(f=>`<div class="fn2"><span class="code ${f.c}">${f.c}</span>${x(f.l)}</div>`).join('')}
+    </div></div>`;}).join('');
+</script>
+</body>
+</html>
