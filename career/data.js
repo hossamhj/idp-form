@@ -152,8 +152,7 @@ const TEMPLATES = {
     ok:'A different operational call · a non-critical delay · rework',
     stop:'Safety · financial commitment above the limit · legal escalation'},
   external:[
-    {c:'Performance management & coaching basics',q:2,why:'First responsibility for others’ work'},
-    {c:'Accounting fundamentals & reconciliation',q:3,why:'Vendor Reconciliation and Accounts Payable'}],
+    {c:'Performance management & coaching basics',q:2,why:'First responsibility for others’ work'}],
   questions:[
     '<b>Which function now runs without you?</b>',
     '<b>Who did you teach this month, and what did they learn?</b>',
