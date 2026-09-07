@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Coach View</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=20260907192756">
+<link rel="stylesheet" href="style.css?v=20260907193113">
 <style>
 .tk{background:#fff;border:1px solid var(--line);border-radius:11px;padding:13px 15px;margin-bottom:8px;display:flex;align-items:flex-start;gap:12px}
 .tk.key{border-left:4px solid var(--purple)}
@@ -56,11 +56,20 @@
 </div>
 <div class="toast" id="toast"></div>
 
-<script src="data.js?v=20260907192756"></script>
-<script src="roster.js?v=20260907192756"></script>
-<script src="owners.js?v=20260907192756"></script>
+<script src="data.js?v=20260907193113"></script>
+<script src="roster.js?v=20260907193113"></script>
+<script src="owners.js?v=20260907193113"></script>
 <script>
 const x=s=>String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const POS=['RX Coordinator','RX Associate','Senior RX Associate','Assistant General Manager','General Manager'];
+/* whoever owns a function teaches it — the position is read from the seed, never a person's name */
+function teacherFor(f){
+  if(typeof FN_OWNER==='undefined')return null;
+  const nm=String(f).replace('★ ','').replace(/ \([^)]*\)$/,'');
+  const oi=FN_OWNER[nm];
+  if(oi===undefined)return null;
+  return oi<0?'no single owner — the coach carries it':POS[oi];
+}
 const CID=new URLSearchParams(location.search).get('id')||'raghdah';
 const C=COACHES[CID];
 const K='cd_coach_'+CID;
