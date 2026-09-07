@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Development Plan</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=20260907204216">
+<link rel="stylesheet" href="style.css?v=20260907204707">
 <style>
 .shift{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:10px}
 .shift-x{background:#fff;border:1px solid #D8D2F5;border-radius:8px;padding:7px 13px;font-size:12px;font-style:italic}
@@ -106,9 +106,10 @@ table.mx tr:last-child td{border:none}
 </div>
 <div class="toast" id="toast"></div>
 
-<script src="data.js?v=20260907204216"></script>
-<script src="roster.js?v=20260907204216"></script>
-<script src="owners.js?v=20260907204216"></script>
+<script src="data.js?v=20260907204707"></script>
+<script src="roster.js?v=20260907204707"></script>
+<script src="admin_overrides.js?v=20260907204707"></script>
+<script src="owners.js?v=20260907204707"></script>
 <script>
 const POS=['RX Coordinator','RX Associate','Senior RX Associate','Assistant General Manager','General Manager'];
 function teacherFor(f){ if(typeof FN_OWNER==='undefined')return null;
@@ -122,19 +123,19 @@ const EMP=new URLSearchParams(location.search).get('emp')||'beesan';
    Anyone not in TEAM still gets a full page, derived from the roster. */
 const COLBY={2:'#C8853A',3:'#7C5CBF',4:'#0D6E5C',5:'#1D3A8A'};
 function resolve(id){
-  if(TEAM[id]) return TEAM[id];
+  if(TEAM[id]) return withAdmin(id, TEAM[id]);
   const r=typeof ROSTER!=='undefined' && ROSTER.find(z=>z.id===id);
   if(!r) return null;
   const prop=PROPERTIES.find(p=>p.id===r.prop)||{};
   const coach=r.coach&&typeof ALL_COACHES!=='undefined'?ALL_COACHES[r.coach]:null;
-  return {
+  return withAdmin(id, {
     name:r.name, ini:r.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase(),
     color:COLBY[r.lvl]||'#8A8780', property:prop.name||'',
     role:r.role, template:r.target, state:r.state, quarter:r.quarter||0,
     manager:coach?coach.name:(prop.agm||prop.gm||'—'),
     sponsor:prop.gm||'—', gate:'—', teachers:null,
-    note:'No programme has been activated yet. Record the join and role dates and run the mastery check in Admin — eligibility cannot be confirmed without them.'
-  };
+    note:'No programme has been activated yet. Record the join and role dates in Admin, then the GM answers the readiness question.'
+  });
 }
 const P=resolve(EMP), T=P&&P.template?TEMPLATES[P.template]:null;
 const K='cd_'+EMP+'_';

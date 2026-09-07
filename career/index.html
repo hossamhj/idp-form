@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Career Development — Narjs East</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=20260907204216">
+<link rel="stylesheet" href="style.css?v=20260907204707">
 </head>
 <body>
 
@@ -62,7 +62,9 @@
 </div>
 <div class="toast" id="toast"></div>
 
-<script src="data.js?v=20260907204216"></script>
+<script src="data.js?v=20260907204707"></script>
+<script src="roster.js?v=20260907204707"></script>
+<script src="admin_overrides.js?v=20260907204707"></script>
 <script>
 const x=s=>String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 const ST={a:JSON.parse(localStorage.getItem('cd_a')||'{}'),save(){localStorage.setItem('cd_a',JSON.stringify(ST.a))}};
@@ -78,7 +80,7 @@ function go(v,btn){
 
 function renderTeam(){
   const ks=Object.keys(TEAM);
-  const n=s=>ks.filter(k=>TEAM[k].state===s).length;
+  const n=s=>ks.filter(k=>withAdmin(k,TEAM[k]).state===s).length;
   const over=ACTIONS.filter(a=>a.lvl==='over'&&!ST.a[a.id]).length;
   document.getElementById('strip').innerHTML=`
     <div class="sc"><div class="sc-v">${ks.length}</div><div class="sc-l">Team</div></div>
@@ -91,8 +93,8 @@ function renderTeam(){
   const b=document.getElementById('badge'); b.textContent=nb; b.style.display=nb?'':'none';
 
   let al='';
-  const blk=ks.filter(k=>TEAM[k].state==='blocked');
-  blk.forEach(k=>{const p=TEAM[k],t=TEMPLATES[p.template];
+  const blk=ks.filter(k=>withAdmin(k,TEAM[k]).state==='blocked');
+  blk.forEach(k=>{const p=withAdmin(k,TEAM[k]),t=TEMPLATES[p.template];
     al+=`<div class="alert crit"><div class="alert-i">■</div><div>
       <div class="alert-t">${x(p.name)}'s promotion is blocked</div>
       <div class="alert-b">${t.blocker||x(p.blockedBy)}</div></div></div>`;});
@@ -102,7 +104,7 @@ function renderTeam(){
   document.getElementById('alerts').innerHTML=al;
 
   document.getElementById('cards').innerHTML=ks.map(k=>{
-    const p=TEAM[k],t=TEMPLATES[p.template],s=STATE[p.state];
+    const p=withAdmin(k,TEAM[k]),t=TEMPLATES[p.template],s=STATE[p.state];
     const bar=(l,v,pc,c)=>`<div class="gate"><div class="gate-h"><span class="gate-l">${l}</span><span class="gate-v">${v}</span></div>
       <div class="bar"><span style="width:${pc}%;background:${c}"></span></div></div>`;
     const active=p.state==='active';

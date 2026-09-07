@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Coach View</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=20260907204216">
+<link rel="stylesheet" href="style.css?v=20260907204707">
 <style>
 .tk{background:#fff;border:1px solid var(--line);border-radius:11px;padding:13px 15px;margin-bottom:8px;display:flex;align-items:flex-start;gap:12px}
 .tk.key{border-left:4px solid var(--purple)}
@@ -56,9 +56,10 @@
 </div>
 <div class="toast" id="toast"></div>
 
-<script src="data.js?v=20260907204216"></script>
-<script src="roster.js?v=20260907204216"></script>
-<script src="owners.js?v=20260907204216"></script>
+<script src="data.js?v=20260907204707"></script>
+<script src="roster.js?v=20260907204707"></script>
+<script src="admin_overrides.js?v=20260907204707"></script>
+<script src="owners.js?v=20260907204707"></script>
 <script>
 const x=s=>String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 const POS=['RX Coordinator','RX Associate','Senior RX Associate','Assistant General Manager','General Manager'];
@@ -96,7 +97,7 @@ function buildTasks(){
   const out=[];
   if(!C||!C.people)return out;
   C.people.forEach(pk=>{
-    const p=TEAM[pk]; if(!p||!p.template)return;
+    const p=withAdmin(pk,TEAM[pk]); if(!p||!p.template)return;
     const T=TEMPLATES[p.template], set=(COACH_TASKS[p.template]||{})[C.as]||{};
     const active=p.state==='active';
     Object.keys(set).forEach(qn=>{
@@ -132,7 +133,7 @@ document.getElementById('navSub').textContent=C.role+' · Coach View';
 const b=document.getElementById('badge'); b.textContent=openLate+openDue; b.style.display=(openLate+openDue)?'':'none';
 
 function taskHTML(t){
-  const p=TEAM[t.person], done=ST.d[t.id];
+  const p=withAdmin(t.person,TEAM[t.person]), done=ST.d[t.id];
   const tag = t.status==='late'?['Overdue','background:#FDEEEA;color:#8A2E12']
             : t.status==='due'?['Q'+t.q+' — now','background:#FEF6E7;color:#7A4A05']
             : ['Q'+t.q,'background:#F2EFE9;color:#5A5750'];
@@ -145,7 +146,7 @@ function taskHTML(t){
 
 /* THIS WEEK */
 const weekly=[];
-(C.people||[]).forEach(pk=>{const p=TEAM[pk];if(!p||p.state!=='active')return;
+(C.people||[]).forEach(pk=>{const p=withAdmin(pk,TEAM[pk]);if(!p||p.state!=='active')return;
   const T=TEMPLATES[p.template], cq=T.quarters.find(z=>z.n===p.quarter);
   if(cq) cq.fns.forEach(f=>weekly.push({p,f,teacher:teacherFor(f)||(p.teachers&&p.teachers[f])||'the function owner'}));});
 
