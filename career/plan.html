@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Development Plan</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=20260907193113">
+<link rel="stylesheet" href="style.css?v=20260907193451">
 <style>
 .shift{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:10px}
 .shift-x{background:#fff;border:1px solid #D8D2F5;border-radius:8px;padding:7px 13px;font-size:12px;font-style:italic}
@@ -106,9 +106,9 @@ table.mx tr:last-child td{border:none}
 </div>
 <div class="toast" id="toast"></div>
 
-<script src="data.js?v=20260907193113"></script>
-<script src="roster.js?v=20260907193113"></script>
-<script src="owners.js?v=20260907193113"></script>
+<script src="data.js?v=20260907193451"></script>
+<script src="roster.js?v=20260907193451"></script>
+<script src="owners.js?v=20260907193451"></script>
 <script>
 const POS=['RX Coordinator','RX Associate','Senior RX Associate','Assistant General Manager','General Manager'];
 function teacherFor(f){ if(typeof FN_OWNER==='undefined')return null;
@@ -150,7 +150,34 @@ function go(v,btn){document.querySelectorAll('.view').forEach(e=>e.classList.rem
   document.getElementById('v-'+v).classList.add('on');
   document.querySelectorAll('button.tab').forEach(t=>t.classList.remove('on'));if(btn)btn.classList.add('on');window.scrollTo(0,0)}
 
-if(!P||!T){document.getElementById('hero').innerHTML='<div class="sec"><div class="sec-t">Not found</div><div class="sec-s">No team member matches that link.</div></div>';}
+if(!P){document.getElementById('hero').innerHTML=
+  '<div class="sec"><div class="sec-t">Not found</div><div class="sec-s">No team member matches that link.</div></div>';}
+else if(!T){
+  /* A real person with no transition above them, or no programme activated yet. */
+  const isGM = P.role==='GM';
+  document.getElementById('navAv').textContent=P.ini;
+  document.getElementById('navAv').style.background=P.color;
+  document.getElementById('navName').textContent=P.name;
+  document.getElementById('navSub').textContent=P.role+(P.property?' · '+P.property:'');
+  document.getElementById('hero').innerHTML=`
+    <div class="hero">
+      <div class="av" style="background:${P.color};width:48px;height:48px;font-size:14px">${P.ini}</div>
+      <div><div class="hero-t">${x(P.name)}</div>
+        <div class="hero-s">${x(P.role)}${P.property?' · '+x(P.property):''}</div></div>
+    </div>
+    <div class="sec">
+      <div class="sec-t">${isGM?'No transition sits above this level':'No programme is running'}</div>
+      <div class="sec-s">${isGM
+        ? 'A General Manager owns the whole scope — there is nothing above it on this ladder, so there is no development plan to show. Their page is the <b>coach view</b>: who is waiting on them to start, who is held back, and what they owe each week.'
+        : 'This person is not in a transition yet. Record the join and role dates in <b>Admin</b>, then the GM answers the readiness question — the programme starts from there.'}</div>
+      <div style="display:flex;gap:9px;flex-wrap:wrap;margin-top:6px">
+        ${isGM?`<a class="btn" style="text-decoration:none;display:inline-block" href="coach.html?id=${EMP}">Open the coach view</a>`:''}
+        <a class="btn" style="background:none;border:1px solid var(--line);color:#6A6760;text-decoration:none;display:inline-block" href="admin.html">Open Admin</a>
+        <a class="btn" style="background:none;border:1px solid var(--line);color:#6A6760;text-decoration:none;display:inline-block" href="hub.html">All views</a>
+      </div>
+    </div>`;
+  document.querySelectorAll('.tabs').forEach(t=>t.style.display='none');
+}
 else{
 document.getElementById('navAv').textContent=P.ini;
 document.getElementById('navAv').style.background=P.color;
