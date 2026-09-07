@@ -134,7 +134,7 @@ const noData=ROSTER.filter(r=>r.months===null||r.mastery===null).length;
 document.getElementById('wrap').innerHTML=`
   <div class="hero">
     <div class="hero-t">Every view in one place</div>
-    <div class="hero-s">Ordered the way the programme is governed — configuration first, then oversight, then the people who decide, coach, and are developed.</div>
+    <div class="hero-s">Ordered the way the programme is governed — configuration first, then oversight, then the ladder everyone moves along, then the people who decide, coach, and are developed.</div>
     <div class="hero-m">
       <div><div class="hm-v">${ROSTER.length}</div><div class="hm-l">People</div></div>
       <div><div class="hm-v">${PROPERTIES.length}</div><div class="hm-l">Properties</div></div>
@@ -175,27 +175,9 @@ document.getElementById('wrap').innerHTML=`
     </div>
   </div>
 
-  <!-- 3 · SPONSORS -->
+  <!-- 3 · THE LADDER -->
   <div class="lvl">
-    <div class="lvl-h"><span class="lvl-n" style="background:#1D3A8A">3</span>
-      <span class="lvl-t">Sponsors · GM</span>
-      <span class="lvl-c">Grant the level</span></div>
-    <div class="lvl-s">The only role that decides. Approves real scope, signs the gate, and may overrule a coach with a written reason.</div>
-    <div class="cards">${gms.map(cc).join('')}</div>
-  </div>
-
-  <!-- 4 · COACHES -->
-  <div class="lvl">
-    <div class="lvl-h"><span class="lvl-n" style="background:#0D6E5C">4</span>
-      <span class="lvl-t">Coaches · AGM</span>
-      <span class="lvl-c">Observe and recommend</span></div>
-    <div class="lvl-s">Assess conduct, hold the monthly session, and write a reasoned recommendation at the gate. Two properties have no AGM, so their GM carries both layers.</div>
-    <div class="cards">${agms.map(cc).join('')}</div>
-  </div>
-
-  <!-- THE LADDER -->
-  <div class="lvl">
-    <div class="lvl-h"><span class="lvl-n" style="background:#1A3660">↑</span>
+    <div class="lvl-h"><span class="lvl-n" style="background:#1A3660">3</span>
       <span class="lvl-t">The four transitions</span>
       <span class="lvl-c">Fixed and repeatable · click through each one</span></div>
     <div class="lvl-s">Everything a person must change to move up a rung — derived from the operating model, not written by hand. The same four templates apply to everyone.</div>
@@ -211,7 +193,25 @@ document.getElementById('wrap').innerHTML=`
     </div>
   </div>
 
-  <!-- 5 · THE FOUR LEVELS -->
+  <!-- 4 · SPONSORS -->
+  <div class="lvl">
+    <div class="lvl-h"><span class="lvl-n" style="background:#1D3A8A">4</span>
+      <span class="lvl-t">Sponsors · GM</span>
+      <span class="lvl-c">Grant the level</span></div>
+    <div class="lvl-s">The only role that decides. Approves real scope, signs the gate, and may overrule a coach with a written reason.</div>
+    <div class="cards">${gms.map(cc).join('')}</div>
+  </div>
+
+  <!-- 5 · COACHES -->
+  <div class="lvl">
+    <div class="lvl-h"><span class="lvl-n" style="background:#0D6E5C">5</span>
+      <span class="lvl-t">Coaches · AGM</span>
+      <span class="lvl-c">Observe and recommend</span></div>
+    <div class="lvl-s">Assess conduct, hold the monthly session, and write a reasoned recommendation at the gate. Two properties have no AGM, so their GM carries both layers.</div>
+    <div class="cards">${agms.map(cc).join('')}</div>
+  </div>
+
+  <!-- 6 · THE FOUR LEVELS -->
   ${[5,4,3,2].map(l=>{
     const ppl=byLvl(l);
     return `<div class="lvl">
