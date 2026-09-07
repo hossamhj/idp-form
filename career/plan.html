@@ -228,7 +228,8 @@ document.getElementById('now').innerHTML=cq&&cq.fns.length?`
       const teach=(P.teachers&&P.teachers[f])||'Function owner';
       /* where the plan says this function should be by the month we are in */
       const KEY={o:0,a:1,s:2,w:3};
-      const due = cq.plan ? Math.max(...cq.plan.slice(0,MON).map(r=>KEY[r[i]])) : -1;
+      const col = cq.plan ? cq.plan.slice(0,MON).map(r=>KEY[r[i]]).filter(v=>v!==undefined) : [];
+      const due = col.length ? Math.max(...col) : -1;
       const now = STEPS.indexOf(cur);
       const behind = due>=0 && now<due;
       return `<div class="ff">

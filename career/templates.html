@@ -97,6 +97,8 @@ ul.tight li:before{content:'';position:absolute;left:2px;top:11px;width:5px;heig
 .scd.sc3{background:#E1F5EE;border-color:#B7E3D3}
 .scd.sc3 i{color:#085041}
 .scd.sc4{background:#EEEDFE;border-color:#D8D2F5}
+.noplan{background:#FCFBF9;border:1px dashed #D5D0C8;border-radius:10px;padding:11px 14px;font-size:11.5px;color:#5A5750;line-height:1.7;margin-bottom:12px}
+.noplan b{color:var(--ink)}
 .gq{font-size:11px;color:#5A5750;font-style:italic;margin-top:4px;line-height:1.55}
 .gh{font-size:9.5px;color:var(--gray);margin-top:3px}
 .cd{font-family:ui-monospace,SFMono-Regular,monospace;font-size:10.5px;background:#F2EFE9;border-radius:5px;padding:2px 7px;white-space:nowrap}
@@ -436,7 +438,8 @@ function renderQuarter(){
     </div>
 
     ${q.fns.length?`
-    <div class="qsub">The functions in focus — each step carries the month it is due, so plan and reality can be compared</div>
+    <div class="qsub">${q.plan?'The functions in focus — each step carries the month it is due, so plan and reality can be compared':'In focus this quarter'}</div>
+    ${q.noPlan?`<div class="noplan"><b>No step ladder this quarter.</b> ${x(q.noPlan)}</div>`:''}
     ${q.fns.map((f,fi)=>{
       const nm=f.replace('★ ','').replace(/ (oversee)$/,'');
       const oi=(typeof FN_OWNER!=='undefined')?FN_OWNER[nm]:undefined;
@@ -446,7 +449,6 @@ function renderQuarter(){
           <div><div class="ff-n">${x(f.replace('★ ',''))}${f.indexOf('★')===0?' <span class="star">ownership handed over</span>':''}</div>
             <div class="ff-m">${teach?'taught by the <b>'+x(teach)+'</b> — whoever owns it, teaches it':'a programme activity, not a function — run by the coach'} · <b>15 minutes a week</b></div></div>
           <div class="steps">${STEPS.map((s,si)=>{
-            const due=q.plan?q.plan.map(r=>KEY[r[fi]]).lastIndexOf(si):-1;
             const first=q.plan?q.plan.map(r=>KEY[r[fi]]).indexOf(si):-1;
             return `<span class="st ${first>=0?'due':''}" title="${s[1]}">${s[0]}
               ${first>=0?`<b>M${(TQ-1)*3+first+1}</b>`:''}</span>`;}).join('')}</div>
