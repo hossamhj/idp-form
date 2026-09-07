@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>The Four Transitions</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=20260907195317">
+<link rel="stylesheet" href="style.css?v=20260907195639">
 <style>
 .ladder{display:flex;align-items:stretch;gap:2px;margin-bottom:26px;flex-wrap:nowrap}
 .rung{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 13px;min-width:0;flex:1 1 0}
@@ -190,10 +190,10 @@ table.bt tr:last-child td{border:none}
   <div id="detail"></div>
 </div>
 
-<script src="data.js?v=20260907195317"></script>
-<script src="roster.js?v=20260907195317"></script>
-<script src="templates_detail.js?v=20260907195317"></script>
-<script src="owners.js?v=20260907195317"></script>
+<script src="data.js?v=20260907195639"></script>
+<script src="roster.js?v=20260907195639"></script>
+<script src="templates_detail.js?v=20260907195639"></script>
+<script src="owners.js?v=20260907195639"></script>
 <script>
 const x=s=>String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 const ORDER=['coord-assoc','assoc-sr','sr-agm','agm-gm'];
@@ -280,8 +280,7 @@ function renderDetail(){
 
         <div class="blk" id="s-fns">
           <div class="blk-t">The ${T.changed} functions that change</div>
-          <div class="blk-s"><b>${T.changed} of the operating model's 48 functions change level of involvement here</b>${NEWCT?` — ${NEWCT} of them touched for the first time`:''}. A function is what the Operating Playbook staffs: a standing responsibility with an owner and a standard — <i>Move-ins</i>, <i>Incident Management</i>, <i>Shift handover</i> — not a daily task. What moves is the code against each one: <span class="cd">— → assist → execute → own → oversee</span>. Nothing here was written by hand; it is read from <b>ops_function_operating</b>.</div>
-          <div class="blk-s" style="margin-top:-6px">Grouped by what kind of change each one is. Every function is named — click a group heading to fold it away.</div>
+          <div class="blk-s">Grouped by what kind of change each one is.</div>
           ${L.map((g,i)=>`<div class="fgrp open" id="g${i}">
             <div class="fgrp-h" onclick="document.getElementById('g${i}').classList.toggle('open')">
               <span class="fdot" style="background:${g.c}"></span>
