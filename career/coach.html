@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Coach View</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css?v=202609071215">
 <style>
 .tk{background:#fff;border:1px solid var(--line);border-radius:11px;padding:13px 15px;margin-bottom:8px;display:flex;align-items:flex-start;gap:12px}
 .tk.key{border-left:4px solid var(--purple)}
@@ -58,6 +58,7 @@
 
 <script src="data.js?v=202609071215"></script>
 <script src="roster.js?v=202609071215"></script>
+<script src="owners.js?v=202609071215"></script>
 <script>
 const x=s=>String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 const CID=new URLSearchParams(location.search).get('id')||'raghdah';
@@ -123,7 +124,7 @@ function taskHTML(t){
 const weekly=[];
 C.people.forEach(pk=>{const p=TEAM[pk];if(p.state!=='active')return;
   const T=TEMPLATES[p.template], cq=T.quarters.find(z=>z.n===p.quarter);
-  if(cq) cq.fns.forEach(f=>weekly.push({p,f,teacher:(p.teachers&&p.teachers[f])||'Function owner'}));});
+  if(cq) cq.fns.forEach(f=>weekly.push({p,f,teacher:teacherFor(f)||(p.teachers&&p.teachers[f])||'the function owner'}));});
 
 /* ── starting programmes is the GM's job, so a GM sees the readiness queue first ── */
 const ADMP=(JSON.parse(localStorage.getItem('cd_admin')||'{}').people||{});
@@ -238,7 +239,7 @@ document.getElementById('load').innerHTML=`
       :'<div style="font-size:12px;color:var(--gray);font-style:italic;padding:6px 0">Nobody active.</div>'}
     <div class="card" style="margin-top:14px">
       <div class="card-k">Why it stays low</div>
-      <div class="card-b">Around 70% of the teaching is craft, and craft is taught laterally by the function owner. You carry conduct and scope — the two things nobody else can do.</div></div>
+      <div class="card-b">Around 70% of the teaching is craft, and craft is taught by whoever owns the function. You carry conduct and scope — the two things nobody else can do.</div></div>
   </div>
   <div class="sec">
     <div class="sec-t">The rhythm you own</div>

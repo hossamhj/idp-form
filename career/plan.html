@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Development Plan</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css?v=202609071215">
 <style>
 .shift{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:10px}
 .shift-x{background:#fff;border:1px solid #D8D2F5;border-radius:8px;padding:7px 13px;font-size:12px;font-style:italic}
@@ -108,7 +108,13 @@ table.mx tr:last-child td{border:none}
 
 <script src="data.js?v=202609071215"></script>
 <script src="roster.js?v=202609071215"></script>
+<script src="owners.js?v=202609071215"></script>
 <script>
+const POS=['RX Coordinator','RX Associate','Senior RX Associate','Assistant General Manager','General Manager'];
+function teacherFor(f){ if(typeof FN_OWNER==='undefined')return null;
+  const nm=String(f).replace('★ ','').replace(/ ([^)]*)$/,'');
+  const oi=FN_OWNER[nm]; if(oi===undefined)return null;
+  return oi<0?'no single owner — the coach carries it':POS[oi]; }
 const x=s=>String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 const EMP=new URLSearchParams(location.search).get('emp')||'beesan';
 
@@ -225,7 +231,7 @@ document.getElementById('now').innerHTML=cq&&cq.fns.length?`
     ${cq.fns.map((f,i)=>{
       const id='q'+cq.n+'_f'+i, old='f'+i;
       const cur=ST.step[id]||ST.step[old]||'observe', logs=ST.logs[id]||ST.logs[old]||[];
-      const teach=(P.teachers&&P.teachers[f])||'Function owner';
+      const teach=teacherFor(f)||(P.teachers&&P.teachers[f])||'the function owner';
       /* where the plan says this function should be by the month we are in */
       const KEY={o:0,a:1,s:2,w:3};
       const col = cq.plan ? cq.plan.slice(0,MON).map(r=>KEY[r[i]]).filter(v=>v!==undefined) : [];
@@ -241,10 +247,10 @@ document.getElementById('now').innerHTML=cq&&cq.fns.length?`
             return `<button class="st ${cur===s?'on':''} ${si===due?'due':''}" onclick="setStep('${id}','${s}')" title="${first>=0?'planned for month '+((cq.n-1)*3+first+1):''}">${STEPL[s]}${first>=0?`<b>M${(cq.n-1)*3+first+1}</b>`:''}</button>`;}).join('')}</div></div>
         <div class="ff-b">
           ${logs.length?logs.map(l=>`<div class="lg"><div class="lg-d">${x(l.d)}</div>
-            <div class="lg-r"><span class="lg-k">I tried</span><span class="lg-v">${x(l.a)}</span></div>
-            ${l.o?`<div class="lg-r"><span class="lg-k">What happened</span><span class="lg-v">${x(l.o)}</span></div>`:''}
-            ${l.w?`<div class="lg-r key"><span class="lg-k">Next time</span><span class="lg-v">${x(l.w)}</span></div>`:''}
-            ${l.nd?`<div class="lg-r"><span class="lg-k">I need</span><span class="lg-v">${x(l.nd)}</span></div>`:''}</div>`).join('')
+            <div class="lg-r"><span class="lg-k">What did I try?</span><span class="lg-v">${x(l.a)}</span></div>
+            ${l.o?`<div class="lg-r"><span class="lg-k">What happened?</span><span class="lg-v">${x(l.o)}</span></div>`:''}
+            ${l.w?`<div class="lg-r key"><span class="lg-k">What would I do differently?</span><span class="lg-v">${x(l.w)}</span></div>`:''}
+            ${l.nd?`<div class="lg-r"><span class="lg-k">What do I need?</span><span class="lg-v">${x(l.nd)}</span></div>`:''}</div>`).join('')
             :'<div style="font-size:11.5px;color:var(--gray);font-style:italic;padding:8px 0">No practice entries yet. The log is what makes this development rather than a checklist.</div>'}
           <div class="form"><div class="form-t">Add a practice entry — in your own words</div>
             <div class="fld"><label>What did I try?</label><textarea id="a-${id}"></textarea></div>
@@ -375,7 +381,7 @@ document.getElementById('coach').innerHTML=`
   <div class="sec">
     <div class="sec-t">Who teaches what</div>
     <div class="sec-s">Development is distributed by dimension — not all loaded onto the manager.</div>
-    <div class="row"><span class="dot" style="background:var(--green)"></span><div style="flex:1"><b>Craft</b> — the function owner, usually a peer. Around 70% of the volume.</div></div>
+    <div class="row"><span class="dot" style="background:var(--green)"></span><div style="flex:1"><b>Craft</b> — whoever owns the function, usually a peer one level up. Around 70% of the volume.</div></div>
     <div class="row"><span class="dot" style="background:var(--teal)"></span><div style="flex:1"><b>Conduct</b> — the line manager, who sees them daily under pressure.</div></div>
     <div class="row"><span class="dot" style="background:var(--purple)"></span><div style="flex:1"><b>Scope</b> — the sponsor, who has the authority to grant real scope.</div></div>
   </div>`;

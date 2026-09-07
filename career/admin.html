@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Admin — Programme Configuration</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css?v=202609071215">
 <style>
 table.t{width:100%;border-collapse:collapse;font-size:13px}
 table.t th{text-align:left;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--gray);font-weight:600;padding:0 10px 9px 0;border-bottom:1px solid var(--line);white-space:nowrap}
@@ -376,7 +376,7 @@ function renderSettings(){
       ${s.newBuildings!==''?`<div class="card" style="margin-top:16px">
         <div class="card-k">That implies</div>
         <div class="card-b">${s.newBuildings} buildings need <b>${s.newBuildings} GMs · ${s.newBuildings} AGMs · ${s.newBuildings*2} Seniors</b> within ${s.horizonMonths} months.<br><br>
-        A Senior programme runs 12 months and an AGM programme 12 — so anyone filling those seats <b>must start now, not when the building is announced</b>.</div></div>`:''}
+        A Senior programme runs 12 months and a GM programme 18 — so anyone filling those seats <b>must start now, not when the building is announced</b>.</div></div>`:''}
     </div>
     <div class="sec">
       <div class="sec-t">Properties and coaches</div>

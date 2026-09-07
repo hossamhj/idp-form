@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>The Four Transitions</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css?v=202609071215">
 <style>
 .ladder{display:flex;align-items:stretch;gap:2px;margin-bottom:26px;flex-wrap:nowrap}
 .rung{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 13px;min-width:0;flex:1 1 0}
@@ -441,7 +441,7 @@ function renderQuarter(){
     <div class="qsub">${q.plan?'The functions in focus — each step carries the month it is due, so plan and reality can be compared':'In focus this quarter'}</div>
     ${q.noPlan?`<div class="noplan"><b>No step ladder this quarter.</b> ${x(q.noPlan)}</div>`:''}
     ${q.fns.map((f,fi)=>{
-      const nm=f.replace('★ ','').replace(/ (oversee)$/,'');
+      const nm=f.replace('★ ','').replace(/ \([^)]*\)$/,'');
       const oi=(typeof FN_OWNER!=='undefined')?FN_OWNER[nm]:undefined;
       const teach=(oi===undefined)?null:(oi<0?'no single owner — the coach carries it':POS[oi]);
       return `<div class="ff">
