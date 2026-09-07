@@ -84,8 +84,8 @@ ol.qs li b{font-weight:600}
 <body>
 <div class="sheet" id="sheet"></div>
 
-<script src="data.js?v=20260907194740"></script>
-<script src="templates_detail.js?v=20260907194740"></script>
+<script src="data.js?v=20260907195103"></script>
+<script src="templates_detail.js?v=20260907195103"></script>
 <script>
 const x=s=>String(s==null?'':s);
 const ORDER=['coord-assoc','assoc-sr','sr-agm','agm-gm'];
@@ -212,19 +212,8 @@ ${ORDER.map(k=>{const t=TEMPLATES[k];
    <div class="src" style="margin-top:9px;padding-top:8px;border-top:1px dashed var(--line)">
      <b>Fail rule.</b> ${x(t.failRule)}</div></div>`;}).join('')}`;
 
-/* ── 9 · stretch ── */
-h+=`<h2><span>9 — the tested dimension</span>The stretch assignment, and its limits</h2>
-<div class="lead">Real scope with real stakes. Without genuine risk this gate is paperwork — people protect rather than stretch.
-  <b>Failure with clear reflection does not fail the gate. Repeated failure without learning does.</b></div>
-<table><thead><tr><th style="width:8%"></th><th style="width:38%">The assignment</th>
-  <th style="width:27%">Acceptable</th><th>The manager steps in</th></tr></thead><tbody>
-${ORDER.map(k=>{const t=TEMPLATES[k];
- return `<tr><td class="n">${t.code}</td><td>${x(t.stretch.what)}</td>
-   <td class="src">${x(t.stretch.ok)}</td><td class="src">${x(t.stretch.stop)}</td></tr>`;}).join('')}
-</tbody></table>`;
-
 /* ── 10 · governance ── */
-h+=`<h2><span>10 — who decides</span>Governance in one table</h2>
+h+=`<h2><span>9 — who decides</span>Governance in one table</h2>
 <table><thead><tr><th style="width:22%">Role</th><th>What they do</th><th style="width:26%">What they cannot do</th></tr></thead><tbody>
 <tr><td class="n">The employee</td><td>Writes the practice record. The development is theirs to do.</td><td class="src">Cannot pass their own gate</td></tr>
 <tr><td class="n">The function owner</td><td>Teaches the craft — 15 minutes a week. Whoever owns it, teaches it.</td><td class="src">Does not rate, does not decide</td></tr>
@@ -236,7 +225,7 @@ h+=`<h2><span>10 — who decides</span>Governance in one table</h2>
   Yes &rarr; the programme begins. Not yet &rarr; <b>held three months, with three things written down</b> — and the ceiling is three holds.</div>`;
 
 /* ── 11 · Arabic talking points ── */
-h+=`<h2 class="pagebreak"><span>11 — for speaking, not for the screens</span>نقاط الحوار</h2>
+h+=`<h2 class="pagebreak"><span>10 — for speaking, not for the screens</span>نقاط الحوار</h2>
 <div class="ar">
 <div class="said" style="font-family:'Inter';font-size:14px;direction:rtl;text-align:right">
   <b>نظام التشغيل يحدد ما يجب أن يُنفَّذ. وهذا المسار يبني من ينفّذه.</b><br>

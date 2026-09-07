@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>The Four Transitions</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=20260907194740">
+<link rel="stylesheet" href="style.css?v=20260907195103">
 <style>
 .ladder{display:flex;align-items:stretch;gap:2px;margin-bottom:26px;flex-wrap:nowrap}
 .rung{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 13px;min-width:0;flex:1 1 0}
@@ -190,10 +190,10 @@ table.bt tr:last-child td{border:none}
   <div id="detail"></div>
 </div>
 
-<script src="data.js?v=20260907194740"></script>
-<script src="roster.js?v=20260907194740"></script>
-<script src="templates_detail.js?v=20260907194740"></script>
-<script src="owners.js?v=20260907194740"></script>
+<script src="data.js?v=20260907195103"></script>
+<script src="roster.js?v=20260907195103"></script>
+<script src="templates_detail.js?v=20260907195103"></script>
+<script src="owners.js?v=20260907195103"></script>
 <script>
 const x=s=>String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 const ORDER=['coord-assoc','assoc-sr','sr-agm','agm-gm'];
@@ -256,7 +256,7 @@ function renderDetail(){
         <div class="toc">
           <span class="toc-l">Everything about this transition, in order</span>
           <a href="#s-is">What it is</a><a href="#s-enter">To enter</a><a href="#s-fns">The ${T.changed} functions</a>
-          <a href="#s-q">Q1–Q${T.quarters.length}</a><a href="#s-stretch">Stretch</a><a href="#s-instr">What gets filled in</a><a href="#s-who">Who does what</a>
+          <a href="#s-q">Q1–Q${T.quarters.length}</a><a href="#s-instr">What gets filled in</a><a href="#s-who">Who does what</a>
           <a href="#s-beh">Behaviour</a><a href="#s-ext">External training</a><a href="#s-gate">The gate</a><a href="#s-not">Warning signs</a>
           <button class="toc-b" onclick="foldAll(this)">Fold groups</button>
         </div>
@@ -300,18 +300,6 @@ function renderDetail(){
           <div class="blk-s">This is the employee's own page with nobody in it. Everything below is what they will read, fill in and be asked, in the order it happens. Three functions in deliberate focus at a time — the order is chosen for risk: safe work first, the unfamiliar second, ownership last.</div>
           <div class="qtabs" id="qtabs"></div>
           <div id="qpane"></div>
-        </div>
-
-        <div class="blk" id="s-stretch">
-          <div class="blk-t">The stretch assignment</div>
-          <div class="blk-s">Real scope with real stakes. Without genuine risk this gate is paperwork — people protect rather than stretch.</div>
-          <div class="fn" style="background:#FEF6E7;border-color:#F0C674;padding:12px 14px"><b>${x(T.stretch.what)}</b></div>
-          <div class="cols2" style="margin-top:12px">
-            <div><div class="blk-s" style="margin:0 0 5px;color:#0A5540;font-weight:600">Acceptable</div>
-              <div style="font-size:12px;line-height:1.7;color:#5A5750">${x(T.stretch.ok)}</div></div>
-            <div><div class="blk-s" style="margin:0 0 5px;color:#8A2E12;font-weight:600">Intervene</div>
-              <div style="font-size:12px;line-height:1.7;color:#5A5750">${x(T.stretch.stop)}</div></div>
-          </div>
         </div>
 
         <div class="blk" id="s-instr">

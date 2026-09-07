@@ -8,7 +8,7 @@
 const DIMENSIONS = {
   Craft:  {q:'Can you do the work to standard?',                 how:'computed from the functions'},
   Conduct:{q:'How do you show up while doing it?',                how:'observed, from three sources'},
-  Scope:  {q:'Can you carry the next kind of responsibility?',    how:'tested by the stretch assignment'},
+  Scope:  {q:'Can you carry the next kind of responsibility?',    how:'tested by holding something real, alone'},
   'Learning speed':{q:'How fast do you turn a correction into a habit?', how:'read from the practice log'},
   Teaching:{q:'Can you get someone else doing it?',               how:'one thing taught, and it stuck'}
 };
@@ -103,7 +103,7 @@ const TEMPLATES = {
     ['Learning speed','Shift handover record read and accepted'],
     ['Conduct','Every time across all five, from three sources'],
     ['Teaching','Taught one thing to a coordinator'],
-    ['Scope','Stretch assignment held within its written limits']],
+    ['Scope','A full month owning Package oversight with no intervention']],
   failRule:'Someone who reaches the standard but never worked unsupervised has not made the transition.'
 },
 
