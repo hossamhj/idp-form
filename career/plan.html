@@ -272,6 +272,31 @@ document.getElementById('now').innerHTML=cq&&cq.fns.length?`
     <div class="card" style="margin-top:12px;background:#EEEDFE;border-color:#D8D2F5">
       <div class="card-b" style="color:#3A3160"><b>Failure with clear reflection does not fail the gate.</b> Repeated failure without learning does.</div></div>
   </div>`
+  : (cq&&cq.observation)?(()=>{const O=cq.observation, oid='q'+cq.n+'_obs', logs=ST.logs[oid]||[];
+      return `<div class="sec">
+    <div class="sec-t">Q${cq.n} — "${x(cq.goal)}"</div>
+    <div class="sec-s">${x(O.why)}</div>
+    <div class="ff">
+      <div class="ff-h"><div><div class="ff-n">${x(O.title)}</div>
+        <div class="ff-m">no function to stand in front of yet — watching is the work</div></div></div>
+      <div class="ff-b">
+        ${logs.length?logs.map(l=>`<div class="lg"><div class="lg-d">${x(l.d)}</div>
+          ${O.fields.map(f=>l[f[0]==='a'?'a':f[0]==='o'?'o':f[0]==='w'?'w':'nd']?
+            `<div class="lg-r ${f[0]==='w'?'key':''}"><span class="lg-k">${x(f[1])}</span><span class="lg-v">${x(l[f[0]==='n'?'nd':f[0]])}</span></div>`:'').join('')}
+          </div>`).join('')
+          :`<div class="exmp" style="border:1px solid #B7E3D3;background:#F5FBF9;border-radius:11px;padding:13px 15px;margin-bottom:13px">
+             <div style="font-size:9.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#0A5540;margin-bottom:9px">An example of a real entry</div>
+             ${O.fields.map(f=>`<div class="lg-r ${f[0]==='w'?'key':''}" style="grid-template-columns:150px 1fr">
+               <span class="lg-k">${x(f[1])}</span><span class="lg-v">${O.example[f[0]]}</span></div>`).join('')}
+             <div style="font-size:10.5px;color:#5A7A70;margin-top:10px;padding-top:9px;border-top:1px dashed #DDF0E8;line-height:1.7">${x(O.note)}</div>
+           </div>`}
+        <div class="form"><div class="form-t">Add an observation entry — in your own words</div>
+          ${O.fields.map(f=>`<div class="fld ${f[0]==='w'?'key':''}">
+            <label>${x(f[1])}</label><textarea id="${f[0]}-${oid}" placeholder="${x(f[2]||'')}"></textarea></div>`).join('')}
+          <button class="btn" onclick="addLog('${oid}')">Save entry</button></div>
+      </div></div>
+    <div class="mile" style="margin-top:14px">${x(cq.milestone)}</div>
+  </div>`;})()
   :`<div class="sec"><div class="sec-t">Not in an active quarter</div>
     <div class="sec-s">${P.state==='blocked'?'This programme is blocked — see the note above.':P.state==='eligible'?'Eligible to start. Eligibility must be confirmed first.':'No deliberate functions in this quarter.'}</div>
     <div class="q-lbl" style="margin-top:14px">Eligibility — all must be true</div>
