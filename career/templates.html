@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>The Four Transitions</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=20260907192108">
+<link rel="stylesheet" href="style.css?v=20260907192327">
 <style>
 .ladder{display:flex;align-items:stretch;gap:2px;margin-bottom:26px;flex-wrap:nowrap}
 .rung{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 13px;min-width:0;flex:1 1 0}
@@ -190,10 +190,10 @@ table.bt tr:last-child td{border:none}
   <div id="detail"></div>
 </div>
 
-<script src="data.js?v=20260907192108"></script>
-<script src="roster.js?v=20260907192108"></script>
-<script src="templates_detail.js?v=20260907192108"></script>
-<script src="owners.js?v=20260907192108"></script>
+<script src="data.js?v=20260907192327"></script>
+<script src="roster.js?v=20260907192327"></script>
+<script src="templates_detail.js?v=20260907192327"></script>
+<script src="owners.js?v=20260907192327"></script>
 <script>
 const x=s=>String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 const ORDER=['coord-assoc','assoc-sr','sr-agm','agm-gm'];
@@ -440,23 +440,6 @@ function renderQuarter(){
     ${q.fns.length?`
     <div class="qsub">${q.plan?'The functions in focus — each step carries the month it is due, so plan and reality can be compared':'In focus this quarter'}</div>
     ${q.noPlan?`<div class="noplan"><b>No step ladder this quarter.</b> ${x(q.noPlan)}</div>`:''}
-    ${q.observation?`<div class="ff">
-      <div class="ff-h"><div><div class="ff-n">${x(q.observation.title)}</div>
-        <div class="ff-m">the employee writes it &mdash; there is no function to stand in front of yet</div></div></div>
-      <div class="ff-b">
-        <div style="font-size:11.5px;color:#5A5750;line-height:1.75;margin-bottom:13px">${x(q.observation.why)}</div>
-        <div class="exmp">
-          <div class="exmp-t">An example of a real entry — what a good one looks like</div>
-          ${q.observation.fields.map(f=>`<div class="exmp-r ${f[0]==='w'?'key':''}">
-            <span>${x(f[1])}</span><div>${q.observation.example[f[0]]}</div></div>`).join('')}
-          <div class="exmp-x">${x(q.observation.note)}</div>
-        </div>
-        <div class="form"><div class="form-t">The observation entry — the employee writes it</div>
-          ${q.observation.fields.map(f=>`<div class="fld ${f[0]==='w'?'key':''}">
-            <label>${x(f[1])}</label><textarea rows="2" placeholder="${x(f[2]||'')}" disabled></textarea></div>`).join('')}
-          <div style="font-size:10.5px;color:var(--gray);margin-top:7px">Shown as it appears on the employee's page.</div>
-        </div>
-      </div></div>`:''}
     ${q.fns.map((f,fi)=>{
       const nm=f.replace('★ ','').replace(/ \([^)]*\)$/,'');
       const oi=(typeof FN_OWNER!=='undefined')?FN_OWNER[nm]:undefined;
@@ -485,7 +468,25 @@ function renderQuarter(){
           <div class="fld key"><label>What would I do differently?</label><div class="fake key"></div></div>
           <div class="fld"><label>What do I need?</label><div class="fake"></div></div>
         </div></div>`;}).join('')}`
-    :`<div class="qempty">No function is handed over this quarter. It is spent watching the work that is coming — the first contractor, the first crisis — before carrying any of it.</div>`}
+    :`<div class="qempty">No function is handed over this quarter. It is spent watching the work that is coming — the first contractor, the first crisis — before carrying any of it.</div>
+    ${q.observation?`<div class="ff">
+      <div class="ff-h"><div><div class="ff-n">${x(q.observation.title)}</div>
+        <div class="ff-m">the employee writes it &mdash; there is no function to stand in front of yet</div></div></div>
+      <div class="ff-b">
+        <div style="font-size:11.5px;color:#5A5750;line-height:1.75;margin-bottom:13px">${x(q.observation.why)}</div>
+        <div class="exmp">
+          <div class="exmp-t">An example of a real entry — what a good one looks like</div>
+          ${q.observation.fields.map(f=>`<div class="exmp-r ${f[0]==='w'?'key':''}">
+            <span>${x(f[1])}</span><div>${q.observation.example[f[0]]}</div></div>`).join('')}
+          <div class="exmp-x">${x(q.observation.note)}</div>
+        </div>
+        <div class="form"><div class="form-t">The observation entry — the employee writes it</div>
+          ${q.observation.fields.map(f=>`<div class="fld ${f[0]==='w'?'key':''}">
+            <label>${x(f[1])}</label><textarea rows="2" placeholder="${x(f[2]||'')}" disabled></textarea></div>`).join('')}
+          <div style="font-size:10.5px;color:var(--gray);margin-top:7px">Shown as it appears on the employee's page.</div>
+        </div>
+      </div></div>`:''}
+    `}
 
     <div class="qsub">Month by month</div>
     ${q.months.map((m,i)=>`<div class="mo"><span class="mo-m">Month ${(TQ-1)*3+i+1}</span><span class="mo-t">${m}</span></div>`).join('')}
